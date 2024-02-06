@@ -1,0 +1,10 @@
+<ng-container *transloco="let t">
+    <button *ngIf="!walletService.privateKey" mat-icon-button  [matTooltip]="t('lockIconComponent.unlock') + getName()"
+        (click)="unlock();">
+        <mat-icon>lock</mat-icon>
+    </button>
+    <button *ngIf="walletService.privateKey" mat-icon-button  [matTooltip]="t('lockIconComponent.lock') + getName()"
+        (click)="lock();">
+        <mat-icon>lock_open</mat-icon>
+    </button>
+</ng-container>

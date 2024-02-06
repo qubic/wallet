@@ -1,0 +1,68 @@
+<ng-container *transloco="let t">
+  <h2 mat-dialog-title>
+    <span>{{ t("exportConfigComponent.title") }}</span>
+  </h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="exportForm" novalidate (ngSubmit)="export()">
+      <div *ngIf="walletService.privateKey">
+        <div class="flex-center export">
+          {{ t("exportConfigComponent.messages.export") }}
+          <br />
+        </div>
+        <div class="flex-center export">
+          <span> {{ t("exportConfigComponent.messages.info") }}</span>
+        </div>
+        <div class="flex-center export">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="{{ t('lockComponent.password.placeholder') }}"
+              formControlName="password"
+              type="password"
+            />
+          </mat-form-field>
+          <mat-error
+            *ngIf="exportForm.controls['password'].hasError('required')"
+          >
+            {{ t("lockComponent.password.required") }}
+          </mat-error>
+          <mat-error
+            *ngIf="exportForm.controls['password'].hasError('minlength')"
+          >
+            {{ t("lockComponent.password.min") }}
+          </mat-error>
+        </div>
+      </div>
+      <div *ngIf="!walletService.privateKey">
+        <div class="flex-center export">
+          {{ t("exportConfigComponent.messages.unlockInfo") }}
+          <br />
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="button-container">
+      <button
+        *ngIf="!walletService.privateKey"
+        mat-raised-button
+        color="primary"
+        (click)="loadKey()"
+        mat-dialog-close
+      >
+        {{ t("exportConfigComponent.buttons.unlock") }}
+      </button>
+      <button
+        *ngIf="walletService.privateKey"
+        mat-raised-button
+        color="primary"
+        [disabled]="!exportForm.valid"
+        (click)="export()"
+        mat-dialog-close
+      >
+        {{ t("exportConfigComponent.buttons.export") }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</ng-container>

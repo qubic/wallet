@@ -1,0 +1,30 @@
+<ng-container *transloco="let t">
+  <div class="flex flex-center">
+    <div class="welcome-content">
+      <div class="title">
+        <img
+          src="assets/icons/wallet.svg"
+          class="wallet-icon"
+          *ngIf="themeService.isDarkTheme"
+        />
+        <img
+          src="assets/icons/wallet_whitemode.svg"
+          class="wallet-icon"
+          *ngIf="!themeService.isDarkTheme"
+        />
+      </div>
+      <h1>
+        {{ t("welcomeComponent.title") }}
+      </h1>
+      {{ t("welcomeComponent.welcomeMessage") }}
+      <div class="button-container buttons-vertical">
+        <button mat-raised-button color="primary" [routerLink]="['../create']">
+          {{ t("welcomeComponent.button.createVault") }}
+        </button>
+        <button mat-raised-button [routerLink]="['../import']">
+          {{ t("welcomeComponent.button.importVault") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

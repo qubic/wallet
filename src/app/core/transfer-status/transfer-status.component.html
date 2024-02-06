@@ -1,0 +1,50 @@
+<ng-container *transloco="let t">
+    <div class="status-buttons">
+        <span *ngIf="transaction.status == 'Pending' || transaction.status == 'Broadcasted'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.pending.tooltip') }}">
+            <button class="loading-btn loading-btn--pending">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+        </span>
+        <span *ngIf="transaction.status == 'Confirmed' || transaction.status == 'Staged'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.confirmed.tooltip') }}">
+            <button class="loading-btn loading-btn--confirmed">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+            
+        </span>
+        <span *ngIf="transaction.status == 'Success'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">
+            <button class="loading-btn loading-btn--success">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+            
+        </span>
+        <span *ngIf="transaction.status == 'Failed'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">
+            <button class="loading-btn loading-btn--fail">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+        </span>
+        <span *ngIf="transaction.status == 'Unknown'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.unknown.tooltip') }}">
+            <button class="loading-btn loading-btn--unknown">
+                <span class="loading-btn__text">
+                    ?
+                </span>
+            </button>
+        </span>
+        <span *ngIf="transaction.status == 'Created'" class="loading-btn-wrapper"
+            matTooltip="{{ t('balanceComponent.transactions.status.unknown.tooltip') }}">
+            <button class="loading-btn loading-btn--unknown">
+                <span class="loading-btn__text">
+                    <mat-icon>new_releases</mat-icon>
+                </span>
+            </button>
+        </span>
+    </div>
+</ng-container>

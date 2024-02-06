@@ -1,0 +1,546 @@
+{
+  "general": {
+    "title": "Qubic - Wallet",
+    "comingSoon": "coming soon!",
+    "navigation": {
+      "home": "Dashboard",
+      "payment": "Betaling",
+      "balance": "Account Balans",
+      "settings": "Instellingen",
+      "voting": "Voting",
+      "ipo": "IPO",
+      "assets": "Assets"
+    },
+    "version": "Versie {{version}} - preview",
+    "version.url": "qubic.li",
+    "copy.tooltip": "Copy",
+    "error": "Error",
+    "close": "sluiten",
+    "currency": "qus",
+    "currentTick": "Tick: {{tick}}",
+    "loading": "loading...",
+    "buttons": {
+      "close": "Close",
+      "maximize": "Maximize"
+    },
+    "messages": {
+      "notConnected": "Not connected to the Qubic Network. Please Connect first.",
+      "refreshRequested": "Refresh has been requested",
+      "refreshFailed": "Refresh failed, please try again later",
+      "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
+      "timeoutTryAgain": "We run into a timeout. Please try again."
+    }
+  },
+  "payment": {
+    "keyRequestReason": "Omdat transacties digitaal worden ondertekend met uw sleutel moet u eerst uw sleutel laden."
+  },
+  "confirmDialog": {
+    "title": "Bevestig",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Ja, ik bevestig"
+    },
+    "confirmationText": "Weet u het zeker?"
+  },
+  "notifyComponent": {
+    "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Wallet.",
+    "saveYourKey": "Bewaar uw kluisbestand op een veilige plaats.",
+    "qubicLiSync": "Synchroniseer uw instellingen met qubic.li",
+    "qubicOffline": "QUBIC network not connected",
+    "qubicOnline": "Connected to the QUBIC network"
+  },
+  "revealSeedComponent": {
+    "title": "Account Informatie",
+    "publicId": "Account ID",
+    "privateId": "Account Wachtwoord",
+    "buttons": {
+      "close": "Sluiten"
+    }
+  },
+  "assetsComponent": {
+    "title": "Your Assets",
+    "openAssets": "Goto Asset Management",
+    "overview": {
+      "title": "Asset Overview"
+    },
+    "table": {
+      "publicId": "Public ID",
+      "contractIndex": "Contract Index",
+      "assetName": "Asset Name",
+      "contractName": "Contract Name",
+      "ownedAmount": "Owned Amount",
+      "possessedAmount": "Possessed Amount",
+      "tick": "Valid for Tick {{tick}}",
+      "reportingNodes": "Reporting Nodes",
+      "issuerIdentity": "Issuer Identity"
+    },
+    "buttons": {
+      "close": "Close",
+      "refresh": "Refresh",
+      "send": "Transfer Assets"
+    },
+    "form": {
+      "info": "Send Assets form",
+      "fees": "Fixed sending fees: 1,000,000 Qubic",
+      "select": "Select Asset",
+      "select.error": "Asset selection is required",
+      "placeholder": "Address ID of the receiver",
+      "placeholder.error": "An 55-char seed is required.",
+      "amount": "Amount to send",
+      "amount.error": "Amount is required",
+      "amount.value.error": "The amount must be greater than 0",
+      "amount.max.error": "The amount cannot exceed the quantity held",
+      "tick": "Tick",
+      "tick.error": "Tick is required",
+      "tick.tooltip": "Tick is required",
+      "tick.min": "Tick must be a minimum of {{currentTick}}",
+      "buttons": {
+        "send": "Send",
+        "cancel": "Cancel",
+        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+      }
+    },
+    "noAssets": "No assets available"
+  },
+  "qrReceiveComponent": {
+    "title": "Betaling ontvangen",
+    "downloadLink": "Download",
+    "hint": "Scan/verzend deze QR-code om een betaling te ontvangen voor {{publicId}}.",
+    "buttons.close": "Sluiten"
+  },
+  "seedEditComponent": {
+    "title.add": "Account Toevoegen",
+    "title.edit": "Account Aanpassen",
+    "newSeedName": "Account-Naam",
+    "seedWarning": "This 55-Chars are your Qubic Private Key (Seed)! Save it anywhere!",
+    "form": {
+      "alias": {
+        "placeholder": "Kies een eigen naam voor uw account om deze sneller te kunnen herkennen.",
+        "error": {
+          "required": "Naam vereist",
+          "min": "Naam moet minimaal uit 3 karakters bestaan",
+          "max": "Naam mag maximaal 50 karakters hebben",
+          "regex": "Kan alleen {{regex}} bevatten."
+        }
+      },
+      "seed": {
+        "placeholder": "Account wachtwoord",
+        "error": {
+          "required": "Een accountwachtwoord is vereist.",
+          "min": "Het accountwachtwoord moet exact bestaan uit 55 kleine letters.",
+          "max": "Het accountwachtwoord moet exact bestaan uit 55 kleine letters.",
+          "regex": "Kan alleen a-zA-Z0-9_- bevatten."
+        },
+        "generateSeed": "Willekeurig een accountwachtwoord genereren."
+      },
+      "watchOnlyAddress": {
+        "title": "Watch-Only-Address",
+        "placeholder": "60-char public-key",
+        "error": {
+          "required": "An 60-char public-key is required.",
+          "min": "The 60-char public-key must exactly consist of 60 upper case characters",
+          "max": "The 60-char public-key must exactly consist of 60 upper case characters",
+          "regex": "Can only contain A-Z"
+        }
+      },
+      "error": {
+        "text": "Controleer het formulier.",
+        "close": "sluiten"
+      }
+    },
+    "publicIdMessage": "Je account id is:",
+    "privateKeyWarning": "Let op! Uw kluisbestand is niet geladen. Zorg ervoor dat u het veilig heeft opgeborgen.",
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Account aanmaken",
+      "save": "Account opslaan"
+    }
+  },
+  "seedOverviewComponent": {
+    "title": "Addresses",
+    "isTable": "Show table",
+    "addSeedButton": "Account Toevoegen",
+    "importButton": "Import",
+    "exportButton": "Export",
+    "search.label": "Zoeken",
+    "table": {
+      "alias": "Account Naam",
+      "publicId": "Account ID",
+      "balance": "Balans",
+      "epochChanges": "Epoch Veranderingen",
+      "noData": "Geen gegevens die overeenkomen met het filter \"{{q}}\"",
+      "actions": {
+        "title": "Acties",
+        "revealSeed": "Onthul account wachtwoord",
+        "assets": "Show Owned Assets",
+        "makePayment": "Doe een betaling",
+        "receivePayment": "Genereer een QR Code om een betaling te ontvangen.",
+        "editSeed": "Account aanpassen",
+        "deleteSeed": "Account verwijderen",
+        "refreshBalance": "Refresh Balance from Network"
+      }
+    },
+    "hasPendingTransaction": "Transactions pending",
+    "marketPrice": "Price",
+    "marketSupply": "Supply",
+    "marketCap": "Marketcap",
+    "marketCurrency": "$"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "balance": "Wallet balance",
+    "currency": "Qu",
+    "totalBalance": "Your Total Balance"
+  },
+  "unlockComponent": {
+    "title": "Wallet vrijgeven",
+    "title.new": "Maak een kluisbestand aan",
+    "welcomeMessage": "Welkom bij de qubic Wallet.� Om deze Wallet te gebruiken moet u een kluisbestand aanmaken. Deze zal uw publieke/prive sleutel bevatten die daarna wordt gebruikt om uw gegevens te versleutelen/decoderen.",
+    "reasonMessage": "Om uw portemonnee te ontgrendelen is uw kluisbestand nodig. Dit bestand wordt automatisch verwijderd zodra deze pagina opnieuw wordt geladen of gesloten.",
+    "choosePrivateKeyFile": "Kies een kluisbestand",
+    "chooseConfigFile": "Choose wallet config file",
+    "overwriteVault": "Het lijkt erop dat er al gegevens zijn opgeslagen in deze Browser. Wilt u deze echt overschrijven?",
+    "form": {
+      "file.error.required": "Kluisbestand verplicht",
+      "password.error.required": "Kluis wachtwoord verplicht",
+      "password.error.min": "Uw wachtwoord moet minimaal 8 tekens bevatten.",
+      "configFile": {
+        "error": {
+          "required": "Config file required"
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "generateKey": "Maak een nieuwe kluis",
+      "importAndUnlock": "Import Vault and Unlock",
+      "unlock": "Ontgrendel wallet",
+      "existingUser": "Ik heb al een kluis",
+      "newUser": "Create Vault",
+      "closeWallet": "Sluit Wallet",
+      "importVault": "Import Vault"
+    },
+    "welcomeHintMessage": "After you have downloaded your Vault file. You need to select the downloaded file and enter your password again. This will unlock your wallet."
+  },
+  "lockIconComponent": {
+    "lock": "Vergrendel Wallet",
+    "unlock": "Ontgrendel Wallet"
+  },
+  "lockComponent": {
+    "title": "Sluit Wallet?",
+    "forceDownload": {
+      "title": "Download kluis bestand",
+      "reason": "Wanneer u uw wallet vergrendelt, wordt uw kluisbestand automatisch verwijderd. Zonder dit kluisbestand kunnen er geen transacties worden gedaan. Wees u ervan bewust dat uw kluisbestand veilig is opgeslagen. Exporteer het opnieuw in geval van twijfel...",
+      "buttons": {
+        "allOk": "Ik heb mijn sleutel, bedankt."
+      }
+    },
+    "reason": "Het is van het grootste belang om uw kluisbestand veilig op te slaan. Kies een sterk wachtwoord dat u niet zult vergeten en klik dan op \"save\".",
+    "warning": "Ik bevestig dat ik mijn kluisbestand heb opgeslagen.",
+    "password.placeholder": "Wachtwoord",
+    "password.required": "Wachtwoord verplicht",
+    "password.min": "Het wachtwoord moet minimaal 8 tekens bevatten.",
+    "buttons": {
+      "savePrivateKey": "Save kluisbestand",
+      "closeWallet": "Vergrendel Wallet",
+      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
+      "enableExport": "Exporteer",
+      "cancel": "Cancel"
+    }
+  },
+  "paymentComponent": {
+    "title": "Verstuur Qubic Units (qus).",
+    "messages": {
+      "pleaseUnlock": "Please unlock your Wallet first",
+      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
+      "failedToSend": "Your transaction could not be sent. Please try again later.",
+      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct private key??",
+      "failedValidation": "We had validation errors. Please check the form."
+    },
+    "form": {
+      "sourceSeed": {
+        "label": "Account warvan qus moeten worden verzonden",
+        "error": {
+          "required": "Account van de afzender is vereist"
+        }
+      },
+      "receiver": {
+        "placeholder": "Account ID van de ontvanger",
+        "hint": "60 hoofdletters",
+        "chooseOwnSeed": "Kies een eigen Account ID",
+        "error": {
+          "required": "Account ID is vereist",
+          "length": "Een Qubic account ID bestaat uit 60 hoofdletters."
+        }
+      },
+      "amount": {
+        "placeholder": "Bedrag in Qubic Unis (qus)",
+        "max.tooltip": "Stel in op het maximaal beschikbare bedrag op deze seed",
+        "error": {
+          "required": "Bedrag is vereist",
+          "min": "Bedrag moet minimaal 1 zijn"
+        }
+      },
+      "tick": {
+        "placeholder": "Executie Tick",
+        "customize.tooltip": "Verander om een zelfgekozen tick te kiezen",
+        "error": {
+          "required": "Tick is vereist",
+          "min": "Tick moet minimaal {{currentTick}} zijn."
+        }
+      }
+    },
+    "buttons": {
+      "send": "Transactie uitvoeren",
+      "reset": "Reset",
+      "loadPrivateKey": "Kluisbestand laden"
+    }
+  },
+  "balanceComponent": {
+    "title": "Account Balans",
+    "createSeedHint": "Maak eerst een seed aan",
+    "overview": {
+      "title": "Overzicht",
+      "totalWalletValue": "Fixed Wallet Waarde",
+      "estimatedWalletValue": "Geschatte Wallet Waarde",
+      "baseDate": "per"
+    },
+    "transactions": {
+      "title": "Transacties in huidige Epoch",
+      "verificationAlert": "Voorbeeldgegevens konden niet worden gecontroleerd",
+      "noTransactions": "Geen transacties gevonden",
+      "send.tooltip": "Uitgaande transacties",
+      "exchange.tooltip": "Internal Transfer",
+      "explorer.tooltip": "Show Transfer in Explorer",
+      "receive.tooltip": "Inkomende transacties",
+      "status.pending.tooltip": "In afwachting van",
+      "status.executed.tooltip": "Uitgevoerd",
+      "status.dismissed.tooltip": "Niet uitgevoerd",
+      "status.unknown.tooltip": "Onebekend",
+      "status.confirmed.tooltip": "Gecontroleerd",
+      "filter.seed.label": "Filter op Seed"
+    }
+  },
+  "settings": {
+    "general": {
+      "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
+      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
+      "button.save": "Save Settings",
+      "beta": {
+        "placeholder": "Enable Beta Features"
+      }
+    },
+    "import": {
+      "title": "Import Settings",
+      "doneMessage": "Import Successful",
+      "dropMessage": "Drop your config to import here",
+      "buttons.import": "Import Config",
+      "seedsMessage": "You are about to import {{amount}} seeds.",
+      "goHomeLink": "Show imported Seeds"
+    },
+    "export": {
+      "title": "Export Settings",
+      "hint": "Press the below button to download your current config. It contains your encrypted seeds. You also should have saved your private key.",
+      "buttons.export": "Export/Save Config"
+    }
+  },
+  "votingComponent": {
+    "title": "Qubic Computor Voting",
+    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
+    "proposals": {
+      "editButton": "Edit",
+      "createButton": "Create Proposal",
+      "voteButton": "Vote",
+      "title": "{{amount}} Current Proposals",
+      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
+      "votingResult": "Voting Result",
+      "noVotes": "no votes",
+      "from": "From:",
+      "url": "Propsal URL:"
+    },
+    "participate": {
+      "title": "Participate",
+      "cancelButton": "Cancel",
+      "sendVotesButton": "Send Votes",
+      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
+      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
+      "computorsSelected": "Computors selected"
+    },
+    "create": {
+      "title": "Create Proposal",
+      "cancelButton": "Cancel",
+      "sendVotesButton": "Send Proposal",
+      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
+      "buttons": {
+        "create": "Create Proposal",
+        "publish": "Connect and Publish Proposal",
+        "reset": "Reset Form",
+        "loadPrivateKey": "Load vault file",
+        "finish": "Show Proposals"
+      },
+      "form": {
+        "operatorSeed.label": "Operator Seed",
+        "operatorSeed.error.required": "Operator is required",
+        "sourceSeed.label": "Computor to use for proposal",
+        "sourceSeed.error.required": "Computor is required",
+        "title.label": "Proposal Title",
+        "title.placeholder": "Proposal Title",
+        "title.error.required": "Title is required",
+        "title.error.min": "Title must have at least 2 characters",
+        "title.error.max": "Title must have at maximum 100 characters",
+        "description.label": "Proposal Description",
+        "description.placeholder": "Proposal Description",
+        "description.error.min": "Description must have at least 2 characters",
+        "description.error.max": "Description must have at maximum 1000 characters",
+        "description.error.required": "Description is required",
+        "option.label": "Option {{id}}",
+        "option.placeholder": "Option {{id}}",
+        "option.error.required": "Option {{id}} is required",
+        "option.error.min": "Option must have at least 2 characters",
+        "option.error.max": "Option must have at maximum 50 characters",
+        "computorIp.label": "Computor IP Address",
+        "computorIp.placeholder": "Computor IP Address",
+        "computorIp.error.required": "Computor IP Address required"
+      },
+      "proposalStep.label": "Create Proposal",
+      "publishStep.label": "Publish Proposal",
+      "finishStep.label": "Done",
+      "finishStep.success": "Your Proposal has been sent to your computor."
+    },
+    "status": {
+      "success": "Accepted by Quorum",
+      "failed": "Dismissed by Quorum",
+      "publishing": "Publish in progress",
+      "pending": "Voting is open",
+      "draft": "Draft",
+      "unknown": "Unknown status"
+    }
+  },
+  "ipoComponent": {
+    "messages": {
+      "unlock": "Please unlock your Wallet first",
+      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
+      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
+      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct private key??",
+      "failedToValidate": "We had validation errors. Please check the form."
+    },
+    "title": "Qubic IPO",
+    "description": "The Qubic IPO is an auction for shares of smart contracts.",
+    "noIpos": "Currently no IPO's active",
+    "yourBids": "Your Bids",
+    "yourShares": "Your Shares",
+    "sharesFor": "Shares for",
+    "statusValid": "Status valid for tick {{tick}}",
+    "livPanelHint": "Check out current Results",
+    "buttons.place-bid": "Place Bid",
+    "buttons.refresh": "Refresh Status",
+    "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
+    "bidStatus.pcs": "pcs",
+    "place-bid": {
+      "title": "Place a Bid",
+      "needBalance": "You need at least one seed with a positive balance.",
+      "noContract": "Contract not found. Please try again later.",
+      "noContract.gotoIpoLabel": "Show available Contract IPO's",
+      "buttons": {
+        "send": "Send Bid"
+      },
+      "form": {
+        "quantity": {
+          "placeholder": "Quantity",
+          "error.min": "Minimum 1",
+          "error.required": "Quantity is required"
+        },
+        "price": {
+          "placeholder": "Price (qus)",
+          "error.min": "Minimum 1",
+          "error.required": "Price is required",
+          "max.tooltip": "Bid all available qus"
+        }
+      }
+    }
+  },
+  "okDialog": {
+    "title": "Opmerking",
+    "button": "Ja, ik bevestig.",
+    "messages": {
+      "tresorText": "Heeft u nu uw kluisbestand gedownload? Kies dit kluisbestand in de volgende stap om de portemonnee te openen!"
+    }
+  },
+  "loadConfigComponent": {
+    "title": "Accounts importeren",
+    "buttons": {
+      "import": "Importeren",
+      "cancel": "Annuleren"
+    },
+    "messages": {
+      "import": "Als u al een .config-bestand heeft met uw openbare sleutels, selecteert u dit nu en importeert u het.",
+      "noImport": "Als u nog geen .config-bestand heeft, maakt u een account aan in het volgende gedeelte."
+    }
+  },
+  "exportConfigComponent": {
+    "title": "Accounts exporteren",
+    "buttons": {
+      "export": "Exporteren",
+      "cancel": "Annuleren"
+    },
+    "messages": {
+      "export": "Je hebt je accountvoorraad gewijzigd. Zorg ervoor dat je je huidige configuratie downloadt, zodat je deze later kunt importeren.",
+      "info": "Het bevat je versleutelde seeds.",
+      "unlockInfo": "Please unlock your Vault to be able to export your Vault file with the newest inventory."
+    }
+  },
+  "welcomeComponent": {
+    "welcomeMessage": "To use this Wallet you must either create or import your existing Vault. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "button": {
+      "createVault": "Create Vault",
+      "importVault": "Import Vault"
+    },
+    "title": "Welcome to the Qubic Wallet"
+  },
+  "importComponent": {
+    "title": "Import Vault",
+    "message": "You can import an existing Vault to your Wallet."
+  },
+  "createVaultComponent": {
+    "createVault": {
+      "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
+      "stepTitle": "Create Vault",
+      "vaultName": "Name",
+      "button": "Create Vault"
+    },
+    "createAddress": {
+      "title": "Add Address",
+      "message": "In your Qubic Wallet you can have multiple Addresses. Every Address\r\n        consists of a Seed (private Key) and a Public Id. The Seed is needed to\r\n        send Qubic and the Public Id can be used to receive Qubic. We create now\r\n        your first Address.",
+      "addressNam": "Name",
+      "seed": "Seed",
+      "seedPlaceholder": "Choose a random seed...",
+      "publicId": "Public Id",
+      "radomizeSeed": "Randomize Seed",
+      "addressPlaceholder": "Choose an Account Name",
+      "button": "Create Address"
+    },
+    "downloadVault": {
+      "stepTitle": "Download initial Vault",
+      "message": "Your personal Vault has been created. You can now download it. Please\r\n          choose a secure Password and select \"Download Vault\".",
+      "password": "Password",
+      "passwordHint": "Choose a secure password...",
+      "button": "Download Vault"
+    },
+    "verifyVault": {
+      "stpTitle": "Load/Import Vault",
+      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
+      "password": "Password",
+      "passwordHint": "Your Vault Password",
+      "button": "Verify Vault File"
+    },
+    "done": {
+      "stepTitle": "Done",
+      "message": "Happy Qubic! Your Wallet is ready.",
+      "button": "Open My Wallet"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "reset": "Reset"
+    }
+  }
+}

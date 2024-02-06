@@ -1,0 +1,76 @@
+<ng-container *transloco="let t">
+  <div class="title">
+    <img
+          src="assets/icons/wallet.svg"
+          class="wallet-icon"
+          *ngIf="themeService.isDarkTheme"
+        />
+        <img
+          src="assets/icons/wallet_whitemode.svg"
+          class="wallet-icon"
+          *ngIf="!themeService.isDarkTheme"
+        />
+  </div>
+  <div class="flex flex-center">
+    <h2 mat-dialog-title>{{ t("importComponent.title") }}</h2>
+    <div>
+      {{ t("importComponent.message") }}
+      <br /><br />
+      <br />
+      <form [formGroup]="importForm" novalidate (ngSubmit)="onSubmit($event)">
+        <app-file-selector
+          class="flex flex-center"
+          (fileSelected)="onFileSelected($event)"
+          requredText="{{ t('unlockComponent.form.file.error.required') }}"
+          selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"
+        ></app-file-selector>
+        <mat-form-field class="full-width">
+          <input
+            matInput
+            placeholder="Password"
+            formControlName="password"
+            type="password"
+            (input)="onPasswordChange()"
+          />
+          <mat-error
+            *ngIf="importForm.controls['password'].hasError('required')"
+          >
+            {{ t("unlockComponent.form.password.error.required") }}
+          </mat-error>
+          <mat-error
+            *ngIf="importForm.controls['password'].hasError('minlength')"
+          >
+            {{ t("unlockComponent.form.password.error.min") }}
+          </mat-error>
+          <mat-error *ngIf="pwdWrong">
+            {{ t("unlockComponent.form.password.error.wrong") }}
+          </mat-error>
+        </mat-form-field>
+
+        <app-file-selector
+          *ngIf="!selectedFileIsVaultFile"
+          class="flex flex-center"
+          (fileSelected)="onConfigFileSelected($event)"
+          requredText="{{
+            t('unlockComponent.form.configFile.error.required')
+          }}"
+          selectFileText="{{ t('unlockComponent.chooseConfigFile') }}"
+        ></app-file-selector>
+      </form>
+    </div>
+  </div>
+  <br />
+  <div class="button-container buttons-vertical">
+    <button
+      [disabled]="!importForm.valid || !file || (!selectedConfigFile && !selectedFileIsVaultFile)"
+      mat-raised-button
+      color="primary"
+      (click)="checkImportAndUnlock()"
+    >
+      {{ t("unlockComponent.buttons.importVault") }}
+    </button>
+    <button [routerLink]="['/']" mat-raised-button>
+      {{ t("unlockComponent.buttons.cancel") }}
+    </button>
+  </div>
+</ng-container>

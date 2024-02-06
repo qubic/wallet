@@ -1,0 +1,74 @@
+<ng-container *transloco="let t">
+  <div class="title">
+    <img
+          src="assets/icons/wallet.svg"
+          class="wallet-icon"
+          *ngIf="themeService.isDarkTheme"
+        />
+        <img
+          src="assets/icons/wallet_whitemode.svg"
+          class="wallet-icon"
+          *ngIf="!themeService.isDarkTheme"
+        />
+  </div>
+  <div class="flex flex-center text-center">
+
+    <h1>{{ t("unlockComponent.title") }}</h1>
+    
+      <div>
+        {{ t("unlockComponent.reasonMessage") }}
+        <br /><br />
+        <form [formGroup]="importForm" novalidate (ngSubmit)="onSubmit($event)">
+
+          <app-file-selector
+          class="flex flex-center"
+          (fileSelected)="onFileSelected($event)"
+          requredText="{{ t('unlockComponent.form.file.error.required') }}"
+          selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"
+        ></app-file-selector>
+
+         
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              placeholder="Password"
+              formControlName="password"
+              type="password"
+              (input)="onPasswordChange()"
+            />
+          </mat-form-field>
+          <mat-error
+            *ngIf="importForm.controls['password'].hasError('required')"
+          >
+            {{ t("unlockComponent.form.password.error.required") }}
+          </mat-error>
+          <mat-error
+            *ngIf="importForm.controls['password'].hasError('minlength')"
+          >
+            {{ t("unlockComponent.form.password.error.min") }}
+          </mat-error>
+          <mat-error *ngIf="pwdWrong">
+            {{ t("unlockComponent.form.password.error.wrong") }}
+          </mat-error>
+        </form>
+      </div>
+    </div>
+      <div class="button-container buttons-vertical">
+        <button
+          [disabled]="!importForm.valid"
+          mat-raised-button
+          color="primary"
+          (click)="unlock()"
+        >
+          {{ t("unlockComponent.buttons.unlock") }}
+        </button>
+        <button (click)="createNewVault()" mat-raised-button>
+          {{ t("unlockComponent.buttons.newUser") }}
+        </button>
+        <button (click)="importVault()" mat-raised-button>
+          {{ t("unlockComponent.buttons.importVault") }}
+        </button>
+      </div>
+    
+  
+</ng-container>

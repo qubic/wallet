@@ -1,0 +1,23 @@
+<div class="file-selector">
+  <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+  <input
+    #inputfileid
+    type="file"
+    id="input-file-id"
+    class="file-input"
+    (change)="onFileSelected($event)"
+  />
+  <mat-error *ngIf="!selectedFile" (click)="inputfileid.click()">
+    {{ requredText }}
+  </mat-error>
+  <label for="input-file-id">
+    <button
+      mat-button
+      type="button"
+      color="accent"
+      (click)="inputfileid.click()"
+    >
+      {{ selectFileText }}
+    </button>
+  </label>
+</div>

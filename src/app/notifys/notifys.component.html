@@ -1,0 +1,19 @@
+<ng-container *transloco="let t">
+    <button *ngIf="walletService.shouldExportKey && walletService.privateKey" class="danger" mat-icon-button [matTooltip]="t('notifyComponent.saveYourKey')"
+        (click)="lock();">
+        <mat-icon>warning</mat-icon>
+    </button>
+    <button *ngIf="hasUnsavedSeeds()" class="danger" mat-icon-button [matTooltip]="t('notifyComponent.saveYourSettings')"
+        (click)="saveSettings()">
+        <mat-icon>warning</mat-icon>
+    </button>
+    <button class="offline"  *ngIf="useBridge && !isNodeConnected" mat-icon-button [matTooltip]="t('notifyComponent.qubicOffline')" (click)="connect();">
+        <mat-icon>wifi_off</mat-icon>
+    </button>
+    <button class="online"  *ngIf="useBridge && isNodeConnected" mat-icon-button [matTooltip]="t('notifyComponent.qubicOnline')" (click)="disconnect();">
+        <mat-icon>wifi</mat-icon>
+    </button>
+    <!-- <button mat-icon-button [title]="t('notifyComponent.qubicLiSync')" (click)="sync();">
+        <mat-icon>sync</mat-icon>
+    </button> -->
+</ng-container>

@@ -1,0 +1,41 @@
+.important {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+form {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    column-gap: 15px;
+}
+mat-dialog-content {
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.imexport {
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+    row-gap: 20px;
+    justify-content: center;
+    align-items: center;
+    ngx-file-drop {
+        width: 95%;
+    }
+    .import-done {
+        mat-icon {
+            font-size: 30px;
+        }
+    }
+    .export {
+        text-align: center;
+        row-gap: 10px;;
+    }
+}

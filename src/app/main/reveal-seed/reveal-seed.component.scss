@@ -1,0 +1,11 @@
+.seedInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 10px;
+  word-break: break-all;
+  mat-form-field {
+    width: 100%;
+  }
+}

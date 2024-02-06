@@ -1,0 +1,76 @@
+.seedList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h3 {
+        font-weight: bold;
+        margin-bottom: 0px;;
+    }
+}
+.mobileSeedItem {
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+}
+.mobileActionLine {
+    display: flex;
+    flex-wrap: wrap;
+}
+.epochChanges {
+    display: flex;
+    align-items: center;
+}
+.cardEpochChanges {
+    margin-bottom: -20px;
+}
+.down, .up{
+    display: none;
+}
+.straight{
+    display: inline;
+}
+.isPositiv {
+    .down, .straight{
+        display: none;
+    }
+    .up{
+        display: inline;
+    }
+}
+.isNegativ {
+    .up, .straight{
+        display: none;
+    }
+    .down{
+        display: inline;
+    }
+}
+
+
+.card-list {
+    gap: 0px 20px;
+
+}
+
+mat-card {
+    min-width: 385px;
+}
+
+::ng-deep {
+    .is-mobile  {
+        mat-card {
+            min-width: 320px;
+        }
+    }
+}
+
+
+.dashboard-balance-name {
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.mat-mdc-form-field {
+    width: 100%;
+}

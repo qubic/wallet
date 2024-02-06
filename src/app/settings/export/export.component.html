@@ -1,0 +1,42 @@
+<ng-container *transloco="let t">
+    <div class="col-4 col-sm-12">
+        <h2>{{ t("settings.import.title") }} (legacy)</h2>
+        <mat-card class="proposal-card">
+            <mat-card-content>                
+                <div *ngIf="importDone" class="flex-center import-done">
+                    <mat-icon>check</mat-icon><br>
+                    {{ t("settings.import.doneMessage") }}
+                    <br><br>
+                    <a [routerLink]="['/']">{{ t("settings.import.goHomeLink") }}</a>
+                </div>
+                <div *ngIf="!importDone" class="flex-center">
+                    <ngx-file-drop (onFileDrop)="dropped($event)" [dropZoneLabel]="t('settings.import.dropMessage')"
+                    [showBrowseBtn]="isMobile">
+                </ngx-file-drop>
+                <br><br>
+                <div *ngIf="configToImport" class="flex-center">
+                    {{ t("settings.import.seedsMessage", { amount: configToImport.seeds.length}) }}<br><br>
+                    <button mat-raised-button color="accent" (click)="import()">{{ t("settings.import.buttons.import")
+                    }}</button>
+                </div>            
+                <div *ngIf="fileError">
+                    {{ fileError }}
+                </div>
+            </div>
+            </mat-card-content>
+        </mat-card>
+        <br>
+        <h2>{{ t("settings.export.title") }} (legacy)</h2>
+        <mat-card class="proposal-card">
+            <mat-card-content>
+                <div class="flex-center export">
+                 {{ t("settings.export.hint") }}
+                 <br>
+                 <br>
+                <button mat-raised-button color="accent" (click)="export()">{{ t("settings.export.buttons.export")
+                    }}</button>
+            </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</ng-container>

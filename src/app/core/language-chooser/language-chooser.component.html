@@ -1,0 +1,13 @@
+<ng-container *transloco="let t">
+    <button mat-icon-button [matMenuTriggerFor]="langMenu">
+      <span class="material-icons">language</span>
+    </button>
+    <mat-menu #langMenu="matMenu">
+      <button mat-menu-item *ngFor="let languageKey of getSupportedLanguages()"
+              [class.active-lang]="isActiveLang(languageKey)"
+              (click)="changeLang({value: languageKey})">
+        {{ supportedLanguagesDictionary[languageKey] }}
+      </button>
+    </mat-menu>
+</ng-container>
+
