@@ -1,0 +1,13 @@
+<ng-container *transloco="let t" >
+  <h2 mat-dialog-title>Configuration Error</h2>
+  <mat-dialog-content>
+    It looks like we were not able to load the configurtion. In this state we cannot start.<br><br>
+    <textarea class="config">{{walletService.erroredCOnfig}}</textarea>
+    You can reset the configuration and start with a new wallet. We recommend you to store the above text and contact us
+    for help.
+    <br><br>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="resetConfig()">Reset Configuration</button>
+  </mat-dialog-actions>
+</ng-container>

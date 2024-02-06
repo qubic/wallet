@@ -1,0 +1,61 @@
+<ng-container *transloco="let t">  
+    <div *ngIf="!dialogRef" class="title">
+        <img src="assets/logos/Logo_light.webp" class="logo-title" *ngIf="themeService.isDarkTheme">
+        <img src="assets/logos/Logo_dark.webp" class="logo-title" *ngIf="!themeService.isDarkTheme">
+    </div>
+    <div class="start_container">
+    <h2 mat-dialog-title *ngIf="!isNewUser()">{{ t("unlockComponent.title")}}</h2>
+    <h2 mat-dialog-title *ngIf="isNewUser()">{{ t("unlockComponent.title.new")}}</h2>
+    <mat-dialog-content>
+      <div *ngIf="isNewUser()">
+        {{ t("unlockComponent.welcomeMessage") }}
+        <br><br>
+      </div>
+      <div *ngIf="!isNewUser()">
+        {{ t("unlockComponent.reasonMessage")}}
+        <br><br>
+        <hr>
+        <br>
+        <form [formGroup]="importForm" novalidate (ngSubmit)="onSubmit($event)">
+          <span *ngIf="file">{{ file.name }}</span>
+          <input type="file" id="input-file-id" class="file-input" (change)="onFileSelected($event)">
+          <label for="input-file-id" class="mdc-button mdc-button--raised mat-mdc-raised-button mat-link">{{
+            t("unlockComponent.choosePrivateKeyFile")}}</label>
+          <mat-error *ngIf="!file">
+            {{ t("unlockComponent.form.file.error.required")}}
+          </mat-error>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Password" formControlName="password" type="password" (input)="onPasswordChange()">            
+          </mat-form-field>
+          <mat-error *ngIf="importForm.controls['password'].hasError('required')">
+            {{ t("unlockComponent.form.password.error.required")}}
+          </mat-error>
+          <mat-error *ngIf="importForm.controls['password'].hasError('minlength')">
+            {{ t("unlockComponent.form.password.error.min")}}
+          </mat-error>
+          <mat-error *ngIf="pwdWrong">
+            {{ t("unlockComponent.form.password.error.wrong")}}
+          </mat-error>
+        </form>
+      </div>
+      <br>
+      <hr>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="text-center">
+        <button *ngIf="dialogRef" mat-raised-button mat-dialog-close>{{
+          t("unlockComponent.buttons.cancel")}}</button>
+        <button *ngIf="isNewUser()" mat-raised-button color="accent" (click)="gengerateNew()">{{
+          t("unlockComponent.buttons.generateKey")}}</button>
+        <button *ngIf="!isNewUser()" mat-raised-button color="accent" (click)="unlock()">{{
+          t("unlockComponent.buttons.unlock")}}</button>
+        <button *ngIf="!isNewUser() && walletService.isWalletReady" mat-raised-button color="primary" (click)="lock()">{{
+          t("unlockComponent.buttons.closeWallet")}}</button>
+        <button *ngIf="isNewUser()" (click)="toggleNewUser(false)" mat-raised-button>{{
+          t("unlockComponent.buttons.existingUser")}}</button>
+        <button *ngIf="!isNewUser() && !walletService.isWalletReady" (click)="toggleNewUser(true)" mat-raised-button>{{
+          t("unlockComponent.buttons.newUser")}}</button>
+      </div>
+      </mat-dialog-actions>
+    </div>
+</ng-container>

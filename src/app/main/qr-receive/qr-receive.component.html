@@ -1,0 +1,14 @@
+<ng-container *transloco="let t">
+  <h2 mat-dialog-title>{{ t("qrReceiveComponent.title")}}</h2>
+  <mat-dialog-content>
+    <qrcode (qrCodeURL)="onChangeURL($event)" [qrdata]="qrCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+
+    <a [href]="qrCodeDownloadLink" download="qrcode">{{ t("qrReceiveComponent.downloadLink") }}</a>
+
+    {{ t("qrReceiveComponent.hint", { publicId: data.publicId})}}
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>{{ t("qrReceiveComponent.buttons.close")}}</button>
+  </mat-dialog-actions>
+</ng-container>

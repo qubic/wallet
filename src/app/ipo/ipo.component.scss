@@ -1,0 +1,59 @@
+.mostVotes{
+    font-weight: bold;
+}
+.proposal-card {
+    margin-bottom: 10px;
+}
+.transaction-list {
+
+    .center {
+        text-align: center;
+    }
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px;
+    column-gap: 10px;
+    margin: 10px;
+  
+    .send-receive-indicator {
+        min-width: 98px;
+        text-align: right;
+    }
+    .receive {
+        color: green;
+    }
+  
+    .send {
+        color: red;
+    }
+  
+    .trans-date {
+        font-size: 0.9em;
+    }
+  
+    .trans-amount {
+        padding: 5px;
+        font-weight: bold;
+        min-width: 180px;
+    }
+  
+    .ownId {
+        font-weight: bold;
+    }
+  
+    .copy {
+        width: inherit;
+  
+    }
+  
+  
+    
+  
+    .copy span{
+        word-break: break-all;
+    }
+  }

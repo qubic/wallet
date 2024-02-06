@@ -1,0 +1,51 @@
+<ng-container *transloco="let t">
+    <div class="status-buttons" >
+        <span class="loading-btn-wrapper" *ngIf="proposal.status == 2"
+            matTooltip="{{ t('votingComponent.status.pending') }}">
+            <button class="loading-btn loading-btn--pending">
+                <span class="loading-btn__text">
+                    <mat-icon>how_to_vote</mat-icon>
+                </span>
+            </button>
+        </span>
+        <span  class="loading-btn-wrapper" *ngIf="proposal.status == 1"
+            matTooltip="{{ t('votingComponent.status.publishing') }}">
+            <button class="loading-btn loading-btn--confirmed">
+                <span class="loading-btn__text">
+                    <mat-icon>hourglass_top</mat-icon>
+                </span>
+            </button>
+        </span>
+        <span  class="loading-btn-wrapper" *ngIf="proposal.status == 3"
+            matTooltip="{{ t('votingComponent.status.success') }}">
+            <button class="loading-btn loading-btn--success">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+            
+        </span>
+        <span  class="loading-btn-wrapper" *ngIf="proposal.status == 4"
+            matTooltip="{{ t('votingComponent.status.failed') }}">
+            <button class="loading-btn loading-btn--fail">
+                <span class="loading-btn__text">
+                </span>
+            </button>
+        </span>
+        <!-- <span class="loading-btn-wrapper" *ngIf="proposal.status == 'Unknown'"
+            matTooltip="{{ t('votingComponent.status.unknown') }}">
+            <button class="loading-btn loading-btn--unknown">
+                <span class="loading-btn__text">
+                    ?
+                </span>
+            </button>
+        </span> -->
+        <span  class="loading-btn-wrapper"  *ngIf="proposal.status == 0"
+            matTooltip="{{ t('votingComponent.status.draft') }}">
+            <button class="loading-btn loading-btn--unknown">
+                <span class="loading-btn__text">
+                    <mat-icon>new_releases</mat-icon>
+                </span>
+            </button>
+        </span>
+    </div>
+</ng-container>

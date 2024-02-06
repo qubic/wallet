@@ -1,0 +1,155 @@
+<ng-container *transloco="let t">
+  <div class="content_container">
+    <h1>{{ t("seedOverviewComponent.title") }}</h1>
+    <mat-form-field>
+      <mat-label>{{ t("seedOverviewComponent.search.label") }}</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #input />
+    </mat-form-field>
+    <div>
+      <button color="accent" mat-raised-button aria-label="Add Addresse" title="Add Addresse" (click)="addSeed()">
+        <mat-icon>add_circle</mat-icon>
+        {{ t("seedOverviewComponent.addSeedButton") }}
+      </button>
+      <!-- <button mat-raised-button aria-label="Export Addresses" title="Export Addresses" (click)="openExportDialog(false)">
+        <mat-icon>download_file</mat-icon>
+        {{ t("seedOverviewComponent.exportButton") }}
+      </button>
+      <button mat-raised-button aria-label="Import Addresses" title="Import Addresses" (click)="openExportDialog(false)">
+        <mat-icon>upload_file</mat-icon>
+        {{ t("seedOverviewComponent.importButton") }}
+      </button> -->
+    </div>
+    <div class="mobileOnly seedList">
+      <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
+        <h3>
+          {{ seed.alias }} - <span *ngIf="!seed.lastUpdate">?</span>
+          <span *ngIf="seed.lastUpdate">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
+          {{ t("general.currency") }}
+        </h3>
+        <div class="flex flex-wrap">
+          <div [class]="{
+              epochChanges: true,
+              isPositiv: getEpochChanges(seed.publicId) > 0,
+              isNegativ: getEpochChanges(seed.publicId) < 0
+            }">
+            {{ getEpochChanges(seed.publicId) | number : "1.0-0" }}
+            <mat-icon class="up">arrow_upward</mat-icon>
+            <mat-icon class="down">arrow_downward</mat-icon>
+            <mat-icon class="straight">arrow_forward</mat-icon>
+
+          </div>
+
+          <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: seed"></ng-container>
+        </div>
+        <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="seed.publicId">
+          {{ seed.publicId }}
+        </div>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSortActive="alias" matSortDirection="asc"
+      class="mat-elevation-z8 desktopOnly currency-value" matSort>
+      <ng-container matColumnDef="alias">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t("seedOverviewComponent.table.alias") }}
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.alias }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ t("seedOverviewComponent.table.publicId") }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="element.publicId">
+            {{ element.publicId }}
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignRight">
+          {{ t("seedOverviewComponent.table.balance") }}
+        </th>
+        <td mat-cell *matCellDef="let element" class="alignRight">
+          <div class="flex-valign-center flex-halign-right">
+            <mat-icon *ngIf="hasPendingTransaction(element.publicId)" matTooltip="{{
+                t('seedOverviewComponent.hasPendingTransaction')
+              }}">hourglass_empty</mat-icon>
+            <span *ngIf="!element.lastUpdate">?</span>
+            <span *ngIf="element.lastUpdate">{{
+              getBalance(element.publicId) | number : "1.0-0"
+              }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentEstimatedAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignRight">
+          {{ t("seedOverviewComponent.table.epochChanges") }}
+        </th>
+        <td mat-cell *matCellDef="let element" >
+          <div [class]="{
+              alignRight: true,
+              epochChanges: true,
+              isPositiv: getEpochChanges(element.publicId) > 0,
+              isNegativ: getEpochChanges(element.publicId) < 0
+            }">
+            <span *ngIf="!element.lastUpdate">?</span>
+            <span *ngIf="element.lastUpdate">
+              {{ getEpochChanges(element.publicId) | number : "1.0-0" }}
+              <mat-icon class="up">arrow_upward</mat-icon>
+              <mat-icon class="down">arrow_downward</mat-icon>
+              <mat-icon class="straight">arrow_forward</mat-icon>
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" class="alignRight">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ t("seedOverviewComponent.table.actions.title") }}
+        </th>
+        <td mat-cell *matCellDef="let seed" class="alignRight">
+          <ng-container *ngTemplateOutlet="actions; context: seed"></ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          {{ t("seedOverviewComponent.table.noData", { q: input.value }) }}
+        </td>
+      </tr>
+    </table>
+  </div>
+  <ng-template #actions let-publicId="publicId">
+    <button *ngIf="walletService.privateKey" mat-icon-button
+      [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button *ngIf="hasAssets(publicId)" mat-icon-button [title]="t('seedOverviewComponent.table.actions.assets')"
+      (click)="assets(publicId)">
+      <mat-icon>category</mat-icon>
+    </button>
+    <button mat-icon-button [title]="t('seedOverviewComponent.table.actions.makePayment')" (click)="payment(publicId)">
+      <mat-icon>payment</mat-icon>
+    </button>
+    <button mat-icon-button [title]="t('seedOverviewComponent.table.actions.refreshBalance')"
+      (click)="refreshBalance(publicId)">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button mat-icon-button [title]="t('seedOverviewComponent.table.actions.receivePayment')"
+      (click)="receive(publicId)">
+      <mat-icon>qr_code_2</mat-icon>
+    </button>
+    <button mat-icon-button [title]="t('seedOverviewComponent.table.actions.editSeed')" (click)="edit(publicId)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button [title]="t('seedOverviewComponent.table.actions.deleteSeed')" (click)="delete(publicId)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-template>
+</ng-container>

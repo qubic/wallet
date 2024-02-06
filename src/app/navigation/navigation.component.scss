@@ -1,0 +1,86 @@
+.container {
+  max-width: 1920px;
+  margin: 0 auto; 
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+h1.app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+mat-sidenav-content{
+  padding-left: 10px;
+}
+
+.open-wallet-screen{
+  max-width: 700px;
+  margin: 20px auto; 
+  align-items: center; 
+}
+
+
+.version {
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.topIcons {
+  flex:1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.left-icon-area {
+  flex:1;
+  display: flex;
+  align-items: center;
+}
+
+.header_logo {
+  flex:1;
+  text-align: center;
+}
+
+.logo {
+  max-height: 64px;
+}
+
+.is-mobile {
+  h1 {
+    font-size:1.2em;
+  }
+  .toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+  }
+  .logo {
+    max-width: 150px;
+  }
+  .currentTick {
+    max-width: 75px;
+    .title {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.imexport {
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+    row-gap: 20px;
+    justify-content: center;
+    align-items: center;
+    ngx-file-drop {
+        width: 95%;
+    }
+    .import-done {
+        mat-icon {
+            font-size: 30px;
+        }
+    }
+    .export {
+        text-align: center;
+        row-gap: 10px;;
+    }
+}

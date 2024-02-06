@@ -1,0 +1,10 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+    row-gap: 0px;
+}
+
+mat-form-field{
+    width:100%;
+}
