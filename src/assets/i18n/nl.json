@@ -16,7 +16,7 @@
     "copy.tooltip": "Copy",
     "error": "Error",
     "close": "sluiten",
-    "currency": "qus",
+    "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "loading...",
     "buttons": {
@@ -249,7 +249,7 @@
     }
   },
   "paymentComponent": {
-    "title": "Verstuur Qubic Units (qus).",
+    "title": "Verstuur Qubic Units (QUBIC).",
     "messages": {
       "pleaseUnlock": "Please unlock your Wallet first",
       "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
@@ -259,7 +259,7 @@
     },
     "form": {
       "sourceSeed": {
-        "label": "Account warvan qus moeten worden verzonden",
+        "label": "Account warvan QUBIC moeten worden verzonden",
         "error": {
           "required": "Account van de afzender is vereist"
         }
@@ -274,7 +274,7 @@
         }
       },
       "amount": {
-        "placeholder": "Bedrag in Qubic Unis (qus)",
+        "placeholder": "Bedrag in Qubic Unis (QUBIC)",
         "max.tooltip": "Stel in op het maximaal beschikbare bedrag op deze seed",
         "error": {
           "required": "Bedrag is vereist",
@@ -451,10 +451,10 @@
           "error.required": "Quantity is required"
         },
         "price": {
-          "placeholder": "Price (qus)",
+          "placeholder": "Price (QUBIC)",
           "error.min": "Minimum 1",
           "error.required": "Price is required",
-          "max.tooltip": "Bid all available qus"
+          "max.tooltip": "Bid all available QUBIC"
         }
       }
     }

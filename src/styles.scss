@@ -392,10 +392,6 @@ a:active {
     background-color: $dark-background !important;
   }
 
-  // todo: AndyQus: adopted, the style is to global and overwrites other styles.
-  // button[color="accent"] {
-  //   background-color: $light-link !important;
-  // }
 }
 
 .mat-drawer {
@@ -764,25 +760,6 @@ h2 {
     padding: 16px !important;
   }
 
-  // todo: AndyQus: removed this, because it is to "global" and can cause issues at several places joetom
-
-  // button .mdc-button{
-  //   font-size: 18px;
-  //   margin: 0px 10px 10px 10px;
-  //   min-width: 290px;
-  //   max-width: 290px;
-  //   min-height: 50px;
-  //   hyphens: auto;
-  // }
-
-  // .mdc-button{
-  //   font-size: 18px;
-  //   margin: 0px 10px 10px 10px;
-  //   min-width: 290px;
-  //   max-width: 290px;
-  //   min-height: 50px;
-  //   hyphens: auto;
-  // }
 }
 
 .mdc-button {
@@ -790,12 +767,6 @@ h2 {
   min-height: 40px;
 }
 
-// todo: AndyQus: remove, to global
-
-// button{
-//   margin: 0px 10px 15px 10px;
-//   min-height: 40px;
-// }
 
 .target-highlight {
   animation: highlight 2s;
@@ -849,11 +820,6 @@ hr {
   color: gray; /* old IE */
   background-color: gray;
 }
-
-// todo: AndyQus: removed
-// .mat-mdc-select-panel{
-//   background-color: gray !important;
-// }
 
 .mdc-switch.mdc-switch--selected:enabled .mdc-switch__icon {
   fill: black !important;
@@ -1005,13 +971,6 @@ hr {
   display: flex;
   flex-wrap: wrap;
 }
-
-// todo: AndyQus: adjusted to not have horizontal scrolling on mobile
-
-// .col{
-//  min-width: 380px;
-//  margin-right: 20px;
-// }
 
 .col-1 {
   flex: 0 0 8.333333%;

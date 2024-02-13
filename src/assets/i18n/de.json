@@ -16,7 +16,7 @@
     "copy.tooltip": "Kopieren",
     "error": "Fehler",
     "close": "Schließen",
-    "currency": "qus",
+    "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "Laden...",
     "buttons": {
@@ -260,7 +260,7 @@
     },    
     "form": {
       "sourceSeed": {
-        "label": "Konto von dem qus gesendet werden",
+        "label": "Konto von dem QUBIC gesendet werden",
         "error": {
           "required": "Sender-Konto wird benötigt"
         }
@@ -275,7 +275,7 @@
         }
       },
       "amount": {
-        "placeholder": "Betrag in qus",
+        "placeholder": "Betrag in QUBIC",
         "max.tooltip": "Maximal möglicher Betrag für dieses Konto einsetzen",
         "error": {
           "required": "Betrag wird benötigt",
@@ -453,10 +453,10 @@
           "error.required": "Menge ist erforderlich"
         },
         "price": {
-          "placeholder": "Preis (qus)",
+          "placeholder": "Preis (QUBIC)",
           "error.min": "Minimum 1",
           "error.required": "Preis ist erforderlich",
-          "max.tooltip": "Alle verfügbaren qus bieten"
+          "max.tooltip": "Alle verfügbaren QUBIC bieten"
         }
       }
     }
@@ -492,12 +492,12 @@
     }
   },
   "welcomeComponent": {
-    "welcomeMessage": "Willkommen beim Qubic Wallet. Um dieses Wallet zu verwenden, müssen Sie entweder Ihre vorhandene Tresor-Datei importieren oder neu erstellen. Diese enthält Ihren öffentlichen/privaten Schlüssel, der anschließend zum Verschlüsseln/Entschlüsseln Ihrer Daten verwendet wird.",
+    "welcomeMessage": "Um dieses Wallet zu verwenden, müssen Sie entweder Ihre vorhandene Tresor-Datei importieren oder neu erstellen. Diese enthält Ihren öffentlichen/privaten Schlüssel, der anschließend zum Verschlüsseln/Entschlüsseln Ihrer Daten verwendet wird.",
     "button": {
       "createVault": "Tresor erstellen",
       "importVault": "Tresor importieren"
     },
-    "title": "Willkommen in der Qubic Wallet"
+    "title": "Willkommen im Qubic Wallet"
   },
   "importComponent": {
     "title": "Tresor importieren",

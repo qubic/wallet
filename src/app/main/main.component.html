@@ -5,9 +5,9 @@
         <h1 *ngIf="isTable">{{ t("seedOverviewComponent.title") }}</h1>
         <h1 *ngIf="!isTable">{{ t("dashboard.title") }}</h1>
       </div>
-      <div class="flex-grow"></div> <!-- Flex-Element, um Platz zu schaffen -->
+      <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
-        {{currentPrice.price * 1000000000}} {{currentPrice.currency}} / b{{ t("general.currency") }}
+        {{ (currentPrice.price * 1000000000) | number:'1.0-0' }} {{ currentPrice.currency }} / b{{ t("general.currency") }}
         <div class="dashboard-amount-name">
           ~ {{currentPrice.capitalization| number : "1.0-0"}} {{currentPrice.currency}} MC
         </div>

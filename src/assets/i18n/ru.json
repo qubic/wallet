@@ -16,7 +16,7 @@
     "copy.tooltip": "Копировать",
     "error": "Ошибка",
     "close": "Закрыть",
-    "currency": "qus",
+    "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "loading...",
     "buttons": {
@@ -249,7 +249,7 @@
     }
   },
   "paymentComponent": {
-    "title": "Отправить Qubic Units (qus)",
+    "title": "Отправить Qubic Units (QUBIC)",
     "messages": {
       "pleaseUnlock": "Please unlock your Wallet first",
       "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
@@ -259,7 +259,7 @@
     },
     "form": {
       "sourceSeed": {
-        "label": "ID с которого будут отправлены qus",
+        "label": "ID с которого будут отправлены QUBIC",
         "error": {
           "required": "Требуется учетная запись отправителя"
         }
@@ -274,7 +274,7 @@
         }
       },
       "amount": {
-        "placeholder": "Сумма в монетах кубика (qus)",
+        "placeholder": "Сумма в монетах кубика (QUBIC)",
         "max.tooltip": "Set to maximum available amount on this Seed",
         "error": {
           "required": "Сумма обязательна",
@@ -453,10 +453,10 @@
           "error.required": "Quantity is required"
         },
         "price": {
-          "placeholder": "Price (qus)",
+          "placeholder": "Price (QUBIC)",
           "error.min": "Minimum 1",
           "error.required": "Price is required",
-          "max.tooltip": "Bid all available qus"
+          "max.tooltip": "Bid all available QUBIC"
         }
       }
     }

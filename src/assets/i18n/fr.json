@@ -250,7 +250,7 @@
     }
   },
   "paymentComponent": {
-    "title": "Envoyer des unités Qubic (qus)",
+    "title": "Envoyer des unités Qubic (QUBIC)",
     "messages": {
       "pleaseUnlock": "Veuillez d'abord déverrouiller votre Wallet",
       "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
@@ -260,7 +260,7 @@
     },
     "form": {
       "sourceSeed": {
-        "label": "Adresse depuis laquelle les qus seront envoyés",
+        "label": "Adresse depuis laquelle les QUBIC seront envoyés",
         "error": {
           "required": "L'adresse de l'expéditeur est requise"
         }
@@ -275,7 +275,7 @@
         }
       },
       "amount": {
-        "placeholder": "Montant en unités Qubic (qus)",
+        "placeholder": "Montant en unités Qubic (QUBIC)",
         "max.tooltip": "Régler sur le montant maximum disponible pour cette Seed",
         "error": {
           "required": "Le montant est requis",
@@ -453,10 +453,10 @@
           "error.required": "La quantité est obligatoire"
         },
         "price": {
-          "placeholder": "Prix (qus)",
+          "placeholder": "Prix (QUBIC)",
           "error.min": "Minimum 1",
           "error.required": "Le prix est obligatoire",
-          "max.tooltip": "Offrir tous les qus disponibles"
+          "max.tooltip": "Offrir tous les QUBIC disponibles"
         }
       }
     }
