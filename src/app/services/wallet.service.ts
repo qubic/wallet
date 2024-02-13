@@ -252,6 +252,14 @@ export class WalletService {
     }
   }
 
+  public async updateSeedIsOnlyWatch(publicId: string, isOnlyWatch: boolean) {
+    let seed = this.getSeed(publicId);
+    if (seed) {
+      seed.isOnlyWatch = isOnlyWatch;
+      await this.saveConfig(false);
+    }
+  }
+
   public async updateBalance(
     publicId: string,
     balance: number,
@@ -321,6 +329,7 @@ export class WalletService {
         ),
         alias: seed.alias,
         publicId: seed.publicId,
+        isOnlyWatch: seed.isOnlyWatch,
       };
       this.runningConfiguration.seeds.push(newSeed);
       this.save();

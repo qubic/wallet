@@ -10,6 +10,7 @@ export interface ISeed {
     lastUpdate?: Date;
     assets?: QubicAsset[];
     isExported?: boolean;
+    isOnlyWatch?: boolean;
 }
 export interface IDecodedSeed extends ISeed {
     seed: string;

@@ -143,7 +143,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   getTotalBalance(): number {
-    return Number(this.walletService.getSeeds().reduce((p,c) => p + c.balance, 0) ?? BigInt(0));
+    return Number(this.walletService.getSeeds().filter((s)=>  !s.isOnlyWatch ).reduce((p,c) => p + c.balance, 0) ?? BigInt(0));
   }
 
   getBalance(publicId: string): number {

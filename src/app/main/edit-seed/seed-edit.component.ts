@@ -53,10 +53,11 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.seedEditForm.controls.publicId.clearValidators();
       this.seedEditForm.controls.seed.clearValidators();
     }
+    this.seedEditForm.controls.isWatchOnlyAddress.setValue(this.seed.isOnlyWatch!);
   }
 
-  getPublicId(): string {    
-    return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
+  getPublicId(): string {
+        return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
   }
 
   onSubmit(): void {
@@ -71,7 +72,9 @@ export class SeedEditDialog extends QubicDialogWrapper {
     if (this.seedEditForm.valid) {
       if (!this.isNew) {
         this.walletService.updateSeedAlias(this.seed.publicId, this.seedEditForm.controls.alias.value!)
+        this.walletService.updateSeedIsOnlyWatch(this.seed.publicId, this.seedEditForm.controls.isWatchOnlyAddress.value!)
       } else {
+        this.seed.isOnlyWatch = this.seedEditForm.controls.isWatchOnlyAddress.value!;
         this.seed.alias = this.seedEditForm.controls.alias.value!;
         this.generateIds(this.seedEditForm.controls.seed.value!);
         await this.walletService.addSeed(this.seed);
@@ -89,9 +92,11 @@ export class SeedEditDialog extends QubicDialogWrapper {
     if (this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.valid) {
       if (!this.isNew) {
         this.walletService.updateSeedAlias(this.seed.publicId, this.seedEditForm.controls.alias.value!)
+        this.walletService.updateSeedIsOnlyWatch(this.seed.publicId, this.seedEditForm.controls.isWatchOnlyAddress.value!)
       } else {
         this.seed.alias = this.seedEditForm.controls.alias.value!;
         this.seed.publicId = this.seedEditForm.controls.publicId.value!;
+        this.seed.isOnlyWatch = this.seedEditForm.controls.isWatchOnlyAddress.value!;
         await this.walletService.addSeed(this.seed);
       }
       this.dialogRef.close();
@@ -136,7 +141,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   loadKey() {
     this.dialogRef.close();
     window.setTimeout(() => {
-      this.dialog.open(UnLockComponent);  
+      this.dialog.open(UnLockComponent);
     }, 500);
   }
 
