@@ -196,7 +196,7 @@
       <mat-icon>visibility</mat-icon>
     </button>
     <button *ngIf="hasAssets(publicId)" mat-icon-button class="icon-color-link"
-      [title]="t('seedOverviewComponent.table.actions.assets')" (click)="assets(publicId)">
+      [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
     <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"

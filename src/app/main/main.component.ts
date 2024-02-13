@@ -249,6 +249,13 @@ export class MainComponent implements AfterViewInit {
       }
     });
   }
+
+
+  openAssetsPage() {
+    this.router.navigate(['/assets']);
+  }
+  
+
   assets(publicId: string) {
     const confirmDialo = this.dialog.open(AssetsDialog, {
       restoreFocus: false, data: {
