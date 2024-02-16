@@ -1,8 +1,7 @@
 <ng-container *transloco="let t">
   <div class="content_container">
     <h1>{{ t("assetsComponent.title") }}</h1> 
-    <div *ngIf="assets.length > 0">
-      <mat-card-actions class="padding">
+    <div *ngIf="assets.length > 0">      
         <button mat-raised-button type="button" color="primary" (click)="openSendForm()">{{
             t("assetsComponent.buttons.send")
           }}
@@ -14,7 +13,6 @@
         </button>
         <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
           t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
-      </mat-card-actions>
     </div>   
 
      <!-- card version /-->
@@ -51,12 +49,7 @@
     <div *ngIf="isTable">
       <mat-card *ngIf="!showSendForm" class="asset-card">
         <div *ngIf="assets.length > 0">
-          <mat-card-header>
-            <mat-card-title>
-              <h2>{{ t("assetsComponent.overview.title") }}</h2>
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
+  
             <table mat-table [dataSource]="assets" class="mat-elevation-z8">
 
               <!-- Public ID -->
@@ -136,7 +129,6 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-          </mat-card-content>
         </div>
         <div *ngIf="assets.length <= 0" class="no-assets-message">
           {{ t("assetsComponent.noAssets") }}
