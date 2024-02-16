@@ -687,7 +687,7 @@ export class WalletService {
       JSON.stringify(encryptedVaultFile)
     );
     const blob = new Blob([fileData], { type: 'application/octet-stream' });
-    const name = this.runningConfiguration.name ?? 'qubic-config-addresses';
+    const name = this.runningConfiguration.name ?? 'qubic-wallet';
     this.downloadBlob(name + '.qubic-vault', blob);
     this.shouldExportKey = false;
 
@@ -780,7 +780,7 @@ export class WalletService {
 
     const data = new TextEncoder().encode(JSON.stringify(exportConfig));
     const blob = new Blob([data], { type: 'application/octet-stream' });
-    const name = this.runningConfiguration.name ?? 'qubic-config-addresses';
+    const name = this.runningConfiguration.name ?? 'qubic-wallet';
     this.downloadBlob(name + '.qubic-wallet-config', blob);
 
     await this.markSeedsAsSaved();
