@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 import {environment} from "../../environments/environment";
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-assets',
@@ -33,6 +34,7 @@ export class AssetsComponent implements OnInit {
   isAssetsLoading: boolean = false;
   isSending: boolean = false;
   showSendForm: boolean = false;
+  isTable: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -41,13 +43,18 @@ export class AssetsComponent implements OnInit {
     private updaterService: UpdaterService,
     private t: TranslocoService,
     private _snackBar: MatSnackBar,
-    private dialog: MatDialog) {
-    this.sendForm = new FormGroup({
-      destinationAddress: new FormControl('', Validators.required),
-      amount: new FormControl('', Validators.required),
-      tick: new FormControl('', Validators.required),
-      assetSelect: new FormControl('', Validators.required),
-    });
+    private dialog: MatDialog
+    ) {
+
+      var dashBoardStyle = localStorage.getItem("asset-grid");
+      this.isTable = dashBoardStyle == '0' ? true : false;
+  
+      this.sendForm = new FormGroup({
+        destinationAddress: new FormControl('', Validators.required),
+        amount: new FormControl('', Validators.required),
+        tick: new FormControl('', Validators.required),
+        assetSelect: new FormControl('', Validators.required),
+      });
 
 
     // subscribe to config changes to receive asset updates
@@ -73,6 +80,14 @@ export class AssetsComponent implements OnInit {
       });
     }
   }
+
+  
+  toggleTableView(event: MatSlideToggleChange) {
+    this.isTable = !this.isTable;
+    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
+    this.isTable = event.checked;
+  }
+
 
   updateAmountValidator(): void {
     const assetSelectControl = this.sendForm.get('assetSelect');

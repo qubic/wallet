@@ -63,3 +63,31 @@
   text-align: center;
 }
 
+
+.card-list {
+  gap: 0px 20px;
+
+}
+
+mat-card {
+  min-width: 385px;
+}
+
+::ng-deep {
+  .is-mobile  {
+      mat-card {
+          min-width: 320px;
+      }
+  }
+}
+
+
+.dashboard-balance-name {
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
