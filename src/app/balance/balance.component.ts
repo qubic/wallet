@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./balance.component.scss']
 })
 export class BalanceComponent implements OnInit {
-  
+
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
@@ -24,12 +24,13 @@ export class BalanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.hasSeeds()){
+    if (this.hasSeeds()) {
       this.us.currentTick.subscribe(s => {
         this.currentTick = s;
       });
       this.us.internalTransactions.subscribe(txs => {
         this.transactions = txs;
+        this.correctTheTransactionListByPublicId();
       });
       this.us.currentBalance.subscribe(response => {
         this.accountBalances = response;
@@ -42,19 +43,26 @@ export class BalanceComponent implements OnInit {
     }
   }
 
+  correctTheTransactionListByPublicId(): void {
+    const validSeeds = this.getSeeds().map(seed => seed.publicId);
+    this.transactions = this.transactions.filter(transaction => {
+      return validSeeds.includes(transaction.sourceId) || validSeeds.includes(transaction.destId);
+    });
+  }
+
   getDate() {
     return new Date();
   }
 
   getTotalBalance(estimated = false): number {
-    if(estimated)
-      return this.walletService.getSeeds().reduce((a,c) => a + Number(c.balance), 0);
+    if (estimated)
+      return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).reduce((a, c) => a + Number(c.balance), 0);
     else
       return this.accountBalances.reduce((p, c) => p + (c.epochBaseAmount), 0);
   }
 
   hasSeeds() {
-    return this.walletService.getSeeds().length > 0;
+    return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).length > 0;
   }
 
   // onlyUnique(value: Transaction, index:any, array:Transaction[]) {
@@ -74,14 +82,14 @@ export class BalanceComponent implements OnInit {
 
   getSeedName(publicId: string): string {
     var seed = this.walletService.getSeed(publicId);
-    if(seed !== undefined)
+    if (seed !== undefined)
       return '(' + seed.alias + ')';
     else
       return '';
   }
 
   getSeeds() {
-    return this.walletService.getSeeds();
+    return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
   }
 
   repeat(transaction: Transaction) {
