@@ -1,7 +1,7 @@
 <ng-container *transloco="let t">
   <div class="content_container">
     <h1>{{ t("assetsComponent.title") }}</h1> 
-    <div *ngIf="assets.length > 0">      
+    <div *ngIf="assets.length > 0 && !showSendForm">      
         <button mat-raised-button type="button" color="primary" (click)="openSendForm()">{{
             t("assetsComponent.buttons.send")
           }}
@@ -17,7 +17,7 @@
 
      <!-- card version /-->
      <div *ngIf="!isTable">
-      <div class="card-list flex flex-wrap">
+      <div *ngIf="!showSendForm" class="card-list flex flex-wrap">
         <mat-card class="proposal-card" *ngFor="let asset of assets; let i = index">
           <mat-card-content>
             <br>
@@ -35,7 +35,6 @@
               {{ t("assetsComponent.table.tick") }} {{ asset.tick }}
             </div>
             <div class="text-center">
-
                 <button mat-icon-button (click)="openSendForm(asset)" class="icon-color-link">
                   <mat-icon>send</mat-icon>
               </button>
