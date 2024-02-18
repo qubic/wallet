@@ -52,6 +52,11 @@ export class ImportVaultComponent extends QubicDialogWrapper {
     this.pwdWrong = false;
   }
 
+  onEnterKeyPressed() {
+    console.log('Enter key pressed!');
+    this.checkImportAndUnlock();
+  }
+
   private async importAndUnlock() {
     if (this.selectedFileIsVaultFile) {
       // one vault file

@@ -19,7 +19,6 @@ import { TranslocoService } from '@ngneat/transloco';
 import { QubicEntityResponse } from 'qubic-ts-library/dist/qubic-communication/QubicEntityResponse';
 import { DecimalPipe } from '@angular/common';
 import { AssetsDialog } from './assets/assets.component';
-import { LoadConfigDialog } from '../lock/load-config/load-config.component';
 import { ExportConfigDialog } from '../lock/export-config/export-config.component';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -79,10 +78,6 @@ export class MainComponent implements AfterViewInit {
     updaterService.internalTransactions.subscribe(txs => {
       this.transactions = txs;
     });
-
-    if (this.dataSource.data.length == 0) {
-      this.load();
-    }
   }
 
   @HostListener('document:keydown.escape', ['$event']) 
@@ -119,17 +114,6 @@ export class MainComponent implements AfterViewInit {
     this.isTable = !this.isTable;
     localStorage.setItem("dashboard-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
-  }
-
-
-  load(): void {
-    const dialogRef = this.dialog.open(LoadConfigDialog, { disableClose: true, });
-
-    // Manually restore focus to the menu trigger since the element that
-    // opens the dialog won't be in the DOM any more when the dialog closes.
-    dialogRef.afterClosed().subscribe(() => {
-      // do anything :)
-    });
   }
 
   getDeprecatedBalance(publicId: string): number {

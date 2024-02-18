@@ -23,7 +23,6 @@ import { WalletService } from './services/wallet.service';
 import { LockComponent } from './lock/lock.component';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { LockConfirmDialog } from './lock/confirm-lock/confirm-lock.component';
-import { LoadConfigDialog } from './lock/load-config/load-config.component';
 import { ExportConfigDialog } from './lock/export-config/export-config.component';
 import { UnLockComponent } from './lock/unlock/unlock.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -99,7 +98,6 @@ export const httpInterceptorProviders = [
     NotifysComponent,
     ConfirmDialog,
     OkDialog,
-    LoadConfigDialog,
     ExportConfigDialog,
     RevealSeedDialog,
     SettingsComponent,
