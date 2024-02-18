@@ -158,7 +158,9 @@ export class MainComponent implements AfterViewInit {
 
   refreshData() {
     this.setDataSource();
-    this.table.renderRows();
+    if(this.isTable){
+      this.table.renderRows();
+    }
     this.updaterService.forceLoadAssets();
   }
 
