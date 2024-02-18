@@ -78,7 +78,7 @@
 <mat-dialog-actions>
   <div class="text-center">
   <button mat-raised-button  mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>
-  <button mat-raised-button *ngIf="walletService.privateKey && isNew" color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.create")}}</button>
+  <button mat-raised-button *ngIf="walletService.privateKey && isNew" [mat-dialog-close] color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.create")}}</button>
   <button mat-raised-button *ngIf="walletService.privateKey && !isNew" [mat-dialog-close]="true" color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.save")}}</button>
   </div>
 </mat-dialog-actions>

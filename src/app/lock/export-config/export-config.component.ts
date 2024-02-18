@@ -40,11 +40,7 @@ export class ExportConfigDialog extends QubicDialogWrapper{
     }
   }
 
-  onEnterKeyPressed() {
-    console.log('Enter key pressed! Exporting data...');
-    this.export();
-  }
-
+ 
   close() {
     this.dialogRef.close();
   }
