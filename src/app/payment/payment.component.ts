@@ -18,6 +18,9 @@ import { QubicConnector } from 'qubic-ts-library/dist/QubicConnector';
 import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
 import { QubicPackageType } from 'qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
+import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+
+
 
 @Component({
   selector: 'app-wallet',
@@ -57,7 +60,7 @@ export class PaymentComponent implements OnInit {
   constructor(
     private t: TranslocoService,
     private transactionService: TransactionService,
-    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService, 
+    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
@@ -129,9 +132,31 @@ export class PaymentComponent implements OnInit {
       });
     }
     if (this.transferForm.valid) {
+      
+      let destinationId = this.selectedAccountId ? this.transferForm.controls.selectedDestinationId.value : this.transferForm.controls.destinationId.value;
+      
+      if (destinationId === null) {
+        this._snackBar.open("INVALID RECEIVER ADDRESSS IS NULL", this.t.translate('general.close'), {
+          duration: 10000,
+          panelClass: "error"
+        });
+        return;
+      }
+      
+      const targetAddress = new PublicKey(destinationId);
+      
+      // verify target address
+      if (!(await targetAddress.verifyIdentity())) {
+        this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
+          duration: 10000,
+          panelClass: "error"
+        });
+        
+        return;
+      }
+      
       this.isBroadcasting = true;
       this.walletService.revealSeed((<any>this.transferForm.controls.sourceId.value)).then(s => {
-        let destinationId = this.selectedAccountId ? this.transferForm.controls.selectedDestinationId.value : this.transferForm.controls.destinationId.value;
         of(this.transferForm.controls.tick.value!).pipe(
           concatMap(data => {
             if (!this.tickOverwrite) {
@@ -143,19 +168,18 @@ export class PaymentComponent implements OnInit {
             }
           })).subscribe(async tick => {
             var qtx = new QubicTransaction();
-            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick.tick+this.walletService.getSettings().tickAddition).build(s);
-            
+            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick.tick + this.walletService.getSettings().tickAddition).build(s);
+
             var publishResult = await this.transactionService.publishTransaction(qtx);
 
-            if(publishResult && publishResult.success){
-              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', {tick: qtx.tick }) , this.t.translate('general.close'), {
+            if (publishResult && publishResult.success) {
+              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: qtx.tick }), this.t.translate('general.close'), {
                 duration: 10000,
               });
               this.isBroadcasting = false;
               this.router.navigate(['/']);
             }
-            else
-            {
+            else {
               this._snackBar.open(publishResult.message ?? this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
                 duration: 10000,
                 panelClass: "error"
@@ -170,7 +194,7 @@ export class PaymentComponent implements OnInit {
         });
         this.isBroadcasting = false;
       }).finally(() => {
-        
+
       });
     } else {
       this._snackBar.open(this.t.translate('paymentComponent.messages.failedValidation'), this.t.translate('general.close'), {
