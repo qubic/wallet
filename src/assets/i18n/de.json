@@ -483,7 +483,8 @@
     "title": "Konten exportieren",
     "buttons": {
       "export": "Exportieren",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "unlock": "Tresor entsperren"
     },
     "messages": {
       "export": "Du hast deinen Kontenbestand geändert. Lade unbedingt deine aktuelle Konfiguration herunterzuladen, damit du sie später wieder importieren kannst.",

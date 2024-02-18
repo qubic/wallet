@@ -44,12 +44,13 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="button-container">
+      <button  *ngIf="!walletService.privateKey" mat-raised-button  mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>
       <button
         *ngIf="!walletService.privateKey"
         mat-raised-button
         color="primary"
         (click)="loadKey()"
-        mat-dialog-close
+        [mat-dialog-close]="true"
       >
         {{ t("exportConfigComponent.buttons.unlock") }}
       </button>
@@ -59,7 +60,7 @@
         color="primary"
         [disabled]="!exportForm.valid"
         (click)="export()"
-        mat-dialog-close
+        [mat-dialog-close]="true"
       >
         {{ t("exportConfigComponent.buttons.export") }}
       </button>

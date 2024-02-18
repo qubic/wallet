@@ -172,23 +172,7 @@ export class MainComponent implements AfterViewInit {
   addSeed() {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-      dialogRef.afterClosed().subscribe((r) => {
-        if (this.walletService.privateKey) {
-          const dialogRef = this.dialog.open(SeedEditDialog, {
-            restoreFocus: false, data: {
-              seed: null
-            }
-          });
-          dialogRef.afterClosed().subscribe(result => {
-            // do anything :)
-            this.refreshData();
-            if (result) {
-              this.openExportDialog();
-            }
-          });
-        }
-      });
-    } else {
+    } else {      
       const dialogRef = this.dialog.open(SeedEditDialog, {
         restoreFocus: false, data: {
           seed: null
@@ -213,12 +197,12 @@ export class MainComponent implements AfterViewInit {
   }
 
   edit(publicId: string) {
-    const confirmDialo = this.dialog.open(SeedEditDialog, {
+    const confirmDialog = this.dialog.open(SeedEditDialog, {
       restoreFocus: false, data: {
         publicId: publicId
       }
     });
-    confirmDialo.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().subscribe(result => {
       if (result) {
         this.openExportDialog();
       }

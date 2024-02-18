@@ -34,8 +34,15 @@ export class ExportConfigDialog extends QubicDialogWrapper{
           duration: 0,
           panelClass: "error"
         });
+      }else{
+        this.dialogRef.close();
       }
     }
+  }
+
+  onEnterKeyPressed() {
+    console.log('Enter key pressed! Exporting data...');
+    this.export();
   }
 
   close() {
