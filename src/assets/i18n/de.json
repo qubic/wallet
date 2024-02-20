@@ -112,7 +112,7 @@
     "title.add": "Konto hinzufügen",
     "title.edit": "Konto bearbeiten",
     "newSeedName": "Konto-Name",
-    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "seedWarning": "<b>WICHTIG!<br> Diese 55 Zeichen sind Ihr privater Qubic-Schlüssel (Seed)!<br>Speichern und bewahren Sie diesen Seed an einem sicheren Ort auf.<br>Wenn Sie dies nicht tun, können Sie Ihr Geld verlieren. Halten Sie Ihren Seed im Backup!<br><br>Weitere Informationen zu diesem Thema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
         "placeholder": "Wähle einen beliebigen Namen für dein Konto, sodass du das Konto besser zuordnen kannst.",

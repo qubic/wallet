@@ -36,6 +36,9 @@
               required
             />
           </mat-form-field>
+          <div class="flex" class="danger">
+            <div [innerHTML]="t('seedEditComponent.seedWarning')"></div>
+          </div> 
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>{{ t('createVaultComponent.createAddress.seed') }}</mat-label>
             <input
