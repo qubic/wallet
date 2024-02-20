@@ -132,7 +132,7 @@
           "max": "The 55-char seed must exactly consist of 55 lower case characters",
           "regex": "Can only contain a-zA-Z0-9_-"
         },
-        "generateSeed": "Randomly generate an 55-char seed."
+        "generateSeed": "Randomize Seed"
       },
       "watchOnlyAddress": {
         "title": "Watch-Only-Address",

@@ -124,14 +124,14 @@
         }
       },
       "seed": {
-        "placeholder": "Konto-Passwort",
+        "placeholder": "55-Zeichen Seed - privater Qubic Schlüssel",
         "error": {
           "required": "Ein Konto-Passwort wird benötigt.",
-          "min": "Das Konto-Passwort muss aus exakt 55 kleinen Buchstaben bestehen.",
-          "max": "Das Konto-Passwort muss aus exakt 55 kleinen Buchstaben bestehen.",
-          "regex": "Das Konto-Passwort darf nur folgende Zeichen enthalten: a-z"
+          "min": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
+          "max": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
+          "regex": "Der Seed darf nur folgende Zeichen enthalten: a-z"
         },
-        "generateSeed": "Ein zufälliges Konto-Passwort erzeugen."
+        "generateSeed": "Zufälliger Seed"
       },
       "watchOnlyAddress": {
         "title": "Nur-Ansicht-Adresse",

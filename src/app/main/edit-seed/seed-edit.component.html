@@ -60,9 +60,7 @@
             {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
           </mat-error>
         </mat-form-field>
-        <button *ngIf="!seed?.seed || seed.seed != ''" mat-icon-button [title]="t('seedEditComponent.form.seed.generateSeed')" type="button" (click)="generateSeed();">
-          <mat-icon>shuffle</mat-icon>
-        </button>
+        <mat-hint class="seed-length" align="end"> {{ seedEditForm.controls['seed'].value?.length }} / 55</mat-hint>        
       </div>
       <div *ngIf="getPublicId() && !seedEditForm.controls['isWatchOnlyAddress'].value" class="puglicIdView word-break">
         <strong>{{ t("seedEditComponent.publicIdMessage")}}</strong><br>
@@ -77,8 +75,10 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="text-center">
-  <button mat-raised-button  mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>
-  <button mat-raised-button *ngIf="walletService.privateKey && isNew" [mat-dialog-close] color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.create")}}</button>
+  <button mat-raised-button mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>
+  <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="accent" (click)="generateSeed()">{{ t('seedEditComponent.form.seed.generateSeed') }}</button>  
+  <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" [mat-dialog-close] color="accent" (click)="onSubmit()"  [disabled]="!this.seedEditForm.valid">{{ t("seedEditComponent.buttons.create")}}</button>
+  <button mat-raised-button *ngIf="seedEditForm.controls['isWatchOnlyAddress'].value && isNew" [mat-dialog-close] color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.create")}}</button>
   <button mat-raised-button *ngIf="walletService.privateKey && !isNew" [mat-dialog-close]="true" color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.save")}}</button>
   </div>
 </mat-dialog-actions>
