@@ -8,3 +8,53 @@
 mat-form-field{
     width:100%;
 }
+
+.example-h2 {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .example-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+  }
+  
+  .example-margin {
+    margin: 8px;
+  }
+  
+  .example-width {
+    max-width: 180px;
+    width: 100%;
+  }
+  
+  .mat-mdc-slider {
+    width: 100%;
+  }
+  
+  .mat-mdc-card + .mat-mdc-card {
+    margin-top: 8px;
+  }
+  
+  .example-result-card h2 {
+    margin: 0 8px;
+  }
+  
+  .example-label-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px 0;
+  }
+  
+  .example-result-card example-value-label {
+    font-weight: 600;
+  }
+  
+
+  .example-value-label {
+    // padding-right: 20px;
+    width: 80px;
+  }
+  

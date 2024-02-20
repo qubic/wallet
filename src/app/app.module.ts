@@ -76,7 +76,7 @@ import { CreateVaultComponent } from './public/create-vault/create-vault.compone
 import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
-
+import { MatSliderModule } from '@angular/material/slider';
 
 
 /** Http interceptor providers in outside-in order */
@@ -158,7 +158,8 @@ export const httpInterceptorProviders = [
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    MatSliderModule
   ],
 
   providers: [

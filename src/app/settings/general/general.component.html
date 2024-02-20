@@ -4,13 +4,23 @@
         <mat-card-content>
         <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
             <div class="form-container">
-                <mat-label>{{ t("settings.general.tickAddition.placeholder") }}</mat-label>
-                <mat-form-field class="full-width">
-                    <input matInput type="number" [placeholder]="t('settings.general.tickAddition.placeholder')"
-                        formControlName="tickAddition">
-                </mat-form-field>
+                <div class="example-label-container">
+                    <label class="example-value-label">{{ form.controls.tickAddition.value}}</label>
+                    <mat-label>{{ t("settings.general.tickAddition.placeholder") }}</mat-label>
+                  </div>
+                <mat-slider
+                class="example-margin"
+                [disabled]="false"
+                [max]="120"
+                [min]="3"
+                [step]="1"
+                [discrete]="true"
+                [showTickMarks]="true">
+                <input matSliderThumb  formControlName="tickAddition" #slider>
+              </mat-slider>  
                 <mat-slide-toggle formControlName="useBridge">{{ t('settings.general.webBridge.placeholder')
                     }}</mat-slide-toggle>
+                    <br>
                 <mat-slide-toggle formControlName="enableBeta">{{ t('settings.general.beta.placeholder')
                     }}</mat-slide-toggle>
                     <div class="flex-center">

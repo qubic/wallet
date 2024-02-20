@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-settings-general',
@@ -22,7 +23,7 @@ export class SettingsGeneralComponent {
   public importDone = false;
 
   form = this.fb.group({
-    tickAddition: [10],
+    tickAddition:  [10, Validators.required], 
     useBridge: [false],
     enableBeta: [false],
   });
