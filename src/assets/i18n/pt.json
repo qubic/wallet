@@ -112,7 +112,7 @@
     "title.add": "Adicionar um Endereço",
     "title.edit": "Editar um Endereço",
     "newSeedName": "Nome de Endereço",
-    "seedWarning": "Esses 55 caracteres são sua chave privada Qubic (Seed)! Faça backup dela em algum lugar seguro!",
+    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
         "placeholder": "Escolha um nome único para o seu endereço para referência mais fácil.",

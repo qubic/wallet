@@ -112,7 +112,7 @@
     "title.add": "Account Toevoegen",
     "title.edit": "Account Aanpassen",
     "newSeedName": "Account-Naam",
-    "seedWarning": "This 55-Chars are your Qubic Private Key (Seed)! Save it anywhere!",
+    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
         "placeholder": "Kies een eigen naam voor uw account om deze sneller te kunnen herkennen.",
