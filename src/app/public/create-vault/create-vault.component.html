@@ -39,17 +39,25 @@
           <div class="flex" class="danger">
             <div [innerHTML]="t('seedEditComponent.seedWarning')"></div>
           </div> 
+          <div class="seedInput">  
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>{{ t('createVaultComponent.createAddress.seed') }}</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="seed"
-              placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}"
-              required
-            />
-            
+            <input type="text" matInput formControlName="seed" placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required/>            
           </mat-form-field>
+          <mat-hint class="seed-length" align="end"> {{ createAddressForm.controls['seed'].value?.length }} / 55</mat-hint> 
+          </div>
+          <mat-error *ngIf="createAddressForm.controls['seed'].hasError('required')">
+            {{ t("seedEditComponent.form.seed.error.required")}}
+          </mat-error>
+          <mat-error *ngIf="createAddressForm.controls['seed'].hasError('minlength')">
+            {{ t("seedEditComponent.form.seed.error.min")}}
+          </mat-error>
+          <mat-error *ngIf="createAddressForm.controls['seed'].hasError('maxlength')">
+            {{ t("seedEditComponent.form.seed.error.max")}}
+          </mat-error>
+          <mat-error *ngIf="createAddressForm.controls['seed'].hasError('pattern')">
+            {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
+          </mat-error>
           <div *ngIf="generatedPublicId.length === 60" class="word-break">
             <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
           {{

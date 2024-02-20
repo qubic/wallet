@@ -46,22 +46,22 @@
       <div class="seedInput" *ngIf="isNew && !seedEditForm.controls['isWatchOnlyAddress'].value">   
         <mat-form-field class="full-width">
           <mat-label>{{ t("seedEditComponent.form.seed.placeholder") }}</mat-label>
-          <input matInput [placeholder]="t('seedEditComponent.form.seed.placeholder')" formControlName="seed" type="text">
-          <mat-error *ngIf="seedEditForm.controls['seed'].hasError('required')">
-            {{ t("seedEditComponent.form.seed.error.required")}}
-          </mat-error>
-          <mat-error *ngIf="seedEditForm.controls['seed'].hasError('minlength')">
-            {{ t("seedEditComponent.form.seed.error.min")}}
-          </mat-error>
-          <mat-error *ngIf="seedEditForm.controls['seed'].hasError('maxlength')">
-            {{ t("seedEditComponent.form.seed.error.max")}}
-          </mat-error>
-          <mat-error *ngIf="seedEditForm.controls['seed'].hasError('pattern')">
-            {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
-          </mat-error>
+          <input matInput [placeholder]="t('seedEditComponent.form.seed.placeholder')" formControlName="seed" type="text">         
         </mat-form-field>
         <mat-hint class="seed-length" align="end"> {{ seedEditForm.controls['seed'].value?.length }} / 55</mat-hint>        
       </div>
+      <mat-error *ngIf="seedEditForm.controls['seed'].hasError('required')">
+        {{ t("seedEditComponent.form.seed.error.required")}}
+      </mat-error>
+      <mat-error *ngIf="seedEditForm.controls['seed'].hasError('minlength')">
+        {{ t("seedEditComponent.form.seed.error.min")}}
+      </mat-error>
+      <mat-error *ngIf="seedEditForm.controls['seed'].hasError('maxlength')">
+        {{ t("seedEditComponent.form.seed.error.max")}}
+      </mat-error>
+      <mat-error *ngIf="seedEditForm.controls['seed'].hasError('pattern')">
+        {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
+      </mat-error>
       <div *ngIf="getPublicId() && !seedEditForm.controls['isWatchOnlyAddress'].value" class="puglicIdView word-break">
         <strong>{{ t("seedEditComponent.publicIdMessage")}}</strong><br>
         <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="getPublicId()">{{getPublicId()}}</div>

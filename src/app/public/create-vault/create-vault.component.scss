@@ -1,3 +1,18 @@
+form {
+   
+    .seedInput {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width:100%;
+    }
+    .seed-length{
+        padding-left: 3px;
+        width:80px;
+    }    
+}
+
 .file-input {
     display: none;
 }
