@@ -177,7 +177,7 @@ export class UpdaterService {
     if (publicIds.length > 0) {
       // todo: Use Websocket!
       this.api.getOwnedAssets(publicIds).subscribe((r: QubicAsset[]) => {
-        if (r) {
+        if (r && r.length > 0) {
 
           // update wallet
           const groupedAssets = this.groupBy(r, (a: QubicAsset) => a.publicId);
@@ -186,8 +186,11 @@ export class UpdaterService {
           });
 
           // remove old entries
-          this.walletService.removeOldAssets(r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0));
-
+          const tickValue = r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
+          if (tickValue !== 0) {
+              this.walletService.removeOldAssets(tickValue);
+          }
+          
           if (callbackFn)
             callbackFn(r);
         }
