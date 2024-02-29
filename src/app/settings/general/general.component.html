@@ -18,7 +18,8 @@
                 [showTickMarks]="true">
                 <input matSliderThumb  formControlName="tickAddition" #slider>
               </mat-slider>  
-                <mat-slide-toggle formControlName="useBridge">{{ t('settings.general.webBridge.placeholder')
+              <div class="toggle-overlay"></div>
+                <mat-slide-toggle class="disabled-section" formControlName="useBridge">{{ t('settings.general.webBridge.placeholder')
                     }}</mat-slide-toggle>
                     <br>
                 <mat-slide-toggle formControlName="enableBeta">{{ t('settings.general.beta.placeholder')

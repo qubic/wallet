@@ -862,6 +862,24 @@ hr {
 
 // /*New Design*/
 
+.disabled-section {
+  pointer-events: none;
+  opacity: 0.8;
+  cursor: not-allowed;
+  filter: blur(1px);
+}
+
+.toggle-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999; 
+  pointer-events: auto; 
+}
+
+
 .blurred {
   filter: blur(5px);
 }
