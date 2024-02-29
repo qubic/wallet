@@ -56,6 +56,8 @@ export class MainComponent implements AfterViewInit {
     private decimalPipe: DecimalPipe,
     private deviceService: DeviceDetectorService,
   ) {
+
+    this.walletService.updateConfig({useBridge: false,});
     this.isMobile = deviceService.isMobile();
     var dashBoardStyle = localStorage.getItem("dashboard-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
