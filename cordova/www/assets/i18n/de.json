@@ -1,0 +1,549 @@
+{
+  "general": {
+    "title": "Qubic - Wallet",
+    "comingSoon": "Ist schon bald fertig...",
+    "navigation": {
+      "home": "Dashboard",
+      "payment": "Zahlung",
+      "balance": "Buchungen",
+      "settings": "Einstellungen",
+      "voting": "Voting",
+      "ipo": "IPO",
+      "assets": "Assets"
+    },
+    "version": "Version {{version}} - Beta",
+    "version.url": "qubic.li",
+    "copy.tooltip": "Kopieren",
+    "error": "Fehler",
+    "close": "Schließen",
+    "currency": "QUBIC",
+    "currentTick": "Tick: {{tick}}",
+    "loading": "Laden...",
+    "buttons": {
+      "close": "Schließen",
+      "maximize": "Maximieren"
+    },
+    "messages": {
+      "notConnected": "Nicht mit dem Qubic-Netzwerk verbunden. Bitte zuerst verbinden.",
+      "refreshRequested": "Aktualisierung wurde angefordert",
+      "refreshFailed": "Aktualisierung fehlgeschlagen, bitte versuchen Sie es später erneut",
+      "balanceReceived": "Netzwerk meldete {{balance}} QUBIC für {{publicId}}.",
+      "timeoutTryAgain": "Wir sind auf ein Timeout gestoßen. Bitte versuchen Sie es erneut."
+    }
+  },
+  "payment": {
+    "keyRequestReason": "Transaktionen werden mit dem Konto-Passwort abgesichert. Alle Konto-Passwörter sind verschlüsselt in einer Datei auf deinem Gerät, die wir Tresor nennen. Daher musst du deinen Tresor vorher mit deiner Kombination - dem Tresor-Passwort - entriegeln."
+  },
+  "confirmDialog": {
+    "title": "Bestätigen",
+    "buttons": {
+      "cancel": "Abbrechen",
+      "confirm": "Ja, ich bestätige."
+    },
+    "confirmationText": "Sind sie sicher?"
+  },
+  "notifyComponent": {
+    "saveYourSettings": "Bitte exportiere deine Einstellungen, sie enthalten die verschlüsselten Seeds, die du benötigst, um dein Wallet wiederherzustellen.",
+    "saveYourKey": "Bitte sichere deine Tresor-Datei.",
+    "qubicLiSync": "Synchronisiere deine Einstellungen mit qubic.li",
+    "qubicOffline": "QUBIC-Netzwerk nicht verbunden",
+    "qubicOnline": "Verbunden mit dem QUBIC-Netzwerk"
+  },
+  "revealSeedComponent": {
+    "title": "Kontoinformationen",
+    "publicId": "Konto-ID",
+    "privateId": "Konto-Passwort",
+    "buttons": {
+      "close": "Schließen"
+    }
+  },
+  "assetsComponent": {
+    "title": "Ihre Vermögenswerte",
+    "openAssets": "Zur Vermögensverwaltung gehen",
+    "overview": {
+      "title": "Vermögensübersicht"
+    },
+    "table": {
+      "publicId": "Öffentliche-ID",
+      "contractIndex": "Vertragsindex",
+      "assetName": "Vermögenswertname",
+      "contractName": "Vertragsname",
+      "ownedAmount": "Besitzte Menge",
+      "possessedAmount": "Besessene Menge",
+      "tick": "Gültig für Tick {{tick}}",
+      "reportingNodes": "Berichtsknoten",
+      "issuerIdentity": "Identität des Ausstellers"
+    },
+    "buttons": {
+      "close": "Schließen",
+      "refresh": "Aktualisieren",
+      "send": "Vermögenswerte übertragen"
+    },
+    "form": {
+      "info": "Formular - Vermögenswerte senden",
+      "fees": "Feste Sendegebühren: 1.000.000 Qubic",
+      "select": "Vermögenswert auswählen",
+      "select.error": "Auswahl des Vermögenswerts ist erforderlich",
+      "placeholder": "Öffentliche-ID des Empfängers",
+      "placeholder.error": "Eine 55-stellige Seed ist erforderlich.",
+      "amount": "Zu sendende Menge",
+      "amount.error": "Menge ist erforderlich",
+      "amount.value.error": "Die Menge muss größer als 0 sein",
+      "amount.max.error": "Die Menge darf die gehaltene Menge nicht überschreiten",
+      "tick": "Tick",
+      "tick.error": "Tick ist erforderlich",
+      "tick.tooltip": "Tick ist erforderlich",
+      "tick.min": "Tick muss mindestens {{currentTick}} sein",
+      "buttons": {
+        "send": "Senden",
+        "cancel": "Abbrechen",
+        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt 1.000.000 Qubic"
+      }
+    },
+    "noAssets": "Keine Vermögenswerte verfügbar"
+  },  
+  "qrReceiveComponent": {
+    "title": "Zahlung empfangen",
+    "downloadLink": "Download",
+    "hint": "Scanne/Sende den obigen QR Code, um eine Zahlung auf Qubic Konto-ID {{publicId}} zu empfangen.",
+    "buttons.close": "Schließen"
+  },
+  "seedEditComponent": {
+    "title.add": "Konto hinzufügen",
+    "title.edit": "Konto bearbeiten",
+    "newSeedName": "Konto-Name",
+    "seedWarning": "<b>WICHTIG!<br> Diese 55 Zeichen sind Ihr privater Qubic-Schlüssel (Seed)!<br>Speichern und bewahren Sie diesen Seed an einem sicheren Ort auf.<br>Wenn Sie dies nicht tun, können Sie Ihr Geld verlieren. Halten Sie Ihren Seed im Backup!<br><br>Weitere Informationen zu diesem Thema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "form": {
+      "alias": {
+        "placeholder": "Wähle einen beliebigen Namen für dein Konto, sodass du das Konto besser zuordnen kannst.",
+        "error": {
+          "required": "Name wird benötigt.",
+          "min": "Name muss mindestens 3 Zeichen lang sein.",
+          "max": "Name darf höchstens 50 Zeichen lang sein.",
+          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}"
+        }
+      },
+      "seed": {
+        "placeholder": "55-Zeichen Seed - privater Qubic Schlüssel",
+        "error": {
+          "required": "Ein Konto-Passwort wird benötigt.",
+          "min": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
+          "max": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
+          "regex": "Der Seed darf nur folgende Zeichen enthalten: a-z"
+        },
+        "generateSeed": "Zufälliger Seed"
+      },
+      "watchOnlyAddress": {
+        "title": "Nur-Ansicht-Adresse",
+        "placeholder": "60-Zeichen öffentlicher Schlüssel",
+        "error": {
+          "required": "Ein 60-Zeichen öffentlicher Schlüssel ist erforderlich.",
+          "min": "Der 60-Zeichen öffentliche Schlüssel muss genau aus 60 Großbuchstaben bestehen",
+          "max": "Der 60-Zeichen öffentliche Schlüssel muss genau aus 60 Großbuchstaben bestehen",
+          "regex": "Darf nur A-Z enthalten"
+        }
+      },      
+      "error": {
+        "text": "Bitte überprüfe das Formular.",
+        "close": "schließen"
+      }
+    },
+    "publicIdMessage": "Deine Konto-ID lautet:",
+    "privateKeyWarning": "Achtung! Deine Tresor-Datei ist nicht geladen. Vergewissere dich bitte, dass du diese Datei sicher verwahrt hast.",
+    "buttons": {
+      "cancel": "Abbrechen",
+      "create": "Konto erstellen",
+      "save": "Konto speichern"
+    }
+  },
+  "seedOverviewComponent": {
+    "title": "Konten",
+    "isTable": "Tabelle anzeigen",
+    "addSeedButton": "Konto hinzufügen",
+    "importButton": "Import",
+    "exportButton": "Export",
+    "search.label": "Filter",
+    "table": {
+      "alias": "Konto-Name",
+      "publicId": "Konto-ID",
+      "balance": "Vermögen",
+      "epochChanges": "Veränderung in Epoche",
+      "noData": "Keine Treffer für \"{{q}}\"",
+      "actions": {
+        "title": "Aktionen",
+        "revealSeed": "Konto-Passwort anzeigen",
+        "assets": "Show Owned Assets",
+        "makePayment": "Zahlung starten",
+        "receivePayment": "QR Code zum Empfang einer Zahlung generieren.",
+        "editSeed": "Konto bearbeiten",
+        "deleteSeed": "Konto löschen",
+        "refreshBalance": "Kontostand im Netzwerk abrufen"
+      }
+    },
+    "hasPendingTransaction": "Offene Zahlungen",
+    "marketPrice": "Preis",
+    "marketSupply": "Gesamtbestand",
+    "marketCap": "Marktkapitalisierung",
+    "marketCurrency": "$"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "balance": "Wallet Guthaben",
+    "currency": "Qu",
+    "totalBalance": "Ihr Gesamtguthaben"
+  },
+  "unlockComponent": {
+    "title": "Wallet öffnen",
+    "title.new": "Vault erstellen",
+    "reasonMessage": "Um das Wallet öffnen zu können, wird deine Tresor-Datei benötigt. Diese Datei wird automatisch gelöscht, sobald du die Seite neu lädst oder schließt.",
+    "welcomeMessage": "Willkommen im qubic Wallet.\nUm das Wallet nutzen zu können musst du zuerst eine Vault Datei erstellen. Die Vault Datei enthält deinen öffentlichen und privaten Schlüssel der zum Verschlüsseln und Entschlüsseln von deinen Daten dient.",
+    "choosePrivateKeyFile": "Datei auswählen",
+    "chooseConfigFile": "Datei auswählen",
+    "overwriteVault": "Es sieht aus als gab es hier schon vorher ein Vault. Möchtest du diese Daten überschreiben?",
+    "form": {
+      "file.error.required": "Tresor-Datei wird benötigt",
+      "password.error.required": "Tresor-Passwort wird benötigt",
+      "password.error.min": "Dein Passwort muss mindestens 8 Zeichen lang sein.",
+      "password.error.wrong": "Dein Passwort ist falsch.",
+      "configFile": {
+        "error": {
+          "required": "Konfigurationsdatei erforderlich"
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "generateKey": "Neuen Tresor erstellen",
+      "importAndUnlock": "Tresor importieren und entsperren",
+      "unlock": "Wallet entsperren",
+      "existingUser": "Ich habe bereits einen Vault",
+      "newUser": "Tresor erstellen",
+      "closeWallet": "Wallet schließen",
+      "importVault": "Tresor importieren"
+    },
+    "welcomeHintMessage": "Nachdem Sie Ihre Tresor-Datei heruntergeladen haben, müssen Sie die heruntergeladene Datei auswählen und Ihr Passwort erneut eingeben. Dadurch wird Ihr Wallet entsperrt."
+  },
+  "lockIconComponent": {
+    "lock": "Wallet sperren",
+    "unlock": "Wallet entsperren"
+  },
+  "lockComponent": {
+    "title": "Wallet sperren?",
+    "forceDownload": {
+      "title": "Tresor-Datei herunterladen",
+      "reason": "Wenn du das Wallet sperrst, wird die Tresor-Datei gelöscht. Ohne diese Datei kannst du keine Transaktionen durchführen. Sei dir daher sicher, dass du deine Tresor-Datei gespeichert hast. Im Zweifel lieber noch mal exportieren...",
+      "buttons": {
+        "allOk": "Ich habe meine Unlock-Datei, danke!"
+      }
+    },
+    "reason": "Es ist wichtig, dass du deine Tresor-Datei sicherst. Wähle bitte ein möglichst langes Passwort, dass du nicht vergisst, und drücke anschließend auf speichern.",
+    "warning": "Mir ist klar, dass ich ohne mein Passwort oder ohne meine Tresor-Datei nur meine Konten einsehen, aber keine Transaktionen durchführen kann.",
+    "password.placeholder": "Passwort",
+    "password.required": "Passwort benötigt",
+    "password.min": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+    "buttons": {
+      "savePrivateKey": "Tresor-Datei speichern",
+      "closeWallet": "Wallet sperren",
+      "exportAndCloseWallet": "Tresor-Datei speichern und Wallet sperren",
+      "enableExport": "Export",
+      "cancel": "Abbrechen"
+    }
+  },
+  "paymentComponent": {
+    "title": "Sende Qubic",   
+    "messages": {
+      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet",
+      "storedForPropagation": "Ihre Transaktion wurde zur Verbreitung im Tick {{tick}} gespeichert",
+      "failedToSend": "Ihre Transaktion konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+      "failedToDecrypt": "Wir konnten Ihren Seed nicht entschlüsseln. Haben Sie den richtigen privaten Schlüssel verwendet?",
+      "failedValidation": "Es traten Validierungsfehler auf. Bitte überprüfen Sie das Formular."
+    },    
+    "form": {
+      "sourceSeed": {
+        "label": "Konto von dem QUBIC gesendet werden",
+        "error": {
+          "required": "Sender-Konto wird benötigt"
+        }
+      },
+      "receiver": {
+        "placeholder": "Konto-ID des Empfängers",
+        "hint": "60 Großbuchstaben",
+        "chooseOwnSeed": "Wähle ein eigenes Konto",
+        "error": {
+          "required": "Konto-ID wird benötigt",
+          "length": "Eine Qubic Konto-ID besteht aus 60 Großbuchstaben."
+        }
+      },
+      "amount": {
+        "placeholder": "Betrag in QUBIC",
+        "max.tooltip": "Maximal möglicher Betrag für dieses Konto einsetzen",
+        "error": {
+          "required": "Betrag wird benötigt",
+          "min": "Betrag muss mindestens 1 sein."
+        }
+      },
+      "tick": {
+        "placeholder": "Ausführen bei folgendem Tick",
+        "customize.tooltip": "Eigenen Ausführungszeitraum festlegen",
+        "error": {
+          "required": "Tick wird benötigt.",
+          "min": "Der Tick muss mindestens {{currentTick}} sein."
+        }
+      }
+    },
+    "buttons": {
+      "send": "Zahlung ausführen",
+      "reset": "Zurücksetzen",
+      "loadPrivateKey": "Tresor-Datei laden"
+    }
+  },
+  "balanceComponent": {
+    "title": "Buchungen",
+    "overview": {
+      "title": "Vermögen",
+      "totalWalletValue": "Gesamtes Vermögen",
+      "estimatedWalletValue": "Geschätztes Vermögen",
+      "baseDate": "vom"
+    },
+    "transactions": {
+      "title": "Aktuelle Buchungen",
+      "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
+      "noTransactions": "Keine Buchungen gefunden",
+      "send.tooltip": "Ausgehende Überweisung",
+      "exchange.tooltip": "Interne Überweisung",
+      "explorer.tooltip": "Show Transfer in Explorer",
+      "receive.tooltip": "Eingehende Überweisung",
+      "status.pending.tooltip": "In Bearbeitung",
+      "status.executed.tooltip": "Ausgeführt",
+      "status.dismissed.tooltip": "Fehlgeschlagen",
+      "status.unknown.tooltip": "Unbekannt",
+      "status.confirmed.tooltip": "Vorbereitet",
+      "filter.seed.label": "Filtern nach Konto"
+    },
+    "repeatTransaction": "Zahlung wiederholen"
+  },
+  "settings": {
+    "general": {
+      "title": "Web-Brücke",
+      "tickAddition.placeholder": "Anzahl der Ticks, die zum aktuellen Tick hinzugefügt werden, um eine neue Transaktion zu senden",
+      "webBridge.placeholder": "Web-Brücke aktivieren (Direkte Verbindung zum QUBIC-Netzwerk)",
+      "button.save": "Einstellungen speichern",
+      "beta": {
+        "placeholder": "Beta-Funktionen aktivieren"
+      }
+    },
+    "import": {
+      "title": "Einstellungen importieren",
+      "doneMessage": "Import erfolgreich",
+      "dropMessage": "Datei hineinziehen oder auswählen ",
+      "buttons.import": "Starte Import",
+      "seedsMessage": "Du wirst {{amount}} Accounts importieren.",
+      "goHomeLink": "Zeige importierte Seeds"
+    },
+    "export": {
+      "title": "Einstellungen exportieren",
+      "hint": "Klicke auf die Schaltfläche unten, um deine aktuelle Konfiguration herunterzuladen. Es enthält deine verschlüsselten Seeds. Du solltest auch deinen privaten Schlüssel gespeichert haben.",
+      "buttons.export": "Starte Export"
+    }
+  },
+  "votingComponent": {
+    "title": "Qubic Computor Abstimmung",
+    "description": "Das Qubic-Computervoting dient der Konsensfindung über zu entscheidende Themen im gesamten Netzwerk. Dies kann das Akzeptieren intelligenter Verträge oder das Treffen anderer Protokollentscheidungen umfassen. Es dürfen nur Computer teilnehmen.",
+    "proposals": {
+      "editButton": "Bearbeiten",
+      "createButton": "Vorschlag erstellen",
+      "voteButton": "Abstimmen",
+      "title": "{{amount}} Vorschläge",
+      "noComputorHint": "Du hast keine registrierten Computors. Wenn du etwas vorschlagen möchtest, musst du mindestens einen Computor haben.",
+      "votingResult": "Ergebnis",
+      "noVotes": "keine Stimmen",
+      "from": "Von:",
+      "url": "URL:"
+    },
+    "participate": {
+      "title": "Abstimmen",
+      "cancelButton": "Abbrechen",
+      "sendVotesButton": "Stimmen senden",
+      "notConfirmedMessage": "Dieser Vorschlag ist vom Netzwerk noch nicht bestätigt. Bitte warte mit abstimmen.",
+      "noComputorsText": "Du hast keine Computoren oder diese wurden bereits für Vorschläge verwendet.",
+      "computorsSelected": "Alle auswählen"
+    },
+    "create": {
+      "title": "Vorschlag erstellen",
+      "cancelButton": "Abbrechen",
+      "sendVotesButton": "Vorschlag speichern",
+      "alreadyPublished": "Dieser Computor hat bereits einen veröffentlichten Vorschlag. Es ist pro Epoche nur ein Vorschlag erlaubt.",
+      "buttons": {
+        "create": "Vorschlag erstellen",
+        "publish": "Verbinden und Vorschlag publizieren",
+        "reset": "Zurücksetzen",
+        "loadPrivateKey": "Vault öffnen",
+        "finish": "Zeige Vorschläge"
+      },
+      "form": {
+        "operatorSeed.label": "Operator Seed",
+        "operatorSeed.error.required": "Operator ist erforderlich",
+        "sourceSeed.label": "Computer",
+        "sourceSeed.error.required": "Computer ist erforderlich",
+        "title.label": "Titel",
+        "title.placeholder": "Titel",
+        "title.error.required": "Titel ist erforderlich",
+        "title.error.min": "Der Titel muss mindestens 2 Zeichen lang sein",
+        "title.error.max": "Der Titel darf höchstens 100 Zeichen lang sein",
+        "description.label": "Beschreibung",
+        "description.placeholder": "Beschreibung",
+        "description.error.required": "Beschreibung ist erforderlich",
+        "description.error.min": "Die Beschreibung muss mindestens 2 Zeichen lang sein",
+        "description.error.max": "Die Beschreibung darf höchstens 1000 Zeichen lang sein",
+        "option.label": "Option {{id}}",
+        "option.placeholder": "Option {{id}}",
+        "option.error.required": "Option {{id}} ist erforderlich",
+        "option.error.min": "Die Option muss mindestens 2 Zeichen lang sein",
+        "option.error.max": "Die Option darf höchstens 50 Zeichen lang sein",
+        "computorIp.label": "Computer IP-Adresse",
+        "computorIp.placeholder": "Computer IP-Adresse",
+        "computorIp.error.required": "Computer IP-Adresse ist erforderlich"
+      },      
+      "proposalStep.label": "Erstellen",
+      "publishStep.label": "Veröffentlichen",
+      "finishStep.label": "Abschluss",
+      "finishStep.success": "Dein Vorschlag wurde zu deinem Computor gesendet."
+    },
+    "status": {
+      "success": "Vom Quorum akzeptiert",
+      "failed": "Vom Quorum abgelehnt",
+      "publishing": "Veröffentlichung läuft",
+      "pending": "Abstimmung ist offen",
+      "draft": "Entwurf",
+      "unknown": "Unbekannter Status"
+    }    
+  },
+  "ipoComponent": {
+    "messages": {
+      "unlock": "Bitte entsperren Sie zuerst Ihr Wallet",
+      "storedForPropagation": "Ihre Transaktion wurde zur Verbreitung im Tick {{tick}} gespeichert",
+      "failedToSend": "Ihre IPO konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
+      "failedToDecrypt": "Wir konnten Ihren Seed nicht entschlüsseln. Haben Sie den richtigen privaten Schlüssel verwendet?",
+      "failedToValidate": "Es traten Validierungsfehler auf. Bitte überprüfen Sie das Formular."
+    },
+    "title": "Qubic IPO",
+    "description": "Das Qubic IPO ist eine Auktion für Anteile an Smart Contracts.",
+    "noIpos": "Aktuell keine IPOs aktiv",
+    "yourBids": "Ihre Gebote",
+    "yourShares": "Ihre Anteile",
+    "sharesFor": "Anteile für",
+    "statusValid": "Status gültig für Tick {{tick}}",
+    "livPanelHint": "Aktuelle Ergebnisse anzeigen",
+    "buttons.place-bid": "Gebot abgeben",
+    "buttons.refresh": "Status aktualisieren",
+    "bidStatus.hint": "Der Status zeigt nur an, ob Ihr Gebot abgegeben wurde. NICHT, ob es erfolgreich war.",
+    "bidStatus.pcs": "pcs",
+    "place-bid": {
+      "title": "Gebot abgeben",
+      "needBalance": "Sie benötigen mindestens einen Seed mit einem positiven Guthaben.",
+      "noContract": "Vertrag nicht gefunden. Bitte versuchen Sie es später erneut.",
+      "noContract.gotoIpoLabel": "Verfügbare Vertrags-IPOs anzeigen",
+      "buttons": {
+        "send": "Gebot senden"
+      },
+      "form": {
+        "quantity": {
+          "placeholder": "Menge",
+          "error.min": "Minimum 1",
+          "error.required": "Menge ist erforderlich"
+        },
+        "price": {
+          "placeholder": "Preis (QUBIC)",
+          "error.min": "Minimum 1",
+          "error.required": "Preis ist erforderlich",
+          "max.tooltip": "Alle verfügbaren QUBIC bieten"
+        }
+      }
+    }
+  },  
+  "okDialog": {
+    "title": "Hinweis",
+    "button": "Ja, ich bestätige.",
+    "messages": {
+      "tresorText": "Sie haben jetzt ihre Tresor-Datei heruntergeladen? Bitte wählen Sie im nächsten Schritt, diese Tersor-Datei aus, um das Wallet zu öffnen!"
+    }
+  },
+  "loadConfigComponent": {
+    "title": "Konten importieren",
+    "buttons": {
+      "import": "Importieren",
+      "cancel": "Ohne Konten beginnen"
+    },
+    "messages": {
+      "import": "Wenn Sie bereits eine .config Datei beseitzen, die Ihre PublicKeys enthält, sollten Sie diese jetzt auswählen und importieren. ",
+      "noImport": "Wenn Sie noch keine .config Datei besitzen, legen Sie im nächsten Bereich ein Konto an."
+    }
+  },
+  "exportConfigComponent": {
+    "title": "Konten exportieren",
+    "buttons": {
+      "export": "Exportieren",
+      "cancel": "Abbrechen",
+      "unlock": "Tresor entsperren"
+    },
+    "messages": {
+      "export": "Du hast deinen Kontenbestand geändert. Lade unbedingt deine aktuelle Konfiguration herunterzuladen, damit du sie später wieder importieren kannst.",
+      "info": "Es enthält deine verschlüsselten Seeds.",
+      "unlockInfo": "Bitte entsperren Sie Ihre Wallet, um Ihre Tresor-Datei mit dem neuesten Inventar exportieren zu können."
+    }
+  },
+  "welcomeComponent": {
+    "welcomeMessage": "Um dieses Wallet zu verwenden, müssen Sie entweder Ihre vorhandene Tresor-Datei importieren oder neu erstellen. Diese enthält Ihren öffentlichen/privaten Schlüssel, der anschließend zum Verschlüsseln/Entschlüsseln Ihrer Daten verwendet wird.",
+    "button": {
+      "createVault": "Tresor erstellen",
+      "importVault": "Tresor importieren"
+    },
+    "title": "Willkommen im Qubic Wallet"
+  },
+  "importComponent": {
+    "title": "Tresor importieren",
+    "message": "Sie können einen vorhandenen Tresor in Ihr Wallet importieren."
+  },
+  "createVaultComponent": {
+    "createVault": {
+      "message": "In diesem Schritt wird ein privates/öffentliches Schlüsselpaar für das Wallet erstellt. Tragen Sie einen Namen ein!",
+      "stepTitle": "Tresor erstellen",
+      "vaultName": "Name",
+      "button": "Tresor erstellen"
+    },
+    "createAddress": {
+      "title": "Adresse hinzufügen",
+      "message": "In Ihrer Qubic-Wallet können Sie mehrere Adressen haben. Jede Adresse besteht aus einem Seed (privater Schlüssel) und einer öffentlichen Id. Der Seed wird zum Senden von Qubic benötigt und die öffentliche ID kann Qubic empfangen. Wir erstellen jetzt Ihre erste Adresse.",
+      "addressNam": "Name",
+      "seed": "Seed",
+      "seedPlaceholder": "Wählen Sie einen zufälligen Seed...",
+      "publicId": "Öffentlichen Id",
+      "radomizeSeed": "Zufälliger Seed",
+      "addressPlaceholder": "Wählen Sie einen Kontonamen",
+      "button": "Adresse erstellen"
+    },
+    "downloadVault": {
+      "stepTitle": "Erste Tresor-Datei herunterladen",
+      "message": "Ihre persönliche Tresor-Datei wurde erstellt. Sie können Sie jetzt herunterladen. Bitte wählen Sie ein sicheres Passwort!",
+      "password": "Passwort",
+      "passwordHint": "Wählen Sie ein sicheres Passwort...",
+      "button": "Tresor herunterladen"
+    },
+    "verifyVault": {
+      "stpTitle": "Tresor laden/importieren",
+      "message": "Die heruntergeladene Tresor-Datei enthält alle wichtigen Informationen. Jedes Mal, wenn Sie Ihr Wallet entsperren möchten, benötigen Sie diese Datei. Jedes Mal, wenn Sie Ihr Wallet ändern (z. B. eine Adresse hinzufügen oder bearbeiten), werden Sie aufgefordert, die neueste Tresordatei herunterzuladen. Um sicherzustellen, dass dies für Sie funktioniert, wählen Sie bitte unten die heruntergeladene Tresor-Datei aus und geben Sie Ihr Tresor-Passwort erneut ein!",
+      "password": "Passwort",
+      "passwordHint": "Ihr Tresor-Passwort",
+      "button": "Tresor überprüfen"
+    },
+    "done": {
+      "stepTitle": "Fertig",
+      "message": "Glückliche Qubic! Ihr Wallet ist bereit.",
+      "button": "Mein Wallet öffnen"
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "reset": "Zurücksetzen"
+    }    
+  }
+}

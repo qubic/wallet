@@ -1,0 +1,135 @@
+{
+  "configVersion": 1,
+  "timestamp": 1709584963428,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/index.html",
+        "/main.de3ec9a1397abf2d.js",
+        "/manifest.webmanifest",
+        "/polyfills.6d5ceeb297037cb7.js",
+        "/runtime.bbf5c5258ab84fe6.js",
+        "/styles.66caef5fb8bdc762.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/fonts/PPTelegraf-Bold.ttf",
+        "/assets/fonts/PPTelegraf-Light.ttf",
+        "/assets/fonts/PPTelegraf-Medium.ttf",
+        "/assets/fonts/PPTelegraf-Regular.ttf",
+        "/assets/fonts/PPTelegraf-SemiBold.ttf",
+        "/assets/i18n/de.json",
+        "/assets/i18n/en.json",
+        "/assets/i18n/es.json",
+        "/assets/i18n/fr.json",
+        "/assets/i18n/nl.json",
+        "/assets/i18n/pt.json",
+        "/assets/i18n/ru.json",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/icons/wallet.svg",
+        "/assets/icons/wallet_whitemode.svg",
+        "/assets/img/favicon/android-chrome-192x192.png",
+        "/assets/img/favicon/android-chrome-512x512.png",
+        "/assets/img/favicon/apple-touch-icon.png",
+        "/assets/img/favicon/favicon-16x16.png",
+        "/assets/img/favicon/favicon-32x32.png",
+        "/assets/img/favicon/favicon.ico",
+        "/assets/img/favicon/mstile-150x150.png",
+        "/assets/logo.svg",
+        "/assets/logos/LogoFull_dark.svg",
+        "/assets/logos/LogoFull_white.svg",
+        "/assets/logos/Logo_dark.webp",
+        "/assets/logos/Logo_light.webp",
+        "/assets/logos/qubic_wallet_dark.svg",
+        "/assets/logos/qubic_wallet_light.svg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/fonts/PPTelegraf-Bold.ttf": "a6be5a7e0cda8fb38e20019dee0b189da55e3ef1",
+    "/assets/fonts/PPTelegraf-Light.ttf": "f6e0ce84a22e4d1b0e930bcfa55396ee01c45b53",
+    "/assets/fonts/PPTelegraf-Medium.ttf": "8731c294505186e86ead0924fbd3b30afac3c5d5",
+    "/assets/fonts/PPTelegraf-Regular.ttf": "47d00d98f977516ab0aff7ba870584e2b3d93fd7",
+    "/assets/fonts/PPTelegraf-SemiBold.ttf": "4e473aace905dbf684907e97c3aa7deb113adbd8",
+    "/assets/i18n/de.json": "aeeb021256f9d6a524701ebb04417da6bd00890c",
+    "/assets/i18n/en.json": "7afdca28d9038e089baf402b2e12d095c47ca5c9",
+    "/assets/i18n/es.json": "ad312b4db1889311b59e5a194e38e3ca0fa07e15",
+    "/assets/i18n/fr.json": "9169dbe5e8d9b1d05fc11b09ae2ae7ec62e2f3d5",
+    "/assets/i18n/nl.json": "b948ea49b80cf5a7940cda688e3ed1ebdb01643b",
+    "/assets/i18n/pt.json": "ba5ce88e59654311113121cec184ef88417ab4fa",
+    "/assets/i18n/ru.json": "1102be04deb51cee2b1460f617553003a31e6e63",
+    "/assets/icons/icon-128x128.png": "fab6b2e583a264f4018d71afb86728e8d67be73b",
+    "/assets/icons/icon-144x144.png": "07beae38c9f6031284c3ba2c296200cb24c5fe48",
+    "/assets/icons/icon-152x152.png": "215ce8a62d4ef65009f5d7d82eca169fdfe62ab1",
+    "/assets/icons/icon-192x192.png": "b590fd2b024a445d647b04633872b5b4d8cff8e1",
+    "/assets/icons/icon-384x384.png": "b923642af21ad98429948b08fcd290f715814ebf",
+    "/assets/icons/icon-512x512.png": "b923642af21ad98429948b08fcd290f715814ebf",
+    "/assets/icons/icon-72x72.png": "dfd9772ecaf113457f78a9b98c8a45f83bf8202d",
+    "/assets/icons/icon-96x96.png": "b6eb419e728c03ecb1650cc6ba97202d7e454cf1",
+    "/assets/icons/wallet.svg": "bf0cec548933b51174224d6eb221295581a19e60",
+    "/assets/icons/wallet_whitemode.svg": "af4c9b711b0075f5ba0262b13fa740214ffff278",
+    "/assets/img/favicon/android-chrome-192x192.png": "665f46d53677ce475e6df99becf9d1112cbc39b4",
+    "/assets/img/favicon/android-chrome-512x512.png": "0e194b548a2d4ca5e1bdc045191c4fe75502ed2c",
+    "/assets/img/favicon/apple-touch-icon.png": "cd38b714bab1077a74042ab2192e66250409904c",
+    "/assets/img/favicon/favicon-16x16.png": "7225c63bb13333f0fc9faef1b333eb06d2d02526",
+    "/assets/img/favicon/favicon-32x32.png": "2e366f6e563ed902df3083583396add09eb61d2e",
+    "/assets/img/favicon/favicon.ico": "d0ddb8183a09120d9a360de65ebb6a0a84f52381",
+    "/assets/img/favicon/mstile-150x150.png": "b34c9dc48a1a567e993a6a63bef11960852ef3b4",
+    "/assets/logo.svg": "d0c3731fd3b75a58598549265a8912ce4d414a95",
+    "/assets/logos/LogoFull_dark.svg": "3801e0c259cacce599646a04b2ea2ece97eaa8d0",
+    "/assets/logos/LogoFull_white.svg": "351ca28f47e6b05e8594951bf17191e9c7fc4899",
+    "/assets/logos/Logo_dark.webp": "051c8d0e928969b34f1bbdf43136e3beed238bcd",
+    "/assets/logos/Logo_light.webp": "22f86a1c9341d91bbe6351485f18de8f5be0cad8",
+    "/assets/logos/qubic_wallet_dark.svg": "cfdf81e1c2b6ddff0a8bf71fe9ebc40e477dd663",
+    "/assets/logos/qubic_wallet_light.svg": "0a55d1a170226b803213cb5dc2d1b597c696b83d",
+    "/index.html": "318f829c85e3875e609b175ff426ed29e8004c6c",
+    "/main.de3ec9a1397abf2d.js": "5a6c903061b64342c91c9d8ff877fb3e8721e98a",
+    "/manifest.webmanifest": "92e475c197886ef4d8a3fb35d2358d497dd82eb0",
+    "/polyfills.6d5ceeb297037cb7.js": "21ddfbe357e1806f520a6b5ec4f24c5261b57b05",
+    "/runtime.bbf5c5258ab84fe6.js": "8a416d1c4a79939366fd5e3427ccfb725a42456b",
+    "/styles.66caef5fb8bdc762.css": "aa91143eaa548f50992538d8d0df7732db7bbebe"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
