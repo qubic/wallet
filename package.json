@@ -16,7 +16,9 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "app:dir": "electron-builder --dir",
-    "app:dist": "electron-builder"
+    "app:dist": "electron-builder",
+    "build-ios": "cd cordova && cordova build ios",
+    "build-android": "cd cordova && cordova build android"
   },
   "private": true,
   "dependencies": {
