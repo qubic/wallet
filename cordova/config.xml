@@ -8,4 +8,11 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <platform name="android">
+        <allow-intent href="market:*" />       
+    </platform>
+    <platform name="ios">
+        <!-- iOS-spezifische Konfigurationen -->
+    </platform>
 </widget>
+

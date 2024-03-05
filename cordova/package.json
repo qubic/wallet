@@ -18,8 +18,11 @@
   },
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
+  },
+  "dependencies": {
+    "cordova-plugin-file": "8.0.1"
   }
 }
