@@ -8,6 +8,18 @@ import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
 import { OnReadOpts } from 'net';
 
+declare var cordova: any;
+
+interface CordovaWindow extends Window {
+  resolveLocalFileSystemURL(url: string, success: (fileEntry: any) => void, error?: (error: any) => void): void;
+}
+
+declare global {
+  interface Window {
+    resolveLocalFileSystemURL(url: string, successCallback: FileSystemEntryCallback, errorCallback?: ErrorCallback): void;
+  }
+}
+
 @Injectable({
   providedIn: 'root',
   useFactory: () => new WalletService()
@@ -690,7 +702,6 @@ export class WalletService {
     const name = this.runningConfiguration.name ?? 'qubic-wallet';
     this.downloadBlob(name + '.qubic-vault', blob);
     this.shouldExportKey = false;
-
     await this.markSeedsAsSaved();
 
     return true;
@@ -788,19 +799,7 @@ export class WalletService {
     return true;
   }
 
-  private downloadBlob(fileName: string, blob: Blob): void {
-    if ((<any>window.navigator).msSaveOrOpenBlob) {
-      (<any>window.navigator).msSaveBlob(blob, fileName);
-    } else {
-      const anchor = window.document.createElement('a');
-      anchor.href = window.URL.createObjectURL(blob);
-      anchor.download = fileName;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      window.URL.revokeObjectURL(anchor.href);
-    }
-  }
+  
 
   public clearConfig() {
     localStorage.removeItem(this.configName);
@@ -829,4 +828,81 @@ export class WalletService {
     }
     return buff;
   }
+
+  // private downloadBlob(fileName: string, blob: Blob): void {
+  //   if ((<any>window.navigator).msSaveOrOpenBlob) {
+  //     (<any>window.navigator).msSaveBlob(blob, fileName);
+  //   } else {
+  //     const anchor = window.document.createElement('a');
+  //     anchor.href = window.URL.createObjectURL(blob);
+  //     anchor.download = fileName;
+  //     document.body.appendChild(anchor);
+  //     anchor.click();
+  //     document.body.removeChild(anchor);
+  //     window.URL.revokeObjectURL(anchor.href);
+  //   }
+  // }
+
+
+
+  downloadBlob(fileName: string, blob: Blob): void {
+    if (this.isCordovaApp() && this.hasResolveLocalFileSystemURL()) {
+      this.downloadBlobCordova(fileName, blob);
+    } else {
+      this.downloadBlobWeb(fileName, blob);
+    }
+  }
+
+  private isCordovaApp(): boolean {
+    return typeof cordova !== 'undefined' && cordova.file && cordova.file.dataDirectory;
+  }
+
+
+  private downloadBlobCordova(fileName: string, blob: Blob): void {
+    (window as CordovaWindow).resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir: any) => {
+      dir.getFile(fileName, { create: true, exclusive: false }, (file: any) => {
+        this.writeFile(file, blob);
+      }, (err: any) => {
+        console.error('Error creating file:', err);
+      });
+    }, (err: any) => {
+      console.error('Error accessing file system:', err);
+    });
+  }
+
+  private downloadBlobWeb(fileName: string, blob: Blob): void {
+    if ((<any>window.navigator).msSaveOrOpenBlob) {
+      (<any>window.navigator).msSaveBlob(blob, fileName);
+    } else {
+      const anchor = window.document.createElement('a');
+      anchor.href = window.URL.createObjectURL(blob);
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      window.URL.revokeObjectURL(anchor.href);
+    }
+  }
+
+  private writeFile(fileEntry: any, blob: Blob): void {
+    fileEntry.createWriter((fileWriter: any) => {
+      fileWriter.onwriteend = () => {
+        console.log('File saved successfully.');
+      };
+
+      fileWriter.onerror = (e: any) => {
+        console.error('Error writing file:', e);
+      };
+
+      fileWriter.write(blob);
+    }, (err: any) => {
+      console.error('Error creating file writer:', err);
+    });
+  }
+
+  private hasResolveLocalFileSystemURL(): boolean {
+    return typeof window !== 'undefined' && typeof window.resolveLocalFileSystemURL === 'function';
+  }
+
+
 }

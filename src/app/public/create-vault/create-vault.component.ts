@@ -163,37 +163,18 @@ export class CreateVaultComponent extends QubicDialogWrapper {
     this.router.navigate(['/']);
   }
 
-  // async downloadVaultFile() {
-  //   if (this.vaultPasswordFormGroup.valid && this.walletService.privateKey) {
-  //     if (
-  //       await this.walletService.exportVault(
-  //         this.vaultPasswordFormGroup.controls.password.value!
-  //       )
-  //     ) {
-  //       this.vaultExported = true;
-  //       this.nextStep();
-  //     }
-  //   }
-  // }
   async downloadVaultFile() {
     if (this.vaultPasswordFormGroup.valid && this.walletService.privateKey) {
-      const fileName = 'vault_backup.txt';
-      const fileContent = await this.walletService.exportVault(this.vaultPasswordFormGroup.controls.password.value!);
-
-      if (fileContent) {
-        // Here the file is created with cordova-plugin-file and the content is written into it
-        cordova.file.writeFile(cordova.file.dataDirectory, fileName, fileContent, true, async () => {
-          console.log('Datei erfolgreich erstellt: ' + cordova.file.dataDirectory + fileName);
-
-          this.vaultExported = true;
-          this.nextStep();
-        }, (error: any) => {
-          console.error('Fehler beim Erstellen der Datei: ' + error);
-        });
+      if (
+        await this.walletService.exportVault(
+          this.vaultPasswordFormGroup.controls.password.value!
+        )
+      ) {
+        this.vaultExported = true;
+        this.nextStep();
       }
     }
   }
-  
 
   async startCreateProcess() {
     this.walletService.clearConfig();

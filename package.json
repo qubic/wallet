@@ -17,10 +17,10 @@
     "make": "electron-forge make",
     "app:dir": "electron-builder --dir",
     "app:dist": "electron-builder",
-    "cordova-start": ".\\deploy.ps1 && cd cordova && cordova serve",
-    "build-ios": ".\\deploy.ps1 && cd cordova && cordova build ios",
-    "build-android-test": ".\\deploy.ps1 && cd cordova && cordova build android",
-    "build-android-release": ".\\deploy.ps1 && cd cordova && cordova build android --release"
+    "cordova-start": "ng build && .\\deploy.ps1 && cd cordova && cordova serve",
+    "build-ios": "ng build && .\\deploy.ps1 && cd cordova && cordova build ios",
+    "build-android-test": "ng build && .\\deploy.ps1 && cd cordova && cordova build android",
+    "build-android-release": "ng build && .\\deploy.ps1 && cd cordova && cordova build android --release"
   },
   "private": true,
   "dependencies": {
