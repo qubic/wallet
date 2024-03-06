@@ -17,6 +17,7 @@ export class AppComponent {
   private deviceInfo!: DeviceInfo;
   public isMobile = false;
   public isDesktop = false;
+  public isCordovaApp = false;
   private bridgeConnected = false;
   private _mobileQueryListener!: () => void;
   public isElectron = false;
@@ -45,10 +46,14 @@ export class AppComponent {
     this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.deviceInfo = this.deviceService.getDeviceInfo();
+
+    if(this.deviceInfo.device.toLowerCase() == "android" || this.deviceInfo.device.toLowerCase() == "ios")
+    {
+      this.isCordovaApp = true;
+    }
+
     this.isMobile = this.deviceService.isMobile();
     this.isDesktop = this.deviceService.isDesktop();
-
-
   }
 
   ngOnDestroy(): void {

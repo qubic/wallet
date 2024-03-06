@@ -8,17 +8,8 @@ import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
 import { OnReadOpts } from 'net';
 
+declare var window: any;
 declare var cordova: any;
-
-interface CordovaWindow extends Window {
-  resolveLocalFileSystemURL(url: string, success: (fileEntry: any) => void, error?: (error: any) => void): void;
-}
-
-declare global {
-  interface Window {
-    resolveLocalFileSystemURL(url: string, successCallback: FileSystemEntryCallback, errorCallback?: ErrorCallback): void;
-  }
-}
 
 @Injectable({
   providedIn: 'root',
@@ -678,7 +669,7 @@ export class WalletService {
     }
   }
 
-  public async exportVault(password: string): Promise<boolean> {
+  public async exportVault(password: string, isCordova: boolean): Promise<boolean> {
     if (!this.privateKey || !this.runningConfiguration.publicKey)
       return Promise.reject('Private- or PublicKey not loaded');
 
@@ -700,7 +691,7 @@ export class WalletService {
     );
     const blob = new Blob([fileData], { type: 'application/octet-stream' });
     const name = this.runningConfiguration.name ?? 'qubic-wallet';
-    this.downloadBlob(name + '.qubic-vault', blob);
+    this.downloadBlob(name + '.qubic-vault', blob, isCordova);
     this.shouldExportKey = false;
     await this.markSeedsAsSaved();
 
@@ -727,7 +718,7 @@ export class WalletService {
    * @param password
    * @returns
    */
-  public async exportKey(password: string) {
+  public async exportKey(password: string, isCordova: boolean) {
     if (!this.privateKey) return Promise.resolve();
 
     const jsonKey = await this.createJsonKey(password);
@@ -738,7 +729,7 @@ export class WalletService {
     }
 
     const blob = new Blob([jsonKey], { type: 'application/octet-stream' });
-    this.downloadBlob('qubic-wallet.vault', blob);
+    this.downloadBlob('qubic-wallet.vault', blob,isCordova);
     this.shouldExportKey = false;
   }
 
@@ -780,7 +771,7 @@ export class WalletService {
   }
 
   // OBSOLETE: LEGACY!!!
-  public async exportConfig(): Promise<boolean> {
+  public async exportConfig( isCordova: boolean): Promise<boolean> {
     if (
       !this.runningConfiguration.seeds ||
       this.runningConfiguration.seeds.length <= 0
@@ -792,7 +783,7 @@ export class WalletService {
     const data = new TextEncoder().encode(JSON.stringify(exportConfig));
     const blob = new Blob([data], { type: 'application/octet-stream' });
     const name = this.runningConfiguration.name ?? 'qubic-wallet';
-    this.downloadBlob(name + '.qubic-wallet-config', blob);
+    this.downloadBlob(name + '.qubic-wallet-config', blob, isCordova);
 
     await this.markSeedsAsSaved();
 
@@ -845,30 +836,63 @@ export class WalletService {
 
 
 
-  downloadBlob(fileName: string, blob: Blob): void {
-    if (this.isCordovaApp() && this.hasResolveLocalFileSystemURL()) {
-      this.downloadBlobCordova(fileName, blob);
+  downloadBlob(fileName: string, blob: Blob, isCordova: boolean): void {
+    if (isCordova) {
+      alert("Cordova");
+      this.downloadBlobToFileCordova(fileName, blob);
     } else {
+      alert("Web");
       this.downloadBlobWeb(fileName, blob);
     }
   }
 
-  private isCordovaApp(): boolean {
-    return typeof cordova !== 'undefined' && cordova.file && cordova.file.dataDirectory;
-  }
 
 
-  private downloadBlobCordova(fileName: string, blob: Blob): void {
-    (window as CordovaWindow).resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir: any) => {
-      dir.getFile(fileName, { create: true, exclusive: false }, (file: any) => {
-        this.writeFile(file, blob);
-      }, (err: any) => {
-        console.error('Error creating file:', err);
-      });
-    }, (err: any) => {
-      console.error('Error accessing file system:', err);
+  // private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
+  //   alert("Cordova - downloadBlobC ordova");
+  //   (window as CordovaWindow).resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir: any) => {
+  //     alert("Cordova - downloadBlobCordova - getFile");
+  //     dir.getFile(fileName, { create: true, exclusive: false }, (file: any) => {
+  //       alert("Cordova - downloadBlobCordova - getFile - writeFile");
+  //       this.writeFile(file, blob);
+  //       alert("Cordova - downloadBlobCordova - getFile - writeFile - finish");
+  //     }, (err: any) => {
+  //       alert('Error creating file: ' + err);
+  //       console.error('Error creating file:', err);
+  //     });
+  //   }, (err: any) => {
+  //     alert('Error accessing file system: ' + err);
+  //     console.error('Error accessing file system:', err);
+  //   });
+  // }
+
+  private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
+    alert("blob: "+ blob);
+    alert("externalRootDirectory: " + cordova.file.externalRootDirectory);
+    window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(directoryEntry: any) {
+        directoryEntry.getFile(fileName, { create: true }, function(fileEntry: any) {
+            fileEntry.createWriter(function(fileWriter: any) {
+                fileWriter.onwriteend = function() {
+                  alert("Successful file write...");
+                    // Optional: You can perform further actions after the file is written successfully
+                };
+
+                fileWriter.onerror = function(e: any) {
+                  alert("Failed file write: " + e.toString());
+                };
+
+                fileWriter.write(blob);
+            }, function(error: any) {
+              alert("Error creating file writer: " + error.code);
+            });
+        }, function(error: any) {
+          alert("Error getting file: " + error.code);
+        });
+    }, function(error: any) {
+        alert("Error resolving filesystem URL: " + error.code);
     });
   }
+
 
   private downloadBlobWeb(fileName: string, blob: Blob): void {
     if ((<any>window.navigator).msSaveOrOpenBlob) {

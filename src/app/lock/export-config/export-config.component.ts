@@ -9,6 +9,7 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../unlock/unlock.component';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'qli-export-config',
@@ -18,18 +19,20 @@ import { UnLockComponent } from '../unlock/unlock.component';
 export class ExportConfigDialog extends QubicDialogWrapper{
   
   public isMobile = true;
+  public isCordovaApp = false;
 
   exportForm = this.fb.group({
     password: [null, [Validators.required, Validators.minLength(8)]],
   });
 
-  constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, public dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService,  private _snackBar: MatSnackBar) {
-    super(renderer, themeService);      
+  constructor(private app: AppComponent, renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, public dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService,  private _snackBar: MatSnackBar) {
+    super(renderer, themeService);   
+    this.isCordovaApp = app.isCordovaApp;   
   }
 
   public export() {
     if (this.exportForm.valid && this.exportForm.controls.password.value) {
-      if(!this.walletService.exportVault(this.exportForm.controls.password.value)){
+      if(!this.walletService.exportVault(this.exportForm.controls.password.value, this.isCordovaApp)){
         this._snackBar.open(this.transloco.translate("settings.export.noData"), this.transloco.translate("general.close") , {
           duration: 0,
           panelClass: "error"

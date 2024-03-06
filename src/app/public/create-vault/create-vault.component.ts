@@ -19,6 +19,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
 import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 
 declare var cordova: any;
 
@@ -41,6 +42,8 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   public pwdWrong = false;
   public selectedFileIsVaultFile = false;
   private walletService: WalletService;
+
+  public isCordovaApp = false;
 
   createVaultForm = this.fb.group({
     name: [null, [Validators.required, Validators.minLength(3)]],
@@ -83,12 +86,15 @@ export class CreateVaultComponent extends QubicDialogWrapper {
     private _snackBar: MatSnackBar,
     private injector: Injector,
     private changeDetector: ChangeDetectorRef,
-    private persistedWalletService: WalletService
+    private persistedWalletService: WalletService,
+    private app: AppComponent
   ) {
     super(renderer, themeService);
     this.dialogRef = injector.get(DialogRef, null);
 
     this.walletService = new WalletService(false);
+
+    this.isCordovaApp = app.isCordovaApp;
 
    this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
       if (s) this.generatePublicId(s);
@@ -167,7 +173,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
     if (this.vaultPasswordFormGroup.valid && this.walletService.privateKey) {
       if (
         await this.walletService.exportVault(
-          this.vaultPasswordFormGroup.controls.password.value!
+          this.vaultPasswordFormGroup.controls.password.value!, this.isCordovaApp
         )
       ) {
         this.vaultExported = true;

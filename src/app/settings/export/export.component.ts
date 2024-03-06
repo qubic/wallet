@@ -7,6 +7,7 @@ import { IConfig } from '../../model/config';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-export',
@@ -19,8 +20,10 @@ export class ExportComponent {
   public configToImport: IConfig | undefined;
   public isMobile = true;
   public importDone = false;
+  public isCordovaApp = false;
 
-  constructor (private walletService: WalletService, public dialog: MatDialog,  private _snackBar: MatSnackBar, private transloco: TranslocoService, private deviceService: DeviceDetectorService){
+  constructor (private app: AppComponent, private walletService: WalletService, public dialog: MatDialog,  private _snackBar: MatSnackBar, private transloco: TranslocoService, private deviceService: DeviceDetectorService){
+    this.isCordovaApp = app.isCordovaApp;
   }
 
   public import() {
@@ -45,7 +48,7 @@ export class ExportComponent {
   }
 
   public export() {
-    if(!this.walletService.exportConfig()){
+    if(!this.walletService.exportConfig(this.isCordovaApp)){
       this._snackBar.open(this.transloco.translate("settings.export.noData"), this.transloco.translate("general.close") , {
         duration: 0,
         panelClass: "error"
