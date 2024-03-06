@@ -5,6 +5,7 @@ import {
   Injector,
   Renderer2,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
@@ -21,14 +22,14 @@ import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 
-declare var cordova: any;
+declare var document: any;
 
 @Component({
   selector: 'qli-create-vault',
   templateUrl: './create-vault.component.html',
   styleUrls: ['./create-vault.component.scss'],
 })
-export class CreateVaultComponent extends QubicDialogWrapper {
+export class CreateVaultComponent extends QubicDialogWrapper implements OnInit {
   @ViewChild('stepper')
   private stepper: MatStepper | undefined;
 
@@ -96,9 +97,20 @@ export class CreateVaultComponent extends QubicDialogWrapper {
 
     this.isCordovaApp = app.isCordovaApp;
 
-   this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
+    this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
       if (s) this.generatePublicId(s);
     });
+  }
+
+  ngOnInit() {
+    document.addEventListener('deviceready', () => {
+      alert('Cordova and plugins are ready');
+    }, false);
+
+    // document.addEventListener('deviceready', function() {
+    //   alert("externalRootDirectory: " + cordova.file.externalRootDirectory);
+    // }, false);
+    
   }
 
   private nextStep() {
@@ -259,7 +271,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   }
 
   getVaultName() {
-    if(this.walletService.getName()){
+    if (this.walletService.getName()) {
       return "'" + this.walletService.getName() + "'";
     }
     return "";

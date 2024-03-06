@@ -866,8 +866,7 @@ export class WalletService {
   //   });
   // }
 
-  private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
-    alert("blob: "+ blob);
+  private downloadBlobToFileCordova(fileName: string, blob: Blob): void {    
     alert("externalRootDirectory: " + cordova.file.externalRootDirectory);
     window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(directoryEntry: any) {
         directoryEntry.getFile(fileName, { create: true }, function(fileEntry: any) {

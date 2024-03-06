@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { ApiService } from './services/api.service';
 import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 import { ThemeService } from './services/theme.service';
@@ -29,16 +29,18 @@ export class AppComponent {
     if ((<any>window).require) {
       this.isElectron = true;
     }
-
   }
 
   init() {
     addEventListener(
       "resize"
-      , () => { 
-          this.checkSize();
+      , () => {
+        this.checkSize();
       }
     );
+    addEventListener('deviceready', () => {
+      alert('Cordova and plugins are ready');
+    }, false);
   }
 
   checkSize() {
@@ -47,8 +49,7 @@ export class AppComponent {
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.deviceInfo = this.deviceService.getDeviceInfo();
 
-    if(this.deviceInfo.device.toLowerCase() == "android" || this.deviceInfo.device.toLowerCase() == "ios")
-    {
+    if (this.deviceInfo.device.toLowerCase() == "android" || this.deviceInfo.device.toLowerCase() == "ios") {
       this.isCordovaApp = true;
     }
 
