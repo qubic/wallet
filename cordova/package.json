@@ -22,9 +22,9 @@
   "cordova": {
     "platforms": [
       "ios",
-      "android",
       "browser",
-      "electron"
+      "electron",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-file": {

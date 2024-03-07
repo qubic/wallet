@@ -104,13 +104,8 @@ export class CreateVaultComponent extends QubicDialogWrapper implements OnInit {
 
   ngOnInit() {
     document.addEventListener('deviceready', () => {
-      alert('Cordova and plugins are ready');
-    }, false);
-
-    // document.addEventListener('deviceready', function() {
-    //   alert("externalRootDirectory: " + cordova.file.externalRootDirectory);
-    // }, false);
-    
+      console.log('Cordova and plugins are ready');
+    }, false);    
   }
 
   private nextStep() {

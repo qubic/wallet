@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1709766970033,
+  "timestamp": 1709848494407,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -12,7 +12,7 @@
       },
       "urls": [
         "/index.html",
-        "/main.8d865616aea9fcfe.js",
+        "/main.029718d16b6630de.js",
         "/manifest.webmanifest",
         "/polyfills.6d5ceeb297037cb7.js",
         "/runtime.bbf5c5258ab84fe6.js",
@@ -106,8 +106,8 @@
     "/assets/logos/Logo_light.webp": "22f86a1c9341d91bbe6351485f18de8f5be0cad8",
     "/assets/logos/qubic_wallet_dark.svg": "cfdf81e1c2b6ddff0a8bf71fe9ebc40e477dd663",
     "/assets/logos/qubic_wallet_light.svg": "0a55d1a170226b803213cb5dc2d1b597c696b83d",
-    "/index.html": "d193669ee920ea0b3a5ad4d7671463a663c3575b",
-    "/main.8d865616aea9fcfe.js": "7b3450c96a1ceb1bd5be50119c8147c25f00b28a",
+    "/index.html": "eb3ff16c4eba677182da52713c612241b25f5e26",
+    "/main.029718d16b6630de.js": "900c75b6305dc53886faea6fa3c006b02c9de469",
     "/manifest.webmanifest": "92e475c197886ef4d8a3fb35d2358d497dd82eb0",
     "/polyfills.6d5ceeb297037cb7.js": "21ddfbe357e1806f520a6b5ec4f24c5261b57b05",
     "/runtime.bbf5c5258ab84fe6.js": "8a416d1c4a79939366fd5e3427ccfb725a42456b",

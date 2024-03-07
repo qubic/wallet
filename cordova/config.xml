@@ -10,9 +10,6 @@
     <allow-intent href="https://*/*" />
     <platform name="android">
         <allow-intent href="market:*" />   
-        <config-file target="AndroidManifest.xml" parent="/*" xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
-        </config-file>
     </platform>
     <platform name="ios">
         <!-- iOS-spezifische Konfigurationen -->

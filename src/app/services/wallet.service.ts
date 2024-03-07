@@ -790,7 +790,6 @@ export class WalletService {
     return true;
   }
 
-  
 
   public clearConfig() {
     localStorage.removeItem(this.configName);
@@ -820,72 +819,37 @@ export class WalletService {
     return buff;
   }
 
-  // private downloadBlob(fileName: string, blob: Blob): void {
-  //   if ((<any>window.navigator).msSaveOrOpenBlob) {
-  //     (<any>window.navigator).msSaveBlob(blob, fileName);
-  //   } else {
-  //     const anchor = window.document.createElement('a');
-  //     anchor.href = window.URL.createObjectURL(blob);
-  //     anchor.download = fileName;
-  //     document.body.appendChild(anchor);
-  //     anchor.click();
-  //     document.body.removeChild(anchor);
-  //     window.URL.revokeObjectURL(anchor.href);
-  //   }
-  // }
-
-
-
+ 
   downloadBlob(fileName: string, blob: Blob, isCordova: boolean): void {
     if (isCordova) {
-      alert("Cordova");
       this.downloadBlobToFileCordova(fileName, blob);
     } else {
-      alert("Web");
       this.downloadBlobWeb(fileName, blob);
     }
   }
 
 
-
-  // private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
-  //   alert("Cordova - downloadBlobC ordova");
-  //   (window as CordovaWindow).resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir: any) => {
-  //     alert("Cordova - downloadBlobCordova - getFile");
-  //     dir.getFile(fileName, { create: true, exclusive: false }, (file: any) => {
-  //       alert("Cordova - downloadBlobCordova - getFile - writeFile");
-  //       this.writeFile(file, blob);
-  //       alert("Cordova - downloadBlobCordova - getFile - writeFile - finish");
-  //     }, (err: any) => {
-  //       alert('Error creating file: ' + err);
-  //       console.error('Error creating file:', err);
-  //     });
-  //   }, (err: any) => {
-  //     alert('Error accessing file system: ' + err);
-  //     console.error('Error accessing file system:', err);
-  //   });
-  // }
-
   private downloadBlobToFileCordova(fileName: string, blob: Blob): void {    
-    alert("externalRootDirectory: " + cordova.file.externalRootDirectory);
-    window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(directoryEntry: any) {
+    var downloadDirectory = "file:///storage/emulated/0/Download/";
+
+    window.resolveLocalFileSystemURL(downloadDirectory, function(directoryEntry: any) {
         directoryEntry.getFile(fileName, { create: true }, function(fileEntry: any) {
             fileEntry.createWriter(function(fileWriter: any) {
                 fileWriter.onwriteend = function() {
-                  alert("Successful file write...");
+                    alert("Successful file write in /Download");
                     // Optional: You can perform further actions after the file is written successfully
                 };
 
                 fileWriter.onerror = function(e: any) {
-                  alert("Failed file write: " + e.toString());
+                    alert("Failed file write: " + e.toString());
                 };
 
                 fileWriter.write(blob);
             }, function(error: any) {
-              alert("Error creating file writer: " + error.code);
+                alert("Error creating file writer: " + error.code);
             });
         }, function(error: any) {
-          alert("Error getting file: " + error.code);
+            alert("Error getting file: " + error.code);
         });
     }, function(error: any) {
         alert("Error resolving filesystem URL: " + error.code);
@@ -906,26 +870,4 @@ export class WalletService {
       window.URL.revokeObjectURL(anchor.href);
     }
   }
-
-  private writeFile(fileEntry: any, blob: Blob): void {
-    fileEntry.createWriter((fileWriter: any) => {
-      fileWriter.onwriteend = () => {
-        console.log('File saved successfully.');
-      };
-
-      fileWriter.onerror = (e: any) => {
-        console.error('Error writing file:', e);
-      };
-
-      fileWriter.write(blob);
-    }, (err: any) => {
-      console.error('Error creating file writer:', err);
-    });
-  }
-
-  private hasResolveLocalFileSystemURL(): boolean {
-    return typeof window !== 'undefined' && typeof window.resolveLocalFileSystemURL === 'function';
-  }
-
-
 }
