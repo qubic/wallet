@@ -833,7 +833,7 @@ export class WalletService {
     var downloadDirectory = "file:///storage/emulated/0/Download/";
 
     window.resolveLocalFileSystemURL(downloadDirectory, function(directoryEntry: any) {
-        directoryEntry.getFile(fileName, { create: true }, function(fileEntry: any) {
+        directoryEntry.getFile(fileName, { create: true, exclusive: false }, function(fileEntry: any) {
             fileEntry.createWriter(function(fileWriter: any) {
                 fileWriter.onwriteend = function() {
                     alert("Successful file write in /Download");
@@ -854,7 +854,8 @@ export class WalletService {
     }, function(error: any) {
         alert("Error resolving filesystem URL: " + error.code);
     });
-  }
+}
+
 
 
   private downloadBlobWeb(fileName: string, blob: Blob): void {
