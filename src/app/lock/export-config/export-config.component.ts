@@ -25,9 +25,9 @@ export class ExportConfigDialog extends QubicDialogWrapper{
     password: [null, [Validators.required, Validators.minLength(8)]],
   });
 
-  constructor(private app: AppComponent, renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, public dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService,  private _snackBar: MatSnackBar) {
+  constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, public dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService,  private _snackBar: MatSnackBar) {
     super(renderer, themeService);   
-    this.isCordovaApp = app.isCordovaApp;   
+    this.isCordovaApp = themeService.isCordovaApp;   
   }
 
   public export() {

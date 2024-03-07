@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class ThemeService {
 
   public isDarkTheme = false;
+  public isCordovaApp = false;
 
   constructor() {
     var currentTheme = localStorage.getItem("theme");

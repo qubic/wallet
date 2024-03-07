@@ -29,9 +29,9 @@ export class LockConfirmDialog extends QubicDialogWrapper {
   public keyDownload = false;
   public isVaultFileExported = false; // is set to true as soon the vault file has been exported/downloaded
 
-  constructor(app: AppComponent,renderer: Renderer2, private _snackBar: MatSnackBar, private router: Router, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, private dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService) {
+  constructor(renderer: Renderer2, private _snackBar: MatSnackBar, private router: Router, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private chdet: ChangeDetectorRef, public walletService: WalletService, private dialog: MatDialog, private fb: FormBuilder, private dialogRef: DialogRef, private transloco: TranslocoService) {
     super(renderer, themeService);
-    this.isCordovaApp = app.isCordovaApp;
+    this.isCordovaApp = themeService.isCordovaApp;
     if (data && data.command && data.command == "keyDownload") {
       this.keyDownload = true;
     }

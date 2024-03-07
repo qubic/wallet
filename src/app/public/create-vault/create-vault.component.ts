@@ -43,7 +43,6 @@ export class CreateVaultComponent extends QubicDialogWrapper implements OnInit {
   public pwdWrong = false;
   public selectedFileIsVaultFile = false;
   private walletService: WalletService;
-
   public isCordovaApp = false;
 
   createVaultForm = this.fb.group({
@@ -88,14 +87,13 @@ export class CreateVaultComponent extends QubicDialogWrapper implements OnInit {
     private injector: Injector,
     private changeDetector: ChangeDetectorRef,
     private persistedWalletService: WalletService,
-    private app: AppComponent
   ) {
     super(renderer, themeService);
     this.dialogRef = injector.get(DialogRef, null);
 
     this.walletService = new WalletService(false);
 
-    this.isCordovaApp = app.isCordovaApp;
+    this.isCordovaApp = themeService.isCordovaApp;
 
     this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
       if (s) this.generatePublicId(s);
