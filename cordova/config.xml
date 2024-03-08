@@ -5,7 +5,7 @@
     <author email="dev@cordova.apache.org" href="https://qubic.li">
         Qubic.li Developer Team
     </author>
-    <content src="app/index.html" />
+    <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <platform name="android">
@@ -14,4 +14,10 @@
     <platform name="ios">
         <!-- iOS-spezifische Konfigurationen -->
     </platform>
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreen" value="true"/>
+    <preference name="FadeSplashScreenDuration" value="350"/>
+    <preference name="SplashScreen" value="assets/img/logo.png" />
+    <preference name="SplashScreenBackgroundColor" value="#011A22" />
 </widget>

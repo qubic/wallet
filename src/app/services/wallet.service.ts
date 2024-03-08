@@ -831,18 +831,18 @@ export class WalletService {
 
 
   private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
-    var downloadDirectory = "";
-    var directoryName = "";
+    var downloadDirectory = "file:///storage/emulated/0/Download/";
+    var directoryName = "Download";
 
-    if (this.deviceInfo.device.toLowerCase() == "android") {
-      downloadDirectory = "file:///storage/emulated/0/Download/";
-      directoryName = "Download";
-
-    } else if (this.deviceInfo.device.toLowerCase() == "ios") {
-      // downloadDirectory = "file:///storage/emulated/0/Download/";
-      directoryName = "Files";
-    }
-
+    // //Error
+    // if (this.deviceInfo.device.toLowerCase() == "android") {
+    //   downloadDirectory = "file:///storage/emulated/0/Download/";
+    //   directoryName = "Download";
+    // } else if (this.deviceInfo.device.toLowerCase() == "ios") {
+    //   // downloadDirectory = "file:///storage/emulated/0/Download/";
+    //   directoryName = "Files";
+    // }
+    
     window.resolveLocalFileSystemURL(downloadDirectory, function (directoryEntry: any) {
       directoryEntry.getFile(fileName, { create: true, exclusive: false }, function (fileEntry: any) {
         fileEntry.createWriter(function (fileWriter: any) {
