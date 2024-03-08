@@ -37,9 +37,6 @@ export class AppComponent {
         this.checkSize();
       }
     );
-    addEventListener('deviceready', () => {
-      alert('Cordova and plugins are ready');
-    }, false);
   }
 
   checkSize() {

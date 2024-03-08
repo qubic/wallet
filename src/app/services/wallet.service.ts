@@ -7,6 +7,7 @@ import { ITx } from '../model/tx';
 import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
 import { OnReadOpts } from 'net';
+import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 
 declare var window: any;
 declare var cordova: any;
@@ -17,6 +18,7 @@ declare var cordova: any;
 })
 export class WalletService {
   private runningConfiguration: IConfig;
+  private deviceInfo!: DeviceInfo;
 
   private configName = 'wallet-config';
   public privateKey: CryptoKey | null = null;
@@ -27,7 +29,6 @@ export class WalletService {
   public configError = false;
   public erroredCOnfig: string = '';
   public shouldExportKey = true;
-  
 
   public isWalletReady = false;
 
@@ -93,7 +94,7 @@ export class WalletService {
   }
 
   private async loadConfigFromStorage() {
-    if(!this.persistence)
+    if (!this.persistence)
       return;
 
     const jsonString = localStorage.getItem(this.configName);
@@ -163,7 +164,7 @@ export class WalletService {
 
     // todo: load web bridges dynamically
 
-    
+
   }
 
   public async createNewKeys() {
@@ -277,7 +278,7 @@ export class WalletService {
     }
   }
 
-  
+
   /**
    * remove assets that are no longer updated
    * @param referenceTick the tick from which on we consider an asset as old
@@ -372,7 +373,7 @@ export class WalletService {
   }
 
   private async saveConfig(lock: boolean) {
-    if(!this.persistence)
+    if (!this.persistence)
       return;
     if (lock) {
       // when locking we don't want that the public key is saved.
@@ -729,7 +730,7 @@ export class WalletService {
     }
 
     const blob = new Blob([jsonKey], { type: 'application/octet-stream' });
-    this.downloadBlob('qubic-wallet.vault', blob,isCordova);
+    this.downloadBlob('qubic-wallet.vault', blob, isCordova);
     this.shouldExportKey = false;
   }
 
@@ -771,7 +772,7 @@ export class WalletService {
   }
 
   // OBSOLETE: LEGACY!!!
-  public async exportConfig( isCordova: boolean): Promise<boolean> {
+  public async exportConfig(isCordova: boolean): Promise<boolean> {
     if (
       !this.runningConfiguration.seeds ||
       this.runningConfiguration.seeds.length <= 0
@@ -819,7 +820,7 @@ export class WalletService {
     return buff;
   }
 
- 
+
   downloadBlob(fileName: string, blob: Blob, isCordova: boolean): void {
     if (isCordova) {
       this.downloadBlobToFileCordova(fileName, blob);
@@ -829,33 +830,42 @@ export class WalletService {
   }
 
 
-  private downloadBlobToFileCordova(fileName: string, blob: Blob): void {    
-    var downloadDirectory = "file:///storage/emulated/0/Download/";
+  private downloadBlobToFileCordova(fileName: string, blob: Blob): void {
+    var downloadDirectory = "";
+    var directoryName = "";
 
-    window.resolveLocalFileSystemURL(downloadDirectory, function(directoryEntry: any) {
-        directoryEntry.getFile(fileName, { create: true, exclusive: false }, function(fileEntry: any) {
-            fileEntry.createWriter(function(fileWriter: any) {
-                fileWriter.onwriteend = function() {
-                    alert("Successful file write in /Download");
-                    // Optional: You can perform further actions after the file is written successfully
-                };
+    if (this.deviceInfo.device.toLowerCase() == "android") {
+      downloadDirectory = "file:///storage/emulated/0/Download/";
+      directoryName = "Download";
 
-                fileWriter.onerror = function(e: any) {
-                    alert("Failed file write: " + e.toString());
-                };
+    } else if (this.deviceInfo.device.toLowerCase() == "ios") {
+      // downloadDirectory = "file:///storage/emulated/0/Download/";
+      directoryName = "Files";
+    }
 
-                fileWriter.write(blob);
-            }, function(error: any) {
-                alert("Error creating file writer: " + error.code);
-            });
-        }, function(error: any) {
-            alert("Error getting file: " + error.code);
+    window.resolveLocalFileSystemURL(downloadDirectory, function (directoryEntry: any) {
+      directoryEntry.getFile(fileName, { create: true, exclusive: false }, function (fileEntry: any) {
+        fileEntry.createWriter(function (fileWriter: any) {
+          fileWriter.onwriteend = function () {
+            alert("Successful file write in /" + directoryName);
+            // Optional: You can perform further actions after the file is written successfully
+          };
+
+          fileWriter.onerror = function (e: any) {
+            alert("Failed file write: " + e.toString());
+          };
+
+          fileWriter.write(blob);
+        }, function (error: any) {
+          alert("Error creating file writer: " + error.code);
         });
-    }, function(error: any) {
-        alert("Error resolving filesystem URL: " + error.code);
+      }, function (error: any) {
+        alert("Error getting file: " + error.code);
+      });
+    }, function (error: any) {
+      alert("Error resolving filesystem URL: " + error.code);
     });
-}
-
+  }
 
 
   private downloadBlobWeb(fileName: string, blob: Blob): void {
