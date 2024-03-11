@@ -12,5 +12,7 @@ fs.emptyDirSync('cordova/www/app');
 // copy files
 fs.copySync('dist/qubic-wallet', 'cordova/www/app');
 
+fs.copySync('cordova/config.xml', 'cordova/www/app/config.xml');
+
 // cordova ready
 // childProcess.execSync('cordova prepare');
