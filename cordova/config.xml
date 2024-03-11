@@ -1,3 +1,5 @@
+xm
+
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.qubic.wallet" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Qubic Wallet</name>
@@ -5,9 +7,13 @@
     <author email="dev@cordova.apache.org" href="https://qubic.li">
         Qubic.li Developer Team
     </author>
-    <content src="index.html" />
+    <content src="app/index.html" />
+    <allow-navigation href="app/*" />  
+    <access origin="app/*" />
+    <allow-intent href="app/*" />
+    <!-- <content src="index.html" />
     <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
+    <allow-intent href="https://*/*" /> -->
     <platform name="android">
         <allow-intent href="market:*" />   
     </platform>
