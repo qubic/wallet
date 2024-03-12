@@ -5,11 +5,6 @@
     <author email="dev@cordova.apache.org" href="https://qubic.li">
         Qubic.li Developer Team
     </author>
-    <!-- <content src="app/index.html" /> -->
-    <!-- <allow-navigation href="app/*" />   -->
-    <!-- <access origin="app/*" />
-    <allow-intent href="app/*" /> -->
-
     <content src="app/index.html" />
     <allow-intent href="http://*/app/*" />
     <allow-intent href="https://*/app/*" />
@@ -18,14 +13,22 @@
         <config-file target="AndroidManifest.xml" parent="/*" xmlns:android="http://schemas.android.com/apk/res/android">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/splashscreen.png" />
+        <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#011A22" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#011A22" />
     </platform>
     <platform name="ios">
-        <!-- iOS-spezifische Konfigurationen -->
+         <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
+    <splash src="res/screen/ios/Default@2x~universal~comany.png" />
+    <splash src="res/screen/ios/Default@2x~universal~comcom.png" />
+    <splash src="res/screen/ios/Default@3x~universal~anyany.png" />
+    <splash src="res/screen/ios/Default@3x~universal~anycom.png" />
+    <splash src="res/screen/ios/Default@3x~universal~comany.png" />
+
     </platform>
+    <icon src="www/img/icon-512x512.png" />
     <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="3000" />
     <preference name="FadeSplashScreen" value="true"/>
     <preference name="FadeSplashScreenDuration" value="350"/>
-    <preference name="SplashScreen" value="assets/img/logo.png" />
-    <preference name="SplashScreenBackgroundColor" value="#011A22" />
+    <preference name="SplashScreenDelay" value="3000" />
 </widget>
