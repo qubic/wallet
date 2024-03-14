@@ -197,7 +197,7 @@
     "title": "Unlock Vault",
     "title.new": "Create Vault",
     "welcomeMessage": "Welcome to the Qubic Wallet.\nTo use this Wallet you must create a Vault file. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
-    "reasonMessage": "To unlock your Vault, your Vault or wallet unlock file is needed. This file is automatically deleted once this page is reloaded or closed.",
+    "reasonMessage": "To unlock your Vault, your Vault file or wallet unlock file is needed. The wallet data is automatically deleted once this page is reloaded or closed.",
     "choosePrivateKeyFile": "Select Vault File",
     "chooseConfigFile": "Select Config file",
     "overwriteVault": "It looks like there is already some data saved in this Browser. Do you really want to overwrite it?",
