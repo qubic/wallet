@@ -245,8 +245,7 @@ export class AssetsComponent implements OnInit {
 
     const assetTransfer = new QubicTransferAssetPayload()
       .setIssuer(sourceAsset.issuerIdentity)
-      .setPossessor(sourcePublicKey)
-      .setnewOwner(targetAddress)
+      .setNewOwnerAndPossessor(targetAddress)
       .setAssetName(assetName)
       .setNumberOfUnits(numberOfUnits);
 
