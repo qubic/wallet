@@ -82,7 +82,7 @@
     "form": {
       "info": "Send Assets",
       "fees": "Fixed sending fees: 1,000,000 Qubic",
-      "balance": "Your balance after deducting transfer fees (1M Qubic) will be :",
+      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",

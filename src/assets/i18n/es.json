@@ -82,6 +82,7 @@
     "form": {
       "info": "Envío de Assets",
       "fees": "Costo fijo del envío: 1,000,000 Qubic",
+      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
       "select": "Seleccione un Asset",
       "select.error": "Debe seleccionar un Asset",
       "placeholder": "Address ID of the receiver",
