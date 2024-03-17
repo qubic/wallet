@@ -53,7 +53,7 @@ export class PaymentComponent implements OnInit {
     sourceId: [''],
     destinationId: ["", this.destinationValidators],
     selectedDestinationId: [""],
-    amount: [10000, [Validators.required, Validators.min(1)]],
+    amount: [0, [Validators.required, Validators.min(1)]],
     tick: [0, [Validators.required]],
   });
 
