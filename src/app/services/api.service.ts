@@ -145,9 +145,15 @@ export class ApiService {
         },
         body: submitTransaction,
         responseType: 'json'
-      }
-    );
-  }
+      }).pipe(
+        map((response: any) => {
+          if (response && response.status !== 200) {
+            throw new Error('HTTP Status Error: ' + response.status);
+          }
+          return response.body;
+        })
+      );
+    }
 
   public getCurrentTick() {
     let localVarPath = `/Public/CurrentTick`;

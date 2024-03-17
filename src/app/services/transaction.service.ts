@@ -102,14 +102,14 @@ export class TransactionService {
             };
         }
 
-        if(!(await qtx.sourcePublicKey.verifyIdentity())){
+        if (!(await qtx.sourcePublicKey.verifyIdentity())) {
             return {
                 success: false,
                 message: "Invalid Source Address"
             };
         }
 
-        if(!(await qtx.destinationPublicKey.verifyIdentity())){
+        if (!(await qtx.destinationPublicKey.verifyIdentity())) {
             return {
                 success: false,
                 message: "Invalid Destination Address"
@@ -129,29 +129,32 @@ export class TransactionService {
             const binaryData = qtx.getPackageData();
 
             // submit transaction to the qli api/proxy
-            const apiResult = await lastValueFrom(this.api.submitTransaction({ SignedTransaction: this.walletService.arrayBufferToBase64(binaryData) }));
-
-            if (apiResult && apiResult.id) {
-                // transaction was submitted successful
-                this.updateService.loadCurrentBalance(); // reload balance to get created tx into list of tx's
-
+            try {
+                const apiResult = await lastValueFrom(this.api.submitTransaction({ SignedTransaction: this.walletService.arrayBufferToBase64(binaryData) }));
+                // Handle the successful response here
+                if (apiResult && apiResult.id) {
+                    // transaction was submitted successfully
+                    this.updateService.loadCurrentBalance(); // reload balance to get created tx into list of tx's
+                    return {
+                        success: true
+                    };
+                } else {
+                    // failed to submit solution to qli api
+                    return {
+                        success: false,
+                        message: this.t.translate('paymentComponent.messages.failedToSend')
+                    };
+                }
+            } catch (error) {
+                console.error('Error occurred:', error);
+                // Handle any errors that occur during the HTTP request
                 return {
-                    success: true
+                    success: false,
+                    message: this.t.translate('paymentComponent.messages.failedToSend') 
                 };
             }
-            else // failed to submit solution to qli api
-            {
-
-                return {
-                    success: true,
-                    message: this.t.translate('paymentComponent.messages.failedToSend')
-                };
-            }
-
         }
     }
-
-
 }
 
 interface ITransactionPublishResult {
