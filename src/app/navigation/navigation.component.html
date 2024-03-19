@@ -43,6 +43,7 @@
         <qli-lock
           *ngIf="walletService.isWalletReady && !walletService.configError"
         ></qli-lock>
+        <mat-icon (click)="openPrivacyPolicy()">gavel</mat-icon>
         <qli-language-chooser></qli-language-chooser>
         <button
           *ngIf="showMinimize && environmentService.isElectron"

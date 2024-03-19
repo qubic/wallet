@@ -45,7 +45,7 @@ export class NavigationComponent implements OnInit {
     private transloco: TranslocoService, private _snackBar: MatSnackBar,
     public themeService: ThemeService, private breakpointObserver: BreakpointObserver,
     public walletService: WalletService, private changeDetectorRef: ChangeDetectorRef, private media: MediaMatcher,
-    public environmentService: EnvironmentService) {
+    public environmentService: EnvironmentService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -155,6 +155,10 @@ export class NavigationComponent implements OnInit {
     } else if ((<any>document).msExitFullscreen) { /* IE11 */
       (<any>document).msExitFullscreen();
     }
+  }
+
+  openPrivacyPolicy() {
+    this.router.navigate(['/privacy-policy']);
   }
 
 }
