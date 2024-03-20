@@ -167,9 +167,6 @@ export class MainComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         this.setDataSource();
         this.refreshData();
-        if (result) {
-          this.openExportDialog();
-        }
       })
     }
   }
