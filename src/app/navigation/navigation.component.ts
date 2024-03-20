@@ -158,7 +158,7 @@ export class NavigationComponent implements OnInit {
   }
 
   openPrivacyPolicy() {
-    this.router.navigate(['/privacy-policy']);
+    window.open('https://qubic.org/Privacy-policy', '_blank');
   }
 
 }

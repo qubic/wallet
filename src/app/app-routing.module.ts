@@ -16,7 +16,6 @@ import { CreateVaultComponent } from './public/create-vault/create-vault.compone
 import { walletReadyGuard } from './guards/wallet-ready.guard';
 import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {
@@ -87,10 +86,6 @@ const routes: Routes = [
   {
     path     : 'assets',
     component: AssetsComponent
-  },
-  {
-    path     : 'privacy-policy',
-    component: PrivacyPolicyComponent
   },
 ];
 

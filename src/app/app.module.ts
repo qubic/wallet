@@ -77,7 +77,6 @@ import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -121,8 +120,7 @@ export const httpInterceptorProviders = [
     CreateVaultComponent,
     PublicUnLockComponent,
     ImportVaultComponent,
-    FileSelectorComponent,
-    PrivacyPolicyComponent
+    FileSelectorComponent
   ],
   imports: [
     BrowserModule,
