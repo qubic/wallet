@@ -319,7 +319,8 @@
       "status.dismissed.tooltip": "Rejeté",
       "status.unknown.tooltip": "Inconnu",
       "status.confirmed.tooltip": "Enregistré",
-      "filter.seed.label": "Filtrer par Seed"
+      "filter.seed.label": "Filtrer par Seed",
+      "exportButton": "Exporter les transactions"
     },
     "repeatTransaction": "Répéter la transaction"
   },

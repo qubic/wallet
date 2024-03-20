@@ -99,4 +99,69 @@ export class BalanceComponent implements OnInit {
       }
     });
   }
+
+  exportTransactionsToCsv() {
+    const now = new Date();
+
+    // Create file names with timestamp
+    const filenameWithTimestamp = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}_transactions.csv`;
+    
+    const csvContent = this.generateCsvContent();
+    this.downloadCsv(csvContent, filenameWithTimestamp);
+  }
+  
+  private generateCsvContent(): string {
+    const csvRows = [];
+  
+    // Header
+    const headers = ['Status', 'Transaction ID', 'Amount', 'Tick', 'Source', 'Destination'];
+    csvRows.push(headers.join(','));
+  
+    // rows
+    this.getTransactions(this.seedFilterFormControl.value).forEach(transaction => {
+      const row = [
+        this.getTransactionStatusLabel(transaction.status), 
+        transaction.id,
+        transaction.amount,
+        transaction.targetTick,
+        transaction.sourceId,
+        transaction.destId,
+      ];
+      csvRows.push(row.join(','));
+    });
+  
+    return csvRows.join('\n');
+  }
+  
+  private getTransactionStatusLabel(status: string): string {
+    switch (status) {
+      case 'Pending':
+      case 'Broadcasted':
+        return 'Pending';
+      case 'Confirmed':
+      case 'Staged':
+        return 'Confirmed';
+      case 'Success':
+        return 'Executed';
+      case 'Failed':
+        return 'Dismissed';
+      case 'Unknown':
+        return 'Unknown';
+      case 'Created':
+        return 'Created';
+      default:
+        return '';
+    }
+  }
+  
+  private downloadCsv(data: string, filename: string) {
+    const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    window.URL.revokeObjectURL(url);
+  }
+  
 }

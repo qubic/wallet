@@ -320,7 +320,8 @@
       "status.dismissed.tooltip": "Dismissed",
       "status.unknown.tooltip": "Unknown",
       "status.confirmed.tooltip": "Staged",
-      "filter.seed.label": "Filter by Seed"
+      "filter.seed.label": "Filter by Seed",
+      "exportButton": "Export Transactions"
     },
     "repeatTransaction": "Repeat Transaction"
   },

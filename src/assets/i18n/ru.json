@@ -320,7 +320,8 @@
       "status.dismissed.tooltip": "Отклонено",
       "status.unknown.tooltip": "Неизвестно",
       "status.confirmed.tooltip": "Непонятно",
-      "filter.seed.label": "Сортировка по seed"
+      "filter.seed.label": "Сортировка по seed",
+      "exportButton": "Экспорт транзакций"
     },
     "repeatTransaction": "Repeat Transaction"
   },
