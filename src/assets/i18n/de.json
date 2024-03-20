@@ -319,7 +319,8 @@
       "status.dismissed.tooltip": "Fehlgeschlagen",
       "status.unknown.tooltip": "Unbekannt",
       "status.confirmed.tooltip": "Vorbereitet",
-      "filter.seed.label": "Filtern nach Konto"
+      "filter.seed.label": "Filtern nach Konto",
+      "exportButton": "Export Buchungen"
     },
     "repeatTransaction": "Zahlung wiederholen"
   },

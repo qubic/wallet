@@ -319,7 +319,8 @@
       "status.dismissed.tooltip": "Niet uitgevoerd",
       "status.unknown.tooltip": "Onebekend",
       "status.confirmed.tooltip": "Gecontroleerd",
-      "filter.seed.label": "Filter op Seed"
+      "filter.seed.label": "Filter op Seed",
+      "exportButton": "Transacties exporteren"
     }
   },
   "settings": {
