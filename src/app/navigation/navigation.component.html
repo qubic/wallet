@@ -24,9 +24,9 @@
         </div>
         <qli-notifys *ngIf="walletService.isWalletReady && !walletService.configError"></qli-notifys>
         <qli-lock *ngIf="walletService.isWalletReady && !walletService.configError"></qli-lock>
-        <button mat-icon-button (click)="openPrivacyPolicy();">
+        <!-- <button mat-icon-button (click)="openPrivacyPolicy();">
           <mat-icon>gavel</mat-icon>
-        </button>
+        </button> -->
         <qli-language-chooser></qli-language-chooser>
         <button *ngIf="showMinimize && environmentService.isElectron" (click)="minimize()" mat-icon-button>
           <mat-icon>minimize</mat-icon>
