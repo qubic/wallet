@@ -12,7 +12,7 @@
       "assets": "Assets"
     },
     "version": "Version {{version}} - beta",
-    "version.url": "wallet.qubic.li",
+    "version.url": "qubic.org",
     "copy.tooltip": "Copy",
     "error": "Error",
     "close": "close",

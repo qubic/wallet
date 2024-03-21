@@ -12,7 +12,7 @@
       "assets": "Assets"
     },
     "version": "Version {{version}} - Beta",
-    "version.url": "qubic.li",
+    "version.url": "qubic.org",
     "copy.tooltip": "Kopieren",
     "error": "Fehler",
     "close": "Schließen",
