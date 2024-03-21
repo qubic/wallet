@@ -1,47 +1,38 @@
 <ng-container *transloco="let t">
     <div class="content_container">
-        <h1>{{ t("balanceComponent.title") }}</h1>
+        <h1>{{ t("balanceComponent.transactions.title") }}</h1>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
+            <mat-select [formControl]="seedFilterFormControl">
+                <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId">
+                    {{seed.alias}} | {{ seed.publicId }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="flex flex-wrap card-list">
+            <div>
+                <button [disabled]="getTransactions().length <= 0" color="accent" mat-raised-button
+                    (click)="exportTransactionsToCsv()">
+                    <mat-icon>file_download</mat-icon>
+                    {{ t("balanceComponent.transactions.exportButton") }}
+                </button>
+            </div>
+            <div style="margin-left: auto;" class="text-right">
+                <div class="dashboard-amount-name">
+                    {{ t("dashboard.totalBalance") }}
+                </div>
+                <span class="disable-area">
+                    {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
+                </span> /
+                <span class="dashboard-amount-name disable-area">
+                    ${{currentPrice.price * getTotalBalance() | number : "1.0-2"}}
+                </span>
+            </div>
+        </div>
         <div *ngIf="accountBalances.length > 0">
             <mat-card class="transfer-card">
-                <mat-card-header>
-                    <mat-card-title>
-                        <h2> {{ t("balanceComponent.overview.title") }}</h2>
-                    </mat-card-title>
-                </mat-card-header>
                 <mat-card-content>
-                    <div>
-                        {{ t("balanceComponent.overview.estimatedWalletValue") }} <strong>{{ getTotalBalance(true) |
-                            number: '1.0-0' }} {{ t("general.currency") }}</strong>
-                        {{ t("balanceComponent.overview.baseDate")}} {{ getDate() | date }}<br><br>
-                        {{ t("balanceComponent.overview.totalWalletValue") }} <strong>{{ getTotalBalance() | number:
-                            '1.0-0' }} {{ t("general.currency") }}</strong>
-                        {{ t("balanceComponent.overview.baseDate")}} {{ accountBalances[0].baseDate | date }}
-                    </div>
-                </mat-card-content>
-            </mat-card>
-            <br>
-            <mat-card class="transfer-card">
-                <mat-card-header>
-                    <mat-card-title>
-                        <h2> {{ t("balanceComponent.transactions.title") }}</h2>
-                    </mat-card-title>
-                </mat-card-header>
-                <div>
-                    <button [disabled]="getTransactions().length <= 0" color="accent" mat-raised-button
-                        (click)="exportTransactionsToCsv()">
-                        <mat-icon>file_download</mat-icon>
-                        {{ t("balanceComponent.transactions.exportButton") }}
-                    </button>
-                </div>
-                <mat-card-content>
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
-                        <mat-select [formControl]="seedFilterFormControl">
-                            <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId">
-                                {{seed.alias}} | {{ seed.publicId }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
                     <div *ngIf="getTransactions().length <= 0">
                         {{ t("balanceComponent.transactions.noTransactions") }}
                     </div>
