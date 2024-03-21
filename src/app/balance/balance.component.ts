@@ -3,7 +3,7 @@ import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, Transaction, MarketInformation } from '../services/api.model';
+import { BalanceResponse, Transaction } from '../services/api.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -19,7 +19,6 @@ export class BalanceComponent implements OnInit {
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
   public transactions: Transaction[] = [];
-  currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
   }

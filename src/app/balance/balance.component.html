@@ -19,13 +19,14 @@
             </div>
             <div style="margin-left: auto;" class="text-right">
                 <div class="dashboard-amount-name">
-                    {{ t("dashboard.totalBalance") }}
+                    {{ t("balanceComponent.overview.estimatedWalletValue") }} {{
+                    t("balanceComponent.overview.baseDate")}} {{ getDate() | date }} = <strong>{{ getTotalBalance(true) |
+                        number: '1.0-0' }} {{ t("general.currency") }}</strong>
                 </div>
-                <span class="disable-area">
-                    {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
-                </span> /
                 <span class="dashboard-amount-name disable-area">
-                    ${{currentPrice.price * getTotalBalance() | number : "1.0-2"}}
+                    {{ t("balanceComponent.overview.totalWalletValue") }} {{ t("balanceComponent.overview.baseDate")}}
+                    {{ accountBalances[0].baseDate | date }} = <strong>{{ getTotalBalance() | number:
+                        '1.0-0' }} {{ t("general.currency") }}</strong>
                 </span>
             </div>
         </div>
