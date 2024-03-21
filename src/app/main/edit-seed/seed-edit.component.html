@@ -24,7 +24,7 @@
       <div class="seedInput" *ngIf="seedEditForm.controls['isWatchOnlyAddress'].value">   
         <mat-form-field class="full-width">
           <mat-label>{{ t("seedEditComponent.form.watchOnlyAddress.placeholder") }}</mat-label>
-          <input matInput [placeholder]="t('seedEditComponent.form.seed.placeholder')" formControlName="publicId" type="text">
+          <input matInput formControlName="publicId" type="text">
           <mat-error *ngIf="seedEditForm.controls['publicId'].hasError('required')">
             {{ t("seedEditComponent.form.watchOnlyAddress.error.required")}}
           </mat-error>
@@ -46,7 +46,7 @@
       <div class="seedInput" *ngIf="isNew && !seedEditForm.controls['isWatchOnlyAddress'].value">   
         <mat-form-field class="full-width">
           <mat-label>{{ t("seedEditComponent.form.seed.placeholder") }}</mat-label>
-          <input matInput [placeholder]="t('seedEditComponent.form.seed.placeholder')" formControlName="seed" type="text">         
+          <input matInput formControlName="seed" type="text">         
         </mat-form-field>
         <mat-hint class="seed-length" align="end"> {{ seedEditForm.controls['seed'].value?.length }} / 55</mat-hint>        
       </div>
