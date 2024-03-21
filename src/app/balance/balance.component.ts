@@ -105,25 +105,31 @@ export class BalanceComponent implements OnInit {
 
     // Create file names with timestamp
     const filenameWithTimestamp = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}_transactions.csv`;
-    
+
     const csvContent = this.generateCsvContent();
     this.downloadCsv(csvContent, filenameWithTimestamp);
   }
-  
+
   private generateCsvContent(): string {
     const csvRows = [];
   
+    // sort targetTick 
+    const sortedTransactions = this.getTransactions(this.seedFilterFormControl.value).sort((a, b) => {
+      return a.targetTick - b.targetTick;
+    });
+  
     // Header
-    const headers = ['Status', 'Transaction ID', 'Amount', 'Tick', 'Source', 'Destination'];
+    const headers = ['Tick', 'Status', 'Amount', 'Created', 'Transaction ID', 'Source', 'Destination'];
     csvRows.push(headers.join(','));
   
-    // rows
-    this.getTransactions(this.seedFilterFormControl.value).forEach(transaction => {
+    // Datenzeilen hinzufügen
+    sortedTransactions.forEach(transaction => {
       const row = [
-        this.getTransactionStatusLabel(transaction.status), 
-        transaction.id,
-        transaction.amount,
         transaction.targetTick,
+        this.getTransactionStatusLabel(transaction.status),
+        transaction.amount,
+        transaction.created,
+        transaction.id,
         transaction.sourceId,
         transaction.destId,
       ];
@@ -133,6 +139,8 @@ export class BalanceComponent implements OnInit {
     return csvRows.join('\n');
   }
   
+  
+
   private getTransactionStatusLabel(status: string): string {
     switch (status) {
       case 'Pending':
@@ -153,7 +161,7 @@ export class BalanceComponent implements OnInit {
         return '';
     }
   }
-  
+
   private downloadCsv(data: string, filename: string) {
     const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
@@ -163,5 +171,5 @@ export class BalanceComponent implements OnInit {
     anchor.click();
     window.URL.revokeObjectURL(url);
   }
-  
+
 }
