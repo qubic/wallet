@@ -19,15 +19,16 @@
                     </div>
                 </mat-card-content>
             </mat-card>
-            <br>            
+            <br>
             <mat-card class="transfer-card">
                 <mat-card-header>
                     <mat-card-title>
                         <h2> {{ t("balanceComponent.transactions.title") }}</h2>
                     </mat-card-title>
                 </mat-card-header>
-                <div *ngIf="getTransactions().length > 0">
-                    <button color="accent" mat-raised-button (click)="exportTransactionsToCsv()">
+                <div>
+                    <button [disabled]="getTransactions().length <= 0" color="accent" mat-raised-button
+                        (click)="exportTransactionsToCsv()">
                         <mat-icon>file_download</mat-icon>
                         {{ t("balanceComponent.transactions.exportButton") }}
                     </button>
@@ -87,7 +88,7 @@
                                     [cdkCopyToClipboard]="transaction.destId">{{ transaction.destId }} {{
                                     getSeedName(transaction.destId) }}</span></div>
                         </div>
-                    </div>                   
+                    </div>
                 </mat-card-content>
             </mat-card>
         </div>
