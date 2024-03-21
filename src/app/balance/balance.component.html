@@ -33,7 +33,6 @@
         <div *ngIf="accountBalances.length > 0">
             <mat-card class="transfer-card">
                 <mat-card-content>
-
                     <div *ngIf="getTransactions().length <= 0">
                         {{ t("balanceComponent.transactions.noTransactions") }}
                     </div>
@@ -54,6 +53,10 @@
                             <div class="trans-date"> Tick: <a
                                     [href]="'https://app.qubic.li/network/explorer/block/' + transaction.targetTick"
                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}</a></div>
+                        </div>
+                        <div> 
+                            {{ transaction.created | date}}<br>
+                            {{ transaction.created | date:'HH:mm:ss' }}
                         </div>
                         <div class="send-receive-indicator">
                             <button
