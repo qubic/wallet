@@ -150,7 +150,8 @@ export class AssetsComponent implements OnInit {
   }
 
   openIssuerIdentity(issuerIdentity: string): void {
-    const url = `https://app.qubic.li/network/explorer/address/${issuerIdentity}`;
+    // const url = `https://app.qubic.li/network/explorer/address/${issuerIdentity}`;
+    const url = `https://explorer.qubic.org/network/address/${issuerIdentity}`;
     window.open(url, '_blank');
   }
 
