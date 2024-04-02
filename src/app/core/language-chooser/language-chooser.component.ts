@@ -14,10 +14,11 @@ export class LanguageChooserComponent implements OnInit {
     'de': 'Deutsch',
     'en': 'English',
     'es': 'Español',
-    'nl': 'Nederlands',
-    'ru': 'Русский',
     'fr': 'Français',
+    'nl': 'Nederlands',
     'pt': 'Português',
+    'ru': 'Русский',
+    'tr': 'Türkçe',
   };
 
   public selected: string = "en"; 

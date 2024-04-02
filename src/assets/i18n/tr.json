@@ -1,0 +1,551 @@
+{
+  "general": {
+    "title": "Qubic - Cüzdan",
+    "comingSoon": "Çok yakında!",
+    "navigation": {
+      "home": "Gösterge Paneli",
+      "payment": "Ödeme",
+      "balance": "Bakiye",
+      "settings": "Ayarlar",
+      "voting": "Oylama",
+      "ipo": "IPO",
+      "assets": "Varlıklar"
+    },
+    "version": "Versiyon {{version}} - beta",
+    "version.url": "wallet.qubic.li",
+    "copy.tooltip": "Kopyala",
+    "error": "Hata",
+    "close": "Kapat",
+    "currency": "QUBIC",
+    "currentTick": "Onay İşareti: {{tick}}",
+    "loading": "Yükleniyor...",
+    "buttons": {
+      "close": "Kapat",
+      "maximize": "Büyüt"
+    },
+    "messages": {
+      "notConnected": "Qubic Ağına bağlı değil. Lütfen önce bağlanın.",
+      "refreshRequested": "Yenileme talep edildi.",
+      "refreshFailed": "Yenileme başarısız oldu, lütfen daha sonra tekrar deneyin.",
+      "balanceReceived": "Ağ, {{publicId}} için {{balance}} QUBIC bildirdi.",
+      "timeoutTryAgain": "Zaman aşımı yaşanıyor. Lütfen tekrar deneyin."
+    }
+  },
+  "payment": {
+    "keyRequestReason": "İşlemler anahtarınızla dijital olarak imzalandığından, önce anahtarınızı yüklemeniz gerekir."
+  },
+  "confirmDialog": {
+    "title": "Onayla",
+    "buttons": {
+      "cancel": "İptal",
+      "confirm": "Evet, Onaylıyorum"
+    },
+    "confirmationText": "Emin misiniz?"
+  },
+  "notifyComponent": {
+    "saveYourSettings": "Lütfen Ayarlarınızı Dışa Aktarın/İndirin. Ayarlarınız cüzdanınızı geri yüklemek için ihtiyaç duyduğunuz şifrelenmiş kurtarma ifadesi içerir.",
+    "saveYourKey": "Lütfen bu dosyayı güvenli bir yerde saklayın.",
+    "qubicLiSync": "Ayarlarınızı qubic.li ile senkronize edin",
+    "qubicOffline": "QUBIC ağı bağlı değil",
+    "qubicOnline": "QUBIC ağına bağlı"
+  },
+  "revealSeedComponent": {
+    "title": "Adres Bilgisi",
+    "publicId": "Adres Kimliği",
+    "privateId": "55 karakterlik Özel Anahtar",
+    "buttons": {
+      "close": "Kapat"
+    }
+  },
+  "assetsComponent": {
+    "title": "Varlıklar",
+    "openAssets": "Varlık Yönetimine Git",
+    "overview": {
+      "title": "Varlıklara Genel Bakış"
+    },
+    "table": {
+      "publicId": "Adres Kimliği",
+      "contractIndex": "Sözleşme Endeksi",
+      "assetName": "Varlık Adı",
+      "contractName": "Sözleşme Adı",
+      "ownedAmount": "Sahip Olunan Tutar",
+      "possessedAmount": "İşlem Gören Tutar",
+      "tick": "{{tick}} Tick için geçerlidir",
+      "reportingNodes": "Raporlama Düğümleri",
+      "issuerIdentity": "Veren Kimliği"
+    },
+    "buttons": {
+      "close": "Kapat",
+      "refresh": "Yenile",
+      "send": "Varlık Transfer Et"
+    },
+    "form": {
+      "info": "Varlık Gönder",
+      "fees": "Sabit gönderim ücreti: 1.000.000 Qubic",
+      "balance": "Transfer ücretleri (1M Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
+      "select": "Varlık Seç",
+      "select.error": "Varlık seçimi gereklidir",
+      "placeholder": "Alıcının adres kimliği",
+      "placeholder.error": "55 karakterlik anahtar gereklidir.",
+      "amount": "Gönderilecek Tutar",
+      "amount.error": "Tutar gereklidir",
+      "amount.value.error": "Tutar 0'dan büyük olmalıdır",
+      "amount.max.error": "Tutar, sahip olunan miktarı aşamaz",
+      "tick": "Tick",
+      "tick.error": "Tick gereklidir",
+      "tick.tooltip": "Tick gereklidir",
+      "tick.min": "Tick en az {{currentTick}} olmalıdır",
+      "buttons": {
+        "send": "Gönder",
+        "cancel": "İptal",
+        "error.balance": "Yetersiz bakiye, minimum bakiye 1.000.000 Qubic olmalıdır"
+      }
+    },
+    "noAssets": "Kullanılabilir Varlık Bulunamadı"
+  },
+  "qrReceiveComponent": {
+    "title": "Ödeme Al",
+    "downloadLink": "İndir",
+    "hint": "{{publicId}}'ye ödeme almak için bu QR Kodunu tarayın/gönderin",
+    "buttons.close": "Kapat"
+  },
+  "seedEditComponent": {
+    "title.add": "Adres Ekle",
+    "title.edit": "Adresi Düzenle",
+    "newSeedName": "Adres Adı",
+    "seedWarning": "<b>ÖNEMLİ!<br> Bu 55 Karakter, Qubic Özel Anahtarınızdır!<br>Bu anahtarı güvenli bir yerde kaydedin/saklayın.<br>Anahtar(lar)ınızı yedeklemezseniz, varlıklarınızı kaybedebilirsiniz!<br><br>Bu konu hakkında daha fazla bilgi:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase -backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a>",
+    "form": {
+      "alias": {
+        "placeholder": "Adresinize daha rahat kullanabilmek için bir ad verin.",
+        "error": {
+          "required": "Ad Zorunludur",
+          "min": "Ad en az 3 karakterden oluşmalıdır",
+          "max": "Ad en fazla 50 karakterden oluşmalıdır",
+          "regex": "Yalnızca {{regex}} içerebilir"
+        }
+      },
+      "seed": {
+        "placeholder": "55 karakterlik Anahtar",
+        "error": {
+          "required": "55 karakterlik bir anahtar gereklidir.",
+          "min": "55 karakterlik anahtar tam olarak 55 küçük harf karakterden oluşmalıdır",
+          "max": "55 karakterlik anahtar tam olarak 55 küçük harf karakterden oluşmalıdır",
+          "regex": "Yalnızca a-zA-Z0-9_- içerebilir"
+        },
+        "generateSeed": "Rastgele 55 karakterlik bir anahtar oluşturun."
+      },
+      "watchOnlyAddress": {
+        "title": "İzleme Adresi",
+        "placeholder": "60 karakterlik genel anahtar",
+        "error": {
+          "required": "60 karakterlik bir genel anahtar gereklidir.",
+          "min": "60 karakterlik genel anahtar tam olarak 60 büyük harf karakterden oluşmalıdır",
+          "max": "60 karakterlik genel anahtar tam olarak 60 büyük harf karakterden oluşmalıdır",
+          "regex": "Yalnızca A-Z içerebilir"
+        }
+      },
+      "error": {
+        "text": "Lütfen formu kontrol edin.",
+        "close": "Kapat"
+      }
+    },
+    "publicIdMessage": "Adres kimliğiniz:",
+    "privateKeyWarning": "Dikkat! Dosyanız yüklenmedi. Lütfen güvenli bir şekilde sakladığınızdan emin olun.",
+    "buttons": {
+      "cancel": "İptal",
+      "create": "Adres Oluştur",
+      "save": "Adres Kaydet"
+    }
+  },
+  "seedOverviewComponent": {
+    "title": "Adresler",
+    "isTable": "Tabloyu Göster",
+    "addSeedButton": "Adres Ekle",
+    "importButton": "Yükle",
+    "exportButton": "İndir",
+    "search.label": "Ara",
+    "table": {
+      "alias": "Adres Adı",
+      "publicId": "Adres Kimliği",
+      "balance": "Bakiye",
+      "epochChanges": "Dönem Değişimi",
+      "noData": "Filtreyle eşleşen veri yok \"{{q}}\"",
+      "actions": {
+        "title": "İşlemler",
+        "revealSeed": "55 karakterlik bir anahtar yenile",
+        "assets": "Sahip Olunan Varlıkları Göster",
+        "makePayment": "Ödeme Yap",
+        "receivePayment": "Ödeme almak için bir QR Kodu oluşturun.",
+        "editSeed": "Adresi Düzenle",
+        "deleteSeed": "Adresi Sil",
+        "refreshBalance": "Bakiyeyi Ağdan Yenile"
+      }
+    },
+    "hasPendingTransaction": "Bekleyen İşlemler",
+    "marketPrice": "Fiyat",
+    "marketSupply": "Piyasa Arzı",
+    "marketCap": "Piyasa Değeri",
+    "marketCurrency": "$"
+  },
+  "dashboard": {
+    "title": "Gösterge Paneli",
+    "balance": "Bakiye",
+    "currency": "Qu",
+    "totalBalance": "Toplam Bakiye"
+  },
+  "unlockComponent": {
+    "title": "Kasa Kilidini Aç",
+    "title.new": "Yeni Kasa Oluştur",
+    "welcomeMessage": "Qubic Cüzdan'a hoş geldiniz.\nBu Cüzdanı kullanmak için bir Kasa dosyası oluşturmalısınız. Bu dosya, daha sonra verilerinizi şifrelemek/şifresini çözmek için kullanılacak genel/özel anahtarınızı içerecektir.",
+    "reasonMessage": "Kasanızın kilidini açmak için Kasanız veya cüzdan kilit açma dosyanız gereklidir. Bu sayfa yeniden yüklendiğinde veya kapatıldığında bu dosya otomatik olarak silinir.",
+    "choosePrivateKeyFile": "Kasa Dosyanızı Seçin",
+    "chooseConfigFile": "Konfigürasyon Dosyanızı Seçin",
+    "overwriteVault": "Bu Tarayıcıda zaten kayıtlı bazı veriler var gibi görünüyor. Gerçekten üzerine yazmak istiyor musunuz?",
+    "form": {
+      "file.error.required": "Kasa/Cüzdan kilit açma dosyası gerekli",
+      "password.error.required": "Kasa Şifresi Gerekli",
+      "password.error.min": "Şifreniz minimum 8 karakterden oluşmalıdır.",
+      "password.error.wrong": "Your password is incorrect.",
+      "configFile": {
+        "error": {
+          "required": "Şifreniz yanlış."
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "İptal",
+      "generateKey": "Kasa Oluştur",
+      "importAndUnlock": "Kasayı İçe Aktar ve Kilidini Aç",
+      "unlock": "Kasa Kilidini Aç",
+      "existingUser": "Zaten bir Cüzdanım var",
+      "newUser": "Yeni Kasa Oluştur",
+      "closeWallet": "Cüzdanı Kapat",
+      "importVault": "Kasayı İçeri Aktar"
+    },
+    "welcomeHintMessage": "Kasa dosyanızı indirdikten sonra, indirilen dosyayı seçip şifrenizi tekrar girmeniz gerekmektedir. Bu işlem cüzdanınızın kilidini açacaktır."
+  },
+  "lockIconComponent": {
+    "lock": "Kasayı Kilitle",
+    "unlock": "Kasa Kilidini Aç"
+  },
+  "lockComponent": {
+    "title": "Kasa Kapatılsın mı?",
+    "forceDownload": {
+      "title": "Kasa Dosyanızı İndirin",
+      "reason": "Cüzdanınızı kilitlediğinizde, yüklenen Kasa dosyanız otomatik olarak silinir. Kasa dosyası olmadan hiçbir işlem yapılamaz. Lütfen Kasa dosyanızın güvenli bir şekilde saklandığını unutmayın. Herhangi bir şüphe durumunda tekrar dışarı aktarın.",
+      "buttons": {
+        "allOk": "Kilit açma dosyam var, teşekkürler"
+      }
+    },
+    "reason": "Kasa dosyanızı güvenli bir şekilde saklamak çok önemlidir. Lütfen unutamayacağınız güçlü bir şifre seçin ve ardından tıklayın. \"Kaydet\".",
+    "warning": "Kasa dosyamı kaydettiğimi onaylıyorum.",
+    "password.placeholder": "Şifre",
+    "password.required": "Şifre Gerekli",
+    "password.min": "Şifre minimum 8 karakterden oluşmalıdır.",
+    "buttons": {
+      "savePrivateKey": "Kasa Dosyasını Kaydet",
+      "closeWallet": "Kasayı Kilitle",
+      "exportAndCloseWallet": "Kasa dosyasını dışa aktarın ve Cüzdanı kilitleyin",
+      "enableExport": "Kasa dosyasını dışa aktarın",
+      "cancel": "İptal"
+    }
+  },
+  "paymentComponent": {
+    "title": "Qubic Birimleri Gönder (qus)",
+    "messages": {
+      "pleaseUnlock": "Lütfen önce Cüzdanınızın kilidini açın",
+      "storedForPropagation": "İşleminiz onay işaretinde yayılmak üzere saklandı {{tick}}",
+      "failedToSend": "İşleminiz gönderilemedi. Lütfen daha sonra tekrar deneyin.",
+      "failedToDecrypt": "Anahtarınızın şifresini çözemedik. Doğru kilit açma dosyasını (özel anahtar) kullandınız mı?",
+      "failedValidation": "Doğrulama hataları var. Lütfen formu kontrol edin."
+    },
+    "form": {
+      "sourceSeed": {
+        "label": "Qus gönderilecek adres",
+        "error": {
+          "required": "Gönderen adresi gerekli"
+        }
+      },
+      "receiver": {
+        "placeholder": "Alıcının adres kimliği",
+        "hint": "60 büyük harf karakter",
+        "chooseOwnSeed": "Kendi Adres Kimliğinizi seçin",
+        "error": {
+          "required": "Adres kimliği gerekli",
+          "length": "Qubic adres kimliği 60 büyük harften oluşur."
+        }
+      },
+      "amount": {
+        "placeholder": "Qubic (qus) cinsinden Tutar",
+        "max.tooltip": "Cüzdandaki mevcut maksimum tutar",
+        "error": {
+          "required": "Tutar gerekli",
+          "min": "Tutar en az 1 olmalıdır"
+        }
+      },
+      "tick": {
+        "placeholder": "Yürütme Onayı İşareti",
+        "customize.tooltip": "Özel Yürütme Onayı İşareti ayarlayın",
+        "error": {
+          "required": "Onay işareti gerekli",
+          "min": "Onay işareti minimum {{currentTick}} olmalıdır"
+        }
+      }
+    },
+    "buttons": {
+      "send": "İşlemi gerçekleştir",
+      "reset": "Sıfırla",
+      "loadPrivateKey": "Kasa Dosyası Yükle"
+    }
+  },
+  "balanceComponent": {
+    "title": "Bakiye",
+    "createSeedHint": "Lütfen önce bir cüzdan oluşturun",
+    "overview": {
+      "title": "Genel Bakış",
+      "totalWalletValue": "Sabit Cüzdan Değeri",
+      "estimatedWalletValue": "Tahmini Cüzdan Değeri",
+      "baseDate": "per"
+    },
+    "transactions": {
+      "title": "Mevcut Dönemdeki İşlemler",
+      "verificationAlert": "Önizleme verileri doğrulanamadı",
+      "noTransactions": "İşlem bulunamadı",
+      "send.tooltip": "Giden Transfer",
+      "exchange.tooltip": "İç Transfer",
+      "explorer.tooltip": "Transferi Explorer'da Göster",
+      "receive.tooltip": "Gelen Transfer",
+      "status.pending.tooltip": "Bekliyor",
+      "status.executed.tooltip": "Gerçekleşti",
+      "status.dismissed.tooltip": "Reddedildi",
+      "status.unknown.tooltip": "Bilinmiyor",
+      "status.confirmed.tooltip": "Aşamalı",
+      "filter.seed.label": "Cüzdana göre filtrele"
+    },
+    "repeatTransaction": "İşlemi Tekrarla"
+  },
+  "settings": {
+    "general": {
+      "title": "Web Köprüsü",
+      "tickAddition.placeholder": "Yeni bir işlem için mevcut Onay İşaretine eklenen Onay İşareti sayısı",
+      "webBridge.placeholder": "Web Köprüsünü Etkinleştirin (QUBIC Ağına Doğrudan Bağlantı)",
+      "button.save": "Ayarları Kaydet",
+      "beta": {
+        "placeholder": "Beta Özelliklerini Etkinleştir"
+      }
+    },
+    "import": {
+      "title": "Ayarları İçe Aktar",
+      "doneMessage": "İçe Aktarma Başarılı",
+      "dropMessage": "İçe aktarmak için adres yapılandırma dosyanızı buraya bırakın",
+      "buttons.import": "Adres yapılandırma dosyasını içe aktar",
+      "seedsMessage": "{{amount}} cüzdanı içe aktarmak üzeresiniz.",
+      "goHomeLink": "İçe aktarılan cüzdanları göster"
+    },
+    "export": {
+      "title": "Ayarları Dışa Aktar",
+      "hint": "Mevcut adres yapılandırma dosyanızı indirmek için aşağıdaki düğmeye basın. Bu dosya şifrelenmiş cüzdanlarınızı içerir. Ayrıca kilit açma dosyanızı (özel anahtar) kaydetmiş olmanız gerekir.",
+      "buttons.export": "Yapılandırma Dosyasını Dışa Aktar/Kaydet"
+    }
+  },
+  "votingComponent": {
+    "title": "Qubic Computor Oylaması",
+    "description": "Qubic Computor oylaması, ağın tamamıyla ilgili olarak karar verilecek konular üzerinde fikir birliğine varmak için kullanılır. Bu, akıllı sözleşmelerin kabul edilmesini veya diğer protokol kararlarının alınmasını içerebilir. Yalnızca Computor'ların katılmasına izin verilir.",
+    "proposals": {
+      "editButton": "Düzenle",
+      "createButton": "Teklif Oluştur",
+      "voteButton": "Oyla",
+      "title": "{{amount}} teklif mevcut",
+      "noComputorHint": "Computor olarak kayıtlı değilsiniz. Herhangi bir şey önermek istiyorsanız en az bir Computor Cüzdanına sahip olmanız gerekir.",
+      "votingResult": "Oylama Sonuçları",
+      "noVotes": "Oy Bulunamadı",
+      "from": "Gönderen:",
+      "url": "Teklif URL:"
+    },
+    "participate": {
+      "title": "Katıl",
+      "cancelButton": "İptal",
+      "sendVotesButton": "Teklif Gönder",
+      "notConfirmedMessage": "Bu Teklif henüz Qubic Network tarafından onaylanmadı. Lütfen oy vermek için bekleyin.",
+      "noComputorsText": "Computor'unuz yok veya Computor'larınız için zaten bir teklif oluşturdu.",
+      "computorsSelected": "Computorlar seçildi"
+    },
+    "create": {
+      "title": "Teklif Ver",
+      "cancelButton": "İptal",
+      "sendVotesButton": "Teklif Gönder",
+      "alreadyPublished": "Bu Computor'un zaten bir teklifi var. Her dönem için yalnızca bir teklife izin verilir",
+      "buttons": {
+        "create": "Teklif Oluştur",
+        "publish": "Teklif Bağla ve Yayımla",
+        "reset": "Formu Sıfırla",
+        "loadPrivateKey": "Kasa Dosyası Yükle",
+        "finish": "Teklifleri Görüntüle"
+      },
+      "form": {
+        "operatorSeed.label": "Operatör Cüzdanı",
+        "operatorSeed.error.required": "Operatör Gerekli",
+        "sourceSeed.label": "Teklif için kullanılacak Computor",
+        "sourceSeed.error.required": "Computor Gerekli",
+        "title.label": "Teklif Başlığı",
+        "title.placeholder": "Teklif Başlığı",
+        "title.error.required": "Başlık Gerekli",
+        "title.error.min": "Başlık en az 2 karakterden oluşmalıdır",
+        "title.error.max": "Başlık maksimum 100 karakterden oluşmalıdır",
+        "description.label": "Teklif Açıklaması",
+        "description.placeholder": "Teklif Açıklaması",
+        "description.error.min": "Açıklama en az 2 karakterden oluşmalıdır",
+        "description.error.max": "Açıklama en çok 1000 karakterden oluşmalıdır",
+        "description.error.required": "Açıklama Gerekli",
+        "option.label": "Opsiyon {{id}}",
+        "option.placeholder": "Opsiyon {{id}}",
+        "option.error.required": "Opsiyon {{id}} gerekli",
+        "option.error.min": "Opsiyon en az 2 karakterden oluşmalıdır",
+        "option.error.max": "Opsiyon en çok 50 karakterden oluşmalıdır",
+        "computorIp.label": "Computor IP Adresi",
+        "computorIp.placeholder": "Computor IP Adresi",
+        "computorIp.error.required": "Computor IP Adresi Gerekli"
+      },
+      "proposalStep.label": "Teklif Oluştur",
+      "publishStep.label": "Teklifi Yayınla",
+      "finishStep.label": "Bitti",
+      "finishStep.success": "Teklifiniz Computor'a gönderildi."
+    },
+    "status": {
+      "success": "Çoğunluk Tarafından Kabul Edildi",
+      "failed": "Çoğunluk Tarafından Reddedildi",
+      "publishing": "Yayınlama devam ediyor",
+      "pending": "Oylama Açıldı",
+      "draft": "Taslak",
+      "unknown": "Bilinmeyen Durum"
+    }
+  },
+  "ipoComponent": {
+    "messages": {
+      "unlock": "Lütfen önce Cüzdanınızın kilidini açın",
+      "storedForPropagation": "İşleminiz yayılma için {{tick}} onay işaretinde saklandı",
+      "failedToSend": "IPO'nuz gönderilemedi. Lütfen daha sonra tekrar deneyin.",
+      "failedToDecrypt": "Cüzdanınızın şifresini çözemedik. Doğru kilit açma dosyasını (özel anahtar) kullandınız mı?",
+      "failedToValidate": "Doğrulama hatalarıyla karşılaştık. Lütfen formu kontrol edin."
+    },
+    "title": "Qubic IPO",
+    "description": "Qubic IPO, akıllı sözleşmelerin hisseleri için yapılan bir açık artırmadır.",
+    "noIpos": "Aktif IPO bulunamadı",
+    "yourBids": "Teklifleriniz",
+    "yourShares": "Paylaşımlarınız",
+    "sharesFor": "Paylaşmalar",
+    "statusValid": "Durum {{tick}} Onay İşareti için geçerlidir",
+    "livPanelHint": "Mevcut Sonuçlara göz atın",
+    "buttons.place-bid": "Teklif Ver",
+    "buttons.refresh": "Durumu Yenile",
+    "bidStatus.hint": "Durum yalnızca teklifiniz verilmişse gösterilir, başarılıysa gösterilmez.",
+    "bidStatus.pcs": "pcs",
+    "place-bid": {
+      "title": "Teklif Ver",
+      "needBalance": "Pozitif bakiyeye sahip en az bir cüzdana ihtiyacınız var.",
+      "noContract": "özleşme bulunamadı. Lütfen daha sonra tekrar deneyin.",
+      "noContract.gotoIpoLabel": "Geçerli IPO Sözleşmeleri",
+      "buttons": {
+        "send": "Teklif Ver"
+      },
+      "form": {
+        "quantity": {
+          "placeholder": "Miktar",
+          "error.min": "Minimum 1",
+          "error.required": "Miktar Gerekli"
+        },
+        "price": {
+          "placeholder": "Fiyat (qus)",
+          "error.min": "Minimum 1",
+          "error.required": "Fiyat Gerekli",
+          "max.tooltip": "Teklif için tüm mevcut qus'ları kullan"
+        }
+      }
+    }
+  },
+  "okDialog": {
+    "title": "Bildirim",
+    "button": "Onaylıyorum",
+    "messages": {
+      "tresorText": "Kasa dosyanızı indirdiniz mi? Lütfen Kasanızı açmak için bir sonraki adımda bu Kasa dosyasını seçin!"
+    }
+  },
+  "loadConfigComponent": {
+    "title": "Adresleri içe aktar",
+    "buttons": {
+      "import": "Aktar",
+      "cancel": "Adresler olmadan başla"
+    },
+    "messages": {
+      "import": "Anahtarlarınızı içeren bir cüzdan adresi yapılandırma dosyanız zaten varsa, onu şimdi seçip içe aktarmalısınız.",
+      "noImport": "Henüz bir cüzdan adresi yapılandırma dosyanız yoksa sonraki bölümde bir hesap oluşturun."
+    }
+  },
+  "exportConfigComponent": {
+    "title": "Kasa Dosyası Dışa Aktar",
+    "buttons": {
+      "export": "Dışa Aktar",
+      "cancel": "İptal",
+      "unlock": "Kasayı Aç"
+    },
+    "messages": {
+      "unlockInfo": "Kasa dosyanızı en yeni envanterle dışa aktarabilmek için lütfen Kasanızın kilidini açın.",
+      "export": "Hesap envanterinizi değiştirdiniz. Daha sonra içe aktarabilmek için mevcut kasa dosyanızı indirdiğinizden emin olun.",
+      "info": "Hesap envanterinizi, ayarlarınızı ve şifrelenmiş cüzdanlarınızı içerir. Kasa dosyası, sağlanan şifreyle korunacaktır."
+    }
+  },
+  "welcomeComponent": {
+    "welcomeMessage": "Bu Cüzdanı kullanmak için mevcut Kasanızı oluşturmanız veya içe aktarmanız gerekir. Bu, daha sonra verilerinizi şifrelemek/şifresini çözmek için kullanılacak genel/özel anahtarınızı içerecektir.",
+    "button": {
+      "createVault": "Kasa Oluştur",
+      "importVault": "Kasayı İçeri Aktar"
+    },
+    "title": "Qubic Cüzdan'a Hoş Geldiniz"
+  },
+  "importComponent": {
+    "title": "Kasayı İçeri Aktar",
+    "message": "Mevcut bir Kasayı Cüzdanınıza aktarabilirsiniz."
+  },
+  "createVaultComponent": {
+    "createVault": {
+      "message": "Bu adım, cüzdan için özel/genel anahtar çifti oluşturacaktır. Bir ad seçin ve Qubic\r\n        Cüzdanınızı oluşturmak için \"Kasa Oluştur\"u seçin.",
+      "stepTitle": "Kasa Oluştur",
+      "vaultName": "Ad",
+      "button": "Kasa Oluştur"
+    },
+    "createAddress": {
+      "title": "Adres Ekle",
+      "message": "Qubic Cüzdanınızda birden fazla Adresiniz olabilir. Her Adres\r\n bir cüzdan (özel Anahtar) ve bir Genel Kimlikten oluşur. Cüzdan        , Qubic'i göndermek için gereklidir ve Genel Kimlik,\r\n Qubic'i almak için kullanılacak. Şimdi\r\n        ilk Adresinizi oluşturuyoruz.",
+      "addressNam": "Ad",
+      "seed": "Cüzdan Kimliği",
+      "seedPlaceholder": "Rastgele bir cüzdan kimliği seç...",
+      "publicId": "Genel Kimlik",
+      "radomizeSeed": "Rastgele Cüzdan Kimliği",
+      "addressPlaceholder": "Hesap Adı",
+      "button": "Adres Oluştur"
+    },
+    "downloadVault": {
+      "stepTitle": "Kişisel Kasanızı İndirin",
+      "message": "Kişisel Kasanız oluşturuldu. Artık onu indirebilirsiniz. Lütfen\r\n          güvenli bir Şifre seçin ve \"Kasayı İndir\" seçeneğini seçin.",
+      "password": "Şifre",
+      "passwordHint": "Güvenli bir şifre oluştur...",
+      "button": "Kasayı İndir"
+    },
+    "verifyVault": {
+      "stpTitle": "Kasayı Yükle/İçe Aktar",
+      "message": "İndirdiğiniz Kasa dosyası, tüm önemli bilgileri içeren dosyadır.\r\n          Cüzdanınızın kilidini açmak istediğinizde bu dosyaya ihtiyacınız olacaktır.\r\n          Cüzdanınızı her değiştirdiğinizde (ör. bir adres eklendiğinde veya düzenlendiğinde)\r\n          sizden en yeni Kasa dosyasını indirmeniz istenecektir.\r\n          Bunun işinize yaradığından emin olmak için\r\n          lütfen indirilen Kasa dosyasını aşağıdan seçin ve Kasa şifrenizi tekrar  girin.",
+      "password": "Şifre",
+      "passwordHint": "Kasa Şifreniz",
+      "button": "Kasa Şifrenizi Doğrulayın"
+    },
+    "done": {
+      "stepTitle": "Bitti",
+      "message": "Qubic Mutlu! Cüzdanınız Hazır.",
+      "button": "Cüzdanı Aç"
+    },
+    "buttons": {
+      "cancel": "İptal",
+      "reset": "Sıfırla"
+    }
+  }
+}
