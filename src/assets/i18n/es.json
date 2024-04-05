@@ -2,6 +2,7 @@
   "general": {
     "title": "Qubic - Wallet",
     "comingSoon": "¡próximamente disponible!",
+    "themeSwitch": "Cambio de tema",
     "navigation": {
       "home": "Dashboard",
       "payment": "Pago",
@@ -509,7 +510,8 @@
       "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
       "stepTitle": "Create Vault",
       "vaultName": "Name",
-      "button": "Create Vault"
+      "button": "Create Vault",
+      "placeholder": "Choose a name for your Vault"
     },
     "createAddress": {
       "title": "Add Address",

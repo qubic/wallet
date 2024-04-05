@@ -2,10 +2,11 @@
   "general": {
     "title": "Qubic - Cüzdan",
     "comingSoon": "Çok yakında!",
+    "themeSwitch": "Tema Değiştir",
     "navigation": {
       "home": "Gösterge Paneli",
       "payment": "Ödeme",
-      "balance": "Bakiye",
+      "balance": "Hesap Hareketleri",
       "settings": "Ayarlar",
       "voting": "Oylama",
       "ipo": "IPO",
@@ -17,7 +18,7 @@
     "error": "Hata",
     "close": "Kapat",
     "currency": "QUBIC",
-    "currentTick": "Onay İşareti: {{tick}}",
+    "currentTick": "Tick: {{tick}}",
     "loading": "Yükleniyor...",
     "buttons": {
       "close": "Kapat",
@@ -197,7 +198,7 @@
     "title": "Kasa Kilidini Aç",
     "title.new": "Yeni Kasa Oluştur",
     "welcomeMessage": "Qubic Cüzdan'a hoş geldiniz.\nBu Cüzdanı kullanmak için bir Kasa dosyası oluşturmalısınız. Bu dosya, daha sonra verilerinizi şifrelemek/şifresini çözmek için kullanılacak genel/özel anahtarınızı içerecektir.",
-    "reasonMessage": "Kasanızın kilidini açmak için Kasanız veya cüzdan kilit açma dosyanız gereklidir. Bu sayfa yeniden yüklendiğinde veya kapatıldığında bu dosya otomatik olarak silinir.",
+    "reasonMessage": "Kasanızın kilidini açmak için kasa veya cüzdan kilit açma dosyanız gereklidir. Bu sayfa yeniden yüklendiğinde veya kapatıldığında bu dosya otomatik olarak silinir.",
     "choosePrivateKeyFile": "Kasa Dosyanızı Seçin",
     "chooseConfigFile": "Konfigürasyon Dosyanızı Seçin",
     "overwriteVault": "Bu Tarayıcıda zaten kayıtlı bazı veriler var gibi görünüyor. Gerçekten üzerine yazmak istiyor musunuz?",
@@ -205,7 +206,7 @@
       "file.error.required": "Kasa/Cüzdan kilit açma dosyası gerekli",
       "password.error.required": "Kasa Şifresi Gerekli",
       "password.error.min": "Şifreniz minimum 8 karakterden oluşmalıdır.",
-      "password.error.wrong": "Your password is incorrect.",
+      "password.error.wrong": "Şifreniz yanlış.",
       "configFile": {
         "error": {
           "required": "Şifreniz yanlış."
@@ -254,7 +255,7 @@
     "title": "Qubic Birimleri Gönder (qus)",
     "messages": {
       "pleaseUnlock": "Lütfen önce Cüzdanınızın kilidini açın",
-      "storedForPropagation": "İşleminiz onay işaretinde yayılmak üzere saklandı {{tick}}",
+      "storedForPropagation": "İşleminiz yayılmak üzere {{tick}} kodlu Tick'te saklandı",
       "failedToSend": "İşleminiz gönderilemedi. Lütfen daha sonra tekrar deneyin.",
       "failedToDecrypt": "Anahtarınızın şifresini çözemedik. Doğru kilit açma dosyasını (özel anahtar) kullandınız mı?",
       "failedValidation": "Doğrulama hataları var. Lütfen formu kontrol edin."
@@ -284,11 +285,11 @@
         }
       },
       "tick": {
-        "placeholder": "Yürütme Onayı İşareti",
-        "customize.tooltip": "Özel Yürütme Onayı İşareti ayarlayın",
+        "placeholder": "Tick",
+        "customize.tooltip": "Özel Tick ayarlayın",
         "error": {
-          "required": "Onay işareti gerekli",
-          "min": "Onay işareti minimum {{currentTick}} olmalıdır"
+          "required": "Tick gerekli",
+          "min": "Tick minimum {{currentTick}} olmalıdır"
         }
       }
     },
@@ -320,14 +321,15 @@
       "status.dismissed.tooltip": "Reddedildi",
       "status.unknown.tooltip": "Bilinmiyor",
       "status.confirmed.tooltip": "Aşamalı",
-      "filter.seed.label": "Cüzdana göre filtrele"
+      "filter.seed.label": "Cüzdana göre filtrele",      
+      "exportButton": "Dışa Aktar"
     },
     "repeatTransaction": "İşlemi Tekrarla"
   },
   "settings": {
     "general": {
       "title": "Web Köprüsü",
-      "tickAddition.placeholder": "Yeni bir işlem için mevcut Onay İşaretine eklenen Onay İşareti sayısı",
+      "tickAddition.placeholder": "Yeni bir işlem için mevcut Tick'e eklenen Tick sayısı",
       "webBridge.placeholder": "Web Köprüsünü Etkinleştirin (QUBIC Ağına Doğrudan Bağlantı)",
       "button.save": "Ayarları Kaydet",
       "beta": {
@@ -423,7 +425,7 @@
   "ipoComponent": {
     "messages": {
       "unlock": "Lütfen önce Cüzdanınızın kilidini açın",
-      "storedForPropagation": "İşleminiz yayılma için {{tick}} onay işaretinde saklandı",
+      "storedForPropagation": "İşleminiz yayılma için {{tick}} kodlu Tick'te saklandı",
       "failedToSend": "IPO'nuz gönderilemedi. Lütfen daha sonra tekrar deneyin.",
       "failedToDecrypt": "Cüzdanınızın şifresini çözemedik. Doğru kilit açma dosyasını (özel anahtar) kullandınız mı?",
       "failedToValidate": "Doğrulama hatalarıyla karşılaştık. Lütfen formu kontrol edin."
@@ -434,7 +436,7 @@
     "yourBids": "Teklifleriniz",
     "yourShares": "Paylaşımlarınız",
     "sharesFor": "Paylaşmalar",
-    "statusValid": "Durum {{tick}} Onay İşareti için geçerlidir",
+    "statusValid": "Durum {{tick}} kodlu Tick için geçerlidir",
     "livPanelHint": "Mevcut Sonuçlara göz atın",
     "buttons.place-bid": "Teklif Ver",
     "buttons.refresh": "Durumu Yenile",
@@ -511,7 +513,8 @@
       "message": "Bu adım, cüzdan için özel/genel anahtar çifti oluşturacaktır. Bir ad seçin ve Qubic\r\n        Cüzdanınızı oluşturmak için \"Kasa Oluştur\"u seçin.",
       "stepTitle": "Kasa Oluştur",
       "vaultName": "Ad",
-      "button": "Kasa Oluştur"
+      "button": "Kasa Oluştur",      
+      "placeholder": "Tresorunuz için bir isim seçin"
     },
     "createAddress": {
       "title": "Adres Ekle",

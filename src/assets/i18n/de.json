@@ -2,6 +2,7 @@
   "general": {
     "title": "Qubic - Wallet",
     "comingSoon": "Ist schon bald fertig...",
+    "themeSwitch": "Design wechseln",
     "navigation": {
       "home": "Dashboard",
       "payment": "Zahlung",
@@ -511,7 +512,8 @@
       "message": "In diesem Schritt wird ein privates/öffentliches Schlüsselpaar für das Wallet erstellt. Tragen Sie einen Namen ein!",
       "stepTitle": "Tresor erstellen",
       "vaultName": "Name",
-      "button": "Tresor erstellen"
+      "button": "Tresor erstellen",
+      "placeholder": "Wähle einen Namen für deinen Tresor"
     },
     "createAddress": {
       "title": "Adresse hinzufügen",
