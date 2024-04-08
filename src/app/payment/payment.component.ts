@@ -21,7 +21,6 @@ import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 
 
-
 @Component({
   selector: 'app-wallet',
   templateUrl: './payment.component.html',
@@ -69,6 +68,11 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+
     this.us.currentTick.subscribe(tick => {
       this.currentTick = tick;
       this.transferForm.controls.tick.addValidators(Validators.min(tick));

@@ -16,6 +16,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 import {environment} from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assets',
@@ -43,8 +44,13 @@ export class AssetsComponent implements OnInit {
     private updaterService: UpdaterService,
     private t: TranslocoService,
     private _snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router,
     ) {
+    
+      if (!this.walletService.isWalletReady) {
+        this.router.navigate(['/public']); // Redirect to public page if not authenticated
+      }
 
       var dashBoardStyle = localStorage.getItem("asset-grid");
       this.isTable = dashBoardStyle == '0' ? true : false;

@@ -30,7 +30,12 @@ export class VotingComponent implements OnInit, OnDestroy {
       this.userServiceSubscription.unsubscribe();
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+    
     if(this.hasSeeds()){
       this.userServiceSubscription = this.us.currentBalance.subscribe(response => {
         this.accountBalances = response;

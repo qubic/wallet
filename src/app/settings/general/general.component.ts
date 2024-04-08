@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-general',
@@ -28,7 +29,12 @@ export class SettingsGeneralComponent {
     enableBeta: [false],
   });
 
-  constructor (private walletService: WalletService, private fb: FormBuilder, public dialog: MatDialog,  private _snackBar: MatSnackBar, private transloco: TranslocoService, private deviceService: DeviceDetectorService){
+  constructor (private router: Router, private walletService: WalletService, private fb: FormBuilder, public dialog: MatDialog,  private _snackBar: MatSnackBar, private transloco: TranslocoService, private deviceService: DeviceDetectorService){
+   
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+   
     this.isMobile = deviceService.isMobile();
 
     const settings = this.walletService.getSettings();

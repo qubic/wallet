@@ -33,6 +33,11 @@ export class IpoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+    
     this.init();
   }
 

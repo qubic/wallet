@@ -24,6 +24,11 @@ export class BalanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+
     if (this.hasSeeds()) {
       this.us.currentTick.subscribe(s => {
         this.currentTick = s;
