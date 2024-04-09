@@ -245,7 +245,7 @@
     "buttons": {
       "savePrivateKey": "Sauvegarder le fichier Wallet",
       "closeWallet": "Verrouiller le Wallet",
-      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
+      "exportAndCloseWallet": "Exporter le fichier Vault and Lock Wallet",
       "enableExport": "Exporter",
       "cancel": "Annuler"
     }
@@ -533,9 +533,9 @@
     },
     "verifyVault": {
       "stpTitle": "Charger/Importer le Vault",
-      "message": "Le fichier Vault que vous avez téléchargé est le fichier qui contient\r\n          toutes les informations importantes. Chaque fois que vous voulez déverrouiller votre\r\n          wallet, vous aurez besoin de ce fichier. Chaque fois que vous modifiez votre Wallet\r\n          (par exemple, ajouter ou éditer une addresse) vous serez invité à télécharger le\r\n          dernier fichier Vault. Pour vous assurer que cela fonctionne pour vous, veuillez sélectionner ci-dessous\r\n          Le fichier vault téléchargé file et entrez à nouveau votre mot de passe vault.",
+      "message": "Le fichier Vault que vous avez téléchargé est le fichier qui contient\r\n          toutes les informations importantes. Chaque fois que vous voulez déverrouiller votre\r\n          wallet, vous aurez besoin de ce fichier. Chaque fois que vous modifiez votre Wallet\r\n          (par exemple, ajouter ou éditer une addresse) vous serez invité à télécharger le\r\n          dernier fichier Vault. Pour vous assurer que cela fonctionne pour vous, veuillez sélectionner ci-dessous\r\n          Le fichier Vault téléchargé et entrez à nouveau votre mot de passe Vault.",
       "password": "Mot de passe",
-      "passwordHint": "Votre mot de passe vault",
+      "passwordHint": "Votre mot de passe Vault",
       "button": "Vérifiez votre fichier Vault"
     },
     "done": {
