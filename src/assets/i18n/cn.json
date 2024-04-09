@@ -1,0 +1,554 @@
+{
+  "general": {
+    "title": "Qubic - Wallet",
+    "comingSoon": "coming soon!",
+    "themeSwitch": "Theme Switch",
+    "navigation": {
+      "home": "Dashboard",
+      "payment": "Payment",
+      "balance": "Transactions",
+      "settings": "Settings",
+      "voting": "Voting",
+      "ipo": "IPO",
+      "assets": "Assets"
+    },
+    "version": "Version {{version}} - beta",
+    "version.url": "qubic.org",
+    "copy.tooltip": "Copy",
+    "error": "Error",
+    "close": "close",
+    "currency": "QUBIC",
+    "currentTick": "Tick: {{tick}}",
+    "loading": "loading...",
+    "buttons": {
+      "close": "Close",
+      "maximize": "Maximize"
+    },
+    "messages": {
+      "notConnected": "Not connected to the Qubic Network. Please Connect first.",
+      "refreshRequested": "Refresh has been requested",
+      "refreshFailed": "Refresh failed, please try again later",
+      "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
+      "timeoutTryAgain": "We run into a timeout. Please try again."
+    }
+  },
+  "payment": {
+    "keyRequestReason": "As transactions are digitally signed with your key you need to load your key first."
+  },
+  "confirmDialog": {
+    "title": "Confirm",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Yes, I confirm"
+    },
+    "confirmationText": "Are you sure?"
+  },
+  "notifyComponent": {
+    "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Vault.",
+    "saveYourKey": "Please store your Vault file in a safe place.",
+    "qubicLiSync": "Sync your settings with qubic.li",
+    "qubicOffline": "QUBIC network not connected",
+    "qubicOnline": "Connected to the QUBIC network"
+  },
+  "revealSeedComponent": {
+    "title": "Address Information",
+    "publicId": "Address ID",
+    "privateId": "55-char Seed",
+    "buttons": {
+      "close": "Close"
+    }
+  },
+  "assetsComponent": {
+    "title": "Your Assets",
+    "openAssets": "Goto Asset Management",
+    "overview": {
+      "title": "Asset Overview"
+    },
+    "table": {
+      "publicId": "Public ID",
+      "contractIndex": "Contract Index",
+      "assetName": "Asset Name",
+      "contractName": "Contract Name",
+      "ownedAmount": "Owned Amount",
+      "possessedAmount": "Possessed Amount",
+      "tick": "Valid for Tick {{tick}}",
+      "reportingNodes": "Reporting Nodes",
+      "issuerIdentity": "Issuer Identity"
+    },
+    "buttons": {
+      "close": "Close",
+      "refresh": "Refresh",
+      "send": "Transfer Assets"
+    },
+    "form": {
+      "info": "Send Assets",
+      "fees": "Fixed sending fees: 1,000,000 Qubic",
+      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
+      "select": "Select Asset",
+      "select.error": "Asset selection is required",
+      "placeholder": "Address ID of the receiver",
+      "placeholder.error": "An 55-char seed is required.",
+      "amount": "Amount to send",
+      "amount.error": "Amount is required",
+      "amount.value.error": "The amount must be greater than 0",
+      "amount.max.error": "The amount cannot exceed the quantity held",
+      "tick": "Tick",
+      "tick.error": "Tick is required",
+      "tick.tooltip": "Tick is required",
+      "tick.min": "Tick must be a minimum of {{currentTick}}",
+      "buttons": {
+        "send": "Send",
+        "cancel": "Cancel",
+        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+      }
+    },
+    "noAssets": "No assets available"
+  },
+  "qrReceiveComponent": {
+    "title": "Receive payment",
+    "downloadLink": "Download",
+    "hint": "Scan/Send this QR Code to receive a payment for {{publicId}}.",
+    "buttons.close": "Close"
+  },
+  "seedEditComponent": {
+    "title.add": "Add Address",
+    "title.edit": "Edit Address",
+    "newSeedName": "Address-Name",
+    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "form": {
+      "alias": {
+        "placeholder": "Choose an own name for your address in order to better refer to it.",
+        "error": {
+          "required": "Name required",
+          "min": "Name must have a minimum of 3 characters",
+          "max": "Name must have a maximum of 50 characters",
+          "regex": "Can only contain {{regex}}"
+        }
+      },
+      "seed": {
+        "placeholder": "55-char Seed",
+        "error": {
+          "required": "An 55-char seed is required.",
+          "min": "The 55-char seed must exactly consist of 55 lower case characters",
+          "max": "The 55-char seed must exactly consist of 55 lower case characters",
+          "regex": "Can only contain a-zA-Z0-9_-"
+        },
+        "generateSeed": "Randomize Seed"
+      },
+      "watchOnlyAddress": {
+        "title": "Watch-Only-Address",
+        "placeholder": "60-char public-key",
+        "error": {
+          "required": "An 60-char public-key is required.",
+          "min": "The 60-char public-key must exactly consist of 60 upper case characters",
+          "max": "The 60-char public-key must exactly consist of 60 upper case characters",
+          "regex": "Can only contain A-Z"
+        }
+      },
+      "error": {
+        "text": "Please check the form.",
+        "close": "close"
+      }
+    },
+    "publicIdMessage": "Your address id is:",
+    "privateKeyWarning": "Caution! Your Vault file is not loaded. Please make sure you have it safely stored.",
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create address",
+      "save": "Save address"
+    }
+  },
+  "seedOverviewComponent": {
+    "title": "Addresses",
+    "isTable": "Show table",
+    "addSeedButton": "Add Address",
+    "importButton": "Import",
+    "exportButton": "Export",
+    "search.label": "Search",
+    "table": {
+      "alias": "Address Name",
+      "publicId": "Address ID",
+      "balance": "Balance",
+      "epochChanges": "Epoch Changes",
+      "noData": "No data matching the filter \"{{q}}\"",
+      "actions": {
+        "title": "Actions",
+        "revealSeed": "Reveal 55-char seed",
+        "assets": "Show Owned Assets",
+        "makePayment": "Make a payment",
+        "receivePayment": "Generate a QR Code to receive a payment.",
+        "editSeed": "Edit address",
+        "deleteSeed": "Delete address",
+        "refreshBalance": "Refresh Balance from Network"
+      }
+    },
+    "hasPendingTransaction": "Transactions pending",
+    "marketPrice": "Price",
+    "marketSupply": "Supply",
+    "marketCap": "Marketcap",
+    "marketCurrency": "$"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "balance": "Vault balance",
+    "currency": "Qu",
+    "totalBalance": "Your Total Balance"
+  },
+  "unlockComponent": {
+    "title": "Unlock Vault",
+    "title.new": "Create Vault",
+    "welcomeMessage": "Welcome to the Qubic Wallet.\nTo use this Wallet you must create a Vault file. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "reasonMessage": "To unlock your Vault, your Vault file or wallet unlock file is needed. The wallet data is automatically deleted once this page is reloaded or closed.",
+    "choosePrivateKeyFile": "Select Vault File",
+    "chooseConfigFile": "Select Config file",
+    "overwriteVault": "It looks like there is already some data saved in this Browser. Do you really want to overwrite it?",
+    "form": {
+      "file.error.required": "Vault/Wallet unlock file required",
+      "password.error.required": "Vault password required",
+      "password.error.min": "Your password must have a minimum of 8 characters.",
+      "password.error.wrong": "Your password is incorrect.",
+      "configFile": {
+        "error": {
+          "required": "Config file required"
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "generateKey": "Create Vault",
+      "importAndUnlock": "Import Vault and Unlock",
+      "unlock": "Unlock Vault",
+      "existingUser": "I already have a Wallet",
+      "newUser": "Create Vault",
+      "closeWallet": "Close Wallet",
+      "importVault": "Import Vault"
+    },
+    "welcomeHintMessage": "After you have downloaded your Vault file. You need to select the downloaded file and enter your password again. This will unlock your wallet."
+  },
+  "lockIconComponent": {
+    "lock": "Lock Vault",
+    "unlock": "Unlock Vault"
+  },
+  "lockComponent": {
+    "title": "Close Vault?",
+    "forceDownload": {
+      "title": "Download Vault File",
+      "reason": "When you lock your Wallet your loaded Vault file is automatically deleted. Without this Vault file no transactions can be made. Please be aware your Vault file is safely stored. Export it again in case of any doubt...",
+      "buttons": {
+        "allOk": "I have my unlock file, thanks"
+      }
+    },
+    "reason": "It is paramount to safely store your Vault file. Please choose a strong password you won't forget and then click on \"save\".",
+    "warning": "I confirm that I have saved my Vault file.",
+    "password.placeholder": "Password",
+    "password.required": "Password required",
+    "password.min": "Password must have a minimum of 8 characters.",
+    "buttons": {
+      "savePrivateKey": "Save Vault file",
+      "closeWallet": "Lock Vault",
+      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
+      "enableExport": "Export Vault File",
+      "cancel": "Cancel"
+    }
+  },
+  "paymentComponent": {
+    "title": "Send Qubic Units (QUBIC)",
+    "messages": {
+      "pleaseUnlock": "Please unlock your Wallet first",
+      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
+      "failedToSend": "Your transaction could not be sent. Please try again later.",
+      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
+      "failedValidation": "We had validation errors. Please check the form."
+    },
+    "form": {
+      "sourceSeed": {
+        "label": "Address from which QUBIC are to be sent",
+        "error": {
+          "required": "Sender address is required"
+        }
+      },
+      "receiver": {
+        "placeholder": "Address ID of the receiver",
+        "hint": "60 uppercase characters",
+        "chooseOwnSeed": "Choose an own Address ID",
+        "error": {
+          "required": "Address ID is required",
+          "length": "A Qubic address ID consists of 60 uppercase letters."
+        }
+      },
+      "amount": {
+        "placeholder": "Amount in Qubic Unis (QUBIC)",
+        "max.tooltip": "Set to maximum available amount on this Seed",
+        "error": {
+          "required": "Amount is required",
+          "min": "Amount must be a minimum of 1"
+        }
+      },
+      "tick": {
+        "placeholder": "Execution Tick",
+        "customize.tooltip": "Toggle to set custom Execution Tick",
+        "error": {
+          "required": "Tick is required",
+          "min": "Tick must be a minimum of {{currentTick}}"
+        }
+      }
+    },
+    "buttons": {
+      "send": "Perform transaction",
+      "reset": "Reset",
+      "loadPrivateKey": "Load Vault file"
+    }
+  },
+  "balanceComponent": {
+    "title": "Balance",
+    "createSeedHint": "Please create first a Seed",
+    "overview": {
+      "title": "Overview",
+      "totalWalletValue": "Fixed Wallet Value",
+      "estimatedWalletValue": "Estimated Wallet Value",
+      "baseDate": "per"
+    },
+    "transactions": {
+      "title": "Transactions in current Epoch",
+      "verificationAlert": "Preview data could not be verified",
+      "noTransactions": "No Transactions found",
+      "send.tooltip": "Outgoing Transfer",
+      "exchange.tooltip": "Internal Transfer",
+      "explorer.tooltip": "Show Transfer in Explorer",
+      "receive.tooltip": "Incoming Transfer",
+      "status.pending.tooltip": "Pending",
+      "status.executed.tooltip": "Executed",
+      "status.dismissed.tooltip": "Dismissed",
+      "status.unknown.tooltip": "Unknown",
+      "status.confirmed.tooltip": "Staged",
+      "filter.seed.label": "Filter by Seed",
+      "exportButton": "Export Transactions"
+    },
+    "repeatTransaction": "Repeat Transaction"
+  },
+  "settings": {
+    "general": {
+      "title": "Web Bridge",
+      "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
+      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
+      "button.save": "Save Settings",
+      "beta": {
+        "placeholder": "Enable Beta Features"
+      }
+    },
+    "import": {
+      "title": "Import Settings",
+      "doneMessage": "Import Successful",
+      "dropMessage": "Drop your address config file to import here",
+      "buttons.import": "Import address config file",
+      "seedsMessage": "You are about to import {{amount}} seeds.",
+      "goHomeLink": "Show imported Seeds"
+    },
+    "export": {
+      "title": "Export Settings",
+      "hint": "Press the below button to download your current address config file. It contains your encrypted seeds. You also should have saved your unlock file (private key).",
+      "buttons.export": "Export/Save Config File"
+    }
+  },
+  "votingComponent": {
+    "title": "Qubic Computor Voting",
+    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
+    "proposals": {
+      "editButton": "Edit",
+      "createButton": "Create Proposal",
+      "voteButton": "Vote",
+      "title": "{{amount}} Current Proposals",
+      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
+      "votingResult": "Voting Result",
+      "noVotes": "no votes",
+      "from": "From:",
+      "url": "Proposal URL:"
+    },
+    "participate": {
+      "title": "Participate",
+      "cancelButton": "Cancel",
+      "sendVotesButton": "Send Votes",
+      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
+      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
+      "computorsSelected": "Computors selected"
+    },
+    "create": {
+      "title": "Create Proposal",
+      "cancelButton": "Cancel",
+      "sendVotesButton": "Send Proposal",
+      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
+      "buttons": {
+        "create": "Create Proposal",
+        "publish": "Connect and Publish Proposal",
+        "reset": "Reset Form",
+        "loadPrivateKey": "Load Vault file",
+        "finish": "Show Proposals"
+      },
+      "form": {
+        "operatorSeed.label": "Operator Seed",
+        "operatorSeed.error.required": "Operator is required",
+        "sourceSeed.label": "Computor to use for proposal",
+        "sourceSeed.error.required": "Computor is required",
+        "title.label": "Proposal Title",
+        "title.placeholder": "Proposal Title",
+        "title.error.required": "Title is required",
+        "title.error.min": "Title must have at least 2 characters",
+        "title.error.max": "Title must have at maximum 100 characters",
+        "description.label": "Proposal Description",
+        "description.placeholder": "Proposal Description",
+        "description.error.min": "Description must have at least 2 characters",
+        "description.error.max": "Description must have at maximum 1000 characters",
+        "description.error.required": "Description is required",
+        "option.label": "Option {{id}}",
+        "option.placeholder": "Option {{id}}",
+        "option.error.required": "Option {{id}} is required",
+        "option.error.min": "Option must have at least 2 characters",
+        "option.error.max": "Option must have at maximum 50 characters",
+        "computorIp.label": "Computor IP Address",
+        "computorIp.placeholder": "Computor IP Address",
+        "computorIp.error.required": "Computor IP Address required"
+      },
+      "proposalStep.label": "Create Proposal",
+      "publishStep.label": "Publish Proposal",
+      "finishStep.label": "Done",
+      "finishStep.success": "Your Proposal has been sent to your computor."
+    },
+    "status": {
+      "success": "Accepted by Quorum",
+      "failed": "Dismissed by Quorum",
+      "publishing": "Publish in progress",
+      "pending": "Voting is open",
+      "draft": "Draft",
+      "unknown": "Unknown status"
+    }
+  },
+  "ipoComponent": {
+    "messages": {
+      "unlock": "Please unlock your Wallet first",
+      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
+      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
+      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
+      "failedToValidate": "We had validation errors. Please check the form."
+    },
+    "title": "Qubic IPO",
+    "description": "The Qubic IPO is an auction for shares of smart contracts.",
+    "noIpos": "Currently no IPO's active",
+    "yourBids": "Your Bids",
+    "yourShares": "Your Shares",
+    "sharesFor": "Shares for",
+    "statusValid": "Status valid for tick {{tick}}",
+    "livPanelHint": "Check out current Results",
+    "buttons.place-bid": "Place Bid",
+    "buttons.refresh": "Refresh Status",
+    "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
+    "bidStatus.pcs": "pcs",
+    "place-bid": {
+      "title": "Place a Bid",
+      "needBalance": "You need at least one seed with a positive balance.",
+      "noContract": "Contract not found. Please try again later.",
+      "noContract.gotoIpoLabel": "Show available Contract IPO's",
+      "buttons": {
+        "send": "Send Bid"
+      },
+      "form": {
+        "quantity": {
+          "placeholder": "Quantity",
+          "error.min": "Minimum 1",
+          "error.required": "Quantity is required"
+        },
+        "price": {
+          "placeholder": "Price (QUBIC)",
+          "error.min": "Minimum 1",
+          "error.required": "Price is required",
+          "max.tooltip": "Bid all available QUBIC"
+        }
+      }
+    }
+  },
+  "okDialog": {
+    "title": "Notice",
+    "button": "Yes, I confirm.",
+    "messages": {
+      "tresorText": "Have you downloaded your Vault file now? Please select this Vault file in the next step to open the Vault!"
+    }
+  },
+  "loadConfigComponent": {
+    "title": "Import Addresses",
+    "buttons": {
+      "import": "Import",
+      "cancel": "Start Without Addresses"
+    },
+    "messages": {
+      "import": "If you already have a wallet address config file containing your PublicKeys, you should select and import it now.",
+      "noImport": "If you do not yet have a wallet address config file, create an account in the next section."
+    }
+  },
+  "exportConfigComponent": {
+    "title": "Export Vault File",
+    "buttons": {
+      "export": "Export",
+      "cancel": "Cancel",
+      "unlock": "Unlock Vault"
+    },
+    "messages": {
+      "unlockInfo": "Please unlock your Vault to be able to export your Vault file with the newest inventory.",
+      "export": "You have modified your account inventory. Be sure to download your current vault file so you can import it later.",
+      "info": "It contains your account inventory, settings and encrypted seeds. The Vault file will be protected by the provided password."
+    }
+  },
+  "welcomeComponent": {
+    "welcomeMessage": "To use this Wallet you must either create or import your existing Vault. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "button": {
+      "createVault": "Create Vault",
+      "importVault": "Import Vault"
+    },
+    "title": "Welcome to the Qubic Wallet"
+  },
+  "importComponent": {
+    "title": "Import Vault",
+    "message": "You can import an existing Vault to your Wallet."
+  },
+  "createVaultComponent": {
+    "createVault": {
+      "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
+      "stepTitle": "Create Vault",
+      "vaultName": "Name",
+      "button": "Create Vault",
+      "placeholder": "Choose a name for your Vault"
+    },
+    "createAddress": {
+      "title": "Add Address",
+      "message": "In your Qubic Wallet you can have multiple Addresses. Every Address\r\n        consists of a Seed (private Key) and a Public Id. The Seed is needed to\r\n        send Qubic and the Public Id can be used to receive Qubic. We create now\r\n        your first Address.",
+      "addressNam": "Name",
+      "seed": "Seed",
+      "seedPlaceholder": "Choose a random seed...",
+      "publicId": "Public Id",
+      "radomizeSeed": "Randomize Seed",
+      "addressPlaceholder": "Choose an Account Name",
+      "button": "Create Address"
+    },
+    "downloadVault": {
+      "stepTitle": "Download initial Vault",
+      "message": "Your personal Vault has been created. You can now download it. Please\r\n          choose a secure Password and select \"Download Vault\".",
+      "password": "Password",
+      "passwordHint": "Choose a secure password...",
+      "button": "Download Vault"
+    },
+    "verifyVault": {
+      "stpTitle": "Load/Import Vault",
+      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
+      "password": "Password",
+      "passwordHint": "Your Vault Password",
+      "button": "Verify Vault File"
+    },
+    "done": {
+      "stepTitle": "Done",
+      "message": "Happy Qubic! Your Wallet is ready.",
+      "button": "Open My Wallet"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "reset": "Reset"
+    }
+  }
+}

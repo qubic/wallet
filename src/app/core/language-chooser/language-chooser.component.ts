@@ -19,6 +19,8 @@ export class LanguageChooserComponent implements OnInit {
     'pt': 'Português',
     'ru': 'Русский',
     'tr': 'Türkçe',
+    'cn': '中文',
+    'jp': '日本語',
   };
 
   public selected: string = "en"; 
