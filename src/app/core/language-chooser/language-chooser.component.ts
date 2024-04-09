@@ -33,7 +33,6 @@ export class LanguageChooserComponent implements OnInit {
     } else {
       this.selected = 'en';
     }
-    // Den Transloco-Service im ngOnInit initialisieren
     this.translocoService.setActiveLang(this.selected);
   }
 
