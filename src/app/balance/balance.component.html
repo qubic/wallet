@@ -51,7 +51,7 @@
                                     {{ transaction.amount | number: '1.0-0' }}</span>&nbsp;{{ t("general.currency") }}
                             </div>
                             <div class="trans-date"> Tick:
-                                <a [href]="'https://explorer.qubic.org/network/block/' + transaction.targetTick"
+                                <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
                                 </a>
                             </div>
