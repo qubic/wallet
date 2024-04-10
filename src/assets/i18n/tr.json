@@ -4,9 +4,9 @@
     "comingSoon": "Çok yakında!",
     "themeSwitch": "Tema Değiştir",
     "navigation": {
-      "home": "Gösterge Paneli",
-      "payment": "Ödeme",
-      "balance": "Hesap Hareketleri",
+      "home": "Ana Menü",
+      "payment": "Hesap Hareketleri",
+      "balance": "Bakiye",
       "settings": "Ayarlar",
       "voting": "Oylama",
       "ipo": "IPO",
@@ -242,7 +242,7 @@
     "warning": "Kasa dosyamı kaydettiğimi onaylıyorum.",
     "password.placeholder": "Şifre",
     "password.required": "Şifre Gerekli",
-    "password.min": "Şifre minimum 8 karakterden oluşmalıdır.",
+    "password.min": "Şifreniz minimum 8 karakterden oluşmalıdır.",
     "buttons": {
       "savePrivateKey": "Kasa Dosyasını Kaydet",
       "closeWallet": "Kasayı Kilitle",
@@ -392,12 +392,12 @@
         "title.label": "Teklif Başlığı",
         "title.placeholder": "Teklif Başlığı",
         "title.error.required": "Başlık Gerekli",
-        "title.error.min": "Başlık en az 2 karakterden oluşmalıdır",
-        "title.error.max": "Başlık maksimum 100 karakterden oluşmalıdır",
+        "title.error.min": "Başlık en az 2 karakter bulunmalıdır",
+        "title.error.max": "Başlık maksimum 100 karakter içerebilir",
         "description.label": "Teklif Açıklaması",
         "description.placeholder": "Teklif Açıklaması",
-        "description.error.min": "Açıklama en az 2 karakterden oluşmalıdır",
-        "description.error.max": "Açıklama en çok 1000 karakterden oluşmalıdır",
+        "description.error.min": "Açıklama en az 2 karakter bulunmalıdır",
+        "description.error.max": "Açıklama en çok 1000 karakter içerebilir",
         "description.error.required": "Açıklama Gerekli",
         "option.label": "Opsiyon {{id}}",
         "option.placeholder": "Opsiyon {{id}}",
@@ -445,7 +445,7 @@
     "place-bid": {
       "title": "Teklif Ver",
       "needBalance": "Pozitif bakiyeye sahip en az bir cüzdana ihtiyacınız var.",
-      "noContract": "özleşme bulunamadı. Lütfen daha sonra tekrar deneyin.",
+      "noContract": "Sözleşme bulunamadı. Lütfen daha sonra tekrar deneyin.",
       "noContract.gotoIpoLabel": "Geçerli IPO Sözleşmeleri",
       "buttons": {
         "send": "Teklif Ver"
@@ -542,7 +542,7 @@
       "button": "Kasa Şifrenizi Doğrulayın"
     },
     "done": {
-      "stepTitle": "Bitti",
+      "stepTitle": "Biççtti",
       "message": "Qubic Mutlu! Cüzdanınız Hazır.",
       "button": "Cüzdanı Aç"
     },
