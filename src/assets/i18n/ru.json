@@ -4,13 +4,13 @@
     "comingSoon": "В разработке!",
     "themeSwitch": "Переключение темы",
     "navigation": {
-      "home": "Домашняя страница",
+      "home": "Главная",
       "payment": "Платежи",
       "balance": "Баланс",
       "settings": "Настройки",
-      "voting": "Voting",
+      "voting": "Голосование",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "Акции"
     },
     "version": "Версия {{version}} - тестовая",
     "version.url": "qubic.org",
@@ -18,18 +18,18 @@
     "error": "Ошибка",
     "close": "Закрыть",
     "currency": "QUBIC",
-    "currentTick": "Tick: {{tick}}",
-    "loading": "loading...",
+    "currentTick": "Тик: {{tick}}",
+    "loading": "Загрузка...",
     "buttons": {
-      "close": "Close",
-      "maximize": "Maximize"
+      "close": "Закрыть",
+      "maximize": "На весь экран"
     },
     "messages": {
-      "notConnected": "Not connected to the Qubic Network. Please Connect first.",
-      "refreshRequested": "Refresh has been requested",
-      "refreshFailed": "Refresh failed, please try again later",
-      "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
-      "timeoutTryAgain": "We run into a timeout. Please try again."
+      "notConnected": "Нет соединения с Qubic Network.",
+      "refreshRequested": "Запрошено обновление",
+      "refreshFailed": "Обновление неудачно, попробуйте еще раз",
+      "balanceReceived": "Ответ сети {{balance}} QUBIC для {{publicId}}.",
+      "timeoutTryAgain": "Таймаут. Попробуйте еще раз."
     }
   },
   "payment": {
@@ -44,11 +44,11 @@
     "confirmationText": "Вы уверены?"
   },
   "notifyComponent": {
-    "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Wallet.",
+    "saveYourSettings": "Для возврата настроек загрузите файл с настройками. В ваших настройках содержится зашифрованный сид, который нужен для восстановления кошелька.",
     "saveYourKey": "Пожалуйста, сохраните ваш файл Vault в надежном месте",
     "qubicLiSync": "Синхронизируйте свои настройки с qubic.li",
-    "qubicOffline": "QUBIC network not connected",
-    "qubicOnline": "Connected to the QUBIC network"
+    "qubicOffline": "Qubic Network недоступна",
+    "qubicOnline": "Соединение с Qubic Network"
   },
   "revealSeedComponent": {
     "title": "Информация о счете",
@@ -59,50 +59,50 @@
     }
   },
   "assetsComponent": {
-    "title": "Your Assets",
-    "openAssets": "Goto Asset Management",
+    "title": "Ваши акции",
+    "openAssets": "Зайти в управление акциями",
     "overview": {
-      "title": "Asset Overview"
+      "title": "Просмотр акций"
     },
     "table": {
-      "publicId": "Public ID",
-      "contractIndex": "Contract Index",
-      "assetName": "Asset Name",
-      "contractName": "Contract Name",
-      "ownedAmount": "Owned Amount",
-      "possessedAmount": "Possessed Amount",
-      "tick": "Valid for Tick {{tick}}",
-      "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "publicId": "Публичный ID",
+      "contractIndex": "Индекс контракта",
+      "assetName": "Имя акции",
+      "contractName": "Имя контракта",
+      "ownedAmount": "Общая сумма",
+      "possessedAmount": "Частичное владение",
+      "tick": "Подтверждено тиком {{tick}}",
+      "reportingNodes": "Отчетная Нода",
+      "issuerIdentity": "Идентификатор владельца"
     },
     "buttons": {
-      "close": "Close",
-      "refresh": "Refresh",
-      "send": "Transfer Assets"
+      "close": "Закрыть",
+      "refresh": "Обновить",
+      "send": "Перевести акции"
     },
     "form": {
-      "info": "Send Assets form",
-      "fees": "Fixed sending fees: 1,000,000 Qubic",
-      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
-      "select": "Select Asset",
-      "select.error": "Asset selection is required",
-      "placeholder": "Address ID of the receiver",
-      "placeholder.error": "An 55-char seed is required.",
-      "amount": "Amount to send",
-      "amount.error": "Amount is required",
-      "amount.value.error": "The amount must be greater than 0",
-      "amount.max.error": "The amount cannot exceed the quantity held",
-      "tick": "Tick",
-      "tick.error": "Tick is required",
-      "tick.tooltip": "Tick is required",
-      "tick.min": "Tick must be a minimum of {{currentTick}}",
+      "info": "Форма перевода акций",
+      "fees": "Фиксированная комиссия за перевод: 1,000,000 Qubic",
+      "balance": "Ваш балланс после перевода акции с комиссией (1M Qubic) станет:",
+      "select": "Выберите акцию",
+      "select.error": "Сначала выберите акцию",
+      "placeholder": "Введите ID получателя",
+      "placeholder.error": "Требуется ваш 55-ти значный сид.",
+      "amount": "Сумма передаваемых акций",
+      "amount.error": "Введите сумму",
+      "amount.value.error": "Сумма должна быть больше 0",
+      "amount.max.error": "Сумма не может превышать ваш балланс",
+      "tick": "Тик",
+      "tick.error": "Укажите тик",
+      "tick.tooltip": "Укажите тик",
+      "tick.min": "Минимальный тик должен быть {{currentTick}}",
       "buttons": {
-        "send": "Send",
-        "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+        "send": "Отправить",
+        "cancel": "Отмена",
+        "error.balance": "Недостаточный баланс, требуется минимум 1,000,000 Qubic"
       }
     },
-    "noAssets": "No assets available"
+    "noAssets": "Нет доступных акций"
   },
   "qrReceiveComponent": {
     "title": "Получить платеж",
@@ -114,7 +114,7 @@
     "title.add": "Добавить аккаунт",
     "title.edit": "Редактировать аккаунт",
     "newSeedName": "Имя счета",
-    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "seedWarning": "<b>IMPORTANT!<br> Это ваш секретный 55-тизначный секретный сид (Seed)!<br>Сохраните его в надежном секретном месте.<br>Вы потеряете все свои средства если потеряете секретный сид!<br><br>Больше информации об этом:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
         "placeholder": "Выберите имя для вашей учетной записи",
@@ -136,13 +136,13 @@
         "generateSeed": "Случайная генерация пароля учетной записи"
       },
       "watchOnlyAddress": {
-        "title": "Watch-Only-Address",
-        "placeholder": "60-char public-key",
+        "title": "Режим-только-просмотр",
+        "placeholder": "60-тизначный ID",
         "error": {
-          "required": "An 60-char public-key is required.",
-          "min": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "max": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "regex": "Can only contain A-Z"
+          "required": "Требуется 60-тизначный ID.",
+          "min": "60-тизначный ID должен состоять из 60-ти больших латинских букв",
+          "max": "60-тизначный ID должен состоять из 60-ти больших латинских букв",
+          "regex": "Может содержать только диапазон от A-Z"
         }
       },
       "error": {
@@ -159,48 +159,48 @@
     }
   },
   "seedOverviewComponent": {
-    "title": "Addresses",
-    "isTable": "Show table",
+    "title": "Адреса",
+    "isTable": "Показать таблицу",
     "addSeedButton": "Добавить счет",
     "importButton": "Импортировать",
     "exportButton": "Экспорт",
-    "search.label": "Search",
+    "search.label": "Поиск",
     "table": {
       "alias": "Имя счета",
       "publicId": "ID счета",
       "balance": "Баланс",
-      "epochChanges": "Epoch Changes",
-      "noData": "No data matching the filter \"{{q}}\"",
+      "epochChanges": "Смена эпохи",
+      "noData": "Нет данных совпадающих с фильтром \"{{q}}\"",
       "actions": {
         "title": "Действия",
         "revealSeed": "Раскрыть пароль счета",
-        "assets": "Show Owned Assets",
+        "assets": "Показать ваши акции",
         "makePayment": "Произвести платеж",
         "receivePayment": "Сгенерировать QR-код для получения платежа",
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
-        "refreshBalance": "Refresh Balance from Network"
+        "refreshBalance": "Обновить балланс"
       }
     },
-    "hasPendingTransaction": "Transactions pending",
-    "marketPrice": "Price",
-    "marketSupply": "Supply",
-    "marketCap": "Marketcap",
+    "hasPendingTransaction": "Транзакция в обработке",
+    "marketPrice": "Цена",
+    "marketSupply": "Обеспечение",
+    "marketCap": "Рыночная капитализация",
     "marketCurrency": "$"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "balance": "Wallet balance",
+    "title": "Панель инструментов",
+    "balance": "Балланс кошелька",
     "currency": "Qu",
-    "totalBalance": "Your Total Balance"
+    "totalBalance": "Общий балланс"
   },
   "unlockComponent": {
     "title": "Разблокировать кошелек",
     "title.new": "Создать файл Vault",
-    "welcomeMessage": "Добро пожаловать в кошелек qubic. Для использования этого кошелька вы должны создать файл Vault. Он будет содержать ваш открытый/закрытый ключ, который впоследствии будет использоваться для шифрования/дешифрования ваших данных.",
-    "reasonMessage": "Для разблокировки кошелька необходим файл Vault. Этот файл автоматически удаляется после перезагрузки или закрытия страницы.",
+    "welcomeMessage": "Добро пожаловать в кошелек Qubic. Для использования этого кошелька вы должны создать файл Vault. Он содержит ваш открытый/закрытый ключ, который впоследствии будет использоваться для шифрования/дешифрования ваших данных.",
+    "reasonMessage": "Для разблокировки кошелька необходим файл Vault. Этот файл автоматически отключается после перезагрузки или закрытия страницы.",
     "choosePrivateKeyFile": "Выберите файл Vault",
-    "chooseConfigFile": "Choose wallet config file",
+    "chooseConfigFile": "Выберите файл Config",
     "overwriteVault": "Похоже, что в этом браузере уже сохранены некоторые данные. Вы действительно хотите перезаписать их?",
     "form": {
       "file.error.required": "Требуется файл Vault",
@@ -208,21 +208,21 @@
       "password.error.min": "Ваш пароль должен состоять минимум из 8 символов.",
       "configFile": {
         "error": {
-          "required": "Config file required"
+          "required": "Требуется файл Config"
         }
       }
     },
     "buttons": {
       "cancel": "Отмена",
       "generateKey": "Создать новый файл Vault",
-      "importAndUnlock": "Import Vault and Unlock",
+      "importAndUnlock": "Загрузить файл Vault и разблокировать",
       "unlock": "Разблокировать кошелек",
       "existingUser": "У меня уже есть мой Vault",
-      "newUser": "Create Vault",
+      "newUser": "Создать Vault",
       "closeWallet": "Закрыть кошелек",
-      "importVault": "Import Vault"
+      "importVault": "Импортировать Vault"
     },
-    "welcomeHintMessage": "After you have downloaded your Vault file. You need to select the downloaded file and enter your password again. This will unlock your wallet."
+    "welcomeHintMessage": "После загрузки файла Vault. Вы должны выбрать файл еще раз и ввести пароль. Это разблокирует кошелек."
   },
   "lockIconComponent": {
     "lock": "Заблокировать кошелек",
@@ -245,25 +245,25 @@
     "buttons": {
       "savePrivateKey": "Сохранить файл Vault",
       "closeWallet": "Закрыть кошелек",
-      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
+      "exportAndCloseWallet": "Экспортировать файл Vault и заблокировать кошелек",
       "enableExport": "Экспорт",
       "cancel": "Отменить"
     }
   },
   "paymentComponent": {
-    "title": "Отправить Qubic Units (QUBIC)",
+    "title": "Отправить QUBIC",
     "messages": {
-      "pleaseUnlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your transaction could not be sent. Please try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct private key??",
-      "failedValidation": "We had validation errors. Please check the form."
+      "pleaseUnlock": "Разблокируйте кошелек",
+      "storedForPropagation": "Ваша транзакция отправлена на обработку - тик {{tick}}",
+      "failedToSend": "Транзакция отклонена. Попробуйте еще раз.",
+      "failedToDecrypt": "Невозможно расшифровать ваш сид. Убедитисеь что вы ввели его правильно??",
+      "failedValidation": "Ошибка. Проверьте правильность заполнения формы."
     },
     "form": {
       "sourceSeed": {
         "label": "ID с которого будут отправлены QUBIC",
         "error": {
-          "required": "Требуется учетная запись отправителя"
+          "required": "Требуется ID отправителя"
         }
       },
       "receiver": {
@@ -276,8 +276,8 @@
         }
       },
       "amount": {
-        "placeholder": "Сумма в монетах кубика (QUBIC)",
-        "max.tooltip": "Set to maximum available amount on this Seed",
+        "placeholder": "Сумма QUBIC",
+        "max.tooltip": "Указать всю доступную сумму",
         "error": {
           "required": "Сумма обязательна",
           "min": "Сумма должна быть минимум 1"
@@ -301,165 +301,165 @@
   },
   "balanceComponent": {
     "title": "Баланс",
-    "createSeedHint": "Пожалуйста, сначала создайте Seed",
+    "createSeedHint": "Пожалуйста, сначала создайте сид",
     "overview": {
       "title": "Обзор",
       "totalWalletValue": "Общий баланс кошелька",
-      "estimatedWalletValue": "Estimated Wallet Value",
+      "estimatedWalletValue": "Оценочная стоимость кошелька",
       "baseDate": "на"
     },
     "transactions": {
       "title": "Транзакции в текущей эпохе",
       "verificationAlert": "Не удалось проверить данные предварительного просмотра",
       "noTransactions": "Транзакции не найдены",
-      "send.tooltip": "Исходящая передача",
-      "exchange.tooltip": "Internal Transfer",
-      "explorer.tooltip": "Show Transfer in Explorer",
-      "receive.tooltip": "Входящая передача",
+      "send.tooltip": "Исходящий перевод",
+      "exchange.tooltip": "Внутренний перевод",
+      "explorer.tooltip": "Показать в Explorer",
+      "receive.tooltip": "Входящий перевод",
       "status.pending.tooltip": "В ожидании",
       "status.executed.tooltip": "В обработке",
       "status.dismissed.tooltip": "Отклонено",
       "status.unknown.tooltip": "Неизвестно",
       "status.confirmed.tooltip": "Непонятно",
-      "filter.seed.label": "Сортировка по seed",
+      "filter.seed.label": "Сортировка по сиду",
       "exportButton": "Экспорт транзакций"
     },
-    "repeatTransaction": "Repeat Transaction"
+    "repeatTransaction": "Повторить транзакцию"
   },
   "settings": {
     "general": {
-      "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
-      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
-      "button.save": "Save Settings",
+      "tickAddition.placeholder": "Количество тиков которые нужно добавить к текущему для перевода",
+      "webBridge.placeholder": "Включить Web Bridge (Прямое соединение с QUBIC Network)",
+      "button.save": "Сохранить настройки",
       "beta": {
-        "placeholder": "Enable Beta Features"
+        "placeholder": "Включить Бета функции"
       }
     },
     "import": {
-      "title": "Import Settings",
-      "doneMessage": "Import Successful",
-      "dropMessage": "Drop your config to import here",
-      "buttons.import": "Import Config",
-      "seedsMessage": "You are about to import {{amount}} seeds.",
-      "goHomeLink": "Show imported Seeds"
+      "title": "Импортировать настройки",
+      "doneMessage": "Импортировано удачно",
+      "dropMessage": "Переместите сюда файл настроек для импорта",
+      "buttons.import": "Импортировать настройки",
+      "seedsMessage": "Вы импортируете {{amount}} сидов.",
+      "goHomeLink": "Показать импортированные сиды"
     },
     "export": {
-      "title": "Export Settings",
-      "hint": "Press the below button to download your current config. It contains your encrypted seeds. You also should have saved your private key.",
-      "buttons.export": "Export/Save Config"
+      "title": "Экспортировать настройки",
+      "hint": "Нажмите эту кнопку что бы экспортировать свой файл настроек. Он содержит ваши зашифрованные сиды. Но у вас все равно должен быть спрятан секретный сид.",
+      "buttons.export": "Экспортировать файл настроек"
     }
   },
   "votingComponent": {
-    "title": "Qubic Computor Voting",
-    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
+    "title": "Голосование Компьютеров Qubic",
+    "description": "Голосование Компьютеров Qubic используется для достижения консенсуса по темам, которые должны быть решены в отношении всей сети. Это может включать в себя принятие смарт-контрактов или принятие других решений протокола. В голосовании могут участвовать только Компьютеры.",
     "proposals": {
-      "editButton": "Edit",
-      "createButton": "Create Proposal",
-      "voteButton": "Vote",
-      "title": "{{amount}} Current Proposals",
-      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
-      "votingResult": "Voting Result",
-      "noVotes": "no votes",
+      "editButton": "Редактировать",
+      "createButton": "Создать предложение",
+      "voteButton": "Проголосовать",
+      "title": "{{amount}} Текущее предложение",
+      "noComputorHint": "Вы не Компьютер. Хотя бы один ваш сид должен иметь статус Компьютера, что бы вносить предложения.",
+      "votingResult": "Результат голосования",
+      "noVotes": "Нет голосов",
       "from": "From:",
-      "url": "Propsal URL:"
+      "url": "Адрес предложения:"
     },
     "participate": {
-      "title": "Participate",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Votes",
-      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
-      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
-      "computorsSelected": "Computors selected"
+      "title": "Участвовать",
+      "cancelButton": "Отмена",
+      "sendVotesButton": "Проголосовать",
+      "notConfirmedMessage": "Это предложение пока не одобрено Qubic Network. Подождите.",
+      "noComputorsText": "У вас нет сида со статусом Компьютер или вы уже внесли предложение.",
+      "computorsSelected": "Компьютер выбран"
     },
     "create": {
-      "title": "Create Proposal",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Proposal",
-      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
+      "title": "Создать предложение",
+      "cancelButton": "Отмена",
+      "sendVotesButton": "Послать предложение",
+      "alreadyPublished": "Вы уже создали предложение. Это можно сделать один раз за эпоху",
       "buttons": {
-        "create": "Create Proposal",
-        "publish": "Connect and Publish Proposal",
-        "reset": "Reset Form",
-        "loadPrivateKey": "Load vault file",
-        "finish": "Show Proposals"
+        "create": "Создать предложение",
+        "publish": "Соедениться и опубликовать предложение",
+        "reset": "Очистить форму",
+        "loadPrivateKey": "Загрузить ключ Vault",
+        "finish": "Показать предложения"
       },
       "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "Computor to use for proposal",
-        "sourceSeed.error.required": "Computor is required",
-        "title.label": "Proposal Title",
-        "title.placeholder": "Proposal Title",
-        "title.error.required": "Title is required",
-        "title.error.min": "Title must have at least 2 characters",
-        "title.error.max": "Title must have at maximum 100 characters",
-        "description.label": "Proposal Description",
-        "description.placeholder": "Proposal Description",
-        "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 1000 characters",
-        "description.error.required": "Description is required",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} is required",
-        "option.error.min": "Option must have at least 2 characters",
-        "option.error.max": "Option must have at maximum 50 characters",
-        "computorIp.label": "Computor IP Address",
-        "computorIp.placeholder": "Computor IP Address",
-        "computorIp.error.required": "Computor IP Address required"
+        "operatorSeed.label": "Оператор сида",
+        "operatorSeed.error.required": "Требуется оператор",
+        "sourceSeed.label": "Выберите Компьютер для предложения",
+        "sourceSeed.error.required": "Требуется Компьютер",
+        "title.label": "Заголовок предложения",
+        "title.placeholder": "Заголовок",
+        "title.error.required": "Требуется заголовок",
+        "title.error.min": "Заголовок должен состоять минимум из 2 символов",
+        "title.error.max": "Заголовок должен состоять максимум из 100 символов",
+        "description.label": "Описание предложения",
+        "description.placeholder": "Описание предложения",
+        "description.error.min": "Предложение должно состоять минимум из 2 символов",
+        "description.error.max": "Предложение должно состоять максимум из 1000 символов",
+        "description.error.required": "Описание обязательно",
+        "option.label": "Опция {{id}}",
+        "option.placeholder": "Опция {{id}}",
+        "option.error.required": "Опция {{id}} требуется!",
+        "option.error.min": "Опция должна состоять минимум из 2 символов",
+        "option.error.max": "Опция должна состоять максимум из 50 символов",
+        "computorIp.label": "IP адрес Компьютера",
+        "computorIp.placeholder": "IP адрес Компьютера",
+        "computorIp.error.required": "IP адрес Компьютера требуется!"
       },
-      "proposalStep.label": "Create Proposal",
-      "publishStep.label": "Publish Proposal",
-      "finishStep.label": "Done",
-      "finishStep.success": "Your Proposal has been sent to your computor."
+      "proposalStep.label": "Создать предложение",
+      "publishStep.label": "Опубликовать предложение",
+      "finishStep.label": "Готово",
+      "finishStep.success": "Ваше предложение отправлено на ваш Компьютер."
     },
     "status": {
-      "success": "Accepted by Quorum",
-      "failed": "Dismissed by Quorum",
-      "publishing": "Publish in progress",
-      "pending": "Voting is open",
-      "draft": "Draft",
-      "unknown": "Unknown status"
+      "success": "Одобрено Кворумом",
+      "failed": "Отклонено Кворумом",
+      "publishing": "Публикация в процессе",
+      "pending": "Голосование открыто",
+      "draft": "Черновик",
+      "unknown": "Статус неизвестен"
     }
   },
   "ipoComponent": {
     "messages": {
-      "unlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct private key??",
-      "failedToValidate": "We had validation errors. Please check the form."
+      "unlock": "Пожалуйста разблокируйте кошелек",
+      "storedForPropagation": "Ваша транзакция была сохранена для тика {{tick}}",
+      "failedToSend": "Ваше IPO не отправлено. Попробуйте еще раз.",
+      "failedToDecrypt": "Невозможно расшифровать ваш сид. Проверьте правильность ввода??",
+      "failedToValidate": "Ошибка валидации. Проверьте правильность ввода."
     },
     "title": "Qubic IPO",
-    "description": "The Qubic IPO is an auction for shares of smart contracts.",
-    "noIpos": "Currently no IPO's active",
-    "yourBids": "Your Bids",
-    "yourShares": "Your Shares",
-    "sharesFor": "Shares for",
-    "statusValid": "Status valid for tick {{tick}}",
-    "livPanelHint": "Check out current Results",
-    "buttons.place-bid": "Place Bid",
-    "buttons.refresh": "Refresh Status",
-    "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
-    "bidStatus.pcs": "pcs",
+    "description": "Qubic IPO это аукцион по продаже акций и смарт-контрактов.",
+    "noIpos": "Нет активных IPO",
+    "yourBids": "Ваша ставка",
+    "yourShares": "Ваши акции",
+    "sharesFor": "Акции на момент",
+    "statusValid": "Валидны для тика {{tick}}",
+    "livPanelHint": "Проверить текущий статус",
+    "buttons.place-bid": "Сделать ставку",
+    "buttons.refresh": "Проверить статус",
+    "bidStatus.hint": "Статус показывает только если вы сделали ставку. Но не показывает если она сработала.",
+    "bidStatus.pcs": "шт.",
     "place-bid": {
-      "title": "Place a Bid",
-      "needBalance": "You need at least one seed with a positive balance.",
-      "noContract": "Contract not found. Please try again later.",
-      "noContract.gotoIpoLabel": "Show available Contract IPO's",
+      "title": "Сделать ставку",
+      "needBalance": "Вам нужен хотя бы один сид с положительным баллансом.",
+      "noContract": "Контракт не найден. Попробуйте позже.",
+      "noContract.gotoIpoLabel": "Показать доступные IPO Контракты",
       "buttons": {
-        "send": "Send Bid"
+        "send": "Сделать ставку"
       },
       "form": {
         "quantity": {
-          "placeholder": "Quantity",
-          "error.min": "Minimum 1",
-          "error.required": "Quantity is required"
+          "placeholder": "Количество",
+          "error.min": "Минимум 1",
+          "error.required": "Введите количество"
         },
         "price": {
-          "placeholder": "Price (QUBIC)",
-          "error.min": "Minimum 1",
-          "error.required": "Price is required",
-          "max.tooltip": "Bid all available QUBIC"
+          "placeholder": "Цена QUBIC",
+          "error.min": "Минимум 1",
+          "error.required": "Введите цену",
+          "max.tooltip": "Выбрать все доступные QUBIC"
         }
       }
     }
@@ -468,7 +468,7 @@
     "title": "Примечание",
     "button": "Да, я подтверждаю.",
     "messages": {
-      "tresorText": "Вы скачали свой файл хранилища? Пожалуйста, выберите этот файл хранилища на следующем этапе, чтобы открыть кошелек!"
+      "tresorText": "Вы скачали свой файл Vault? Пожалуйста, выберите файл Vault на следующем этапе, чтобы открыть кошелек!"
     }
   },
   "loadConfigComponent": {
@@ -491,62 +491,62 @@
     "messages": {
       "export": "Вы изменили свой инвентарь счетов. Обязательно загрузите текущую конфигурацию, чтобы впоследствии импортировать её.",
       "info": "Он содержит ваши зашифрованные сиды.",
-      "unlockInfo": "Please unlock your Vault to be able to export your Vault file with the newest inventory."
+      "unlockInfo": "Пожалуйста, разблокируйте ваш Vault, чтобы иметь возможность экспортировать файл Vault с новым содержимым.."
     }
   },
   "welcomeComponent": {
-    "welcomeMessage": "To use this Wallet you must either create or import your existing Vault. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "welcomeMessage": "Что бы использовать кошелек вы должны импортировать ваш файл Vault. Он содержит ваш открытый/закрытый ключ, который впоследствии будет использоваться для шифрования/дешифрования ваших данных.",
     "button": {
-      "createVault": "Create Vault",
-      "importVault": "Import Vault"
+      "createVault": "Создать Vault",
+      "importVault": "Импортировать Vault"
     },
-    "title": "Welcome to the Qubic Wallet"
+    "title": "Добро пожаловать в кошелек Qubic!"
   },
   "importComponent": {
-    "title": "Import Vault",
-    "message": "You can import an existing Vault to your Wallet."
+    "title": "Импортировать Vault",
+    "message": "Вы можете импортировать уже существующий файл Vault в свой кошелек."
   },
   "createVaultComponent": {
     "createVault": {
-      "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
-      "stepTitle": "Create Vault",
-      "vaultName": "Name",
-      "button": "Create Vault",
-      "placeholder": "Choose a name for your Vault"
+      "message": "На этом шаге будет создана пара закрытый/открытый ключ для кошелька. Введите имя и выберите \"Create Vault\" что бы создать свой Qubic\r\n        кошелек.",
+      "stepTitle": "Создать Vault",
+      "vaultName": "Имя",
+      "button": "Создать Vault",
+      "placeholder": "Введите имя для файла Vault"
     },
     "createAddress": {
-      "title": "Add Address",
-      "message": "In your Qubic Wallet you can have multiple Addresses. Every Address\r\n        consists of a Seed (private Key) and a Public Id. The Seed is needed to\r\n        send Qubic and the Public Id can be used to receive Qubic. We create now\r\n        your first Address.",
-      "addressNam": "Name",
-      "seed": "Seed",
-      "seedPlaceholder": "Choose a random seed...",
-      "publicId": "Public Id",
-      "radomizeSeed": "Randomize Seed",
-      "addressPlaceholder": "Choose an Account Name",
-      "button": "Create Address"
+      "title": "Добавить адрес",
+      "message": "В кошельке Qubic вы можете использовать множество ID. Каждый ID\r\n        состоит из сида (приватный ключ) и адреса (ID публичный ключ). Сид нужен для возможности \r\n        отправки Qubic и ID нужен для получения Qubic. Сейчас мы создадим\r\n        твой первый ID.",
+      "addressNam": "Имя",
+      "seed": "Сид",
+      "seedPlaceholder": "Подобрать случайный сид...",
+      "publicId": "Публичный ID",
+      "radomizeSeed": "Случайный сид",
+      "addressPlaceholder": "Введите имя вашего аккаунта",
+      "button": "Создать ID"
     },
     "downloadVault": {
-      "stepTitle": "Download initial Vault",
-      "message": "Your personal Vault has been created. You can now download it. Please\r\n          choose a secure Password and select \"Download Vault\".",
-      "password": "Password",
-      "passwordHint": "Choose a secure password...",
-      "button": "Download Vault"
+      "stepTitle": "Создать начальный Vault",
+      "message": "Твой файл Vault создан. Сейчас сохраните его. Please\r\n          введите безопасный пароль и нажмите \"Сохранить Vault\".",
+      "password": "Пароль",
+      "passwordHint": "Введите безопасный пароль...",
+      "button": "Сохранить Vault"
     },
     "verifyVault": {
-      "stpTitle": "Load/Import Vault",
-      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
-      "password": "Password",
-      "passwordHint": "Your Vault Password",
-      "button": "Verify Vault File"
+      "stpTitle": "Загрузка/Импорт файла Vault",
+      "message": "Файл Vault который вы загружаете содержит\r\n          всю важную информацию. Каждый раз когда вы хотите разблокировать свой\r\n          кошелек, вам нужен этот файл. Каждый раз когда вы изменяете свой кошелек\r\n          (прим. изменяете адреса) вам будет предложено сохранить\r\n          новый файл Vault. Что бы убедиться что все работает. Выберите ниже\r\n          сохраненный файл Vault и введите пароль еще раз.",
+      "password": "Пароль",
+      "passwordHint": "Пароль от файла Vault",
+      "button": "Проверить Vault"
     },
     "done": {
-      "stepTitle": "Done",
-      "message": "Happy Qubic! Your Wallet is ready.",
-      "button": "Open My Wallet"
+      "stepTitle": "Готово",
+      "message": "Отлично сэр! Ваш кошелек готов.",
+      "button": "Открыть мой кошелек"
     },
     "buttons": {
-      "cancel": "Cancel",
-      "reset": "Reset"
+      "cancel": "Отмена",
+      "reset": "Перезагрузить"
     }
   }
 }
