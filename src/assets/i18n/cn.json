@@ -2,553 +2,551 @@
   "general": {
     "title": "Qubic - Wallet",
     "comingSoon": "coming soon!",
-    "themeSwitch": "Theme Switch",
     "navigation": {
-      "home": "Dashboard",
-      "payment": "Payment",
-      "balance": "Transactions",
-      "settings": "Settings",
-      "voting": "Voting",
+      "home": "主页",
+      "payment": "支付",
+      "balance": "交易",
+      "settings": "设置",
+      "voting": "投票",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "资产"
     },
     "version": "Version {{version}} - beta",
     "version.url": "qubic.org",
-    "copy.tooltip": "Copy",
-    "error": "Error",
-    "close": "close",
+    "copy.tooltip": "复制",
+    "error": "错误",
+    "close": "关闭",
     "currency": "QUBIC",
-    "currentTick": "Tick: {{tick}}",
-    "loading": "loading...",
+    "currentTick": "刻度: {{tick}}",
+    "loading": "加载中...",
     "buttons": {
-      "close": "Close",
-      "maximize": "Maximize"
+      "close": "关闭",
+      "maximize": "最小化"
     },
     "messages": {
-      "notConnected": "Not connected to the Qubic Network. Please Connect first.",
-      "refreshRequested": "Refresh has been requested",
-      "refreshFailed": "Refresh failed, please try again later",
-      "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
-      "timeoutTryAgain": "We run into a timeout. Please try again."
+      "notConnected": "未连接到 Qubic 网络，请先连接网络。",
+      "refreshRequested": "已请求刷新。",
+      "refreshFailed": "刷新失败，请稍后再试。",
+      "balanceReceived": "网络报告 {{balance}} QUBIC 来自 {{publicId}}.",
+      "timeoutTryAgain": "连接超时，请稍后再试。"
     }
   },
   "payment": {
-    "keyRequestReason": "As transactions are digitally signed with your key you need to load your key first."
+    "keyRequestReason": "由于交易是使用您的密钥进行数字签名的，因此您需要首先加载密钥。"
   },
   "confirmDialog": {
-    "title": "Confirm",
+    "title": "确定",
     "buttons": {
-      "cancel": "Cancel",
-      "confirm": "Yes, I confirm"
+      "cancel": "取消",
+      "confirm": "是的，我确定"
     },
-    "confirmationText": "Are you sure?"
+    "confirmationText": "你确定吗？"
   },
   "notifyComponent": {
-    "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Vault.",
-    "saveYourKey": "Please store your Vault file in a safe place.",
-    "qubicLiSync": "Sync your settings with qubic.li",
-    "qubicOffline": "QUBIC network not connected",
-    "qubicOnline": "Connected to the QUBIC network"
+    "saveYourSettings": "请导出/下载您的设置，您的设置包含还原金库所需的加密种子。",
+    "saveYourKey": "请将您的金库文件存储在安全的地方。",
+    "qubicLiSync": "使用 qubic.li 同步您的设置",
+    "qubicOffline": "QUBIC 网络未连接",
+    "qubicOnline": "已连接到 QUBIC 网络"
   },
   "revealSeedComponent": {
-    "title": "Address Information",
-    "publicId": "Address ID",
-    "privateId": "55-char Seed",
+    "title": "地址信息",
+    "publicId": "地址ID",
+    "privateId": "55 字符种子",
     "buttons": {
-      "close": "Close"
+      "close": "关闭"
     }
   },
   "assetsComponent": {
-    "title": "Your Assets",
-    "openAssets": "Goto Asset Management",
+    "title": "您的资产",
+    "openAssets": "转到资产管理",
     "overview": {
-      "title": "Asset Overview"
+      "title": "资产概览"
     },
     "table": {
-      "publicId": "Public ID",
-      "contractIndex": "Contract Index",
-      "assetName": "Asset Name",
-      "contractName": "Contract Name",
-      "ownedAmount": "Owned Amount",
-      "possessedAmount": "Possessed Amount",
-      "tick": "Valid for Tick {{tick}}",
-      "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "publicId": "地址ID",
+      "contractIndex": "合约指数",
+      "assetName": "资产名称",
+      "contractName": "合约名称",
+      "ownedAmount": "持有数量",
+      "possessedAmount": "持有量",
+      "tick": "有效刻度 {{tick}}",
+      "reportingNodes": "报告节点",
+      "issuerIdentity": "发行人身份"
     },
     "buttons": {
-      "close": "Close",
-      "refresh": "Refresh",
-      "send": "Transfer Assets"
+      "close": "关闭",
+      "refresh": "刷新",
+      "send": "转移资产"
     },
     "form": {
-      "info": "Send Assets",
-      "fees": "Fixed sending fees: 1,000,000 Qubic",
-      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
-      "select": "Select Asset",
-      "select.error": "Asset selection is required",
-      "placeholder": "Address ID of the receiver",
-      "placeholder.error": "An 55-char seed is required.",
-      "amount": "Amount to send",
-      "amount.error": "Amount is required",
-      "amount.value.error": "The amount must be greater than 0",
-      "amount.max.error": "The amount cannot exceed the quantity held",
-      "tick": "Tick",
-      "tick.error": "Tick is required",
-      "tick.tooltip": "Tick is required",
-      "tick.min": "Tick must be a minimum of {{currentTick}}",
+      "info": "发送资产",
+      "fees": "固定发送费用: 1,000,000 Qubic",
+      "balance": "扣除转账费用（1M Qubic）后，您的余额将为:",
+      "select": "选择资产",
+      "select.error": "需要选择资产",
+      "placeholder": "接收方地址 ID",
+      "placeholder.error": "需要 55 位字符的种子。",
+      "amount": "发送数量",
+      "amount.error": "需要填写数量",
+      "amount.value.error": "数量必须大于0",
+      "amount.max.error": "数量不能超过持有的数量",
+      "tick": "刻度",
+      "tick.error": "需要填写刻度",
+      "tick.tooltip": "需要填写刻度",
+      "tick.min": "刻度必须至少为 {{currentTick}}",
       "buttons": {
-        "send": "Send",
-        "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+        "send": "发送",
+        "cancel": "取消",
+        "error.balance": "余额不足, 余额需大于 1,000,000 Qubic"
       }
     },
-    "noAssets": "No assets available"
+    "noAssets": "无可用资产"
   },
   "qrReceiveComponent": {
-    "title": "Receive payment",
-    "downloadLink": "Download",
-    "hint": "Scan/Send this QR Code to receive a payment for {{publicId}}.",
-    "buttons.close": "Close"
+    "title": "接收付款",
+    "downloadLink": "下载",
+    "hint": "扫描/发送此二维码以接收付款{{publicId}}.",
+    "buttons.close": "关闭"
   },
   "seedEditComponent": {
-    "title.add": "Add Address",
-    "title.edit": "Edit Address",
-    "newSeedName": "Address-Name",
-    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "title.add": "添加地址",
+    "title.edit": "编辑地址",
+    "newSeedName": "地址名称",
+    "seedWarning": "<b>重要!<br> 这 55 位字符是您的 Qubic 地址私钥（种子）！<br>将此种子保存/储存在安全位置。<br>如果您没有备份种子，您可能会损失资金！<br><br>有关此主题的更多信息：</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
-        "placeholder": "Choose an own name for your address in order to better refer to it.",
+        "placeholder": "为地址添加名称，以便更好管理。",
         "error": {
-          "required": "Name required",
-          "min": "Name must have a minimum of 3 characters",
-          "max": "Name must have a maximum of 50 characters",
-          "regex": "Can only contain {{regex}}"
+          "required": "需要填写名称",
+          "min": "名称必须至少包含3个字符",
+          "max": "名称最多只能50个字符",
+          "regex": "只能包含 {{regex}}"
         }
       },
       "seed": {
-        "placeholder": "55-char Seed",
+        "placeholder": "55位字符种子",
         "error": {
-          "required": "An 55-char seed is required.",
-          "min": "The 55-char seed must exactly consist of 55 lower case characters",
-          "max": "The 55-char seed must exactly consist of 55 lower case characters",
-          "regex": "Can only contain a-zA-Z0-9_-"
+          "required": "需要一个55位字符种子",
+          "min": "55位字符种子必须完全由55个小写字母组成",
+          "max": "55位字符种子必须完全由55个小写字母组成",
+          "regex": "只能包含 a-z/A-Z/0-9/_-"
         },
-        "generateSeed": "Randomize Seed"
+        "generateSeed": "随机种子"
       },
       "watchOnlyAddress": {
-        "title": "Watch-Only-Address",
-        "placeholder": "60-char public-key",
+        "title": "观察地址",
+        "placeholder": "60位字符地址",
         "error": {
-          "required": "An 60-char public-key is required.",
-          "min": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "max": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "regex": "Can only contain A-Z"
+          "required": "需要一个60位字符地址",
+          "min": "60位字符地址必须完全由60个大写字符组成",
+          "max": "60位字符地址必须完全由60个大写字符组成",
+          "regex": "只能包含 A-Z"
         }
       },
       "error": {
-        "text": "Please check the form.",
-        "close": "close"
+        "text": "请检查表格",
+        "close": "关闭"
       }
     },
-    "publicIdMessage": "Your address id is:",
-    "privateKeyWarning": "Caution! Your Vault file is not loaded. Please make sure you have it safely stored.",
+    "publicIdMessage": "您的地址 ID 是:",
+    "privateKeyWarning": "注意！您的金库文件未加载。请确保安全存放。",
     "buttons": {
-      "cancel": "Cancel",
-      "create": "Create address",
-      "save": "Save address"
+      "cancel": "取消",
+      "create": "创建地址",
+      "save": "保存地址"
     }
   },
   "seedOverviewComponent": {
-    "title": "Addresses",
-    "isTable": "Show table",
-    "addSeedButton": "Add Address",
-    "importButton": "Import",
-    "exportButton": "Export",
-    "search.label": "Search",
+    "title": "地址",
+    "isTable": "列表展示",
+    "addSeedButton": "添加地址",
+    "importButton": "导入",
+    "exportButton": "导出",
+    "search.label": "搜索",
     "table": {
-      "alias": "Address Name",
-      "publicId": "Address ID",
-      "balance": "Balance",
-      "epochChanges": "Epoch Changes",
-      "noData": "No data matching the filter \"{{q}}\"",
+      "alias": "地址名称",
+      "publicId": "地址 ID",
+      "balance": "余额",
+      "epochChanges": "纪元更换",
+      "noData": "没有与筛选器匹配的数据 \"{{q}}\"",
       "actions": {
         "title": "Actions",
-        "revealSeed": "Reveal 55-char seed",
-        "assets": "Show Owned Assets",
-        "makePayment": "Make a payment",
-        "receivePayment": "Generate a QR Code to receive a payment.",
-        "editSeed": "Edit address",
-        "deleteSeed": "Delete address",
-        "refreshBalance": "Refresh Balance from Network"
+        "revealSeed": "显示55位字符种子",
+        "assets": "显示资产",
+        "makePayment": "付款",
+        "receivePayment": "生成二维码以接收付款。",
+        "editSeed": "编辑地址",
+        "deleteSeed": "删除地址",
+        "refreshBalance": "刷新余额"
       }
     },
-    "hasPendingTransaction": "Transactions pending",
-    "marketPrice": "Price",
-    "marketSupply": "Supply",
-    "marketCap": "Marketcap",
+    "hasPendingTransaction": "交易待定",
+    "marketPrice": "价格",
+    "marketSupply": "供应",
+    "marketCap": "市值",
     "marketCurrency": "$"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "balance": "Vault balance",
+    "title": "主页",
+    "balance": "金库余额",
     "currency": "Qu",
-    "totalBalance": "Your Total Balance"
+    "totalBalance": "总余额"
   },
   "unlockComponent": {
-    "title": "Unlock Vault",
-    "title.new": "Create Vault",
-    "welcomeMessage": "Welcome to the Qubic Wallet.\nTo use this Wallet you must create a Vault file. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
-    "reasonMessage": "To unlock your Vault, your Vault file or wallet unlock file is needed. The wallet data is automatically deleted once this page is reloaded or closed.",
-    "choosePrivateKeyFile": "Select Vault File",
-    "chooseConfigFile": "Select Config file",
-    "overwriteVault": "It looks like there is already some data saved in this Browser. Do you really want to overwrite it?",
+    "title": "解锁金库",
+    "title.new": "创建金库",
+    "welcomeMessage": "欢迎使用Qubic钱包。\若要使用此钱包，您必须创建一个金库文件。这将包含您的地址/私钥，之后用于加密/解密您的数据。",
+    "reasonMessage": "若要解锁金库，需要您的金库文件或钱包解锁文件。一旦重新加载或关闭此页面，钱包数据就会自动删除。",
+    "choosePrivateKeyFile": "选择金库(Vault)文件",
+    "chooseConfigFile": "选择配置(Config)文件",
+    "overwriteVault": "该浏览器中似乎已经保存了一些数据。是否确实要覆盖它？",
     "form": {
-      "file.error.required": "Vault/Wallet unlock file required",
-      "password.error.required": "Vault password required",
-      "password.error.min": "Your password must have a minimum of 8 characters.",
-      "password.error.wrong": "Your password is incorrect.",
+      "file.error.required": "需要金库/钱包解锁文件",
+      "password.error.required": "需要金库密码",
+      "password.error.min": "您的密码必须至少包含8个字符。",
+      "password.error.wrong": "密码错误",
       "configFile": {
         "error": {
-          "required": "Config file required"
+          "required": "需要配置(Config)文件"
         }
       }
     },
     "buttons": {
-      "cancel": "Cancel",
-      "generateKey": "Create Vault",
-      "importAndUnlock": "Import Vault and Unlock",
-      "unlock": "Unlock Vault",
-      "existingUser": "I already have a Wallet",
-      "newUser": "Create Vault",
-      "closeWallet": "Close Wallet",
-      "importVault": "Import Vault"
+      "cancel": "取消",
+      "generateKey": "创建金库",
+      "importAndUnlock": "导入金库并解锁",
+      "unlock": "解锁金库",
+      "existingUser": "我已经有钱包了",
+      "newUser": "创建金库",
+      "closeWallet": "关闭钱包",
+      "importVault": "导入金库"
     },
-    "welcomeHintMessage": "After you have downloaded your Vault file. You need to select the downloaded file and enter your password again. This will unlock your wallet."
+    "welcomeHintMessage": "下载金库文件后。您需要选择下载的文件并再次输入密码，这将解锁您的钱包。"
   },
   "lockIconComponent": {
-    "lock": "Lock Vault",
-    "unlock": "Unlock Vault"
+    "lock": "锁定金库",
+    "unlock": "解锁金库"
   },
   "lockComponent": {
-    "title": "Close Vault?",
+    "title": "关闭金库?",
     "forceDownload": {
-      "title": "Download Vault File",
-      "reason": "When you lock your Wallet your loaded Vault file is automatically deleted. Without this Vault file no transactions can be made. Please be aware your Vault file is safely stored. Export it again in case of any doubt...",
+      "title": "下载金库文件",
+      "reason": "锁定钱包后，加载的金库文件将自动删除。没有此金库文件，就无法进行任何交易。请注意，您的金库文件已安全存储。如果有任何疑问，请再次导出。。。",
       "buttons": {
-        "allOk": "I have my unlock file, thanks"
+        "allOk": "我有解锁文件，谢谢"
       }
     },
-    "reason": "It is paramount to safely store your Vault file. Please choose a strong password you won't forget and then click on \"save\".",
-    "warning": "I confirm that I have saved my Vault file.",
-    "password.placeholder": "Password",
-    "password.required": "Password required",
-    "password.min": "Password must have a minimum of 8 characters.",
+    "reason": "安全存储金库文件至关重要。请选择一个不会忘记的强密码，然后单击“保存”。",
+    "warning": "我确认已保存我的金库文件。",
+    "password.placeholder": "密码",
+    "password.required": "要求输入密码",
+    "password.min": "密码必须至少包含8个字符。",
     "buttons": {
-      "savePrivateKey": "Save Vault file",
-      "closeWallet": "Lock Vault",
-      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
-      "enableExport": "Export Vault File",
-      "cancel": "Cancel"
+      "savePrivateKey": "保存金库文件",
+      "closeWallet": "锁定金库",
+      "exportAndCloseWallet": "导出金库文件并锁定钱包",
+      "enableExport": "导出金库文件",
+      "cancel": "取消"
     }
   },
   "paymentComponent": {
     "title": "Send Qubic Units (QUBIC)",
     "messages": {
-      "pleaseUnlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your transaction could not be sent. Please try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
-      "failedValidation": "We had validation errors. Please check the form."
+      "pleaseUnlock": "请先解锁您的钱包",
+      "storedForPropagation": "您的交易已被存储以便在刻度中传播{{tick}}",
+      "failedToSend": "无法发送您的交易记录，请稍后再试。",
+      "failedToDecrypt": "我们无法解密您的种子。你使用了正确的解锁文件（私钥）吗？？",
+      "failedValidation": "遇到了验证错误，请检查表格。"
     },
     "form": {
       "sourceSeed": {
-        "label": "Address from which QUBIC are to be sent",
+        "label": "QUBIC 发送地址",
         "error": {
-          "required": "Sender address is required"
+          "required": "必须填写发送地址"
         }
       },
       "receiver": {
-        "placeholder": "Address ID of the receiver",
-        "hint": "60 uppercase characters",
-        "chooseOwnSeed": "Choose an own Address ID",
+        "placeholder": "QUBIC 接收地址",
+        "hint": "60个大写字母",
+        "chooseOwnSeed": "选择自己的地址 ID",
         "error": {
-          "required": "Address ID is required",
-          "length": "A Qubic address ID consists of 60 uppercase letters."
+          "required": "地址ID为必填项",
+          "length": "Qubic地址ID由60个大写字母组成。"
         }
       },
       "amount": {
-        "placeholder": "Amount in Qubic Unis (QUBIC)",
-        "max.tooltip": "Set to maximum available amount on this Seed",
+        "placeholder": "数量 (QUBIC)",
+        "max.tooltip": "设置为该种子的最大可用数量",
         "error": {
-          "required": "Amount is required",
-          "min": "Amount must be a minimum of 1"
+          "required": "必须填写数量",
+          "min": "数量必须至少为1"
         }
       },
       "tick": {
-        "placeholder": "Execution Tick",
-        "customize.tooltip": "Toggle to set custom Execution Tick",
+        "placeholder": "执行刻度",
+        "customize.tooltip": "切换以设置自定义执行刻度",
         "error": {
-          "required": "Tick is required",
-          "min": "Tick must be a minimum of {{currentTick}}"
+          "required": "必须填写刻度",
+          "min": "刻度必须至少为{{currentTick}}"
         }
       }
     },
     "buttons": {
-      "send": "Perform transaction",
-      "reset": "Reset",
-      "loadPrivateKey": "Load Vault file"
+      "send": "执行交易",
+      "reset": "重置",
+      "loadPrivateKey": "加载金库文件"
     }
   },
   "balanceComponent": {
-    "title": "Balance",
-    "createSeedHint": "Please create first a Seed",
+    "title": "余额",
+    "createSeedHint": "请先创建种子",
     "overview": {
-      "title": "Overview",
-      "totalWalletValue": "Fixed Wallet Value",
-      "estimatedWalletValue": "Estimated Wallet Value",
+      "title": "概览",
+      "totalWalletValue": "固定钱包价值",
+      "estimatedWalletValue": "预计钱包价值",
       "baseDate": "per"
     },
     "transactions": {
-      "title": "Transactions in current Epoch",
-      "verificationAlert": "Preview data could not be verified",
-      "noTransactions": "No Transactions found",
-      "send.tooltip": "Outgoing Transfer",
-      "exchange.tooltip": "Internal Transfer",
-      "explorer.tooltip": "Show Transfer in Explorer",
-      "receive.tooltip": "Incoming Transfer",
-      "status.pending.tooltip": "Pending",
-      "status.executed.tooltip": "Executed",
-      "status.dismissed.tooltip": "Dismissed",
-      "status.unknown.tooltip": "Unknown",
-      "status.confirmed.tooltip": "Staged",
-      "filter.seed.label": "Filter by Seed",
-      "exportButton": "Export Transactions"
+      "title": "当前纪元交易",
+      "verificationAlert": "预览数据无法验证",
+      "noTransactions": "没有发现交易",
+      "send.tooltip": "转出记录",
+      "exchange.tooltip": "内部转账",
+      "explorer.tooltip": "在浏览器中显示交易",
+      "receive.tooltip": "接收记录",
+      "status.pending.tooltip": "待处理",
+      "status.executed.tooltip": "已执行",
+      "status.dismissed.tooltip": "已解雇",
+      "status.unknown.tooltip": "未知",
+      "status.confirmed.tooltip": "已暂存",
+      "filter.seed.label": "按种子过滤",
+      "exportButton": "导出交易"
     },
-    "repeatTransaction": "Repeat Transaction"
+    "repeatTransaction": "重复交易"
   },
   "settings": {
     "general": {
       "title": "Web Bridge",
-      "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
+      "tickAddition.placeholder": "添加到当前报价以发送新交易的报价数量",
       "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
-      "button.save": "Save Settings",
+      "button.save": "保存设置",
       "beta": {
-        "placeholder": "Enable Beta Features"
+        "placeholder": "启用测试版功能"
       }
     },
     "import": {
-      "title": "Import Settings",
-      "doneMessage": "Import Successful",
-      "dropMessage": "Drop your address config file to import here",
-      "buttons.import": "Import address config file",
-      "seedsMessage": "You are about to import {{amount}} seeds.",
-      "goHomeLink": "Show imported Seeds"
+      "title": "导入设置",
+      "doneMessage": "导入成功",
+      "dropMessage": "将您的地址配置文件拖放到此处导入",
+      "buttons.import": "导入地址 config 文件",
+      "seedsMessage": "您将导入 {{amount}} 种子。",
+      "goHomeLink": "显示导入种子"
     },
     "export": {
-      "title": "Export Settings",
-      "hint": "Press the below button to download your current address config file. It contains your encrypted seeds. You also should have saved your unlock file (private key).",
-      "buttons.export": "Export/Save Config File"
+      "title": "导出设置",
+      "hint": "按下面的按钮下载您当前的地址配置文件，它包含您的加密种子，您还应该保存解锁文件（私钥）。",
+      "buttons.export": "导出/保存 Config 文件"
     }
   },
   "votingComponent": {
-    "title": "Qubic Computor Voting",
-    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
+    "title": "Qubic计算者投票",
+    "description": "Qubic计算机投票用于就整个网络的待决定主题达成共识，这可以包括接受智能合约或做出其他协议决策，仅允许计算者参与。",
     "proposals": {
-      "editButton": "Edit",
-      "createButton": "Create Proposal",
-      "voteButton": "Vote",
-      "title": "{{amount}} Current Proposals",
-      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
-      "votingResult": "Voting Result",
-      "noVotes": "no votes",
-      "from": "From:",
-      "url": "Proposal URL:"
+      "editButton": "编辑",
+      "createButton": "创建提案",
+      "voteButton": "投票",
+      "title": "{{amount}} 目前的提案",
+      "noComputorHint": "您还没有注册任何计算者，如果您想提出任何建议，您需要至少拥有一个计算者种子。",
+      "votingResult": "投票结果",
+      "noVotes": "不投票",
+      "from": "来自:",
+      "url": "提案URL:"
     },
     "participate": {
-      "title": "Participate",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Votes",
-      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
-      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
-      "computorsSelected": "Computors selected"
+      "title": "参加",
+      "cancelButton": "取消",
+      "sendVotesButton": "发送投票",
+      "notConfirmedMessage": "该提案尚未得到 Qubic 网络的确认，请等待投票。",
+      "noComputorsText": "您没有计算者或您的计算者已创建提案。",
+      "computorsSelected": "选择计算者"
     },
     "create": {
-      "title": "Create Proposal",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Proposal",
-      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
+      "title": "创建提案",
+      "cancelButton": "取消",
+      "sendVotesButton": "发送提案",
+      "alreadyPublished": "该计算机已经发布了提案，每个纪元只允许一个",
       "buttons": {
-        "create": "Create Proposal",
-        "publish": "Connect and Publish Proposal",
-        "reset": "Reset Form",
-        "loadPrivateKey": "Load Vault file",
-        "finish": "Show Proposals"
+        "create": "创建提案",
+        "publish": "连接并发布提案",
+        "reset": "重置表格",
+        "loadPrivateKey": "加载金库文件",
+        "finish": "显示提案"
       },
       "form": {
-        "operatorSeed.label": "Operator Seed",
+        "operatorSeed.label": "仲裁员种子",
         "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "Computor to use for proposal",
+        "sourceSeed.label": "用于提案的计算机",
         "sourceSeed.error.required": "Computor is required",
-        "title.label": "Proposal Title",
-        "title.placeholder": "Proposal Title",
-        "title.error.required": "Title is required",
-        "title.error.min": "Title must have at least 2 characters",
-        "title.error.max": "Title must have at maximum 100 characters",
-        "description.label": "Proposal Description",
-        "description.placeholder": "Proposal Description",
-        "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 1000 characters",
-        "description.error.required": "Description is required",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} is required",
-        "option.error.min": "Option must have at least 2 characters",
-        "option.error.max": "Option must have at maximum 50 characters",
+        "title.label": "提案标题",
+        "title.placeholder": "提案标题",
+        "title.error.required": "标题为必填项",
+        "title.error.min": "标题必须至少有 2 个字符",
+        "title.error.max": "标题不得超过 100 个字符",
+        "description.label": "提案说明",
+        "description.placeholder": "提案说明",
+        "description.error.min": "描述必须至少有 2 个字符",
+        "description.error.max": "描述不得超过 1000 个字符",
+        "description.error.required": "描述为必填项",
+        "option.label": "选项 {{id}}",
+        "option.placeholder": "选项 {{id}}",
+        "option.error.required": "选项 {{id}} 为必填项",
+        "option.error.min": "选项必须至少有 2 个字符",
+        "option.error.max": "选项不得超过 50 个字符",
         "computorIp.label": "Computor IP Address",
         "computorIp.placeholder": "Computor IP Address",
         "computorIp.error.required": "Computor IP Address required"
       },
-      "proposalStep.label": "Create Proposal",
-      "publishStep.label": "Publish Proposal",
-      "finishStep.label": "Done",
-      "finishStep.success": "Your Proposal has been sent to your computor."
+      "proposalStep.label": "创建提案",
+      "publishStep.label": "发布提案",
+      "finishStep.label": "完成",
+      "finishStep.success": "您的提案已发送到您的计算机。"
     },
     "status": {
-      "success": "Accepted by Quorum",
-      "failed": "Dismissed by Quorum",
-      "publishing": "Publish in progress",
-      "pending": "Voting is open",
-      "draft": "Draft",
-      "unknown": "Unknown status"
+      "success": "法定人数接受",
+      "failed": "被法定人数驳回",
+      "publishing": "发布中",
+      "pending": "投票已开放",
+      "draft": "草稿",
+      "unknown": "状态未知"
     }
   },
   "ipoComponent": {
     "messages": {
-      "unlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
-      "failedToValidate": "We had validation errors. Please check the form."
+      "unlock": "请先解锁您的钱包",
+      "storedForPropagation": "您的交易已被存储以便在tick中传播  {{tick}}",
+      "failedToSend": "您的 IPO 无法发送，请稍后再试。",
+      "failedToDecrypt": "无法解密您的种子，您使用了正确的解锁文件（私钥）吗？",
+      "failedToValidate": "验证错误，请检查表格。"
     },
     "title": "Qubic IPO",
-    "description": "The Qubic IPO is an auction for shares of smart contracts.",
-    "noIpos": "Currently no IPO's active",
-    "yourBids": "Your Bids",
-    "yourShares": "Your Shares",
-    "sharesFor": "Shares for",
-    "statusValid": "Status valid for tick {{tick}}",
-    "livPanelHint": "Check out current Results",
-    "buttons.place-bid": "Place Bid",
-    "buttons.refresh": "Refresh Status",
-    "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
+    "description": "Qubic IPO 是智能合约股票的拍卖。",
+    "noIpos": "目前没有 IPO 活跃",
+    "yourBids": "您的出价",
+    "yourShares": "你的股份",
+    "sharesFor": "股份来自",
+    "statusValid": "状态有效刻度 {{tick}}",
+    "livPanelHint": "查看当前结果",
+    "buttons.place-bid": "出价",
+    "buttons.refresh": "刷新状态",
+    "bidStatus.hint": "仅当您已出价时才会显示该状态。 如果成功的话就不会。",
     "bidStatus.pcs": "pcs",
     "place-bid": {
-      "title": "Place a Bid",
-      "needBalance": "You need at least one seed with a positive balance.",
-      "noContract": "Contract not found. Please try again later.",
-      "noContract.gotoIpoLabel": "Show available Contract IPO's",
+      "title": "出价",
+      "needBalance": "您至少需要一颗具有正余额的种子。",
+      "noContract": "未找到合同。 请稍后再试。",
+      "noContract.gotoIpoLabel": "显示可用的 IPO 合约",
       "buttons": {
-        "send": "Send Bid"
+        "send": "发送出价"
       },
       "form": {
         "quantity": {
-          "placeholder": "Quantity",
-          "error.min": "Minimum 1",
-          "error.required": "Quantity is required"
+          "placeholder": "数量",
+          "error.min": "最小为1",
+          "error.required": "数量为必填项"
         },
         "price": {
-          "placeholder": "Price (QUBIC)",
-          "error.min": "Minimum 1",
-          "error.required": "Price is required",
-          "max.tooltip": "Bid all available QUBIC"
+          "placeholder": "价格 (QUBIC)",
+          "error.min": "最小为1",
+          "error.required": "价格为必填项",
+          "max.tooltip": "出价所有可用的 QUBIC"
         }
       }
     }
   },
   "okDialog": {
-    "title": "Notice",
-    "button": "Yes, I confirm.",
+    "title": "注意",
+    "button": "是的，我确认。",
     "messages": {
-      "tresorText": "Have you downloaded your Vault file now? Please select this Vault file in the next step to open the Vault!"
+      "tresorText": "您现在下载了金库文件吗？ 请在下一步中选择此金库文件以打开金库！"
     }
   },
   "loadConfigComponent": {
-    "title": "Import Addresses",
+    "title": "导入地址",
     "buttons": {
-      "import": "Import",
-      "cancel": "Start Without Addresses"
+      "import": "导入",
+      "cancel": "无地址开始"
     },
     "messages": {
-      "import": "If you already have a wallet address config file containing your PublicKeys, you should select and import it now.",
-      "noImport": "If you do not yet have a wallet address config file, create an account in the next section."
+      "import": "如果您已经有包含公钥的钱包地址配置文件，您应该立即选择并导入它。",
+      "noImport": "如果您还没有钱包地址配置文件，请在下一部分中创建一个帐户。"
     }
   },
   "exportConfigComponent": {
-    "title": "Export Vault File",
+    "title": "导出金库文件",
     "buttons": {
-      "export": "Export",
-      "cancel": "Cancel",
-      "unlock": "Unlock Vault"
+      "export": "导出",
+      "cancel": "取消",
+      "unlock": "解锁金库"
     },
     "messages": {
-      "unlockInfo": "Please unlock your Vault to be able to export your Vault file with the newest inventory.",
-      "export": "You have modified your account inventory. Be sure to download your current vault file so you can import it later.",
-      "info": "It contains your account inventory, settings and encrypted seeds. The Vault file will be protected by the provided password."
+      "unlockInfo": "请解锁您的金库，以便能够使用最新的库存导出您的金库文件。",
+      "export": "您已修改您的帐户库存。 请务必下载当前的金库文件，以便稍后导入。",
+      "info": "它包含您的帐户库存、设置和加密种子。金库文件将受提供的密码保护。"
     }
   },
   "welcomeComponent": {
-    "welcomeMessage": "To use this Wallet you must either create or import your existing Vault. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "welcomeMessage": "要使用此钱包，您必须创建或导入现有的保管库。 这将包含您的地址/私钥，随后用于加密/解密您的数据。",
     "button": {
-      "createVault": "Create Vault",
-      "importVault": "Import Vault"
+      "createVault": "创建金库",
+      "importVault": "导入金库"
     },
-    "title": "Welcome to the Qubic Wallet"
+    "title": "欢迎使用 Qubic 钱包"
   },
   "importComponent": {
-    "title": "Import Vault",
-    "message": "You can import an existing Vault to your Wallet."
+    "title": "导入金库",
+    "message": "您可以将现有的保管库导入到您的钱包中。"
   },
   "createVaultComponent": {
     "createVault": {
-      "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
-      "stepTitle": "Create Vault",
-      "vaultName": "Name",
-      "button": "Create Vault",
-      "placeholder": "Choose a name for your Vault"
+      "message": "此步骤将为钱包创建私钥/公钥对。 选择一个名称并选择“创建保管库”以创建您的 Qubic\r\n 钱包。",
+      "stepTitle": "创建金库",
+      "vaultName": "金库名称",
+      "button": "创建金库"
     },
     "createAddress": {
-      "title": "Add Address",
-      "message": "In your Qubic Wallet you can have multiple Addresses. Every Address\r\n        consists of a Seed (private Key) and a Public Id. The Seed is needed to\r\n        send Qubic and the Public Id can be used to receive Qubic. We create now\r\n        your first Address.",
-      "addressNam": "Name",
-      "seed": "Seed",
-      "seedPlaceholder": "Choose a random seed...",
-      "publicId": "Public Id",
-      "radomizeSeed": "Randomize Seed",
-      "addressPlaceholder": "Choose an Account Name",
-      "button": "Create Address"
+      "title": "添加地址",
+      "message": "在您的 Qubic 钱包中，您可以有多个地址。 每个地址都包含一个种子（私钥）和一个公共 ID。 发送 Qubic 需要种子，而公共 ID 可用于接收 Qubic。 我们现在创建\r\n 您的第一个地址。",
+      "addressNam": "地址名称",
+      "seed": "种子",
+      "seedPlaceholder": "选择一个随机种子...",
+      "publicId": "地址 Id",
+      "radomizeSeed": "随机种子",
+      "addressPlaceholder": "选择账户名",
+      "button": "创建地址"
     },
     "downloadVault": {
-      "stepTitle": "Download initial Vault",
-      "message": "Your personal Vault has been created. You can now download it. Please\r\n          choose a secure Password and select \"Download Vault\".",
-      "password": "Password",
-      "passwordHint": "Choose a secure password...",
-      "button": "Download Vault"
+      "stepTitle": "下载初始金库",
+      "message": "您的个人保管库已创建。 您现在可以下载它。 请\r\n选择一个安全密码并选择“下载保管库”。",
+      "password": "密码",
+      "passwordHint": "选择一个安全的密码...",
+      "button": "下载金库"
     },
     "verifyVault": {
-      "stpTitle": "Load/Import Vault",
-      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
-      "password": "Password",
-      "passwordHint": "Your Vault Password",
-      "button": "Verify Vault File"
+      "stpTitle": "加载/导入金库",
+      "message": "您下载的金库文件包含\r\n 所有重要信息。 每次当您想要解锁钱包时，\r\n 您都将需要此文件。 每次当您更改电子钱包时（例如添加或编辑地址），系统都会提示您下载最新的保管库文件。 确保这对您有用。 请在下面选择\r\n下载的保管库文件并再次输入您的保管库密码。",
+      "password": "密码",
+      "passwordHint": "你的金库密码",
+      "button": "验证金库文件"
     },
     "done": {
-      "stepTitle": "Done",
-      "message": "Happy Qubic! Your Wallet is ready.",
-      "button": "Open My Wallet"
+      "stepTitle": "完成",
+      "message": "恭喜您! 您的钱包已准备完毕。",
+      "button": "打开我的钱包"
     },
     "buttons": {
-      "cancel": "Cancel",
-      "reset": "Reset"
+      "cancel": "取消",
+      "reset": "重置"
     }
   }
 }
