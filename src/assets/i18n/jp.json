@@ -1,554 +1,554 @@
 {
   "general": {
     "title": "Qubic - Wallet",
-    "comingSoon": "coming soon!",
-    "themeSwitch": "Theme Switch",
+    "comingSoon": "近日公開！",
+    "themeSwitch": "テーマ切替",
     "navigation": {
-      "home": "Dashboard",
-      "payment": "Payment",
-      "balance": "Transactions",
-      "settings": "Settings",
-      "voting": "Voting",
+      "home": "ダッシュボード",
+      "payment": "支払い",
+      "balance": "取引履歴",
+      "settings": "設定",
+      "voting": "投票",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "資産"
     },
-    "version": "Version {{version}} - beta",
+    "version": "バージョン {{version}} - ベータ",
     "version.url": "qubic.org",
-    "copy.tooltip": "Copy",
-    "error": "Error",
-    "close": "close",
+    "copy.tooltip": "コピー",
+    "error": "エラー",
+    "close": "閉じる",
     "currency": "QUBIC",
-    "currentTick": "Tick: {{tick}}",
-    "loading": "loading...",
+    "currentTick": "ティック: {{tick}}",
+    "loading": "読み込み中...",
     "buttons": {
-      "close": "Close",
-      "maximize": "Maximize"
+      "close": "閉じる",
+      "maximize": "最大化"
     },
     "messages": {
-      "notConnected": "Not connected to the Qubic Network. Please Connect first.",
-      "refreshRequested": "Refresh has been requested",
-      "refreshFailed": "Refresh failed, please try again later",
-      "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
-      "timeoutTryAgain": "We run into a timeout. Please try again."
+      "notConnected": "Qubicネットワークに接続されていません。先に接続してください。",
+      "refreshRequested": "更新が要求されました",
+      "refreshFailed": "更新に失敗しました。後ほど再度お試しください",
+      "balanceReceived": "ネットワークから {{balance}} QUBICが {{publicId}}に報告されました。",
+      "timeoutTryAgain": "タイムアウトしました。もう一度試してください。"
     }
   },
   "payment": {
-    "keyRequestReason": "As transactions are digitally signed with your key you need to load your key first."
+    "keyRequestReason": "トランザクションはあなたのキーでデジタル署名されるため、最初にキーを読み込む必要があります。"
   },
   "confirmDialog": {
-    "title": "Confirm",
+    "title": "確認",
     "buttons": {
-      "cancel": "Cancel",
-      "confirm": "Yes, I confirm"
+      "cancel": "キャンセル",
+      "confirm": "はい、確認します"
     },
-    "confirmationText": "Are you sure?"
+    "confirmationText": "よろしいですか？"
   },
   "notifyComponent": {
-    "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Vault.",
-    "saveYourKey": "Please store your Vault file in a safe place.",
-    "qubicLiSync": "Sync your settings with qubic.li",
-    "qubicOffline": "QUBIC network not connected",
-    "qubicOnline": "Connected to the QUBIC network"
+    "saveYourSettings": "設定をエクスポート／ダウンロードしてください。設定には、ヴォールトを復元するために必要な暗号化されたシードが含まれています。",
+    "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。",
+    "qubicLiSync": "設定をqubic.liと同期する",
+    "qubicOffline": "QUBICネットワークに接続されていません",
+    "qubicOnline": "QUBICネットワークに接続済み"
   },
   "revealSeedComponent": {
-    "title": "Address Information",
-    "publicId": "Address ID",
-    "privateId": "55-char Seed",
+    "title": "アドレス情報",
+    "publicId": "アドレスID",
+    "privateId": "55文字のシード",
     "buttons": {
-      "close": "Close"
+      "close": "閉じる"
     }
   },
   "assetsComponent": {
-    "title": "Your Assets",
-    "openAssets": "Goto Asset Management",
+    "title": "あなたの資産",
+    "openAssets": "資産管理へ移動",
     "overview": {
-      "title": "Asset Overview"
+      "title": "資産の概要"
     },
     "table": {
-      "publicId": "Public ID",
-      "contractIndex": "Contract Index",
-      "assetName": "Asset Name",
-      "contractName": "Contract Name",
-      "ownedAmount": "Owned Amount",
-      "possessedAmount": "Possessed Amount",
-      "tick": "Valid for Tick {{tick}}",
-      "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "publicId": "公開ID",
+      "contractIndex": "契約インデックス",
+      "assetName": "資産名",
+      "contractName": "契約名",
+      "ownedAmount": "所有量",
+      "possessedAmount": "保有量",
+      "tick": "{{tick}}のティックで有効",
+      "reportingNodes": "報告ノード",
+      "issuerIdentity": "発行者ID"
     },
     "buttons": {
-      "close": "Close",
-      "refresh": "Refresh",
-      "send": "Transfer Assets"
+      "close": "閉じる",
+      "refresh": "更新",
+      "send": "資産を送信"
     },
     "form": {
-      "info": "Send Assets",
-      "fees": "Fixed sending fees: 1,000,000 Qubic",
-      "balance": "Your balance after deducting transfer fees (1M Qubic) will be:",
-      "select": "Select Asset",
-      "select.error": "Asset selection is required",
-      "placeholder": "Address ID of the receiver",
-      "placeholder.error": "An 55-char seed is required.",
-      "amount": "Amount to send",
-      "amount.error": "Amount is required",
-      "amount.value.error": "The amount must be greater than 0",
-      "amount.max.error": "The amount cannot exceed the quantity held",
-      "tick": "Tick",
-      "tick.error": "Tick is required",
-      "tick.tooltip": "Tick is required",
-      "tick.min": "Tick must be a minimum of {{currentTick}}",
+      "info": "資産を送信",
+      "fees": "送信手数料: 1,000,000 Qubic",
+      "balance": "送信手数料(1M Qubic)を差し引いた後の残高:",
+      "select": "資産を選択",
+      "select.error": "資産の選択が必要です",
+      "placeholder": "受信者のアドレスID",
+      "placeholder.error": "55文字のシードが必要です。",
+      "amount": "送信する量",
+      "amount.error": "数量が必要です",
+      "amount.value.error": "数量は0以上でなければなりません",
+      "amount.max.error": "数量は保有数量を超えることはできません",
+      "tick": "ティック",
+      "tick.error": "ティックが必要です",
+      "tick.tooltip": "ティックが必要です",
+      "tick.min": "ティックは{{currentTick}}以上でなければなりません",
       "buttons": {
-        "send": "Send",
-        "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+        "send": "送信",
+        "cancel": "キャンセル",
+        "error.balance": "残高不足、最低残高は1,000,000 Qubic必要です"
       }
     },
-    "noAssets": "No assets available"
+    "noAssets": "利用可能な資産がありません"
   },
   "qrReceiveComponent": {
-    "title": "Receive payment",
-    "downloadLink": "Download",
-    "hint": "Scan/Send this QR Code to receive a payment for {{publicId}}.",
-    "buttons.close": "Close"
+    "title": "支払いを受け取る",
+    "downloadLink": "ダウンロード",
+    "hint": "このQRコードをスキャン／送信して、{{publicId}} のための支払いを受け取ってください。",
+    "buttons.close": "閉じる"
   },
   "seedEditComponent": {
-    "title.add": "Add Address",
-    "title.edit": "Edit Address",
-    "newSeedName": "Address-Name",
-    "seedWarning": "<b>IMPORTANT!<br> This 55-Chars are your Qubic Private Key (Seed)!<br>Save/store this seed at secure location.<br>You may lose your funds if you do not have your seed(s) in backup!<br><br>More info on this topic:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "title.add": "アドレスを追加",
+    "title.edit": "アドレスを編集",
+    "newSeedName": "アドレス名",
+    "seedWarning": "<b>重要！<br>この55文字はあなたのQubicプライベートキー（シード）です！<br>このシードを安全な場所に保存／保管してください。<br>バックアップがないと資金を失う可能性があります！<br><br>このトピックの詳細：</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
-        "placeholder": "Choose an own name for your address in order to better refer to it.",
+        "placeholder": "参照しやすいように独自のアドレス名を選んでください。",
         "error": {
-          "required": "Name required",
-          "min": "Name must have a minimum of 3 characters",
-          "max": "Name must have a maximum of 50 characters",
-          "regex": "Can only contain {{regex}}"
+          "required": "名前が必要です",
+          "min": "名前は最低3文字必要です",
+          "max": "名前は最大50文字までです",
+          "regex": "{{regex}}のみ含めることができます"
         }
       },
       "seed": {
-        "placeholder": "55-char Seed",
+        "placeholder": "55文字のシード",
         "error": {
-          "required": "An 55-char seed is required.",
-          "min": "The 55-char seed must exactly consist of 55 lower case characters",
-          "max": "The 55-char seed must exactly consist of 55 lower case characters",
-          "regex": "Can only contain a-zA-Z0-9_-"
+          "required": "55文字のシードが必要です。",
+          "min": "55文字のシードは、正確に55の小文字でなければなりません",
+          "max": "55文字のシードは、正確に55の小文字でなければなりません",
+          "regex": "a-zA-Z0-9_-のみ含めることができます"
         },
-        "generateSeed": "Randomize Seed"
+        "generateSeed": "シードをランダム生成"
       },
       "watchOnlyAddress": {
-        "title": "Watch-Only-Address",
-        "placeholder": "60-char public-key",
+        "title": "監視専用アドレス",
+        "placeholder": "60文字の公開キー",
         "error": {
-          "required": "An 60-char public-key is required.",
-          "min": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "max": "The 60-char public-key must exactly consist of 60 upper case characters",
-          "regex": "Can only contain A-Z"
+          "required": "60文字の公開キーが必要です。",
+          "min": "60文字の公開キーは、正確に60の大文字でなければなりません",
+          "max": "60文字の公開キーは、正確に60の大文字でなければなりません",
+          "regex": "A-Zのみ含めることができます"
         }
       },
       "error": {
-        "text": "Please check the form.",
-        "close": "close"
+        "text": "フォームを確認してください。",
+        "close": "閉じる"
       }
     },
-    "publicIdMessage": "Your address id is:",
-    "privateKeyWarning": "Caution! Your Vault file is not loaded. Please make sure you have it safely stored.",
+    "publicIdMessage": "あなたのアドレスIDは：",
+    "privateKeyWarning": "注意！ あなたのヴォールトファイルがロードされていません。安全に保管されていることを確認してください。",
     "buttons": {
-      "cancel": "Cancel",
-      "create": "Create address",
-      "save": "Save address"
+      "cancel": "キャンセル",
+      "create": "アドレスを作成",
+      "save": "アドレスを保存"
     }
   },
   "seedOverviewComponent": {
-    "title": "Addresses",
-    "isTable": "Show table",
-    "addSeedButton": "Add Address",
-    "importButton": "Import",
-    "exportButton": "Export",
-    "search.label": "Search",
+    "title": "アドレス",
+    "isTable": "表を表示",
+    "addSeedButton": "アドレスを追加",
+    "importButton": "インポート",
+    "exportButton": "エクスポート",
+    "search.label": "検索",
     "table": {
-      "alias": "Address Name",
-      "publicId": "Address ID",
-      "balance": "Balance",
-      "epochChanges": "Epoch Changes",
-      "noData": "No data matching the filter \"{{q}}\"",
+      "alias": "アドレス名",
+      "publicId": "アドレスID",
+      "balance": "残高",
+      "epochChanges": "エポック変更",
+      "noData": "フィルター \"{{q}}\" に一致するデータがありません",
       "actions": {
-        "title": "Actions",
-        "revealSeed": "Reveal 55-char seed",
-        "assets": "Show Owned Assets",
-        "makePayment": "Make a payment",
-        "receivePayment": "Generate a QR Code to receive a payment.",
-        "editSeed": "Edit address",
-        "deleteSeed": "Delete address",
-        "refreshBalance": "Refresh Balance from Network"
+        "title": "アクション",
+        "revealSeed": "55文字のシードを表示",
+        "assets": "所有資産を表示",
+        "makePayment": "支払いをする",
+        "receivePayment": "支払いを受けるためのQRコードを生成する。",
+        "editSeed": "アドレスを編集",
+        "deleteSeed": "アドレスを削除",
+        "refreshBalance": "ネットワークから残高を更新"
       }
     },
-    "hasPendingTransaction": "Transactions pending",
-    "marketPrice": "Price",
-    "marketSupply": "Supply",
-    "marketCap": "Marketcap",
-    "marketCurrency": "$"
+    "hasPendingTransaction": "保留中の取引",
+    "marketPrice": "価格",
+    "marketSupply": "供給",
+    "marketCap": "市場価値",
+    "marketCurrency": "¥"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "balance": "Vault balance",
+    "title": "ダッシュボード",
+    "balance": "ヴォールトの残高",
     "currency": "Qu",
-    "totalBalance": "Your Total Balance"
+    "totalBalance": "あなたの総残高"
   },
   "unlockComponent": {
-    "title": "Unlock Vault",
-    "title.new": "Create Vault",
-    "welcomeMessage": "Welcome to the Qubic Wallet.\nTo use this Wallet you must create a Vault file. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
-    "reasonMessage": "To unlock your Vault, your Vault file or wallet unlock file is needed. The wallet data is automatically deleted once this page is reloaded or closed.",
-    "choosePrivateKeyFile": "Select Vault File",
-    "chooseConfigFile": "Select Config file",
-    "overwriteVault": "It looks like there is already some data saved in this Browser. Do you really want to overwrite it?",
+    "title": "ヴォールトのロック解除",
+    "title.new": "ヴォールトの作成",
+    "welcomeMessage": "Qubicウォレットへようこそ。\nこのウォレットを使用するにはヴォールトファイルを作成する必要があります。これには公開/秘密キーが含まれ、その後、データの暗号化/復号に使用されます。",
+    "reasonMessage": "ヴォールトを解除するには、ヴォールトファイルまたはウォレット解除ファイルが必要です。このページをリロードまたは閉じると、ウォレットデータは自動的に削除されます。",
+    "choosePrivateKeyFile": "ヴォールトファイルを選択",
+    "chooseConfigFile": "設定ファイルを選択",
+    "overwriteVault": "このブラウザにはすでにデータが保存されているようです。本当に上書きしますか？",
     "form": {
-      "file.error.required": "Vault/Wallet unlock file required",
-      "password.error.required": "Vault password required",
-      "password.error.min": "Your password must have a minimum of 8 characters.",
-      "password.error.wrong": "Your password is incorrect.",
+      "file.error.required": "ヴォールト/ウォレット解除ファイルが必要です",
+      "password.error.required": "ヴォールトのパスワードが必要です",
+      "password.error.min": "パスワードは最低8文字必要です。",
+      "password.error.wrong": "パスワードが間違っています。",
       "configFile": {
         "error": {
-          "required": "Config file required"
+          "required": "設定ファイルが必要です"
         }
       }
     },
     "buttons": {
-      "cancel": "Cancel",
-      "generateKey": "Create Vault",
-      "importAndUnlock": "Import Vault and Unlock",
-      "unlock": "Unlock Vault",
-      "existingUser": "I already have a Wallet",
-      "newUser": "Create Vault",
-      "closeWallet": "Close Wallet",
-      "importVault": "Import Vault"
+      "cancel": "キャンセル",
+      "generateKey": "ヴォールトを作成",
+      "importAndUnlock": "ヴォールトをインポートして解除",
+      "unlock": "ヴォールトのロックを解除",
+      "existingUser": "すでにウォレットを持っています",
+      "newUser": "ヴォールトを作成",
+      "closeWallet": "ウォレットを閉じる",
+      "importVault": "ヴォールトをインポート"
     },
-    "welcomeHintMessage": "After you have downloaded your Vault file. You need to select the downloaded file and enter your password again. This will unlock your wallet."
+    "welcomeHintMessage": "ヴォールトファイルをダウンロードした後、ダウンロードしたファイルを選択してもう一度パスワードを入力してください。これでウォレットがロック解除されます。"
   },
   "lockIconComponent": {
-    "lock": "Lock Vault",
-    "unlock": "Unlock Vault"
+    "lock": "ヴォールトをロック",
+    "unlock": "ヴォールトのロック解除"
   },
   "lockComponent": {
-    "title": "Close Vault?",
+    "title": "ヴォールトを閉じますか？",
     "forceDownload": {
-      "title": "Download Vault File",
-      "reason": "When you lock your Wallet your loaded Vault file is automatically deleted. Without this Vault file no transactions can be made. Please be aware your Vault file is safely stored. Export it again in case of any doubt...",
+      "title": "ヴォールトファイルをダウンロード",
+      "reason": "ウォレットをロックすると、ロードされたヴォールトファイルは自動的に削除されます。このヴォールトファイルがないと取引はできません。ヴォールトファイルが安全に保存されていることを確認してください。疑問がある場合は再度エクスポートしてください...",
       "buttons": {
-        "allOk": "I have my unlock file, thanks"
+        "allOk": "解除ファイルを持っています、ありがとう"
       }
     },
-    "reason": "It is paramount to safely store your Vault file. Please choose a strong password you won't forget and then click on \"save\".",
-    "warning": "I confirm that I have saved my Vault file.",
-    "password.placeholder": "Password",
-    "password.required": "Password required",
-    "password.min": "Password must have a minimum of 8 characters.",
+    "reason": "ヴォールトファイルを安全に保存することが最も重要です。忘れない強力なパスワードを選び、「保存」をクリックしてください。",
+    "warning": "ヴォールトファイルを保存したことを確認します。",
+    "password.placeholder": "パスワード",
+    "password.required": "パスワードが必要です",
+    "password.min": "パスワードは最低8文字必要です。",
     "buttons": {
-      "savePrivateKey": "Save Vault file",
-      "closeWallet": "Lock Vault",
-      "exportAndCloseWallet": "Export Vault file and Lock Wallet",
-      "enableExport": "Export Vault File",
-      "cancel": "Cancel"
+      "savePrivateKey": "ヴォールトファイルを保存",
+      "closeWallet": "ヴォールトをロック",
+      "exportAndCloseWallet": "ヴォールトファイルをエクスポートしてウォレットをロック",
+      "enableExport": "ヴォールトファイルをエクスポート",
+      "cancel": "キャンセル"
     }
   },
   "paymentComponent": {
-    "title": "Send Qubic Units (QUBIC)",
+    "title": "Qubicユニット（QUBIC）を送信",
     "messages": {
-      "pleaseUnlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your transaction could not be sent. Please try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
-      "failedValidation": "We had validation errors. Please check the form."
+      "pleaseUnlock": "最初にウォレットのロックを解除してください",
+      "storedForPropagation": "あなたの取引は{{tick}}の伝播のために保存されました",
+      "failedToSend": "取引を送信できませんでした。後でもう一度お試しください。",
+      "failedToDecrypt": "シードの復号に失敗しました。正しいロック解除ファイル（秘密鍵）を使用しましたか？",
+      "failedValidation": "検証エラーが発生しました。フォームを確認してください。"
     },
     "form": {
       "sourceSeed": {
-        "label": "Address from which QUBIC are to be sent",
+        "label": "送信元のアドレス",
         "error": {
-          "required": "Sender address is required"
+          "required": "送信者のアドレスが必要です"
         }
       },
       "receiver": {
-        "placeholder": "Address ID of the receiver",
-        "hint": "60 uppercase characters",
-        "chooseOwnSeed": "Choose an own Address ID",
+        "placeholder": "受信者のアドレスID",
+        "hint": "60文字の大文字",
+        "chooseOwnSeed": "自分のアドレスIDを選択",
         "error": {
-          "required": "Address ID is required",
-          "length": "A Qubic address ID consists of 60 uppercase letters."
+          "required": "アドレスIDが必要です",
+          "length": "QubicのアドレスIDは60文字の大文字で構成されます。"
         }
       },
       "amount": {
-        "placeholder": "Amount in Qubic Unis (QUBIC)",
-        "max.tooltip": "Set to maximum available amount on this Seed",
+        "placeholder": "Qubicユニット（QUBIC）の量",
+        "max.tooltip": "このシードで利用可能な最大量を設定",
         "error": {
-          "required": "Amount is required",
-          "min": "Amount must be a minimum of 1"
+          "required": "金額が必要です",
+          "min": "金額は最低1でなければなりません"
         }
       },
       "tick": {
-        "placeholder": "Execution Tick",
-        "customize.tooltip": "Toggle to set custom Execution Tick",
+        "placeholder": "実行ティック",
+        "customize.tooltip": "カスタム実行ティックを設定するトグル",
         "error": {
-          "required": "Tick is required",
-          "min": "Tick must be a minimum of {{currentTick}}"
+          "required": "ティックが必要です",
+          "min": "ティックは最低{{currentTick}}でなければなりません"
         }
       }
     },
     "buttons": {
-      "send": "Perform transaction",
-      "reset": "Reset",
-      "loadPrivateKey": "Load Vault file"
+      "send": "取引を実行",
+      "reset": "リセット",
+      "loadPrivateKey": "ヴォールトファイルをロード"
     }
   },
   "balanceComponent": {
-    "title": "Balance",
-    "createSeedHint": "Please create first a Seed",
+    "title": "残高",
+    "createSeedHint": "最初にシードを作成してください",
     "overview": {
-      "title": "Overview",
-      "totalWalletValue": "Fixed Wallet Value",
-      "estimatedWalletValue": "Estimated Wallet Value",
-      "baseDate": "per"
+      "title": "概要",
+      "totalWalletValue": "固定ウォレット価値",
+      "estimatedWalletValue": "推定ウォレット価値",
+      "baseDate": "日付"
     },
     "transactions": {
-      "title": "Transactions in current Epoch",
-      "verificationAlert": "Preview data could not be verified",
-      "noTransactions": "No Transactions found",
-      "send.tooltip": "Outgoing Transfer",
-      "exchange.tooltip": "Internal Transfer",
-      "explorer.tooltip": "Show Transfer in Explorer",
-      "receive.tooltip": "Incoming Transfer",
-      "status.pending.tooltip": "Pending",
-      "status.executed.tooltip": "Executed",
-      "status.dismissed.tooltip": "Dismissed",
-      "status.unknown.tooltip": "Unknown",
-      "status.confirmed.tooltip": "Staged",
-      "filter.seed.label": "Filter by Seed",
-      "exportButton": "Export Transactions"
+      "title": "現在のエポックの取引",
+      "verificationAlert": "プレビューデータを検証できませんでした",
+      "noTransactions": "取引は見つかりませんでした",
+      "send.tooltip": "送金",
+      "exchange.tooltip": "内部転送",
+      "explorer.tooltip": "エクスプローラーで転送を表示",
+      "receive.tooltip": "入金",
+      "status.pending.tooltip": "保留中",
+      "status.executed.tooltip": "実行済み",
+      "status.dismissed.tooltip": "却下された",
+      "status.unknown.tooltip": "不明",
+      "status.confirmed.tooltip": "確定",
+      "filter.seed.label": "シードでフィルター",
+      "exportButton": "取引をエクスポート"
     },
-    "repeatTransaction": "Repeat Transaction"
+    "repeatTransaction": "取引を繰り返す"
   },
   "settings": {
     "general": {
-      "title": "Web Bridge",
-      "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
-      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
-      "button.save": "Save Settings",
+      "title": "Webブリッジ",
+      "tickAddition.placeholder": "新しい取引を送信するために現在のティックに追加するティックの数",
+      "webBridge.placeholder": "Webブリッジを有効にする（QUBICネットワークへの直接接続）",
+      "button.save": "設定を保存",
       "beta": {
-        "placeholder": "Enable Beta Features"
+        "placeholder": "ベータ機能を有効にする"
       }
     },
     "import": {
-      "title": "Import Settings",
-      "doneMessage": "Import Successful",
-      "dropMessage": "Drop your address config file to import here",
-      "buttons.import": "Import address config file",
-      "seedsMessage": "You are about to import {{amount}} seeds.",
-      "goHomeLink": "Show imported Seeds"
+      "title": "設定をインポート",
+      "doneMessage": "インポート成功",
+      "dropMessage": "ここにアドレス設定ファイルをドロップしてインポート",
+      "buttons.import": "アドレス設定ファイルをインポート",
+      "seedsMessage": "{{amount}}個のシードをインポートしようとしています。",
+      "goHomeLink": "インポートされたシードを表示"
     },
     "export": {
-      "title": "Export Settings",
-      "hint": "Press the below button to download your current address config file. It contains your encrypted seeds. You also should have saved your unlock file (private key).",
-      "buttons.export": "Export/Save Config File"
+      "title": "設定をエクスポート",
+      "hint": "以下のボタンを押して現在のアドレス設定ファイルをダウンロードしてください。それには暗号化されたシードが含まれています。また、ロック解除ファイル（秘密鍵）も保存しておくべきです。",
+      "buttons.export": "設定ファイルをエクスポート／保存"
     }
   },
   "votingComponent": {
-    "title": "Qubic Computor Voting",
-    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
+    "title": "Qubic コンピュータ投票",
+    "description": "Qubicコンピュータ投票は、ネットワーク全体に関する決定事項について合意を得るために使用されます。これには、スマートコントラクトの受け入れやその他のプロトコル決定が含まれることがあります。参加できるのはコンピュータのみです。",
     "proposals": {
-      "editButton": "Edit",
-      "createButton": "Create Proposal",
-      "voteButton": "Vote",
-      "title": "{{amount}} Current Proposals",
-      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
-      "votingResult": "Voting Result",
-      "noVotes": "no votes",
-      "from": "From:",
-      "url": "Proposal URL:"
+      "editButton": "編集",
+      "createButton": "提案を作成",
+      "voteButton": "投票",
+      "title": "{{amount}} 現在の提案",
+      "noComputorHint": "登録されたコンピュータがありません。何かを提案する場合は、少なくとも1つのコンピュータシードを持っている必要があります。",
+      "votingResult": "投票結果",
+      "noVotes": "投票なし",
+      "from": "提案者:",
+      "url": "提案のURL:"
     },
     "participate": {
-      "title": "Participate",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Votes",
-      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
-      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
-      "computorsSelected": "Computors selected"
+      "title": "参加する",
+      "cancelButton": "キャンセル",
+      "sendVotesButton": "投票を送信",
+      "notConfirmedMessage": "この提案はまだQubicネットワークによって確認されていません。投票する前にお待ちください。",
+      "noComputorsText": "コンピュータがいないか、またはコンピュータが既に提案を作成しています。",
+      "computorsSelected": "選択されたコンピュータ"
     },
     "create": {
-      "title": "Create Proposal",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Proposal",
-      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
+      "title": "提案を作成",
+      "cancelButton": "キャンセル",
+      "sendVotesButton": "提案を送信",
+      "alreadyPublished": "このコンピュータはすでに公開された提案を持っています。エポックごとに1つのみが許可されます",
       "buttons": {
-        "create": "Create Proposal",
-        "publish": "Connect and Publish Proposal",
-        "reset": "Reset Form",
-        "loadPrivateKey": "Load Vault file",
-        "finish": "Show Proposals"
+        "create": "提案を作成",
+        "publish": "接続して提案を公開",
+        "reset": "フォームをリセット",
+        "loadPrivateKey": "ヴォールトファイルをロード",
+        "finish": "提案を表示"
       },
       "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "Computor to use for proposal",
-        "sourceSeed.error.required": "Computor is required",
-        "title.label": "Proposal Title",
-        "title.placeholder": "Proposal Title",
-        "title.error.required": "Title is required",
-        "title.error.min": "Title must have at least 2 characters",
-        "title.error.max": "Title must have at maximum 100 characters",
-        "description.label": "Proposal Description",
-        "description.placeholder": "Proposal Description",
-        "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 1000 characters",
-        "description.error.required": "Description is required",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} is required",
-        "option.error.min": "Option must have at least 2 characters",
-        "option.error.max": "Option must have at maximum 50 characters",
-        "computorIp.label": "Computor IP Address",
-        "computorIp.placeholder": "Computor IP Address",
-        "computorIp.error.required": "Computor IP Address required"
+        "operatorSeed.label": "オペレータシード",
+        "operatorSeed.error.required": "オペレータが必要です",
+        "sourceSeed.label": "提案に使用するコンピュータ",
+        "sourceSeed.error.required": "コンピュータが必要です",
+        "title.label": "提案のタイトル",
+        "title.placeholder": "提案のタイトル",
+        "title.error.required": "タイトルが必要です",
+        "title.error.min": "タイトルは少なくとも2文字必要です",
+        "title.error.max": "タイトルは最大100文字までです",
+        "description.label": "提案の説明",
+        "description.placeholder": "提案の説明",
+        "description.error.min": "説明は少なくとも2文字必要です",
+        "description.error.max": "説明は最大1000文字までです",
+        "description.error.required": "説明が必要です",
+        "option.label": "選択肢 {{id}}",
+        "option.placeholder": "選択肢 {{id}}",
+        "option.error.required": "選択肢 {{id}}が必要です",
+        "option.error.min": "選択肢は少なくとも2文字必要です",
+        "option.error.max": "選択肢は最大50文字までです",
+        "computorIp.label": "コンピュータIPアドレス",
+        "computorIp.placeholder": "コンピュータIPアドレス",
+        "computorIp.error.required": "コンピュータIPアドレスが必要です"
       },
-      "proposalStep.label": "Create Proposal",
-      "publishStep.label": "Publish Proposal",
-      "finishStep.label": "Done",
-      "finishStep.success": "Your Proposal has been sent to your computor."
+      "proposalStep.label": "提案を作成",
+      "publishStep.label": "提案を公開",
+      "finishStep.label": "完了",
+      "finishStep.success": "あなたの提案はコンピュータに送信されました。"
     },
     "status": {
-      "success": "Accepted by Quorum",
-      "failed": "Dismissed by Quorum",
-      "publishing": "Publish in progress",
-      "pending": "Voting is open",
-      "draft": "Draft",
-      "unknown": "Unknown status"
+      "success": "クォーラムによって受け入れられました",
+      "failed": "クォーラムによって却下されました",
+      "publishing": "公開中",
+      "pending": "投票が開かれています",
+      "draft": "ドラフト",
+      "unknown": "不明なステータス"
     }
   },
   "ipoComponent": {
     "messages": {
-      "unlock": "Please unlock your Wallet first",
-      "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
-      "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
-      "failedToValidate": "We had validation errors. Please check the form."
+      "unlock": "最初にウォレットのロックを解除してください",
+      "storedForPropagation": "あなたの取引は{{tick}}の伝播のために保存されました",
+      "failedToSend": "あなたのIPOを送信できませんでした。後でもう一度お試しください。",
+      "failedToDecrypt": "シードを復号できませんでした。正しいロック解除ファイル（秘密鍵）を使用しましたか？",
+      "failedToValidate": "検証エラーがありました。フォームを確認してください。"
     },
     "title": "Qubic IPO",
-    "description": "The Qubic IPO is an auction for shares of smart contracts.",
-    "noIpos": "Currently no IPO's active",
-    "yourBids": "Your Bids",
-    "yourShares": "Your Shares",
-    "sharesFor": "Shares for",
-    "statusValid": "Status valid for tick {{tick}}",
-    "livPanelHint": "Check out current Results",
-    "buttons.place-bid": "Place Bid",
-    "buttons.refresh": "Refresh Status",
-    "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
-    "bidStatus.pcs": "pcs",
+    "description": "Qubic IPOはスマートコントラクトの株式のオークションです。",
+    "noIpos": "現在アクティブなIPOはありません",
+    "yourBids": "あなたの入札",
+    "yourShares": "あなたの株式",
+    "sharesFor": "株式の対象",
+    "statusValid": "{{tick}}のティックで有効なステータス",
+    "livPanelHint": "現在の結果をチェック",
+    "buttons.place-bid": "入札する",
+    "buttons.refresh": "ステータスを更新",
+    "bidStatus.hint": "このステータスは入札が行われたかのみを表示します。成功したかどうかは表示されません。",
+    "bidStatus.pcs": "個",
     "place-bid": {
-      "title": "Place a Bid",
-      "needBalance": "You need at least one seed with a positive balance.",
-      "noContract": "Contract not found. Please try again later.",
-      "noContract.gotoIpoLabel": "Show available Contract IPO's",
+      "title": "入札を行う",
+      "needBalance": "プラスの残高があるシードが少なくとも1つ必要です。",
+      "noContract": "契約が見つかりませんでした。後でもう一度お試しください。",
+      "noContract.gotoIpoLabel": "利用可能な契約IPOを表示",
       "buttons": {
-        "send": "Send Bid"
+        "send": "入札を送信"
       },
       "form": {
         "quantity": {
-          "placeholder": "Quantity",
-          "error.min": "Minimum 1",
-          "error.required": "Quantity is required"
+          "placeholder": "数量",
+          "error.min": "最低1",
+          "error.required": "数量が必要です"
         },
         "price": {
-          "placeholder": "Price (QUBIC)",
-          "error.min": "Minimum 1",
-          "error.required": "Price is required",
-          "max.tooltip": "Bid all available QUBIC"
+          "placeholder": "価格（QUBIC）",
+          "error.min": "最低1",
+          "error.required": "価格が必要です",
+          "max.tooltip": "利用可能なQUBICをすべて入札"
         }
       }
     }
   },
   "okDialog": {
-    "title": "Notice",
-    "button": "Yes, I confirm.",
+    "title": "通知",
+    "button": "はい、確認しました。",
     "messages": {
-      "tresorText": "Have you downloaded your Vault file now? Please select this Vault file in the next step to open the Vault!"
+      "tresorText": "ヴォールトファイルをダウンロードしましたか？次のステップでこのヴォールトファイルを選択してヴォールトを開いてください！"
     }
   },
   "loadConfigComponent": {
-    "title": "Import Addresses",
+    "title": "アドレスをインポート",
     "buttons": {
-      "import": "Import",
-      "cancel": "Start Without Addresses"
+      "import": "インポート",
+      "cancel": "アドレスなしで開始"
     },
     "messages": {
-      "import": "If you already have a wallet address config file containing your PublicKeys, you should select and import it now.",
-      "noImport": "If you do not yet have a wallet address config file, create an account in the next section."
+      "import": "既に公開キーを含むウォレットアドレス設定ファイルをお持ちの場合は、今すぐそれを選択してインポートしてください。",
+      "noImport": "まだウォレットアドレス設定ファイルをお持ちでない場合は、次のセクションでアカウントを作成してください。"
     }
   },
   "exportConfigComponent": {
-    "title": "Export Vault File",
+    "title": "ヴォールトファイルをエクスポート",
     "buttons": {
-      "export": "Export",
-      "cancel": "Cancel",
-      "unlock": "Unlock Vault"
+      "export": "エクスポート",
+      "cancel": "キャンセル",
+      "unlock": "ヴォールトのロックを解除"
     },
     "messages": {
-      "unlockInfo": "Please unlock your Vault to be able to export your Vault file with the newest inventory.",
-      "export": "You have modified your account inventory. Be sure to download your current vault file so you can import it later.",
-      "info": "It contains your account inventory, settings and encrypted seeds. The Vault file will be protected by the provided password."
+      "unlockInfo": "最新の在庫情報を含むヴォールトファイルをエクスポートするためには、ヴォールトのロックを解除してください。",
+      "export": "アカウントの在庫を変更しました。後でインポートできるように、現在のヴォールトファイルをダウンロードしてください。",
+      "info": "アカウントの在庫、設定、暗号化されたシードを含みます。ヴォールトファイルは提供されたパスワードで保護されます。"
     }
   },
   "welcomeComponent": {
-    "welcomeMessage": "To use this Wallet you must either create or import your existing Vault. This will contain your public/private key which afterwards is used to encrypt/decrypt your data.",
+    "welcomeMessage": "このウォレットを使用するには、新しいヴォールトを作成するか、既存のヴォールトをインポートする必要があります。これには公開/秘密キーが含まれ、その後、データの暗号化/復号に使用されます。",
     "button": {
-      "createVault": "Create Vault",
-      "importVault": "Import Vault"
+      "createVault": "ヴォールトを作成",
+      "importVault": "ヴォールトをインポート"
     },
-    "title": "Welcome to the Qubic Wallet"
+    "title": "Qubicウォレットへようこそ"
   },
   "importComponent": {
-    "title": "Import Vault",
-    "message": "You can import an existing Vault to your Wallet."
+    "title": "ヴォールトをインポート",
+    "message": "既存のヴォールトをウォレットにインポートすることができます。"
   },
   "createVaultComponent": {
     "createVault": {
-      "message": "This step will create a private/public key pair for the wallet. Choose a name and select \"Create Vault\" to create your Qubic\r\n        Wallet.",
-      "stepTitle": "Create Vault",
-      "vaultName": "Name",
-      "button": "Create Vault",
-      "placeholder": "Choose a name for your Vault"
+      "message": "このステップでは、ウォレットのための秘密鍵/公開鍵ペアを作成します。「ヴォールトを作成」を選択し、名前を選んでQubicウォレットを作成してください。",
+      "stepTitle": "ヴォールトを作成",
+      "vaultName": "名前",
+      "button": "ヴォールトを作成",
+      "placeholder": "ヴォールトの名前を選んでください"
     },
     "createAddress": {
-      "title": "Add Address",
-      "message": "In your Qubic Wallet you can have multiple Addresses. Every Address\r\n        consists of a Seed (private Key) and a Public Id. The Seed is needed to\r\n        send Qubic and the Public Id can be used to receive Qubic. We create now\r\n        your first Address.",
-      "addressNam": "Name",
-      "seed": "Seed",
-      "seedPlaceholder": "Choose a random seed...",
-      "publicId": "Public Id",
-      "radomizeSeed": "Randomize Seed",
-      "addressPlaceholder": "Choose an Account Name",
-      "button": "Create Address"
+      "title": "アドレスを追加",
+      "message": "Qubicウォレットでは、複数のアドレスを持つことができます。各アドレスはシード（秘密鍵）と公開IDから構成されます。シードはQubicを送信するために必要で、公開IDはQubicを受け取るために使用できます。ここであなたの最初のアドレスを作成します。",
+      "addressNam": "名前",
+      "seed": "シード",
+      "seedPlaceholder": "ランダムなシードを選択...",
+      "publicId": "公開ID",
+      "radomizeSeed": "シードをランダム化",
+      "addressPlaceholder": "アカウント名を選択",
+      "button": "アドレスを作成"
     },
     "downloadVault": {
-      "stepTitle": "Download initial Vault",
-      "message": "Your personal Vault has been created. You can now download it. Please\r\n          choose a secure Password and select \"Download Vault\".",
-      "password": "Password",
-      "passwordHint": "Choose a secure password...",
-      "button": "Download Vault"
+      "stepTitle": "初期ヴォールトをダウンロード",
+      "message": "個人のヴォールトが作成されました。これをダウンロードすることができます。安全なパスワードを選び、「ヴォールトをダウンロード」を選択してください。",
+      "password": "パスワード",
+      "passwordHint": "安全なパスワードを選択...",
+      "button": "ヴォールトをダウンロード"
     },
     "verifyVault": {
-      "stpTitle": "Load/Import Vault",
-      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
-      "password": "Password",
-      "passwordHint": "Your Vault Password",
-      "button": "Verify Vault File"
+      "stpTitle": "ヴォールトを読み込み/インポート",
+      "message": "ダウンロードしたヴォールトファイルには、すべての重要な情報が含まれています。ウォレットをアンロックしたいときはいつでも、このファイルが必要になります。ウォレットを変更するたび（例：アドレスを追加または編集する場合）、最新のヴォールトファイルをダウンロードするよう求められます。これが正しく機能するように、以下でダウンロードしたヴォールトファイルを選択し、もう一度ヴォールトパスワードを入力してください。",
+      "password": "パスワード",
+      "passwordHint": "ヴォールトのパスワード",
+      "button": "ヴォールトファイルを確認"
     },
     "done": {
-      "stepTitle": "Done",
-      "message": "Happy Qubic! Your Wallet is ready.",
-      "button": "Open My Wallet"
+      "stepTitle": "完了",
+      "message": "おめでとうございます！あなたのウォレットは準備ができました。",
+      "button": "マイウォレットを開く"
     },
     "buttons": {
-      "cancel": "Cancel",
-      "reset": "Reset"
+      "cancel": "キャンセル",
+      "reset": "リセット"
     }
   }
 }
