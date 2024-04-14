@@ -196,7 +196,7 @@
   "unlockComponent": {
     "title": "解锁金库",
     "title.new": "创建金库",
-    "welcomeMessage": "欢迎使用Qubic钱包。\若要使用此钱包，您必须创建一个金库文件。这将包含您的地址/私钥，之后用于加密/解密您的数据。",
+    "welcomeMessage": "欢迎使用Qubic钱包。若要使用此钱包，您必须创建一个金库文件。这将包含您的地址/私钥，之后用于加密/解密您的数据。",
     "reasonMessage": "若要解锁金库，需要您的金库文件或钱包解锁文件。一旦重新加载或关闭此页面，钱包数据就会自动删除。",
     "choosePrivateKeyFile": "选择金库(Vault)文件",
     "chooseConfigFile": "选择配置(Config)文件",
