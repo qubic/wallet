@@ -40,7 +40,7 @@
       "cancel": "取消",
       "confirm": "是的，我确定"
     },
-    "confirmationText": "你确定吗？"
+    "confirmationText": "您确定吗？"
   },
   "notifyComponent": {
     "saveYourSettings": "请导出/下载您的设置，您的设置包含还原金库所需的加密种子。",
@@ -52,7 +52,7 @@
   "revealSeedComponent": {
     "title": "地址信息",
     "publicId": "地址ID",
-    "privateId": "55 字符种子",
+    "privateId": "55 位字符种子",
     "buttons": {
       "close": "关闭"
     }
@@ -64,7 +64,7 @@
       "title": "资产概览"
     },
     "table": {
-      "publicId": "地址ID",
+      "publicId": "地址 ID",
       "contractIndex": "合约指数",
       "assetName": "资产名称",
       "contractName": "合约名称",
@@ -89,7 +89,7 @@
       "placeholder.error": "需要 55 位字符的种子。",
       "amount": "发送数量",
       "amount.error": "需要填写数量",
-      "amount.value.error": "数量必须大于0",
+      "amount.value.error": "数量必须大于 0",
       "amount.max.error": "数量不能超过持有的数量",
       "tick": "刻度",
       "tick.error": "需要填写刻度",
@@ -119,28 +119,28 @@
         "placeholder": "为地址添加名称，以便更好管理。",
         "error": {
           "required": "需要填写名称",
-          "min": "名称必须至少包含3个字符",
-          "max": "名称最多只能50个字符",
+          "min": "名称必须至少包含 3 个字符",
+          "max": "名称最多只能 50 个字符",
           "regex": "只能包含 {{regex}}"
         }
       },
       "seed": {
         "placeholder": "55位字符种子",
         "error": {
-          "required": "需要一个55位字符种子",
-          "min": "55位字符种子必须完全由55个小写字母组成",
-          "max": "55位字符种子必须完全由55个小写字母组成",
-          "regex": "只能包含 a-z/A-Z/0-9/_-"
+          "required": "需要一个 55 位字符种子",
+          "min": "55 位字符种子必须完全由 55 个小写字母组成",
+          "max": "55 位字符种子必须完全由 55 个小写字母组成",
+          "regex": "只能包含 a-z"
         },
         "generateSeed": "随机种子"
       },
       "watchOnlyAddress": {
         "title": "观察地址",
-        "placeholder": "60位字符地址",
+        "placeholder": "60 位字符地址",
         "error": {
-          "required": "需要一个60位字符地址",
-          "min": "60位字符地址必须完全由60个大写字符组成",
-          "max": "60位字符地址必须完全由60个大写字符组成",
+          "required": "需要一个 60 位字符地址",
+          "min": "60位字符地址必须完全由 60 个大写字符组成",
+          "max": "60位字符地址必须完全由 60 个大写字符组成",
           "regex": "只能包含 A-Z"
         }
       },
@@ -168,14 +168,14 @@
       "alias": "地址名称",
       "publicId": "地址 ID",
       "balance": "余额",
-      "epochChanges": "纪元更换",
+      "epochChanges": "纪元变化",
       "noData": "没有与筛选器匹配的数据 \"{{q}}\"",
       "actions": {
         "title": "Actions",
-        "revealSeed": "显示55位字符种子",
+        "revealSeed": "显示 55 位字符种子",
         "assets": "显示资产",
         "makePayment": "付款",
-        "receivePayment": "生成二维码以接收付款。",
+        "receivePayment": "生成二维码以接收付款",
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
         "refreshBalance": "刷新余额"
@@ -196,15 +196,15 @@
   "unlockComponent": {
     "title": "解锁金库",
     "title.new": "创建金库",
-    "welcomeMessage": "欢迎使用Qubic钱包。若要使用此钱包，您必须创建一个金库文件。这将包含您的地址/私钥，之后用于加密/解密您的数据。",
-    "reasonMessage": "若要解锁金库，需要您的金库文件或钱包解锁文件。一旦重新加载或关闭此页面，钱包数据就会自动删除。",
+    "welcomeMessage": "欢迎使用 Qubic 钱包。若要使用此钱包，您必须创建一个金库文件。这将包含您的地址/私钥，之后用于加密/解密您的数据。",
+    "reasonMessage": "若要解锁金库，需要您的金库(Vault)文件或钱包解锁文件。一旦重新加载或关闭此页面，钱包数据就会自动删除。",
     "choosePrivateKeyFile": "选择金库(Vault)文件",
     "chooseConfigFile": "选择配置(Config)文件",
     "overwriteVault": "该浏览器中似乎已经保存了一些数据。是否确实要覆盖它？",
     "form": {
       "file.error.required": "需要金库/钱包解锁文件",
       "password.error.required": "需要金库密码",
-      "password.error.min": "您的密码必须至少包含8个字符。",
+      "password.error.min": "您的密码必须至少包含 8 个字符。",
       "password.error.wrong": "密码错误",
       "configFile": {
         "error": {
@@ -232,16 +232,16 @@
     "title": "关闭金库?",
     "forceDownload": {
       "title": "下载金库文件",
-      "reason": "锁定钱包后，加载的金库文件将自动删除。没有此金库文件，就无法进行任何交易。请注意，您的金库文件已安全存储。如果有任何疑问，请再次导出。。。",
+      "reason": "锁定钱包后，加载的金库文件将自动删除。没有此金库文件，就无法进行任何交易。请注意，您的金库文件请注意安全存储。如果有任何疑问，请再次导出。",
       "buttons": {
         "allOk": "我有解锁文件，谢谢"
       }
     },
-    "reason": "安全存储金库文件至关重要。请选择一个不会忘记的强密码，然后单击“保存”。",
+    "reason": "安全存储金库文件至关重要！请选择一个不会忘记的强密码，然后单击“保存”。",
     "warning": "我确认已保存我的金库文件。",
     "password.placeholder": "密码",
     "password.required": "要求输入密码",
-    "password.min": "密码必须至少包含8个字符。",
+    "password.min": "密码必须至少包含 8 个字符。",
     "buttons": {
       "savePrivateKey": "保存金库文件",
       "closeWallet": "锁定金库",
@@ -251,12 +251,12 @@
     }
   },
   "paymentComponent": {
-    "title": "Send Qubic Units (QUBIC)",
+    "title": "发送 (QUBIC)",
     "messages": {
       "pleaseUnlock": "请先解锁您的钱包",
       "storedForPropagation": "您的交易已被存储以便在刻度中传播{{tick}}",
       "failedToSend": "无法发送您的交易记录，请稍后再试。",
-      "failedToDecrypt": "我们无法解密您的种子。你使用了正确的解锁文件（私钥）吗？？",
+      "failedToDecrypt": "我们无法解密您的种子。您使用了正确的解锁文件（私钥）吗？？",
       "failedValidation": "遇到了验证错误，请检查表格。"
     },
     "form": {
@@ -268,11 +268,11 @@
       },
       "receiver": {
         "placeholder": "QUBIC 接收地址",
-        "hint": "60个大写字母",
+        "hint": "60 个大写字母",
         "chooseOwnSeed": "选择自己的地址 ID",
         "error": {
-          "required": "地址ID为必填项",
-          "length": "Qubic地址ID由60个大写字母组成。"
+          "required": "地址 ID为必填项",
+          "length": "Qubic 地址 ID 由 60 个大写字母组成。"
         }
       },
       "amount": {
@@ -280,7 +280,7 @@
         "max.tooltip": "设置为该种子的最大可用数量",
         "error": {
           "required": "必须填写数量",
-          "min": "数量必须至少为1"
+          "min": "数量必须至少为 1"
         }
       },
       "tick": {
@@ -320,7 +320,7 @@
       "status.dismissed.tooltip": "已解雇",
       "status.unknown.tooltip": "未知",
       "status.confirmed.tooltip": "已暂存",
-      "filter.seed.label": "按种子过滤",
+      "filter.seed.label": "按地址过滤",
       "exportButton": "导出交易"
     },
     "repeatTransaction": "重复交易"
@@ -329,7 +329,7 @@
     "general": {
       "title": "Web Bridge",
       "tickAddition.placeholder": "添加到当前报价以发送新交易的报价数量",
-      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
+      "webBridge.placeholder": "启用 Web Bridge（直接连接到 QUBIC 网络）",
       "button.save": "保存设置",
       "beta": {
         "placeholder": "启用测试版功能"
@@ -339,7 +339,7 @@
       "title": "导入设置",
       "doneMessage": "导入成功",
       "dropMessage": "将您的地址配置文件拖放到此处导入",
-      "buttons.import": "导入地址 config 文件",
+      "buttons.import": "导入地址 Config 文件",
       "seedsMessage": "您将导入 {{amount}} 种子。",
       "goHomeLink": "显示导入种子"
     },
@@ -350,8 +350,8 @@
     }
   },
   "votingComponent": {
-    "title": "Qubic计算者投票",
-    "description": "Qubic计算机投票用于就整个网络的待决定主题达成共识，这可以包括接受智能合约或做出其他协议决策，仅允许计算者参与。",
+    "title": "Qubic 计算者投票",
+    "description": "Qubic 计算者投票用于就整个网络的待决定提案达成共识，这可以包括接受智能合约或做出其他协议决策，仅允许计算者参与。",
     "proposals": {
       "editButton": "编辑",
       "createButton": "创建提案",
@@ -361,7 +361,7 @@
       "votingResult": "投票结果",
       "noVotes": "不投票",
       "from": "来自:",
-      "url": "提案URL:"
+      "url": "提案 URL:"
     },
     "participate": {
       "title": "参加",
@@ -375,7 +375,7 @@
       "title": "创建提案",
       "cancelButton": "取消",
       "sendVotesButton": "发送提案",
-      "alreadyPublished": "该计算机已经发布了提案，每个纪元只允许一个",
+      "alreadyPublished": "该计算者已经发布了提案，每个纪元只允许一个",
       "buttons": {
         "create": "创建提案",
         "publish": "连接并发布提案",
@@ -385,9 +385,9 @@
       },
       "form": {
         "operatorSeed.label": "仲裁员种子",
-        "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "用于提案的计算机",
-        "sourceSeed.error.required": "Computor is required",
+        "operatorSeed.error.required": "需要填写仲裁员",
+        "sourceSeed.label": "用于提案的计算者",
+        "sourceSeed.error.required": "需要填写计算者",
         "title.label": "提案标题",
         "title.placeholder": "提案标题",
         "title.error.required": "标题为必填项",
@@ -403,14 +403,14 @@
         "option.error.required": "选项 {{id}} 为必填项",
         "option.error.min": "选项必须至少有 2 个字符",
         "option.error.max": "选项不得超过 50 个字符",
-        "computorIp.label": "Computor IP Address",
-        "computorIp.placeholder": "Computor IP Address",
-        "computorIp.error.required": "Computor IP Address required"
+        "computorIp.label": "计算者 IP 地址",
+        "computorIp.placeholder": "计算者 IP 地址",
+        "computorIp.error.required": "需要填写计算者 IP 地址"
       },
       "proposalStep.label": "创建提案",
       "publishStep.label": "发布提案",
       "finishStep.label": "完成",
-      "finishStep.success": "您的提案已发送到您的计算机。"
+      "finishStep.success": "您的提案已发送到您的计算者。"
     },
     "status": {
       "success": "法定人数接受",
@@ -424,7 +424,7 @@
   "ipoComponent": {
     "messages": {
       "unlock": "请先解锁您的钱包",
-      "storedForPropagation": "您的交易已被存储以便在tick中传播  {{tick}}",
+      "storedForPropagation": "您的交易已被存储以便在 tick 中传播  {{tick}}",
       "failedToSend": "您的 IPO 无法发送，请稍后再试。",
       "failedToDecrypt": "无法解密您的种子，您使用了正确的解锁文件（私钥）吗？",
       "failedToValidate": "验证错误，请检查表格。"
@@ -433,7 +433,7 @@
     "description": "Qubic IPO 是智能合约股票的拍卖。",
     "noIpos": "目前没有 IPO 活跃",
     "yourBids": "您的出价",
-    "yourShares": "你的股份",
+    "yourShares": "您的股份",
     "sharesFor": "股份来自",
     "statusValid": "状态有效刻度 {{tick}}",
     "livPanelHint": "查看当前结果",
@@ -452,12 +452,12 @@
       "form": {
         "quantity": {
           "placeholder": "数量",
-          "error.min": "最小为1",
+          "error.min": "最小为 1",
           "error.required": "数量为必填项"
         },
         "price": {
           "placeholder": "价格 (QUBIC)",
-          "error.min": "最小为1",
+          "error.min": "最小为 1",
           "error.required": "价格为必填项",
           "max.tooltip": "出价所有可用的 QUBIC"
         }
@@ -496,7 +496,7 @@
     }
   },
   "welcomeComponent": {
-    "welcomeMessage": "要使用此钱包，您必须创建或导入现有的保管库。 这将包含您的地址/私钥，随后用于加密/解密您的数据。",
+    "welcomeMessage": "要使用此钱包，您必须创建或导入现有的金库。 这将包含您的地址/私钥，随后用于加密/解密您的数据。",
     "button": {
       "createVault": "创建金库",
       "importVault": "导入金库"
@@ -505,11 +505,11 @@
   },
   "importComponent": {
     "title": "导入金库",
-    "message": "您可以将现有的保管库导入到您的钱包中。"
+    "message": "您可以将现有的金库导入到您的钱包中。"
   },
   "createVaultComponent": {
     "createVault": {
-      "message": "此步骤将为钱包创建私钥/公钥对。 选择一个名称并选择“创建保管库”以创建您的 Qubic\r\n 钱包。",
+      "message": "此步骤将为钱包创建私钥/公钥对。 选择一个名称并选择“创建金库”以创建您的 Qubic\r\n 钱包。",
       "stepTitle": "创建金库",
       "vaultName": "金库名称",
       "button": "创建金库"
@@ -520,23 +520,23 @@
       "addressNam": "地址名称",
       "seed": "种子",
       "seedPlaceholder": "选择一个随机种子...",
-      "publicId": "地址 Id",
+      "publicId": "地址 ID",
       "radomizeSeed": "随机种子",
       "addressPlaceholder": "选择账户名",
       "button": "创建地址"
     },
     "downloadVault": {
       "stepTitle": "下载初始金库",
-      "message": "您的个人保管库已创建。 您现在可以下载它。 请\r\n选择一个安全密码并选择“下载保管库”。",
+      "message": "您的个人金库已创建。 您现在可以下载它。 请\r\n选择一个安全密码并选择“下载金库”。",
       "password": "密码",
       "passwordHint": "选择一个安全的密码...",
       "button": "下载金库"
     },
     "verifyVault": {
       "stpTitle": "加载/导入金库",
-      "message": "您下载的金库文件包含\r\n 所有重要信息。 每次当您想要解锁钱包时，\r\n 您都将需要此文件。 每次当您更改电子钱包时（例如添加或编辑地址），系统都会提示您下载最新的保管库文件。 确保这对您有用。 请在下面选择\r\n下载的保管库文件并再次输入您的保管库密码。",
+      "message": "您下载的金库(Vault)文件包含所有重要信息。 每次当您想要解锁钱包时，您都将需要此文件。 每次当您更改电子钱包时（例如添加或编辑地址），系统都会提示您下载最新的金库文件。 确保这对您有用。 请在下面选择下载的金库(Vault)文件并再次输入您的金库密码。",
       "password": "密码",
-      "passwordHint": "你的金库密码",
+      "passwordHint": "您的金库密码",
       "button": "验证金库文件"
     },
     "done": {

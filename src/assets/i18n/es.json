@@ -131,7 +131,7 @@
           "required": "Se requiere un seed de 55 caracteres.",
           "min": "La Seed debe estar compuesta exactamente de 55 caracteres en minúsculas",
           "max": "La Seed debe estar compuesta exactamente de 55 caracteres en minúsculas",
-          "regex": "Solo puede contener caracteres a-zA-Z0-9_-"
+          "regex": "Solo puede contener caracteres a-z"
         },
         "generateSeed": "Generar aleatoriamente una Seed de 55 caracteres."
       },

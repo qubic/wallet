@@ -131,7 +131,7 @@
           "required": "Een accountwachtwoord is vereist.",
           "min": "Het accountwachtwoord moet exact bestaan uit 55 kleine letters.",
           "max": "Het accountwachtwoord moet exact bestaan uit 55 kleine letters.",
-          "regex": "Kan alleen a-zA-Z0-9_- bevatten."
+          "regex": "Kan alleen a-z bevatten."
         },
         "generateSeed": "Willekeurig een accountwachtwoord genereren."
       },
