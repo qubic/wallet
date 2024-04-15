@@ -131,7 +131,7 @@
           "required": "55 karakterlik bir anahtar gereklidir.",
           "min": "55 karakterlik anahtar tam olarak 55 küçük harf karakterden oluşmalıdır",
           "max": "55 karakterlik anahtar tam olarak 55 küçük harf karakterden oluşmalıdır",
-          "regex": "Yalnızca a-zA-Z0-9_- içerebilir"
+          "regex": "Yalnızca a-z içerebilir"
         },
         "generateSeed": "Rastgele 55 karakterlik bir anahtar oluşturun."
       },

@@ -131,7 +131,7 @@
           "required": "An 55-char seed is required.",
           "min": "The 55-char seed must exactly consist of 55 lower case characters",
           "max": "The 55-char seed must exactly consist of 55 lower case characters",
-          "regex": "Can only contain a-zA-Z0-9_-"
+          "regex": "Can only contain a-z"
         },
         "generateSeed": "Randomize Seed"
       },
