@@ -520,7 +520,7 @@
       "seed": "Seed",
       "seedPlaceholder": "Asigna un seed aleatorio...",
       "publicId": "Id Público",
-      "radomizeSeed": "Genera un seed aleatorio",
+      "radomizeSeed": "Generar un seed aleatorio",
       "addressPlaceholder": "Asigna un nombre para identificar esta dirección",
       "button": "Crear Dirección"
     },
@@ -533,7 +533,7 @@
     },
     "verifyVault": {
       "stpTitle": "Cargar/Importar bóveda",
-      "message": "El archivo de bóveda que has descargado contiene\r\n          informaciõn importante. Cada vez quieras desbloquear\r\n          tu wallet, necesitarás este archivo. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. Para asegurarnos que esto funcionará correctamente, por favor selecciona a continuación\r\n          el archivo de bóveda descargado e ingresa la contraseña nuevamente.",
+      "message": "El archivo de bóveda descargado contiene\r\n          información importante. Necesitarás este archivo para desbloquear tu wallet. Además, cada vez que actualices tu Wallet\r\n          (por ejemplo, al agregar o editar una direccíon) se te solicitará descargar\r\n          una nueva versión actualizada del mismo. Para asegurarnos que esto funcionará correctamente, por favor selecciona a continuación\r\n          el archivo de bóveda descargado e ingresa la contraseña nuevamente.",
       "password": "Contraseña",
       "passwordHint": "La contraseña de tu bóveda",
       "button": "Verificar el archivo de bóveda"

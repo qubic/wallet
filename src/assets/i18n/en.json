@@ -87,7 +87,7 @@
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
-      "placeholder.error": "An 55-char seed is required.",
+      "placeholder.error": "A 55-char seed is required.",
       "amount": "Amount to send",
       "amount.error": "Amount is required",
       "amount.value.error": "The amount must be greater than 0",
@@ -536,7 +536,7 @@
     },
     "verifyVault": {
       "stpTitle": "Load/Import Vault",
-      "message": "The Vault file which you have downloaded is the file which contains\r\n          all important information. Everytime when you want to unlock your\r\n          wallet, you will need this file. Everytime when you change your Wallet\r\n          (e.g. add or edit an address) you will be prompted do download the\r\n          newest Vault file. To Ensure this works for you. Please select below\r\n          the downloaded Vault file and enter your Vault Password again.",
+      "message": "The downloaded Vault file contains\r\n          important information. You will need this file to unlock your wallet. Also, every time you update your Wallet\r\n          (e.g. add or edit an address), you will be prompted to download the\r\n          newest Vault file. To ensure this works properly, please select below\r\n          the downloaded Vault file and enter your Vault password again.",
       "password": "Password",
       "passwordHint": "Your Vault Password",
       "button": "Verify Vault File"
