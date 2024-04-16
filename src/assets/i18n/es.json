@@ -25,11 +25,11 @@
       "maximize": "Maximizar"
     },
     "messages": {
-      "notConnected": "No está conectado a la red de Qubic. Por favor, conéctese.",
+      "notConnected": "No está conectado a la red de Qubic. Por favor, conéctate.",
       "refreshRequested": "Actualización solicitada",
-      "refreshFailed": "Falló la actualización, por favor intente más tarde",
+      "refreshFailed": "Falló la actualización, por favor intenta más tarde",
       "balanceReceived": "La red indica un saldo de {{balance}} QUBIC para {{publicId}}.",
-      "timeoutTryAgain": "Se agotó el tiempo de espera del sistema. Por favor, intente nuevamente."
+      "timeoutTryAgain": "Se agotó el tiempo de espera del sistema. Por favor, intenta nuevamente."
     }
   },
   "payment": {
@@ -41,13 +41,13 @@
       "cancel": "Cancelar",
       "confirm": "Sí, confirmo"
     },
-    "confirmationText": "¿Está seguro?"
+    "confirmationText": "¿Estás seguro?"
   },
   "notifyComponent": {
     "saveYourSettings": "Por favor, exporta/descarga tus configuraciones. Tus configuraciones contienen las Seed cifradas necesarias para restaurar el wallet.",
     "saveYourKey": "Por favor, guarda tu archivo wallet en un lugar seguro.",
-    "qubicLiSync": "Sincronice sus configuraciones con qubic.li",
-    "qubicOffline": "No está conectado a la red de QUBIC",
+    "qubicLiSync": "Sincroniza tus configuraciones con qubic.li",
+    "qubicOffline": "No estás conectado a la red de QUBIC",
     "qubicOnline": "Conectado a la red de QUBIC"
   },
   "revealSeedComponent": {
@@ -99,25 +99,25 @@
       "buttons": {
         "send": "Enviar",
         "cancel": "Cancelar",
-        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de 1,000,000 Qubic"
+        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de 1,000,000 QUBIC"
       }
     },
-    "noAssets": "No assets available"
+    "noAssets": "No hay activos disponibles"
   },
   "qrReceiveComponent": {
     "title": "Recibir un pago",
     "downloadLink": "Descargar",
-    "hint": "Escanee/envíe este Código QR para recibir un pago para {{publicId}}.",
+    "hint": "Escanea/envía este Código QR para recibir un pago para {{publicId}}.",
     "buttons.close": "Cerrar"
   },
   "seedEditComponent": {
     "title.add": "Agregar una dirección",
     "title.edit": "Editar una dirección",
     "newSeedName": "Nombre-Dirección",
-    "seedWarning": "<b>!IMPORTANTE!<br>!Estos 55 caracteres son tu clave privada (Seed)!<br>Guarda este seed de manera segura.<br>Si pierdes tu seed, podrías perder el acceso a tus fondos.<br><br>Más información sobre el tema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "seedWarning": "<b>!IMPORTANTE!<br>!Estos 55 caracteres son tu clave privada (Seed)!<br>Guarda este valor de manera segura.<br>Si lo pierdes, podrías perder el acceso a tus fondos.<br><br>Más información sobre el tema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
     "form": {
       "alias": {
-        "placeholder": "Elije un nombre único para tu dirección para referirse a ella más fácilmente.",
+        "placeholder": "Asigna un nombre único a la dirección para referirte a ella más fácilmente.",
         "error": {
           "required": "Nombre requerido",
           "min": "El nombre debe tener al menos 3 caracteres",
@@ -200,11 +200,11 @@
     "welcomeMessage": "Bienvenido al Wallet qubic.\nPara usar este Wallet, debes crear un archivo Wallet. Este archivo contendrá tu clave pública/privada que luego se usará para cifrar/descifrar sus datos.",
     "reasonMessage": "Para desbloquear tu Wallet, es necesario tu archivo Wallet. Este archivo se elimina automáticamente cada vez que la página se recarga o se cierra.",
     "choosePrivateKeyFile": "Elegir el archivo Wallet",
-    "chooseConfigFile": "Seleccion el archivo de configuración del wallet",
+    "chooseConfigFile": "Seleccionar el archivo de configuración del wallet",
     "overwriteVault": "Parece que ya hay datos guardados en este navegador. ¿Realmente deseas sobrescribirlos?",
     "form": {
       "file.error.required": "Archivo Wallet requerido",
-      "password.error.required": "Contraseña del Wallet requerida",
+      "password.error.required": "Se requiere la contraseña del Wallet",
       "password.error.min": "La contraseña debe tener al menos 8 caracteres.",
       "configFile": {
         "error": {
@@ -237,7 +237,7 @@
         "allOk": "Tengo mi archivo de desbloqueo, gracias"
       }
     },
-    "reason": "Es esencial almacenar tu archivo Wallet de manera segura. Por favor, elije una contraseña fuerte que no olvidará, y luego haz clic en \"Guardar\".",
+    "reason": "Es esencial almacenar tu archivo Wallet de manera segura. Por favor, elije una contraseña fuerte que no olvidarás, y luego haz clic en \"Guardar\".",
     "warning": "Confirmo haber guardado mi archivo Wallet.",
     "password.placeholder": "Contraseña",
     "password.required": "Contraseña requerida",
@@ -254,7 +254,7 @@
     "title": "Enviar unidades Qubic (QUBIC)",
     "messages": {
       "pleaseUnlock": "Por favor, desbloquea tu Wallet primero",
-      "storedForPropagation": "Tu transacciíon se ha guardado y será enviada en el tick {{tick}}",
+      "storedForPropagation": "Tu transacción se ha guardado y será enviada en el tick {{tick}}",
       "failedToSend": "Tu transacción no pudo ser enviada. Por favor, intenta más tarde.",
       "failedToDecrypt": "No pudimos descifrar tu Seed. ¿Utilizaste la clave privada correcta?",
       "failedValidation": "Hemos encontrado errores de validación. Por favor, verifica el formulario."
@@ -288,7 +288,7 @@
         "customize.tooltip": "Alternar para establecer un Tick de ejecución personalizado",
         "error": {
           "required": "Se requiere el Tick",
-          "min": "El Tick debe ser al menos de {{currentTick}}"
+          "min": "El Tick debe ser mayor o igual a {{currentTick}}"
         }
       }
     },
@@ -423,7 +423,7 @@
   "ipoComponent": {
     "messages": {
       "unlock": "Por favor, desbloquea tu Wallet primero",
-      "storedForPropagation": "Tu transaccioõn ha sido guardada para ser propagada en el tick {{tick}}",
+      "storedForPropagation": "Tu transacción ha sido guardada para ser propagada en el tick {{tick}}",
       "failedToSend": "Tu IPO no pudo ser enviada. Por favor, intenta de nuevo más tarde.",
       "failedToDecrypt": "No pudimos descifrar tu Seed. ¿Has utilizado la clave privada correcta?",
       "failedToValidate": "Hemos encontrado errores de validación. Por favor, verifica el formulario."
@@ -477,7 +477,7 @@
       "cancel": "Cancelar"
     },
     "messages": {
-      "import": "Si ya tienes un archivo .config que contiene sus claves públicas, selecciónalo ahora e impórtalo.",
+      "import": "Si ya tienes un archivo .config que contiene tus claves públicas, selecciónalo ahora e impórtalo.",
       "noImport": "Si aún no tienes un archivo .config, crea una cuenta en la próxima sección."
     }
   },
@@ -515,7 +515,7 @@
     },
     "createAddress": {
       "title": "Agregar Dirección",
-      "message": "En tu Qubic wallet puedes agregar múltiples direcciones. Cada dirección\r\n        consiste en un seed (clave pública) y un ID público. El seed es necesario para\r\n        enviar QUBIC y el ID Público para recibir QUBIC. Crearemos ahora\r\n        tu primera dirección.",
+      "message": "En tu Qubic wallet puedes agregar múltiples direcciones. Cada dirección\r\n        consiste en un seed (clave privada) y un ID público. El seed es necesario para\r\n        enviar QUBIC y el ID Público para recibir QUBIC. Crearemos ahora\r\n        tu primera dirección.",
       "addressNam": "Nombre",
       "seed": "Seed",
       "seedPlaceholder": "Asigna un seed aleatorio...",
