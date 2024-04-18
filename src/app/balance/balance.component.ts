@@ -124,7 +124,7 @@ export class BalanceComponent implements OnInit {
     });
   
     // Header
-    const headers = ['Tick', 'Status', 'Amount', 'Created', 'Transaction ID', 'Source', 'Destination'];
+    const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
     csvRows.push(headers.join(','));
   
     // Datenzeilen hinzufügen
