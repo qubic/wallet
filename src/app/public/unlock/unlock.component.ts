@@ -130,7 +130,7 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
       } catch (r) {
         console.error(r);
         this._snackBar.open(
-          'Unlock Failed (passord or file do not match)',
+          'Unlock Failed (password or file do not match)',
           'close',
           {
             duration: 5000,

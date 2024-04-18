@@ -215,7 +215,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
         this.nextStep();
       } else {
         this._snackBar.open(
-          'Import Failed (passord or file do not match)',
+          'Import Failed (password or file do not match)',
           'close',
           {
             duration: 5000,

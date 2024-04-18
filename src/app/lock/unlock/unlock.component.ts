@@ -120,7 +120,7 @@ export class UnLockComponent extends QubicDialogWrapper {
           this.updaterService.loadCurrentBalance(true);
           this.dialogRef?.close();
         } else {
-          this._snackBar.open("Import Failed (passord or file do not match)", "close", {
+          this._snackBar.open("Import Failed (password or file do not match)", "close", {
             duration: 5000,
             panelClass: "error"
           });
@@ -245,7 +245,7 @@ export class UnLockComponent extends QubicDialogWrapper {
           });
         }
       }).catch(r => {
-        this._snackBar.open("Import Failed (passord or file do not match)", "close", {
+        this._snackBar.open("Import Failed (password or file do not match)", "close", {
           duration: 5000,
           panelClass: "error"
         });
