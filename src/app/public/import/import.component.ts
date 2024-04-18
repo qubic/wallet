@@ -69,7 +69,7 @@ export class ImportVaultComponent extends QubicDialogWrapper {
           this.updaterService.loadCurrentBalance(true);
           this.router.navigate(['/']);
         } else {
-          this._snackBar.open("Import Failed (passord or file do not match)", "close", {
+          this._snackBar.open("Import Failed (password or file do not match)", "close", {
             duration: 5000,
             panelClass: "error"
           });
@@ -168,7 +168,7 @@ export class ImportVaultComponent extends QubicDialogWrapper {
           });
         }
       }).catch(r => {
-        this._snackBar.open("Import Failed (passord or file do not match)", "close", {
+        this._snackBar.open("Import Failed (password or file do not match)", "close", {
           duration: 5000,
           panelClass: "error"
         });
