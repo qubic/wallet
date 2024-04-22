@@ -14,6 +14,9 @@
       <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
         t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
     </div>
+    <div *ngIf="assets.length <= 0" class="no-assets-message">
+      {{ t("assetsComponent.noAssets") }}
+    </div>
 
     <!-- card version /-->
     <div *ngIf="!isTable">
@@ -48,22 +51,24 @@
     <!-- phone version-->
     <div *ngIf="isTable" class="mobileOnly assetList">
       <span *ngIf="!showSendForm">
-        <div class="mobileAssetItem" *ngFor="let asset of assets">
-          <h3>
-            {{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined || asset.ownedAmount == null
-            ? "?"
-            : asset.ownedAmount }} ({{ asset.possessedAmount == undefined || asset.possessedAmount ==
-            null ? "?" : asset.possessedAmount }}) {{ asset.assetName }}
-          </h3>
-          <div class="flex flex-wrap">
-            <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)">
-              <mat-icon>send</mat-icon>
-            </button>
+        <div *ngIf="assets.length > 0">
+          <div class="mobileAssetItem" *ngFor="let asset of assets">
+            <h3>
+              {{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined || asset.ownedAmount == null
+              ? "?"
+              : asset.ownedAmount }} ({{ asset.possessedAmount == undefined || asset.possessedAmount ==
+              null ? "?" : asset.possessedAmount }}) {{ asset.assetName }}
+            </h3>
+            <div class="flex flex-wrap">
+              <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)">
+                <mat-icon>send</mat-icon>
+              </button>
+            </div>
+            <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="asset.publicId">
+              {{ asset.publicId }}
+            </div>
           </div>
-          <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="asset.publicId">
-            {{ asset.publicId }}
-          </div>
-        </div>
+        </div>        
       </span>
     </div>
 
@@ -151,10 +156,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
-        </div>
-        <div *ngIf="assets.length <= 0" class="no-assets-message">
-          {{ t("assetsComponent.noAssets") }}
-        </div>
+        </div>       
       </mat-card>
     </div>
     <ng-container *ngIf="showSendForm">
