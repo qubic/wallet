@@ -30,6 +30,7 @@
         min-width: 98px;
         text-align: right;
     }
+
     .receive {
         color: green;
     }
@@ -52,18 +53,15 @@
     }
 
     .ownId {
-        font-weight: bold;
+        font-weight: normal;
     }
 
     .copy {
         width: inherit;
-
+        font-family: "Space Mono";
     }
 
-    
-    
-
-    .copy span{
+    .copy span {
         word-break: break-all;
     }
 }
@@ -71,5 +69,12 @@
 .full-width {
     width: 100%;
 }
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px 20px 0px;
+  }
 
 /* see mobile styles in styles.css */
