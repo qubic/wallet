@@ -7,17 +7,18 @@
       </div>
       <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
-        {{ (currentPrice.price * 1000000000) | number:'1.0-0' }} {{ currentPrice.currency }} / b{{ t("general.currency") }}
+        {{ (currentPrice.price * 1000000000) | number:'1.0-0' }} {{ currentPrice.currency }} / b{{ t("general.currency")
+        }}
         <div class="dashboard-amount-name">
           ~ {{currentPrice.capitalization| number : "1.0-0"}} {{currentPrice.currency}} MC
         </div>
         <!-- {{currentPrice.price}} {{currentPrice.currency}}/{{ t("general.currency") }} |-->
       </div>
     </div>
-     <mat-form-field>
-          <mat-label>{{ t("seedOverviewComponent.search.label") }}</mat-label>
-          <input matInput (keyup)="applyFilter($event)" #input />
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t("seedOverviewComponent.search.label") }}</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #input />
+    </mat-form-field>
     <div class="flex flex-wrap card-list">
       <div>
         <button color="accent" mat-raised-button (click)="addSeed()">
@@ -37,15 +38,15 @@
         </button> -->
       </div>
       <div style="margin-left: auto;" class="text-right">
-            <div class="dashboard-amount-name">
-              {{ t("dashboard.totalBalance") }}
-            </div>
-            <span class="disable-area">
-              {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
-            </span> /
-            <span class="dashboard-amount-name disable-area">
-              ${{currentPrice.price * getTotalBalance() | number : "1.0-2"}}
-            </span>
+        <div class="dashboard-amount-name">
+          {{ t("dashboard.totalBalance") }}
+        </div>
+        <span class="disable-area">
+          {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
+        </span> /
+        <span class="dashboard-amount-name disable-area">
+          ${{currentPrice.price * getTotalBalance() | number : "1.0-2"}}
+        </span>
       </div>
     </div>
     <br>
@@ -85,7 +86,7 @@
       </div>
     </div>
 
-    <!-- table version-->
+    <!-- phone version-->
     <div *ngIf="isTable" class="mobileOnly seedList">
       <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
         <h3>
@@ -95,10 +96,10 @@
         </h3>
         <div class="flex flex-wrap">
           <div [class]="{
-              epochChanges: true,
-              isPositiv: getEpochChanges(seed.publicId) > 0,
-              isNegativ: getEpochChanges(seed.publicId) < 0
-            }">
+            epochChanges: true,
+            isPositiv: getEpochChanges(seed.publicId) > 0,
+            isNegativ: getEpochChanges(seed.publicId) < 0
+          }">
             {{ getEpochChanges(seed.publicId) | number : "1.0-0" }}
             <mat-icon class="up">arrow_upward</mat-icon>
             <mat-icon class="down">arrow_downward</mat-icon>
@@ -108,10 +109,11 @@
         </div>
         <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="seed.publicId">
           {{ seed.publicId }}
-        </div>
+        </div>    
       </div>
     </div>
 
+    <!-- table version-->
     <table *ngIf="isTable" mat-table [dataSource]="dataSource" matSortActive="alias" matSortDirection="asc"
       class="mat-elevation-z8 desktopOnly currency-value" matSort>
       <ng-container matColumnDef="alias">

@@ -89,3 +89,19 @@ mat-card {
 .mat-mdc-form-field {
   width: 100%;
 }
+
+.mobileAssetItem {
+  padding-bottom: 10px;
+  border-bottom: 1px solid gray;
+}
+
+.assetList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h3 {
+      font-weight: bold;
+      margin-bottom: 0px;;
+  }
+}
