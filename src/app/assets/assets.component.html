@@ -14,19 +14,19 @@
       <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
         t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
     </div>
-
-    <mat-card class="transfer-card">
+    
+    <div *ngIf="assets.length <= 0">
+    <mat-card class="asset-card">
       <mat-card-content>
-        <div *ngIf="assets.length <= 0">
           {{ t("assetsComponent.noAssets") }}
-        </div>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
     <!-- card version /-->
     <div *ngIf="!isTable">
       <div *ngIf="!showSendForm" class="card-list flex flex-wrap">
-        <mat-card class="proposal-card" *ngFor="let asset of assets; let i = index">
+        <mat-card *ngFor="let asset of assets; let i = index">
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name">

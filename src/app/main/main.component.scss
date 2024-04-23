@@ -5,43 +5,59 @@
 
     h3 {
         font-weight: bold;
-        margin-bottom: 0px;;
+        margin-bottom: 0px;
+        ;
     }
 }
+
 .mobileSeedItem {
     padding-bottom: 10px;
     border-bottom: 1px solid gray;
 }
+
 .mobileActionLine {
     display: flex;
     flex-wrap: wrap;
 }
+
 .epochChanges {
     display: flex;
     align-items: center;
 }
+
 .cardEpochChanges {
     margin-bottom: -20px;
 }
-.down, .up{
+
+.down,
+.up {
     display: none;
 }
-.straight{
+
+.straight {
     display: inline;
 }
+
 .isPositiv {
-    .down, .straight{
+
+    .down,
+    .straight {
         display: none;
     }
-    .up{
+
+    .up {
         display: inline;
     }
 }
+
 .isNegativ {
-    .up, .straight{
+
+    .up,
+    .straight {
         display: none;
     }
-    .down{
+
+    .down {
         display: inline;
     }
 }
@@ -49,17 +65,19 @@
 
 .card-list {
     gap: 0px 20px;
-
 }
 
 mat-card {
-    min-width: 385px;
+    min-width: 385px;    
+    margin-bottom: 20px;
 }
 
 ::ng-deep {
-    .is-mobile  {
+    .is-mobile {
         mat-card {
-            min-width: 320px;
+            min-width: 280px;
+            font-size: 80%;
+            margin: 20px auto;
         }
     }
 }

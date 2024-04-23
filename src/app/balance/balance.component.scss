@@ -10,6 +10,36 @@
     text-decoration: line-through;
 }
 
+.balance-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    overflow-x: auto;
+    min-width: 120px;
+  
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  
+    .col {
+      flex: 1;
+      margin-right: 20px;
+      margin-bottom: 15px;
+    }
+  
+    .col:last-child {
+      margin-right: 0;
+    }
+  
+    .padding button {
+      margin: 10px;
+      padding: 10px 40px;
+    }
+  }
 
 .transaction-list {
 
