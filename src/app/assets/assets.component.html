@@ -14,9 +14,14 @@
       <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
         t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
     </div>
-    <div *ngIf="assets.length <= 0" class="no-assets-message">
-      {{ t("assetsComponent.noAssets") }}
-    </div>
+
+    <mat-card class="transfer-card">
+      <mat-card-content>
+        <div *ngIf="assets.length <= 0">
+          {{ t("assetsComponent.noAssets") }}
+        </div>
+      </mat-card-content>
+    </mat-card>
 
     <!-- card version /-->
     <div *ngIf="!isTable">
@@ -68,7 +73,7 @@
               {{ asset.publicId }}
             </div>
           </div>
-        </div>        
+        </div>
       </span>
     </div>
 
@@ -156,7 +161,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
-        </div>       
+        </div>
       </mat-card>
     </div>
     <ng-container *ngIf="showSendForm">
