@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 
 export class AssetsComponent implements OnInit {
 
-  displayedColumns: string[] = ['publicId', 'contractIndex',  'ownedAmount', 'tick','actions'];
+  displayedColumns: string[] = ['publicId', 'contractName',  'ownedAmount', 'tick','actions'];
   public assets: QubicAsset[] = [];
   public currentTick = 0;
   public tickOverwrite = false;
