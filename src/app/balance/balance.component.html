@@ -81,21 +81,35 @@
                             <div [class]="{copy: true, ownId: isOwnId(transaction.sourceId)}">
                                 From: <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
                                     [cdkCopyToClipboard]="transaction.sourceId">{{ transaction.sourceId }}
-                                </span>
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
-                                    target="_blank" title="explorer.qubic.org">
-                                    <mat-icon>explore</mat-icon>
-                                </a>
-                                <span>&nbsp; {{ getSeedName(transaction.sourceId) }}</span>
+                                </span>                                
+                               
                             </div>
                             <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">To:&nbsp;&nbsp;
                                 <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
                                     [cdkCopyToClipboard]="transaction.destId">{{ transaction.destId }} </span>
+                               
+                            </div>                           
+                        </div>
+                        <div class="wallet-name">
+                            <div>
+                                <span>{{ getSeedName(transaction.sourceId) }}</span>
+                            </div>
+                            <div>
+                                <span>{{ getSeedName(transaction.destId) }}</span>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <div>
+                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                    target="_blank" title="explorer.qubic.org">
+                                    <mat-icon>explore</mat-icon>
+                                </a>
+                            </div>
+                            <div>
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
                                     target="_blank" title="explorer.qubic.org">
                                     <mat-icon>explore</mat-icon>
                                 </a>
-                                <span>&nbsp; {{ getSeedName(transaction.destId) }}</span>
                             </div>
                         </div>
                     </div>
