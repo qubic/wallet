@@ -1,12 +1,8 @@
 <ng-container *transloco="let t">
   <div class="content_container">
     <h1>{{ t("assetsComponent.title") }}</h1>
-    <div *ngIf="assets.length > 0 && !showSendForm">
-      <button mat-raised-button type="button" color="primary" (click)="openSendForm()">{{
-        t("assetsComponent.buttons.send")
-        }}
-      </button>
-      <button mat-raised-button type="button" [disabled]="isAssetsLoading" (click)="refreshData()">
+    <div *ngIf="assets.length > 0 && !showSendForm">      
+      <button mat-raised-button type="button"  color="primary" [disabled]="isAssetsLoading" (click)="refreshData()">
         <span *ngIf="!isAssetsLoading">{{ t("assetsComponent.buttons.refresh") }}</span>
         <mat-progress-spinner mode="indeterminate" [diameter]="20" *ngIf="isAssetsLoading">
         </mat-progress-spinner>
