@@ -2,7 +2,12 @@
   <div class="content_container">
     <h1>{{ t("ipoComponent.title") }}</h1>
     <div *ngIf="ipoContracts.length <= 0 && !loaded">
-        {{ t("general.loading") }}
+        <div class="loading">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+        <div class="text-center">
+            {{ t("general.loading") }}
+        </div>     
     </div>
     <div *ngIf="ipoContracts.length <= 0  && loaded">
         {{ t("ipoComponent.noIpos") }}

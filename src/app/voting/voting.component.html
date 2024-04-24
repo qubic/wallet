@@ -2,7 +2,12 @@
   <div class="content_container">
     <h1>{{ t("votingComponent.title") }}</h1>
     <div *ngIf="accountBalances.length <= 0 && hasSeeds()">
-        {{ t("general.loading") }}
+        <div class="loading">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+        <div class="text-center">
+            {{ t("general.loading") }}
+        </div>        
     </div>
     <div *ngIf="accountBalances.length > 0">
         <div *ngIf="hasComputors()">
