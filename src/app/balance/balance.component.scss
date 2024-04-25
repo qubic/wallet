@@ -59,8 +59,8 @@
     padding: 8px 0px 8px 0px;
 
     .send-receive-indicator {
-        min-width: 98px;
-        text-align: right;
+        min-width: 180px;
+        text-align: center;
     }       
 
     .receive {
@@ -76,7 +76,6 @@
     }
 
     .trans-amount {
-        padding: 5px;
         font-weight: bold;
         min-width: 180px;
         display: flex;

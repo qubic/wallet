@@ -43,7 +43,7 @@
                     <div *ngFor="let transaction of getTransactions(seedFilterFormControl.value)"
                         class="transaction-list">
                         <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
-                        <div class="center">
+                        <div>
                             <div class="trans-amount currency-value">
                                 <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
                                     [href]="'https://explorer.qubic.org/network/tx/' + transaction.id" target="_blank"
@@ -53,7 +53,7 @@
                                 <span [class]="{noMoneyFlow: !transaction.isPending && !transaction.moneyFlow}">
                                     {{ transaction.amount | number: '1.0-0' }}</span>&nbsp;{{ t("general.currency") }}
                             </div>
-                            <div class="trans-date"> Tick:
+                            <div class="trans-date">Tick:
                                 <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
                                 </a>
