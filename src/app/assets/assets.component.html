@@ -147,9 +147,10 @@
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.select") }}</mat-label>
                   <mat-select formControlName="assetSelect">
-                    <mat-option *ngFor="let asset of assets" [value]="asset">
-                      {{ asset.assetName }} ({{ asset.ownedAmount }})
-                      {{ getSeedAlias(asset.publicId) }} {{ asset.publicId }}
+                    <mat-option *ngFor="let asset of assets" [value]="asset" class="custom-mat-option">
+                    {{ asset.publicId }} <br />{{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined || asset.ownedAmount == null ?
+                      "?"
+                      : asset.ownedAmount }} {{asset.assetName}}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="sendForm.controls['assetSelect'].hasError('required')">
