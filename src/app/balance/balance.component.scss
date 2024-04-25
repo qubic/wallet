@@ -51,24 +51,13 @@
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
-    align-items: center;
-    padding: 5px;
+    align-items: center;   
     column-gap: 10px;
-    margin: 10px;
 
     .send-receive-indicator {
         min-width: 98px;
         text-align: right;
-    }
-
-    .actions {
-        min-width: 50px;
-        text-align: right;
-    }
-    .wallet-name {
-        min-width: 50px;
-        text-align: left;
-    }
+    }       
 
     .receive {
         color: green;
@@ -88,7 +77,6 @@
         min-width: 180px;
         display: flex;
         align-items: center;
-
     }
 
     .ownId {
@@ -102,8 +90,9 @@
 
     .copy span {
         word-break: break-all;
-    }
+    }   
 }
+
 
 .full-width {
     width: 100%;
