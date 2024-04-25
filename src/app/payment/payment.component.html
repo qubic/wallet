@@ -50,9 +50,9 @@
                                 matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
                                 <mat-icon>import_contacts</mat-icon>
                             </button>
-                            <mat-hint align="start">{{ t("paymentComponent.form.receiver.hint") }}</mat-hint>
-                            <mat-hint align="end">{{ transferForm.controls['destinationId'].value?.length }} /
-                                60</mat-hint>
+                                <mat-hint align="start">{{ t("paymentComponent.form.receiver.hint") }}</mat-hint>
+                                <mat-hint align="end">{{ transferForm.controls['destinationId'].value?.length }} /
+                                    60</mat-hint>
                             <mat-error *ngIf="transferForm.controls['destinationId'].hasError('required')">
                                 {{ t("paymentComponent.form.receiver.error.required") }}
                             </mat-error>
