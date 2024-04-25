@@ -95,7 +95,7 @@
                             <div [class]="{copy: true, ownId: isOwnId(transaction.sourceId)}">
                                 From: <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
                                     [cdkCopyToClipboard]="transaction.sourceId">{{ transaction.sourceId }}
-                                </span>    
+                                </span>
                             </div>
                             <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">To:&nbsp;&nbsp;
                                 <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"

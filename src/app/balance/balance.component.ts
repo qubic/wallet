@@ -88,7 +88,7 @@ export class BalanceComponent implements OnInit {
   getSeedName(publicId: string): string {
     var seed = this.walletService.getSeed(publicId);
     if (seed !== undefined)
-      return '(' + seed.alias + ')';
+      return '- ' + seed.alias;
     else
       return '';
   }
