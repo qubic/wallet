@@ -19,9 +19,9 @@
                                 <div class="col">
                                     <mat-form-field appearance="fill" placeholder="Computor Seed" class="full-width">
                                         <mat-label>{{ t("votingComponent.create.form.sourceSeed.label") }}</mat-label>
-                                        <mat-select formControlName="computorId">
-                                            <mat-option *ngFor="let seed of getComputors()" [value]="seed.publicId">
-                                                {{seed.alias}} | {{ seed.publicId }}
+                                        <mat-select formControlName="computorId">                                           
+                                            <mat-option *ngFor="let seed of getComputors()" [value]="seed.publicId" class="custom-mat-option">
+                                                {{ seed.publicId }} <br />{{seed.alias}}
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="proposalForm.controls['computorId'].hasError('required')">
@@ -220,9 +220,9 @@
                                 <div class="col">
                                     <mat-form-field appearance="fill" placeholder="Operator Seed" class="full-width">
                                         <mat-label>{{ t("votingComponent.create.form.operatorSeed.label") }}</mat-label>
-                                        <mat-select formControlName="operatorId">
-                                            <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId">
-                                                {{seed.alias}} | {{ seed.publicId }}
+                                        <mat-select formControlName="operatorId">                                           
+                                            <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId" class="custom-mat-option">
+                                                {{ seed.publicId }} <br />{{seed.alias}}
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="publishForm.controls['operatorId'].hasError('required')">

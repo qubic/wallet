@@ -104,17 +104,3 @@ mat-card {
   }
 }
 
-.custom-mat-option {
-  padding: 8px; 
-}
-
-.custom-mat-option:nth-child(even) {
-  // background-color: gray; 
-  border-bottom: 1px solid $mainColor;
-}
-
-.custom-mat-option:nth-child(odd) {
-  // background-color: darkgray; 
-  border-bottom: 1px solid $mainColor;
-}
-

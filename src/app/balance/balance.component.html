@@ -4,8 +4,8 @@
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
             <mat-select [formControl]="seedFilterFormControl">
-                <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId">
-                    {{seed.alias}} | {{ seed.publicId }}
+                <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId" class="custom-mat-option">
+                    {{ seed.publicId }} <br />{{seed.alias}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
