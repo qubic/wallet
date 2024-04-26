@@ -87,7 +87,7 @@
       "select": "Seleccione un Asset",
       "select.error": "Debe seleccionar un Asset",
       "placeholder": "ID de la dirección del destinatario",
-      "placeholder.error": "Se requiere clave privada Qubic (Seed) de 55 caracteres.",
+      "placeholder.error": "Se requiere una clave pública de 60 caracteres.",
       "amount": "Cantidad a enviar",
       "amount.error": "Se requiere la cantidad",
       "amount.value.error": "La cantidad debe ser mayor a 0",
@@ -139,7 +139,7 @@
         "title": "Direcciones de solo lectura",
         "placeholder": "Clave pública de 60 caracteres",
         "error": {
-          "required": "Se requiere una clave pública de 60 caracteres",
+          "required": "Se requiere una clave pública de 60 caracteres.",
           "min": "La clave pública debe contener exactamente 60 caracteres en máyuscula",
           "max": "La clave pública debe contener exactamente 60 caracteres en máyuscula",
           "regex": "Solo puede contener caracteres A-Z"

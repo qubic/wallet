@@ -87,7 +87,7 @@
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
-      "placeholder.error": "An 55-char seed is required.",
+      "placeholder.error": "An 60-char public-key is required.",
       "amount": "Amount to send",
       "amount.error": "Amount is required",
       "amount.value.error": "The amount must be greater than 0",

@@ -87,7 +87,7 @@
       "select": "Sélectionner l'Actif",
       "select.error": "La sélection de l'actif est requise",
       "placeholder": "ID de l'adresse du destinataire",
-      "placeholder.error": "Un seed de 55 caractères est requis.",
+      "placeholder.error": "Une clé publique de 60 caractères est requise.",
       "amount": "Montant à envoyer",
       "amount.error": "Le montant est requis",
       "amount.value.error": "Le montant doit être supérieur à 0",

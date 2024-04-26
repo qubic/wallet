@@ -87,7 +87,7 @@
       "select": "Varlık Seç",
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
-      "placeholder.error": "55 karakterlik anahtar gereklidir.",
+      "placeholder.error": "60 karakterlik bir genel anahtar gereklidir.",
       "amount": "Gönderilecek Tutar",
       "amount.error": "Tutar gereklidir",
       "amount.value.error": "Tutar 0'dan büyük olmalıdır",

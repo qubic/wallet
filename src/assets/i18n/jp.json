@@ -87,7 +87,7 @@
       "select": "資産を選択",
       "select.error": "資産の選択が必要です",
       "placeholder": "受信者のアドレスID",
-      "placeholder.error": "55文字のシードが必要です。",
+      "placeholder.error": "60文字の公開キーが必要です。",
       "amount": "送信する量",
       "amount.error": "数量が必要です",
       "amount.value.error": "数量は0以上でなければなりません",

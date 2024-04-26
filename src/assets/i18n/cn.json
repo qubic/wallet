@@ -86,7 +86,7 @@
       "select": "选择资产",
       "select.error": "需要选择资产",
       "placeholder": "接收方地址 ID",
-      "placeholder.error": "需要 55 位字符的种子。",
+      "placeholder.error": "需要一个 60 位字符地址",
       "amount": "发送数量",
       "amount.error": "需要填写数量",
       "amount.value.error": "数量必须大于 0",

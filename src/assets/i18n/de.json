@@ -87,7 +87,7 @@
       "select": "Vermögenswert auswählen",
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",
-      "placeholder.error": "Eine 55-stellige Seed ist erforderlich.",
+      "placeholder.error": "Ein 60-Zeichen öffentlicher Schlüssel ist erforderlich.",
       "amount": "Zu sendende Menge",
       "amount.error": "Menge ist erforderlich",
       "amount.value.error": "Die Menge muss größer als 0 sein",
