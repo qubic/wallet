@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>Attention</b></span>: La création d'une phrase de récupération personnalisée est réservée aux experts. <span class='danger'>Des pirates informatiques ont exploité des phrases de récupération personnalisées par le passé.</span> Pour garantir une sécurité maximale, <b>utilisez une phrase de récupération générée de manière aléatoire</b> fournie par cette portefeuille.<br><br><b><i>Êtes-vous au courant de cela ?</i></b>",
+    "hint": "Les phrases de récupération personnalisées sont exposées au risque de vol. Utilisez la phrase de récupération aléatoire de la portefeuille pour une sécurité optimale.",
+    "button": "Utilisez votre propre phrase de récupération."
   },
   "payment": {
     "keyRequestReason": "Les transactions étant signées numériquement avec votre clé, vous devez la charger au préalable."

@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>Advertencia</b></span>: Crear una frase semilla personalizada es solo para expertos. <span class='danger'>Los hackers han explotado frases semilla personalizadas en el pasado.</span> Para garantizar la máxima seguridad, <b>utilice una frase semilla generada aleatoriamente</b> proporcionada por esta billetera.<br><br><b><i>¿Estás al tanto de esto?</i></b>",
+    "hint": "Las semillas hechas a medida corren el riesgo de ser robadas. Utiliza la semilla aleatoria proporcionada por la billetera para obtener la máxima seguridad.",
+    "button": "Utiliza tu propia frase semilla"
   },
   "payment": {
     "keyRequestReason": "Como las transacciones son firmadas digitalmente con tu clave, debes cargarla previamente."
