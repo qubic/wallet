@@ -10,6 +10,7 @@ import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
+import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -28,8 +29,9 @@ export class SeedEditDialog extends QubicDialogWrapper {
 
   isNew = true;
   seed: IDecodedSeed = (<IDecodedSeed>{});
+  public fieldSeedDisabled = true;
 
-  constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, public walletService: WalletService, private dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
+  constructor(renderer: Renderer2, private matDialog: MatDialog, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, public walletService: WalletService, private dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
     super(renderer, themeService);
 
     if (data.publicId) {
@@ -47,6 +49,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   init() {
     if (this.isNew) {
       this.seedEditForm.controls.alias.setValue(this.transloco.translate("seedEditComponent.newSeedName") + " " + (this.walletService.getSeeds().length + 1));
+      this.randomizeSeed();
     } else {
       this.seedEditForm.controls.alias.setValue(this.seed.alias);
       this.seedEditForm.controls.publicId.setValue(this.seed.publicId);
@@ -57,7 +60,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   getPublicId(): string {
-        return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
+    return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
   }
 
   onSubmit(): void {
@@ -108,20 +111,52 @@ export class SeedEditDialog extends QubicDialogWrapper {
     }
   }
 
-
   generateIds(seed: string): void {
-    new QubicHelper().createIdPackage(seed).then((response: { publicKey: Uint8Array, publicId: string }) => {
-      this.seedEditForm.controls.publicId.setValue(response.publicId);
-      this.seed.publicId = response.publicId;
-      //this.seed.publicKey = response.publicKey;
-      this.seed.seed = seed;
-    });
+    if (seed && seed.length == 55) {
+      new QubicHelper().createIdPackage(seed).then((response: { publicKey: Uint8Array, publicId: string }) => {
+        this.seedEditForm.controls.publicId.setValue(response.publicId);
+        this.seed.publicId = response.publicId;
+        //this.seed.publicKey = response.publicKey;
+        this.seed.seed = seed;
+      })
+    } else {
+      this.seedEditForm.controls.publicId.setValue('');
+      this.seed.publicId = '';
+      this.seed.seed = '';
+    }
   }
 
-  generateSeed(): void {
-    const seed = this.seedGen();
-    this.seedEditForm.controls.seed.setValue(seed);
-    //this.generateIds(seed);
+  toggleWatchOnlyAddress(): void {
+    
+    if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
+      this.seedEditForm.controls.seed.setValue("");
+      this.fieldSeedDisabled = true;
+    } else {
+      this.fieldSeedDisabled = false;
+      this.randomizeSeed();
+    }
+  }
+
+  randomizeSeed(): void {
+    this.fieldSeedDisabled = true;
+    this.seedEditForm.controls.seed.setValue(this.seedGen());
+  }
+
+  public resetSeed() {
+    const confirmDialog = this.matDialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        message: this.transloco.translate('ownSeedWarningDialog.message'),
+      },
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.fieldSeedDisabled = false;
+        this.seedEditForm.controls.seed.setValue("");
+        const seedValue = this.seedEditForm.controls.seed.value || "";
+        this.generateIds(seedValue);
+      }
+    })
   }
 
   seedGen(): string {
@@ -144,5 +179,4 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.dialog.open(UnLockComponent);
     }, 500);
   }
-
 }

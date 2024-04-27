@@ -77,13 +77,11 @@
             }}</ng-template>
           {{ t('createVaultComponent.downloadVault.message') }}
           <br /><br />
-
           <mat-form-field>
             <mat-label>{{ t('createVaultComponent.downloadVault.password') }}</mat-label>
             <input type="password" matInput formControlName="password"
               placeholder="{{ t('createVaultComponent.downloadVault.passwordHint') }}" required />
           </mat-form-field>
-
           <button mat-raised-button color="primary" (click)="exportVault()" [disabled]="!vaultPasswordFormGroup.valid">
             {{ t('createVaultComponent.downloadVault.button') }}
           </button>
