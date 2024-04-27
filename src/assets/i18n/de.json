@@ -34,7 +34,8 @@
   },  
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warnung</b></span>: Das Erstellen einer benutzerdefinierten Startphrase ist nur für Experten gedacht. <span class='danger'>Hacker haben in der Vergangenheit benutzerdefinierte Samen ausgenutzt.</span> Um maximale Sicherheit zu gewährleisten, verwenden Sie einen <b>zufällig generierten Seed-Phrase</b>, die von dieser Wallet bereitgestellt wird.<br><br><b><i>Sind Sie sich dessen bewusst?</ i></b>",
-    "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet."
+    "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet.",
+    "button" : "Eigenen Seed verwenden"
   },
   "payment": {
     "keyRequestReason": "Transaktionen werden mit dem Konto-Passwort abgesichert. Alle Konto-Passwörter sind verschlüsselt in einer Datei auf deinem Gerät, die wir Tresor nennen. Daher musst du deinen Tresor vorher mit deiner Kombination - dem Tresor-Passwort - entriegeln."
