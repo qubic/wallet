@@ -40,6 +40,8 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   public selectedFileIsVaultFile = false;
   private walletService: WalletService;
 
+  public fieldSeedDisabled = true;
+
   createVaultForm = this.fb.group({
     name: [null, [Validators.required, Validators.minLength(3)]],
   });
@@ -88,7 +90,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
 
     this.walletService = new WalletService(false);
 
-   this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
+    this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
       if (s) this.generatePublicId(s);
     });
   }
@@ -111,7 +113,25 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   }
 
   public randomizeSeed() {
+    this.fieldSeedDisabled = true;
     this.createAddressForm.controls.seed.setValue(this.seedGen());
+  }
+
+  public resetSeed() {
+    const confirmDialog = this.dialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        message: this.transloco.translate('ownSeedWarningDialog.message'),
+      },
+    });
+    confirmDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.fieldSeedDisabled = false;
+        this.createAddressForm.controls.seed.setValue("");
+        const seedValue = this.createAddressForm.controls.seed.value || "";
+        this.generatePublicId(seedValue);
+      }
+    })
   }
 
   private seedGen(): string {
@@ -126,6 +146,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
 
   public createVault() {
     this.gengerateNew();
+    this.randomizeSeed();
   }
 
   public async createAddress() {
@@ -251,7 +272,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   }
 
   getVaultName() {
-    if(this.walletService.getName()){
+    if (this.walletService.getName()) {
       return "'" + this.walletService.getName() + "'";
     }
     return "";

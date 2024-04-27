@@ -2,19 +2,15 @@
   <div>
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
       <mat-step [completed]="vaultCreated" [editable]="false">
-        <ng-template matStepLabel>{{ t('createVaultComponent.createVault.stepTitle') }}  {{ getVaultName() }}</ng-template>
+        <ng-template matStepLabel>{{ t('createVaultComponent.createVault.stepTitle') }} {{ getVaultName()
+          }}</ng-template>
         {{ t('createVaultComponent.createVault.message') }}
         <br /><br />
         <form [formGroup]="createVaultForm">
           <mat-form-field class="full-width">
             <mat-label>{{ t('createVaultComponent.createVault.vaultName') }}</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="name"
-              placeholder="{{ t('createVaultComponent.createVault.placeholder') }}"
-              required
-            />
+            <input type="text" matInput formControlName="name"
+              placeholder="{{ t('createVaultComponent.createVault.placeholder') }}" required />
           </mat-form-field>
           <button mat-raised-button color="primary" (click)="createVault()" [disabled]="!createVaultForm.valid">
             {{ t('createVaultComponent.createVault.button') }}
@@ -28,24 +24,27 @@
         <form [formGroup]="createAddressForm">
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>{{ t('createVaultComponent.createAddress.addressNam') }}</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="name"
-              placeholder="{{ t('createVaultComponent.createAddress.addressPlaceholder') }}"
-              required
-            />
+            <input type="text" matInput formControlName="name"
+              placeholder="{{ t('createVaultComponent.createAddress.addressPlaceholder') }}" required />
           </mat-form-field>
           <div class="flex" class="danger">
             <div [innerHTML]="t('seedEditComponent.seedWarning')"></div>
-          </div> 
-          <div class="seedInput">  
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>{{ t('createVaultComponent.createAddress.seed') }}</mat-label>
-            <input type="text" matInput formControlName="seed" placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required/>            
-          </mat-form-field>
-          <mat-hint class="seed-length" align="end"> {{ createAddressForm.controls['seed'].value?.length }} / 55</mat-hint> 
           </div>
+          <div class="seedInput">
+            <mat-form-field appearance="fill" class="full-width" >             
+              <mat-label>{{ createAddressForm.controls['seed'].value?.length }} /
+                55 {{ t('createVaultComponent.createAddress.seed') }} </mat-label>
+              <input  type="text" matInput formControlName="seed"
+                placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required [readonly]="fieldSeedDisabled" />
+            </mat-form-field>
+            &nbsp;
+            <button *ngIf="fieldSeedDisabled" type="button" mat-icon-button (click)="resetSeed()">
+              <mat-icon>deleteSeed</mat-icon>
+            </button>           
+            <button *ngIf="!fieldSeedDisabled" type="button" mat-icon-button (click)="randomizeSeed()">
+              <mat-icon>sync</mat-icon>
+            </button>
+          </div>         
           <mat-error *ngIf="createAddressForm.controls['seed'].hasError('required')">
             {{ t("seedEditComponent.form.seed.error.required")}}
           </mat-error>
@@ -60,19 +59,17 @@
           </mat-error>
           <div *ngIf="generatedPublicId.length === 60" class="word-break">
             <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
-          {{
+            {{
             generatedPublicId
-          }}</div>
+            }}
+          </div>
+          <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint">  {{ t("ownSeedWarningDialog.hint")}}</div>
           <div class="flex full-width button-container">
             <button mat-raised-button color="accent" (click)="randomizeSeed()">
               {{ t('createVaultComponent.createAddress.radomizeSeed') }}
             </button>
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="createAddress()"
-              [disabled]="!this.createAddressForm.valid"
-            >
+            <button mat-raised-button color="primary" (click)="createAddress()"
+              [disabled]="!this.createAddressForm.valid">
               {{ t('createVaultComponent.createAddress.button') }}
             </button>
           </div>
@@ -80,64 +77,44 @@
       </mat-step>
       <mat-step [completed]="vaultExported" [editable]="true">
         <form [formGroup]="vaultPasswordFormGroup">
-          <ng-template matStepLabel>{{ t('createVaultComponent.downloadVault.stepTitle') }} {{ getVaultName() }}</ng-template>
+          <ng-template matStepLabel>{{ t('createVaultComponent.downloadVault.stepTitle') }} {{ getVaultName()
+            }}</ng-template>
           {{ t('createVaultComponent.downloadVault.message') }}
           <br /><br />
 
           <mat-form-field>
             <mat-label>{{ t('createVaultComponent.downloadVault.password') }}</mat-label>
-            <input
-              type="password"
-              matInput
-              formControlName="password"
-              placeholder="{{ t('createVaultComponent.downloadVault.passwordHint') }}"
-              required
-            />
+            <input type="password" matInput formControlName="password"
+              placeholder="{{ t('createVaultComponent.downloadVault.passwordHint') }}" required />
           </mat-form-field>
 
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="exportVault()"
-            [disabled]="!vaultPasswordFormGroup.valid"
-          >
+          <button mat-raised-button color="primary" (click)="exportVault()" [disabled]="!vaultPasswordFormGroup.valid">
             {{ t('createVaultComponent.downloadVault.button') }}
           </button>
         </form>
       </mat-step>
       <mat-step [completed]="vaultVerified" [editable]="false">
         <form [formGroup]="verifyVaultFormGroup">
-          <ng-template matStepLabel>{{ t('createVaultComponent.verifyVault.stpTitle') }} {{ getVaultName() }}</ng-template>
+          <ng-template matStepLabel>{{ t('createVaultComponent.verifyVault.stpTitle') }} {{ getVaultName()
+            }}</ng-template>
           {{ t('createVaultComponent.verifyVault.message') }}
           <br /><br />
           <mat-form-field>
             <mat-label>{{ t('createVaultComponent.verifyVault.password') }}</mat-label>
-            <input
-              type="password"
-              matInput
-              formControlName="password"
-              placeholder="{{ t('createVaultComponent.verifyVault.passwordHint') }}"
-              required
-            />
+            <input type="password" matInput formControlName="password"
+              placeholder="{{ t('createVaultComponent.verifyVault.passwordHint') }}" required />
           </mat-form-field>
-          <app-file-selector
-          class="flex flex-halign-left"
-          (fileSelected)="onFileSelected($event)"
-          requredText="{{ t('unlockComponent.form.file.error.required') }}"
-          selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"
-        ></app-file-selector>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="verifyVault()"
-            [disabled]="!verifyVaultFormGroup.valid || !selectedFileIsVaultFile"
-          >
+          <app-file-selector class="flex flex-halign-left" (fileSelected)="onFileSelected($event)"
+            requredText="{{ t('unlockComponent.form.file.error.required') }}"
+            selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"></app-file-selector>
+          <button mat-raised-button color="primary" (click)="verifyVault()"
+            [disabled]="!verifyVaultFormGroup.valid || !selectedFileIsVaultFile">
             {{ t('createVaultComponent.verifyVault.button') }}
           </button>
         </form>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>{{ t('createVaultComponent.done.stepTitle') }}  {{ getVaultName() }}</ng-template>
+        <ng-template matStepLabel>{{ t('createVaultComponent.done.stepTitle') }} {{ getVaultName() }}</ng-template>
         <p>{{ t('createVaultComponent.done.message') }}</p>
         <div>
           <button mat-raised-button color="primary" (click)="openWallet()">

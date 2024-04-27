@@ -31,6 +31,10 @@
       "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
       "timeoutTryAgain": "We run into a timeout. Please try again."
     }
+  },  
+  "ownSeedWarningDialog": {
+    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
+    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security."
   },
   "payment": {
     "keyRequestReason": "Omdat transacties digitaal worden ondertekend met uw sleutel moet u eerst uw sleutel laden."
