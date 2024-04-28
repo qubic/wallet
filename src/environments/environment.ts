@@ -1,5 +1,5 @@
 export const environment = {
-    version: 3.8,
+    version: 3.9,
     production: false,
     apiUrl: 'http://localhost:7003', 
     explorer:'https://explorer.qubic.org/network/address/',
