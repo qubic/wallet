@@ -17,17 +17,23 @@ mat-sidenav-container{
   border: 1px solid #E0E0E0;
 }
 
+.selected-nav {
+  font-weight: bold;
+   background-color: #F2F2F2;
+}
+
 ::ng-deep {
   .darkTheme {
     mat-sidenav-container{
-
       border: 0px solid #222930;
       border-top: 1px solid #222930;
     }
+
+    .selected-nav {
+      background-color: $darkLighter-10-BackgroundColor;
+    }
   }
 }
-
-
 
 h1.app-name {
   margin-left: 8px;
@@ -57,7 +63,6 @@ h1.app-name {
   margin-right: auto;
   padding: 16px;
 }
-
 
 .version {
   margin-top: 20px;
@@ -105,3 +110,5 @@ h1.app-name {
     }
   }
 }
+
+

@@ -56,19 +56,19 @@
       <mat-sidenav class="navigation" #snav [opened]="!mobileQuery.matches"
         [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list>
-          <a mat-list-item routerLink="." (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="." (click)="checkMobileToggle()"  [class.selected-nav]="isHomeSelected"><mat-icon
               class="icon-color-link icon">home</mat-icon><span>{{ t("general.navigation.home") }}</span></a>
-          <a mat-list-item routerLink="payment" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="payment" (click)="checkMobileToggle()" [class.selected-nav]="isPaymentSelected"><mat-icon
               class="icon-color-link icon">payments</mat-icon>{{ t("general.navigation.payment") }}</a>
-          <a mat-list-item routerLink="balance" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="balance" (click)="checkMobileToggle()" [class.selected-nav]="isBalanceSelected"><mat-icon
               class="icon-color-link icon">account_balance</mat-icon>{{ t("general.navigation.balance") }}</a>
-          <a mat-list-item routerLink="assets" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="assets" (click)="checkMobileToggle()" [class.selected-nav]="isAssetsSelected"><mat-icon
               class="icon-color-link icon">category</mat-icon>{{ t("general.navigation.assets") }}</a>
-          <a mat-list-item routerLink="voting" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="voting" (click)="checkMobileToggle()" [class.selected-nav]="isVotingSelected"><mat-icon
               class="icon-color-link icon">how_to_vote</mat-icon>{{ t("general.navigation.voting") }}</a>
-          <a mat-list-item routerLink="ipo" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="ipo" (click)="checkMobileToggle()" [class.selected-nav]="isIpoSelected"><mat-icon
               class="icon-color-link icon">multiline_chart</mat-icon>{{ t("general.navigation.ipo") }}</a>
-          <a mat-list-item routerLink="settings" (click)="checkMobileToggle()"><mat-icon
+          <a mat-list-item routerLink="settings" (click)="checkMobileToggle()" [class.selected-nav]="isSettingsSelected"><mat-icon
               class="icon-color-link icon">settings</mat-icon>{{ t("general.navigation.settings") }}</a>
         </mat-nav-list>
 

@@ -11,7 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { MarketInformation } from '../services/api.model';
 import { EnvironmentService } from '../services/env.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -37,25 +38,44 @@ export class NavigationComponent implements OnInit {
   private currentTick = 0;
   private currentErrorState = "";
   private isMaximized = false;
-  public showMinimize = false;  
+  public showMinimize = false;
   public currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   private _mobileQueryListener!: () => void;
+
+  public isHomeSelected = true;
+  public isSettingsSelected = false;
+  public isPaymentSelected = false;
+  public isBalanceSelected = false;
+  public isAssetsSelected = false;
+  public isVotingSelected = false;
+  public isIpoSelected = false;
 
   constructor(private renderer: Renderer2, private cd: ChangeDetectorRef, public us: UpdaterService,
     private transloco: TranslocoService, private _snackBar: MatSnackBar,
     public themeService: ThemeService, private breakpointObserver: BreakpointObserver,
     public walletService: WalletService, private changeDetectorRef: ChangeDetectorRef, private media: MediaMatcher,
     public environmentService: EnvironmentService, private router: Router) {
+
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      const currentUrl = event.urlAfterRedirects;
+      this.isHomeSelected = currentUrl === '/';
+      this.isPaymentSelected = currentUrl === '/payment';
+      this.isBalanceSelected = currentUrl === '/balance';
+      this.isAssetsSelected = currentUrl === '/assets';
+      this.isVotingSelected = currentUrl === '/voting';
+      this.isIpoSelected = currentUrl === '/ipo';
+      this.isSettingsSelected = currentUrl === '/settings';
+    });
   }
 
   ngOnInit(): void {
-    
-
     this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.version = environment.version;
-    
+
     this.renderer.addClass(document.body, this.themeService.isDarkTheme ? 'darkTheme' : 'light');
 
     // if ((<any>window).require) {

@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>Внимание!</b></span>: Создание кастомного сида только для экспертов. <span class='danger'>В прошлом хакеры уже взламывали кастомные сиды.</span> Что бы обезопасить себя максимально, <b>используйте рандомно-генерируемый сид</b> предлагаемый кошельком Qubic.<br><br><b><i>Вы осознаете риски?</i></b>",
+    "hint": "Кастомный сид имеет большой риск взлома. Используйте рандомно-генерируемый сид.",
+    "button": "Используйте свой сид."
   },
   "payment": {
     "keyRequestReason": "Поскольку транзакции подписываются цифровым ключом, вам необходимо сначала загрузить свой ключ."
