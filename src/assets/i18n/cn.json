@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>警告</b></span>: 强烈不建议使用自定义种子，<span class='danger'>自定义种子有被黑客盗窃的风险</span> 为了确保最大程度的安全性， <b>请使用钱包提供的随机生成种子</b><br><br><b><i>您知道这一点吗？</i></b>",
+    "hint": "自定义种子有被盗的风险，请使用钱包的随机种子以获得最佳安全性。",
+    "button": "使用您自己的种子"
   },
   "payment": {
     "keyRequestReason": "由于交易是使用您的密钥进行数字签名的，因此您需要首先加载密钥。"

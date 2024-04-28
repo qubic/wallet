@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>Uyarı</b></span>: Özel cüzdan kimliği yaratmak sadece uzmanlar içindir. <span class='danger'>Hackerlar geçmişte özel oluşturulan cüzdan kimliklerini ele geçirdiler.</span> En yüksek güvenlik için, <b>bu cüzdan tarafından sağlanan</b>  rastgele oluşturulmuş cüzdan kiliği ile adres oluşturun.<br><br><b><i>Bunun farkında mısın?</i></b>",
+    "hint": "Özel yapılmış cüzdan kimlikleri çalınma tehlikesi taşımaktadır. Güvenliğiniz için cüzdanın size verdiği rastgele oluşturulmuş cüzdan kimliğini kullanın.",
+    "button": "Kendi özel cüzdan kimliğini kullan"
   },
   "payment": {
     "keyRequestReason": "İşlemler anahtarınızla dijital olarak imzalandığından, önce anahtarınızı yüklemeniz gerekir."
