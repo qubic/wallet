@@ -527,7 +527,7 @@
       "publicId": "Identifiant Public",
       "radomizeSeed": "Randomiser la Seed",
       "addressPlaceholder": "Choisissez un nom de compte",
-      "button": "Créer Address"
+      "button": "Créer l'adresse"
     },
     "downloadVault": {
       "stepTitle": "Téléchargez le Vault initial",
