@@ -531,7 +531,7 @@
     },
     "downloadVault": {
       "stepTitle": "Téléchargez le Vault initial",
-      "message": "Votre Vault personnel a été créé. Vous pouvez maintenant le télécharger. Please\r\n          Choisissez un mot de passe sécurisé et sélectionnez \"Télécharger le Vault\".",
+      "message": "Votre Vault personnel a été créé. Vous pouvez maintenant le télécharger. S'il vous plaît\r\n          Choisissez un mot de passe sécurisé et sélectionnez \"Télécharger le Vault\".",
       "password": "Mot de passe",
       "passwordHint": "Choisissez un mot de passe sécurisé...",
       "button": "Télécharger le Vault"
