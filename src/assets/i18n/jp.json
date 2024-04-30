@@ -33,9 +33,9 @@
     }
   },  
   "ownSeedWarningDialog": {
-    "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
-    "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "message": "<span class='danger'><b>警告</b></span>：カスタムシードフレーズの作成は専門家向けです。<span class='danger'>過去にはハッカーがカスタムシードを悪用したことがあります。</span>最大限のセキュリティを確保するために、このウォレットによって提供される<b>ランダムに生成されたシードフレーズを使用してください。</b><br><br><b><i>これを理解していますか？</i></b>",
+    "hint": "カスタムメイドのシードは盗難のリスクがあります。最高のセキュリティのためにウォレットのランダムシードを使用してください。",
+    "button": "自分のシードを使用する"
   },
   "payment": {
     "keyRequestReason": "トランザクションはあなたのキーでデジタル署名されるため、最初にキーを読み込む必要があります。"
