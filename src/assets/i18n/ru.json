@@ -31,7 +31,13 @@
       "balanceReceived": "Ответ сети {{balance}} QUBIC для {{publicId}}.",
       "timeoutTryAgain": "Таймаут. Попробуйте еще раз."
     }
-  },  
+  },    
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Внимание!</b></span>: Создание кастомного сида только для экспертов. <span class='danger'>В прошлом хакеры уже взламывали кастомные сиды.</span> Что бы обезопасить себя максимально, <b>используйте рандомно-генерируемый сид</b> предлагаемый кошельком Qubic.<br><br><b><i>Вы осознаете риски?</i></b>",
     "hint": "Кастомный сид имеет большой риск взлома. Используйте рандомно-генерируемый сид.",

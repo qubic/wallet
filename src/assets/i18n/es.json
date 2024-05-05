@@ -31,7 +31,13 @@
       "balanceReceived": "La red indica un saldo de {{balance}} QUBIC para {{publicId}}.",
       "timeoutTryAgain": "Se agotó el tiempo de espera del sistema. Por favor, intenta nuevamente."
     }
-  },  
+  },    
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Advertencia</b></span>: Crear una frase semilla personalizada es solo para expertos. <span class='danger'>Los hackers han explotado frases semilla personalizadas en el pasado.</span> Para garantizar la máxima seguridad, <b>utilice una frase semilla generada aleatoriamente</b> proporcionada por esta billetera.<br><br><b><i>¿Estás al tanto de esto?</i></b>",
     "hint": "Las semillas hechas a medida corren el riesgo de ser robadas. Utiliza la semilla aleatoria proporcionada por la billetera para obtener la máxima seguridad.",

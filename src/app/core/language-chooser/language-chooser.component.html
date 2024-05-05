@@ -1,5 +1,6 @@
 <ng-container *transloco="let t">
-    <button mat-icon-button [matMenuTriggerFor]="langMenu">
+    <button mat-icon-button [matMenuTriggerFor]="langMenu" 
+    [matTooltip]="t('languageIconComponent.title')">
       <span class="material-icons">language</span>
     </button>
     <mat-menu #langMenu="matMenu">

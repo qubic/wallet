@@ -32,6 +32,12 @@
       "timeoutTryAgain": "连接超时，请稍后再试。"
     }
   },  
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>警告</b></span>: 强烈不建议使用自定义种子，<span class='danger'>自定义种子有被黑客盗窃的风险！</span><br>为了确保最大程度的安全性， <b>请使用钱包提供的随机生成种子。</b><br><br><b><i>您仍然要使用自定义种子吗？</i></b>",
     "hint": "自定义种子有被盗窃的风险，请使用钱包的随机种子以获得最佳安全性。",

@@ -24,7 +24,7 @@
         </div>
         <qli-notifys *ngIf="walletService.isWalletReady && !walletService.configError"></qli-notifys>
         <qli-lock *ngIf="walletService.isWalletReady && !walletService.configError"></qli-lock>
-        <button mat-icon-button (click)="openPrivacyPolicy();">
+        <button mat-icon-button (click)="openPrivacyPolicy();" [matTooltip]="t('privacyPolicyIcon.title')">
           <mat-icon>gavel</mat-icon>
         </button>
         <qli-language-chooser></qli-language-chooser>

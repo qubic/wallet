@@ -31,7 +31,13 @@
       "balanceReceived": "ネットワークから {{balance}} QUBICが {{publicId}}に報告されました。",
       "timeoutTryAgain": "タイムアウトしました。もう一度試してください。"
     }
-  },  
+  },    
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>警告</b></span>：カスタムシードフレーズの作成は専門家向けです。<span class='danger'>過去にはハッカーがカスタムシードを悪用したことがあります。</span>最大限のセキュリティを確保するために、このウォレットによって提供される<b>ランダムに生成されたシードフレーズを使用してください。</b><br><br><b><i>これを理解していますか？</i></b>",
     "hint": "カスタムメイドのシードは盗難のリスクがあります。最高のセキュリティのためにウォレットのランダムシードを使用してください。",

@@ -31,7 +31,13 @@
       "balanceReceived": "Le réseau indique un solde de {{balance}} QUBIC pour {{publicId}}.",
       "timeoutTryAgain": "délai dépassé, essayez à nouveau."
     }
-  },  
+  },    
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Attention</b></span>: La création d'une phrase de récupération personnalisée est réservée aux experts. <span class='danger'>Des pirates informatiques ont exploité des phrases de récupération personnalisées par le passé.</span> Pour garantir une sécurité maximale, <b>utilisez une phrase de récupération générée de manière aléatoire</b> fournie par cette portefeuille.<br><br><b><i>Êtes-vous au courant de cela ?</i></b>",
     "hint": "Les phrases de récupération personnalisées sont exposées au risque de vol. Utilisez la phrase de récupération aléatoire de la portefeuille pour une sécurité optimale.",

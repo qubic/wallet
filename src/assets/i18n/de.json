@@ -32,6 +32,12 @@
       "timeoutTryAgain": "Wir sind auf ein Timeout gestoßen. Bitte versuchen Sie es erneut."
     }
   },  
+  "languageIconComponent": {
+    "title": "Sprache auswählen"
+  },
+  "privacyPolicyIcon": {
+    "title": "Öffne Datenschutz Bestimmungen"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warnung</b></span>: Das Erstellen einer benutzerdefinierten Startphrase ist nur für Experten gedacht. <span class='danger'>Hacker haben in der Vergangenheit benutzerdefinierte Samen ausgenutzt.</span> Um maximale Sicherheit zu gewährleisten, verwenden Sie einen <b>zufällig generierten Seed-Phrase</b>, die von dieser Wallet bereitgestellt wird.<br><br><b><i>Sind Sie sich dessen bewusst?</ i></b>",
     "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet.",

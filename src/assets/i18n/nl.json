@@ -31,7 +31,13 @@
       "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
       "timeoutTryAgain": "We run into a timeout. Please try again."
     }
-  },  
+  },    
+  "languageIconComponent": {
+    "title": "Select language"
+  },
+  "privacyPolicyIcon": {
+    "title": "Open Privacy Policy"
+  },
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warning</b></span>: Een simpel wachtwoord gebruiken is niet verstandig. <span class='danger'>Hackers hebben in het verleden hierdoor accounts kunnen kraken.</span> Om maximale veiligheid te garanderen, <b>gebruik alleen een volledig willekeurig wachtwoord</b> aangeboden door deze wallet.<br><br><b><i>Ben je je hier bewust van?</i></b>",
     "hint": "Zelf gemaakte seeds zijn niet veilig. Gebruik alleen seeds die door deze wallet wordt verstrekt.",
