@@ -408,7 +408,7 @@
         "description.label": "提案说明",
         "description.placeholder": "提案说明",
         "description.error.min": "描述必须至少有 2 个字符",
-        "description.error.max": "描述不得超过 1000 个字符",
+        "description.error.max": "描述不得超过 5000 个字符",
         "description.error.required": "描述为必填项",
         "option.label": "选项 {{id}}",
         "option.placeholder": "选项 {{id}}",

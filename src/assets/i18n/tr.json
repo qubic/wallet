@@ -408,7 +408,7 @@
         "description.label": "Teklif Açıklaması",
         "description.placeholder": "Teklif Açıklaması",
         "description.error.min": "Açıklama en az 2 karakter bulunmalıdır",
-        "description.error.max": "Açıklama en çok 1000 karakter içerebilir",
+        "description.error.max": "Açıklama en çok 5000 karakter içerebilir",
         "description.error.required": "Açıklama Gerekli",
         "option.label": "Opsiyon {{id}}",
         "option.placeholder": "Opsiyon {{id}}",

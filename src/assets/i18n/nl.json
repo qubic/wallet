@@ -405,7 +405,7 @@
         "description.label": "Proposal Description",
         "description.placeholder": "Proposal Description",
         "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 1000 characters",
+        "description.error.max": "Description must have at maximum 5000 characters",
         "description.error.required": "Description is required",
         "option.label": "Option {{id}}",
         "option.placeholder": "Option {{id}}",

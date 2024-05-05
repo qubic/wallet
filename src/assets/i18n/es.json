@@ -406,7 +406,7 @@
         "description.label": "Descripción de la propuesta",
         "description.placeholder": "Descripción de la propuesta",
         "description.error.min": "La descripción debe tener al menos 2 caracteres",
-        "description.error.max": "La descripción no debe exceder los 1000 caracteres",
+        "description.error.max": "La descripción no debe exceder los 5000 caracteres",
         "description.error.required": "Se requiere la descripción",
         "option.label": "Opción {{id}}",
         "option.placeholder": "Opción {{id}}",

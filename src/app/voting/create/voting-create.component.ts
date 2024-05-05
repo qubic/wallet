@@ -44,7 +44,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
   public proposalForm = this.fb.group({
     computorId: ['', [Validators.required]],
     title: ["", [Validators.required,Validators.minLength(2), Validators.maxLength(100)]],
-    description: ["", [Validators.required,Validators.minLength(2)]],
+    description: ["", [Validators.required,Validators.minLength(2), Validators.maxLength(5000)]],
     option1: ["", [Validators.required,Validators.minLength(2), Validators.maxLength(50)]],
     option2: ["", [Validators.required,Validators.minLength(2), Validators.maxLength(50)]],
     option3: ["",[Validators.minLength(2),Validators.maxLength(50)]],

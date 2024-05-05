@@ -52,7 +52,7 @@
                                             [placeholder]="t('votingComponent.create.form.description.placeholder')"
                                             formControlName="description"></textarea>
                                         <mat-hint align="end">{{ proposalForm.controls['description'].value?.length }} /
-                                            500</mat-hint>
+                                            5000</mat-hint>
                                         <mat-error *ngIf="proposalForm.controls['description'].hasError('required')">
                                             {{ t("votingComponent.create.form.description.error.required") }}
                                         </mat-error>

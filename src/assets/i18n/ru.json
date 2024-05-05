@@ -407,7 +407,7 @@
         "description.label": "Описание предложения",
         "description.placeholder": "Описание предложения",
         "description.error.min": "Предложение должно состоять минимум из 2 символов",
-        "description.error.max": "Предложение должно состоять максимум из 1000 символов",
+        "description.error.max": "Предложение должно состоять максимум из 5000 символов",
         "description.error.required": "Описание обязательно",
         "option.label": "Опция {{id}}",
         "option.placeholder": "Опция {{id}}",
