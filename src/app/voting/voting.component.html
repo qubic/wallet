@@ -36,14 +36,13 @@
                     </div>
                     {{ t("votingComponent.proposals.url") }}<br>
                     <a href="{{p.url}}" target="_blank">{{p.url}}</a><br>
-                    <div *ngIf="p.published">
+                    <div *ngIf="p.published"><br>
                         Published: <br>{{p.published}} @ {{p.publishedTick}}
                     </div>
-                    <div *ngIf="!p.published">
+                    <div *ngIf="!p.published"><br>
                         Publish in progress... (in ~{{p.tickForPublish}} ticks)
                     </div>
-                    <div class="proposal">
-
+                    <div class="proposal"><br>
                         <h2>{{ t("votingComponent.proposals.votingResult") }}</h2>
                         <div *ngIf="!p.hasVotes">
                             {{ t("votingComponent.proposals.noVotes") }}
