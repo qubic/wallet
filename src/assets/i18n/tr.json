@@ -12,7 +12,7 @@
       "ipo": "IPO",
       "assets": "Varlıklar"
     },
-    "version": "Versiyon {{version}} - beta",
+    "version": "Versiyon {{version}}",
     "version.url": "wallet.qubic.li",
     "copy.tooltip": "Kopyala",
     "error": "Hata",

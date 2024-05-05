@@ -12,7 +12,7 @@
       "ipo": "IPO",
       "assets": "Акции"
     },
-    "version": "Версия {{version}} - тестовая",
+    "version": "Версия {{version}}",
     "version.url": "qubic.org",
     "copy.tooltip": "Копировать",
     "error": "Ошибка",

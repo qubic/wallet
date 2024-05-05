@@ -12,7 +12,7 @@
       "ipo": "IPO",
       "assets": "Assets"
     },
-    "version": "Version {{version}} - Beta",
+    "version": "Version {{version}}",
     "version.url": "qubic.org",
     "copy.tooltip": "Kopieren",
     "error": "Fehler",
