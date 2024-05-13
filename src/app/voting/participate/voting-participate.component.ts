@@ -248,8 +248,8 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
       }
       else if (jsonData.message === 'recv data') {
         const byteArray = Uint8Array.from(atob(jsonData.data), c => c.charCodeAt(0));
-        if (byteArray[3] === 4) {
-          const bytes = new Uint8Array([byteArray[17], byteArray[16]]);
+        if (byteArray[3] === 255) { // is a special command response
+          const bytes = new Uint8Array([byteArray[17], byteArray[16]]); // computor public key of respnonse
           const dataView = new DataView(bytes.buffer);
           const value = dataView.getUint16(0, false);
           const comp = this.computorTree.subComputors?.find(f => f.index == value);
