@@ -80,7 +80,7 @@
       "contractIndex": "Vertragsindex",
       "assetName": "Vermögenswertname",
       "contractName": "Vertragsname",
-      "ownedAmount": "Besitzte Menge",
+      "ownedAmount": "Besitzende Menge",
       "possessedAmount": "Besessene Menge",
       "tick": "Gültig für Tick {{tick}}",
       "reportingNodes": "Berichtsknoten",

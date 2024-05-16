@@ -33,8 +33,7 @@
               {{ asset.assetName }}
             </div>
             <div class="dashboard-balance-name disable-area">
-              {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : asset.ownedAmount }} ({{
-              asset.possessedAmount == undefined || asset.possessedAmount == null ? "?" : asset.possessedAmount }})
+              {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : asset.ownedAmount | number :"1.0-0" }}
             </div>
             <div class="dashboard-amount-name disable-area">
               {{ t("assetsComponent.table.tick") }} {{ asset.tick }}
@@ -56,8 +55,8 @@
               {{ asset.assetName }} - {{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined ||
               asset.ownedAmount == null
               ? "?"
-              : asset.ownedAmount }} ({{ asset.possessedAmount == undefined || asset.possessedAmount ==
-              null ? "?" : asset.possessedAmount }})
+              : asset.ownedAmount | number :"1.0-0"}} ({{ asset.possessedAmount == undefined || asset.possessedAmount ==
+              null ? "?" : asset.possessedAmount | number :"1.0-0"}})
             </h3>
             <div class="flex flex-wrap">
               <ng-container *ngTemplateOutlet="actions; context: asset"></ng-container>
@@ -94,12 +93,12 @@
 
         <!-- Owned Amount -->
         <ng-container matColumnDef="ownedAmount">
-          <th mat-header-cell *matHeaderCellDef> {{ t("assetsComponent.table.ownedAmount") }} /<br />({{
-            t("assetsComponent.table.possessedAmount") }})</th>
+          <th mat-header-cell *matHeaderCellDef> {{ t("assetsComponent.table.ownedAmount") }} /<br />{{
+            t("assetsComponent.table.possessedAmount") }}</th>
           <td mat-cell *matCellDef="let asset"> {{ asset.ownedAmount == undefined || asset.ownedAmount == null ?
             "?"
-            : asset.ownedAmount }} ( {{ asset.possessedAmount == undefined || asset.possessedAmount ==
-            null ? "?" : asset.possessedAmount }})</td>
+            : asset.ownedAmount | number :"1.0-0"}}<br>{{ asset.possessedAmount == undefined || asset.possessedAmount ==
+            null ? "?" : asset.possessedAmount | number :"1.0-0" }}</td>
         </ng-container>
 
         <!-- Tick & Reporting Nodes -->
