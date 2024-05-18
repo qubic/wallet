@@ -31,7 +31,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class MainComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['alias', 'publicId', 'balance', 'currentEstimatedAmount', 'actions'];
+  displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
   balances: BalanceResponse[] = [];
   public transactions: Transaction[] = [];
