@@ -1,4 +1,4 @@
-# qubic.li - Wallet
+# qubic.org - Wallet
 
 A simple wallet for the QUBIC Network. Find more about QUBIC on https://doc.qubic.world/ or visit us on https://qubic.org/.
 To join the QUBIC Community on discord use this link http://discord.gg/2vDMR8m.
@@ -21,7 +21,7 @@ As we use some parts from the 451 Package to our Wallet also apply the Anti-Mili
 Further our Wallet Code is protected by the AGPL-3.0 License. You may use our Source-Code for what you need to do business.
 
 ## Installation
-User either our Online Version on https://wallet.qubic.li or one of the Packages provided on our Website.
+User either our Online Version on https://wallet.qubic.org or one of the Packages provided on our Website.
 
 ## Limited Support
 We cannot support you in any case. You are welcome to provide updates, bugfixes or other code changes by pull requests.

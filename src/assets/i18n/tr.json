@@ -13,7 +13,7 @@
       "assets": "Varlıklar"
     },
     "version": "Versiyon {{version}}",
-    "version.url": "wallet.qubic.li",
+    "version.url": "qubic.org",
     "copy.tooltip": "Kopyala",
     "error": "Hata",
     "close": "Kapat",

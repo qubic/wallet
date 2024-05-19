@@ -24,7 +24,7 @@ export class QrReceiveDialog extends QubicDialogWrapper {
   
   constructor(renderer: Renderer2,  themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, chgd: ChangeDetectorRef, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef,private _snackBar: MatSnackBar) {
     super(renderer, themeService);
-    this.qrCode = 'https://wallet.qubic.li/payment/' + data.publicId
+    this.qrCode = 'https://wallet.qubic.org/payment/' + data.publicId
   }
 
   onChangeURL(url: SafeUrl) {
