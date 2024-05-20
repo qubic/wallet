@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
+import { WalletService } from '../../services/wallet.service';
 
 @Component({
   selector: 'qli-language-chooser',
@@ -23,16 +24,23 @@ export class LanguageChooserComponent implements OnInit {
     'jp': '日本語',
   };
 
-  public selected: string = "en"; 
+  public selected: string = "en";
 
-  constructor(public translocoService: TranslocoService, public dialog: MatDialog) { }
+  constructor(public walletService: WalletService, public translocoService: TranslocoService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    if (Object.keys(this.supportedLanguagesDictionary).includes(this.browserLanguage)) {
-      this.selected = this.browserLanguage;
+    // The browser language should only be set as the language if the safe file has not yet been loaded
+    if (this.walletService.isWalletReady) {
+      this.selected = this.translocoService.getActiveLang();
     } else {
-      this.selected = 'en';
+      if (Object.keys(this.supportedLanguagesDictionary).includes(this.browserLanguage)) {
+        this.selected = this.browserLanguage;
+      } else {
+        this.selected = 'en';
+      }
+      this.translocoService.setActiveLang(this.selected);
     }
+
     this.translocoService.setActiveLang(this.selected);
   }
 
