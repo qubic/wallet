@@ -21,6 +21,10 @@
             [class]="{ 'target-highlight': higlightTick }">{{
             us.currentTick.getValue() | number : "1.0-0"
             }}</span>
+              <span class="tick-timer" [class]="{ 'tick-timer-error': TickError }">({{
+                  currentTickSec | number : "1.0-0"
+                    }}s)
+              </span>
         </div>
         <qli-notifys *ngIf="walletService.isWalletReady && !walletService.configError"></qli-notifys>
         <qli-lock *ngIf="walletService.isWalletReady && !walletService.configError"></qli-lock>

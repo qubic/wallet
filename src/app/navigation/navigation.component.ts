@@ -36,7 +36,12 @@ export class NavigationComponent implements OnInit {
   public version = 0.0;
   public higlightTick = false;
   private currentTick = 0;
+
+  public TickError = false;
+  public currentTickSec = 0;
   private currentErrorState = "";
+  private intervalId: any;
+
   private isMaximized = false;
   public showMinimize = false;
   public currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
@@ -95,6 +100,7 @@ export class NavigationComponent implements OnInit {
       if (s && s > this.currentTick) {
         this.currentTick = s;
         this.higlightTick = true;
+        this.startCounter();
         this.cd.detectChanges();
         setTimeout(() => {
           this.higlightTick = false;
@@ -113,6 +119,29 @@ export class NavigationComponent implements OnInit {
     })
   }
 
+  startCounter(): void {
+    this.stopCounter();
+    this.intervalId = setInterval(() => {
+      this.currentTickSec++;
+
+      if (this.currentTickSec >= 60) {
+        this.TickError = true;
+      }
+
+    }, 1000);
+  }
+
+  stopCounter(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  resetCounter(): void {
+    this.currentTickSec = 0;
+    this.TickError = false;
+  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
