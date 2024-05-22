@@ -135,7 +135,7 @@ export class NavigationComponent implements OnInit {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
-      this.currentTickSec = 0;
+      this.resetCounter();
     }
   }
 
