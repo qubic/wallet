@@ -1,8 +1,8 @@
 <ng-container *transloco="let t">
   <div class="content_container">
     <h1>{{ t("assetsComponent.title") }}</h1>
-    <div *ngIf="assets.length > 0 && !showSendForm">      
-      <button mat-raised-button type="button"  color="primary" [disabled]="isAssetsLoading" (click)="refreshData()">
+    <div *ngIf="assets.length > 0 && !showSendForm">
+      <button mat-raised-button type="button" color="primary" [disabled]="isAssetsLoading" (click)="refreshData()">
         <span *ngIf="!isAssetsLoading">{{ t("assetsComponent.buttons.refresh") }}</span>
         <mat-progress-spinner mode="indeterminate" [diameter]="20" *ngIf="isAssetsLoading">
         </mat-progress-spinner>
@@ -33,13 +33,14 @@
               {{ asset.assetName }}
             </div>
             <div class="dashboard-balance-name disable-area">
-              {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : asset.ownedAmount | number :"1.0-0" }}
+              {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : asset.ownedAmount | number :"1.0-0"
+              }}
             </div>
             <div class="dashboard-amount-name disable-area">
               {{ t("assetsComponent.table.tick") }} {{ asset.tick }}
             </div>
             <div class="text-center">
-              <ng-container *ngTemplateOutlet="actions; context: asset"></ng-container>
+              <ng-container *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -59,7 +60,7 @@
               null ? "?" : asset.possessedAmount | number :"1.0-0"}})
             </h3>
             <div class="flex flex-wrap">
-              <ng-container *ngTemplateOutlet="actions; context: asset"></ng-container>
+              <ng-container *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }t"></ng-container>
             </div>
             <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="asset.publicId">
               {{ asset.publicId }}
@@ -93,9 +94,11 @@
 
         <!-- Owned Amount -->
         <ng-container matColumnDef="ownedAmount">
-          <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.ownedAmount") }} /<br />{{
+          <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.ownedAmount") }}
+            /<br />{{
             t("assetsComponent.table.possessedAmount") }}</th>
-          <td mat-cell *matCellDef="let asset"  class="alignRight"> {{ asset.ownedAmount == undefined || asset.ownedAmount == null ?
+          <td mat-cell *matCellDef="let asset" class="alignRight"> {{ asset.ownedAmount == undefined ||
+            asset.ownedAmount == null ?
             "?"
             : asset.ownedAmount | number :"1.0-0"}}<br>{{ asset.possessedAmount == undefined || asset.possessedAmount ==
             null ? "?" : asset.possessedAmount | number :"1.0-0" }}</td>
@@ -110,11 +113,12 @@
 
         <!-- Actions -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef  class="alignRight">
+          <th mat-header-cell *matHeaderCellDef class="alignRight">
             {{ t("seedOverviewComponent.table.actions.title") }}
           </th>
           <td mat-cell *matCellDef="let asset" class="alignRight">
-            <ng-container *ngTemplateOutlet="actions; context: asset"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }"></ng-container>
           </td>
         </ng-container>
 
@@ -123,15 +127,15 @@
       </table>
     </div>
 
-    <ng-template #actions let-asset="asset" let-issuerIdentity="issuerIdentity">     
+    <ng-template #actions let-asset="asset" let-issuerIdentity="issuerIdentity">
       <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)"
         title='{{ t("assetsComponent.buttons.send") }}'>
         <mat-icon>send</mat-icon>
       </button>
       <button mat-icon-button class="icon-color-link" (click)="openIssuerIdentity(issuerIdentity)"
-      title='{{ t("assetsComponent.table.issuerIdentity") }}'>
-      <mat-icon>explore</mat-icon>
-    </button>
+        title='{{ t("assetsComponent.table.issuerIdentity") }}'>
+        <mat-icon>explore</mat-icon>
+      </button>
     </ng-template>
 
     <!-- showSendForm -->
@@ -147,7 +151,8 @@
                   <mat-label>{{ t("assetsComponent.form.select") }}</mat-label>
                   <mat-select formControlName="assetSelect">
                     <mat-option *ngFor="let asset of assets" [value]="asset" class="custom-mat-option">
-                    {{ asset.publicId }} <br />{{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined || asset.ownedAmount == null ?
+                      {{ asset.publicId }} <br />{{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined
+                      || asset.ownedAmount == null ?
                       "?"
                       : asset.ownedAmount }} {{asset.assetName}}
                     </mat-option>
