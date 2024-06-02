@@ -221,7 +221,7 @@ export class MainComponent implements AfterViewInit {
 
 
   openAssetsPage() {
-    this.router.navigate(['/assets']);
+    this.router.navigate(['/assets-area']);
   }
   
 

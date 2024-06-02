@@ -68,7 +68,7 @@ export class NavigationComponent implements OnInit {
       this.isHomeSelected = currentUrl === '/';
       this.isPaymentSelected = currentUrl === '/payment';
       this.isBalanceSelected = currentUrl === '/balance';
-      this.isAssetsSelected = currentUrl === '/assets';
+      this.isAssetsSelected = currentUrl === '/assets-area';
       this.isVotingSelected = currentUrl === '/voting';
       this.isIpoSelected = currentUrl === '/ipo';
       this.isSettingsSelected = currentUrl === '/settings';

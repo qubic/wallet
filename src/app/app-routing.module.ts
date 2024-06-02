@@ -84,7 +84,7 @@ const routes: Routes = [
     component: PlaceBidComponent
   },
   {
-    path     : 'assets',
+    path     : 'assets-area',
     component: AssetsComponent
   },
 ];
