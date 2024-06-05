@@ -87,6 +87,7 @@ export class MainComponent implements AfterViewInit {
       this.transactions = txs;
     });
 
+    //1. vault file export due to move to new wallet
     if (walletService.privateKey == null) {
       if (!this.isVaultExportDialog) {
         const dialogRef = this.dialog.open(OkDialog, {
@@ -112,8 +113,8 @@ export class MainComponent implements AfterViewInit {
     }
   }
 
+  //2. vault file export due to move to new wallet
   openVaultExportDialog(): void {
-    //vault file export due to move to new wallet
     if (!this.isVaultExportDialog) {
       const confirmDialo = this.dialog.open(ConfirmDialog, {
         restoreFocus: false, data: {
