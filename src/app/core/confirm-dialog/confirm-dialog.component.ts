@@ -19,12 +19,24 @@ import { QubicDialogWrapper } from '../dialog-wrapper/dialog-wrapper';
 })
 export class ConfirmDialog extends QubicDialogWrapper{
 
+  public title = this.transloco.translate("confirmDialog.title")
   public message = this.transloco.translate("confirmDialog.confirmationText")
+  public cancel = this.transloco.translate("confirmDialog.buttons.cancel")
+  public confirm = this.transloco.translate("confirmDialog.buttons.confirm")
 
   constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
     super(renderer, themeService);
+    if (data?.title) {
+      this.title = data.title;
+    }
     if (data?.message) {
       this.message = data.message;
+    }
+    if (data?.cancel) {
+      this.cancel = data.cancel;
+    }
+    if (data?.confirm) {
+      this.confirm = data.confirm;
     }
   }
 }

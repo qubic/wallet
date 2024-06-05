@@ -22,6 +22,7 @@ import { AssetsDialog } from './assets/assets.component';
 import { ExportConfigDialog } from '../lock/export-config/export-config.component';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class MainComponent implements AfterViewInit {
   balances: BalanceResponse[] = [];
   public transactions: Transaction[] = [];
   isTable: boolean = false;
+  isVaultExportDialog: boolean = false;
   currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public isMobile = false;
 
@@ -55,12 +57,16 @@ export class MainComponent implements AfterViewInit {
     private t: TranslocoService,
     private decimalPipe: DecimalPipe,
     private deviceService: DeviceDetectorService,
+    private transloco: TranslocoService,
   ) {
 
-    this.walletService.updateConfig({useBridge: false,});
+    this.walletService.updateConfig({ useBridge: false, });
     this.isMobile = deviceService.isMobile();
     var dashBoardStyle = localStorage.getItem("dashboard-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
+
+    var vaultExportDialog = localStorage.getItem("vault-export-dialog");
+    this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
 
     this.updaterService.currentPrice.subscribe(response => {
       this.currentPrice = response;
@@ -80,9 +86,56 @@ export class MainComponent implements AfterViewInit {
     updaterService.internalTransactions.subscribe(txs => {
       this.transactions = txs;
     });
+
+    if (walletService.privateKey == null) {
+      if (!this.isVaultExportDialog) {
+        const dialogRef = this.dialog.open(OkDialog, {
+          data: {
+            title: this.transloco.translate("switchExportDialog.title"),
+            message: this.transloco.translate("switchExportDialog.okDialogMessage"),
+            button: this.transloco.translate("okDialog.button")
+          },
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          const dialogRefUnLock = this.dialog.open(UnLockComponent, { restoreFocus: false });
+
+          dialogRefUnLock.afterClosed().subscribe(result => {
+            if (walletService.privateKey) {
+              this.openVaultExportDialog();
+            }
+          })
+        })
+      }
+    } else {
+      this.openVaultExportDialog();
+    }
   }
 
-  @HostListener('document:keydown.escape', ['$event']) 
+  openVaultExportDialog(): void {
+    //vault file export due to move to new wallet
+    if (!this.isVaultExportDialog) {
+      const confirmDialo = this.dialog.open(ConfirmDialog, {
+        restoreFocus: false, data: {
+          title: this.transloco.translate("switchExportDialog.title"),
+          message: this.transloco.translate("switchExportDialog.confirmationText"),
+          cancel: this.transloco.translate("switchExportDialog.buttons.cancel"),
+          confirm: this.transloco.translate("switchExportDialog.buttons.confirm")
+        }
+      });
+      confirmDialo.afterClosed().subscribe(result => {
+        if (result) {
+          //  alert("export vault");
+          this.openExportDialog();
+
+          this.isVaultExportDialog = true;
+          localStorage.setItem("vault-export-dialog", this.isVaultExportDialog ? '1' : '0');
+        }
+      })
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
     disableAreasElements.forEach((area: HTMLElement) => {
@@ -129,13 +182,12 @@ export class MainComponent implements AfterViewInit {
   }
 
   getTotalBalance(): number {
-    return Number(this.walletService.getSeeds().filter((s)=>  !s.isOnlyWatch ).reduce((p,c) => p + c.balance, 0) ?? BigInt(0));
+    return Number(this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).reduce((p, c) => p + c.balance, 0) ?? BigInt(0));
   }
 
   getBalance(publicId: string): number {
     return Number(this.walletService.getSeed(publicId)?.balance ?? BigInt(0));
   }
-
 
   getEpochChanges(publicId: string): number {
     var balanceEntry = this.balances.find(f => f.publicId === publicId);
@@ -144,7 +196,7 @@ export class MainComponent implements AfterViewInit {
 
   refreshData() {
     this.setDataSource();
-    if(this.isTable){
+    if (this.isTable) {
       this.table.renderRows();
     }
     this.updaterService.forceLoadAssets();
@@ -158,7 +210,7 @@ export class MainComponent implements AfterViewInit {
   addSeed() {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-    } else {      
+    } else {
       const dialogRef = this.dialog.open(SeedEditDialog, {
         restoreFocus: false, data: {
           seed: null
@@ -223,7 +275,7 @@ export class MainComponent implements AfterViewInit {
   openAssetsPage() {
     this.router.navigate(['/assets-area']);
   }
-  
+
 
   assets(publicId: string) {
     const confirmDialo = this.dialog.open(AssetsDialog, {

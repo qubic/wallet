@@ -54,6 +54,15 @@
     },
     "confirmationText": "よろしいですか？"
   },
+  "switchExportDialog": {
+    "title": "Important Notice for Switching to the New Wallet",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Export"
+    },
+    "confirmationText": "<div class='danger'>You need to act now!</div><br>Please export your vault file and import it into the new wallet at <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a>.<br><br><div class='danger text-center'>As previously announced, this URL wallet.qubic.li will soon be deactivated.</div><br>Export the vault file now?",
+    "okDialogMessage": "<div class='danger text-center'>Important, you need to act now!</div><br>Please unlock your vault file and get more information about the move to the new wallet at <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a>."
+  },
   "notifyComponent": {
     "saveYourSettings": "設定をエクスポート／ダウンロードしてください。設定には、ヴォールトを復元するために必要な暗号化されたシードが含まれています。",
     "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。",

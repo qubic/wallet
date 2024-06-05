@@ -54,6 +54,15 @@
     },
     "confirmationText": "Sind sie sicher?"
   },
+   "switchExportDialog": {
+    "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
+    "buttons": {
+      "cancel": "Abbrechen",
+      "confirm": "Exportieren"
+    },
+    "confirmationText": "<div class='danger'>Sie müssen jetzt handeln!</div><br>Bitte exportieren Sie Ihre Tresor Datei und importieren sie diese Datei auf der neuen Wallet auf <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a>.<br><br><div class='danger text-center'>Wie bereits angekündigt, wird diese URL wallet.qubic.li bald abgeschaltet.</div><br>Die Tresor Datei jetzt exportieren?",
+    "okDialogMessage": "<div class='danger text-center'>Wichtig, Sie müssen jetzt handeln!</div><br>Bitte entsperren Sie Ihre Tresor Datei und erhalten Sie weitere Infomationen zum Umzug zu der neuen Wallet auf <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a>."
+  },
   "notifyComponent": {
     "saveYourSettings": "Bitte exportiere deine Einstellungen, sie enthalten die verschlüsselten Seeds, die du benötigst, um dein Wallet wiederherzustellen.",
     "saveYourKey": "Bitte sichere deine Tresor-Datei.",
