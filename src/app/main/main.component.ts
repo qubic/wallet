@@ -64,6 +64,7 @@ export class MainComponent implements AfterViewInit {
     this.isMobile = deviceService.isMobile();
     var dashBoardStyle = localStorage.getItem("dashboard-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
+    const domain = window.location.hostname;
 
     var vaultExportDialog = localStorage.getItem("vault-export-dialog");
     this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
@@ -88,28 +89,30 @@ export class MainComponent implements AfterViewInit {
     });
 
     //1. vault file export due to move to new wallet
-    if (walletService.privateKey == null) {
-      if (!this.isVaultExportDialog) {
-        const dialogRef = this.dialog.open(OkDialog, {
-          data: {
-            title: this.transloco.translate("switchExportDialog.title"),
-            message: this.transloco.translate("switchExportDialog.okDialogMessage"),
-            button: this.transloco.translate("okDialog.button")
-          },
-        });
+    if (domain === 'wallet.qubic.li' || domain === 'betawallet.qubic.li') {
+      if (walletService.privateKey == null) {
+        if (!this.isVaultExportDialog) {
+          const dialogRef = this.dialog.open(OkDialog, {
+            data: {
+              title: this.transloco.translate("switchExportDialog.title"),
+              message: this.transloco.translate("switchExportDialog.okDialogMessage"),
+              button: this.transloco.translate("okDialog.button")
+            },
+          });
 
-        dialogRef.afterClosed().subscribe(result => {
-          const dialogRefUnLock = this.dialog.open(UnLockComponent, { restoreFocus: false });
+          dialogRef.afterClosed().subscribe(result => {
+            const dialogRefUnLock = this.dialog.open(UnLockComponent, { restoreFocus: false });
 
-          dialogRefUnLock.afterClosed().subscribe(result => {
-            if (walletService.privateKey) {
-              this.openVaultExportDialog();
-            }
+            dialogRefUnLock.afterClosed().subscribe(result => {
+              if (walletService.privateKey) {
+                this.openVaultExportDialog();
+              }
+            })
           })
-        })
+        }
+      } else {
+        this.openVaultExportDialog();
       }
-    } else {
-      this.openVaultExportDialog();
     }
   }
 
