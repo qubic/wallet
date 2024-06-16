@@ -89,7 +89,7 @@ export class MainComponent implements AfterViewInit {
     });
 
     //1. vault file export due to move to new wallet
-    if (domain === 'wallet.qubic.li' || domain === 'betawallet.qubic.li') {
+    if (domain === 'wallet.qubic.li' || domain === 'betawallet.qubic.li' || domain === 'localhost') {
       if (walletService.privateKey == null) {
         if (!this.isVaultExportDialog) {
           const dialogRef = this.dialog.open(OkDialog, {
