@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import { ApiService } from './services/api.service';
+import { ApiArchiveService } from './services/api.archive.service';
 import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 import { ThemeService } from './services/theme.service';
 import { QubicService } from './services/qubic.service';
@@ -21,7 +22,7 @@ export class AppComponent {
   private _mobileQueryListener!: () => void;
   public isElectron = false;
 
-  constructor(public themeService: ThemeService, private changeDetectorRef: ChangeDetectorRef, private media: MediaMatcher, api: ApiService, private deviceService: DeviceDetectorService, private q: QubicService) {
+  constructor(public themeService: ThemeService, private changeDetectorRef: ChangeDetectorRef, private media: MediaMatcher, api: ApiService, apiArchive: ApiArchiveService, private deviceService: DeviceDetectorService, private q: QubicService) {
     this.checkSize();
     this.init();
 

@@ -39,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { ApiService } from './services/api.service';
+import { ApiArchiveService } from './services/api.archive.service';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -172,6 +173,7 @@ export const httpInterceptorProviders = [
       },
       AuthInterceptor,
       ApiService,
+      ApiArchiveService,
       UpdaterService,
       QubicService,
       DecimalPipe,
