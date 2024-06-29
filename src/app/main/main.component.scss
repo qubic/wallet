@@ -73,7 +73,7 @@
 }
 
 mat-card {
-    min-width: 385px;    
+    min-width: 385px;
     margin-bottom: 20px;
 }
 
@@ -99,21 +99,20 @@ mat-card {
     width: 100%;
 }
 
-tr{
+tr {
     height: 70px;
 }
 
 .dashboard-amount-container {
     display: flex;
-    justify-content: flex-end; /* Elemente nach rechts ausrichten */
-    align-items: center;       /* Elemente vertikal zentrieren */
-  }
-  
-  .dashboard-amount-text {
-    margin-right: 10px; /* Abstand zwischen Text und Bild */
-  }
-  
-  .eye-icon {
-    cursor: pointer; /* Zeigt den Mauszeiger als Hand an, wenn über dem Bild */
-  }
-  
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.dashboard-amount-text {
+    margin-right: 10px;
+}
+
+.eye-icon {
+    cursor: pointer;
+}

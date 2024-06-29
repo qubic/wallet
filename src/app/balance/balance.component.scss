@@ -21,28 +21,28 @@
     margin: 20px 0;
     overflow-x: auto;
     min-width: 120px;
-  
+
     .row {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
-  
+
     .col {
-      flex: 1;
-      margin-right: 20px;
-      margin-bottom: 15px;
+        flex: 1;
+        margin-right: 20px;
+        margin-bottom: 15px;
     }
-  
+
     .col:last-child {
-      margin-right: 0;
+        margin-right: 0;
     }
-  
+
     .padding button {
-      margin: 10px;
-      padding: 10px 40px;
+        margin: 10px;
+        padding: 10px 40px;
     }
-  }
+}
 
 .transaction-list {
 
@@ -54,14 +54,14 @@
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: wrap;
-    align-items: center;   
+    align-items: center;
     column-gap: 10px;
     padding: 8px 0px 8px 0px;
 
     .send-receive-indicator {
         min-width: 180px;
         text-align: center;
-    }       
+    }
 
     .receive {
         color: green;
@@ -93,7 +93,7 @@
 
     .copy span {
         word-break: break-all;
-    }   
+    }
 }
 
 
@@ -106,6 +106,19 @@
     justify-content: center;
     align-items: center;
     padding: 20px 0px 20px 0px;
+}
+
+.dashboard-amount-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.balance-amount {
+    margin-right: 5px; 
   }
 
-/* see mobile styles in styles.css */
+.eye-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}

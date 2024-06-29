@@ -18,18 +18,22 @@
                 </button>
             </div>
             <div style="margin-left: auto;" class="text-right">
-                <div class="dashboard-amount-name">
-                    {{ t("balanceComponent.overview.estimatedWalletValue") }} {{
-                    t("balanceComponent.overview.baseDate")}} {{ getDate() | date }} = <strong>{{ getTotalBalance(true)
-                        |
-                        number: '1.0-0' }} {{ t("general.currency") }}</strong>
+                <div class="dashboard-amount-container dashboard-amount-name">
+                    <strong class="balance-amount disable-area">{{ getTotalBalance(true) | number: '1.0-0' }} {{
+                        t("general.currency") }}</strong> =
+                    {{ t("balanceComponent.overview.estimatedWalletValue") }} {{ t("balanceComponent.overview.baseDate")
+                    }} {{ getDate() | date }}
+                    <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="!isBalanceHidden"
+                        (click)="balanceHidden()" title="Hide Balance" />
+                    <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="isBalanceHidden"
+                        (click)="balanceHidden()" title="Show Balance" />
                 </div>
                 <div *ngIf="accountBalances.length > 0 && hasSeeds()">
-                    <span class="dashboard-amount-name disable-area">
-                        {{ t("balanceComponent.overview.totalWalletValue") }} {{
-                        t("balanceComponent.overview.baseDate")}}
-                        {{ accountBalances[0].baseDate | date }} = <strong>{{ getTotalBalance() | number:
-                            '1.0-0' }} {{ t("general.currency") }}</strong>
+                    <span class="dashboard-amount-container dashboard-amount-name">
+                        <strong class="balance-amount disable-area">{{ getTotalBalance() | number: '1.0-0' }} {{
+                            t("general.currency") }}</strong> =
+                        {{ t("balanceComponent.overview.totalWalletValue") }} {{ t("balanceComponent.overview.baseDate")
+                        }} {{ accountBalances[0].baseDate | date }}
                     </span>
                 </div>
             </div>
@@ -44,7 +48,7 @@
                         class="transaction-list">
                         <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
                         <div>
-                            <div class="trans-amount currency-value">
+                            <div class="trans-amount currency-value disable-area">
                                 <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
                                     [href]="'https://explorer.qubic.org/network/tx/' + transaction.id" target="_blank"
                                     matTooltip="{{ t('balanceComponent.transactions.explorer.tooltip') }}">
@@ -100,8 +104,8 @@
                             <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">To:&nbsp;&nbsp;
                                 <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
                                     [cdkCopyToClipboard]="transaction.destId">{{ transaction.destId }} </span>
-                               
-                            </div>                           
+
+                            </div>
                         </div>
                         <div>
                             <div>
@@ -110,7 +114,7 @@
                             <div>
                                 <span>{{ getSeedName(transaction.destId) }}</span>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                 </mat-card-content>
             </mat-card>

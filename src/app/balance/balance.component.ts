@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +19,8 @@ export class BalanceComponent implements OnInit {
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
   public transactions: Transaction[] = [];
+  
+  public isBalanceHidden = false;
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
   }
@@ -46,6 +48,24 @@ export class BalanceComponent implements OnInit {
         });
       });
     }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    this.balanceHidden();
+  }
+
+  balanceHidden():void {
+    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
+    disableAreasElements.forEach((area: HTMLElement) => {
+      if (area.classList.contains('blurred')) {
+        area.classList.remove('blurred');
+        this.isBalanceHidden = false;
+      } else {
+        area.classList.add('blurred');
+        this.isBalanceHidden = true;
+      }
+    });
   }
 
   correctTheTransactionListByPublicId(): void {
