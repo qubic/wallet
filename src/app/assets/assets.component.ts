@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -30,6 +30,7 @@ export class AssetsComponent implements OnInit {
   public assets: QubicAsset[] = [];
   public currentTick = 0;
   public tickOverwrite = false;
+  public isBalanceHidden = false;
 
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
@@ -87,6 +88,23 @@ export class AssetsComponent implements OnInit {
     }
   }
 
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    this.balanceHidden();
+  }
+
+  balanceHidden():void {
+    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
+    disableAreasElements.forEach((area: HTMLElement) => {
+      if (area.classList.contains('blurred')) {
+        area.classList.remove('blurred');
+        this.isBalanceHidden = false;
+      } else {
+        area.classList.add('blurred');
+        this.isBalanceHidden = true;
+      }
+    });
+  }
   
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
