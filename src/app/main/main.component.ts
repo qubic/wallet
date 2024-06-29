@@ -40,7 +40,7 @@ export class MainComponent implements AfterViewInit {
   isVaultExportDialog: boolean = false;
   currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public isMobile = false;
-  public isBalanceHidden = false;
+  isBalanceHidden: boolean = false;
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
@@ -117,6 +117,16 @@ export class MainComponent implements AfterViewInit {
     }
   }
 
+  
+  ngAfterViewInit(): void {
+    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
+    if (this.isBalanceHidden) {
+      this.balanceHidden();
+    }
+    this.setDataSource();
+  }
+
+
   //2. vault file export due to move to new wallet
   openVaultExportDialog(): void {
     if (!this.isVaultExportDialog) {
@@ -145,7 +155,7 @@ export class MainComponent implements AfterViewInit {
     this.balanceHidden();
   }
 
-  balanceHidden():void {
+  balanceHidden(): void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
     disableAreasElements.forEach((area: HTMLElement) => {
       if (area.classList.contains('blurred')) {
@@ -155,11 +165,8 @@ export class MainComponent implements AfterViewInit {
         area.classList.add('blurred');
         this.isBalanceHidden = true;
       }
+      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.setDataSource();
   }
 
   setDataSource(): void {
@@ -180,6 +187,7 @@ export class MainComponent implements AfterViewInit {
     this.isTable = !this.isTable;
     localStorage.setItem("dashboard-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
+    window.location.reload();
   }
 
   getDeprecatedBalance(publicId: string): number {

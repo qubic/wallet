@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -14,7 +14,7 @@ import { TransactionService } from '../services/transaction.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
-import {environment} from "../../environments/environment";
+import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
@@ -24,9 +24,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./assets.component.scss']
 })
 
-export class AssetsComponent implements OnInit {
+export class AssetsComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['publicId', 'contractName',  'ownedAmount', 'tick','actions'];
+  displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
   public currentTick = 0;
   public tickOverwrite = false;
@@ -47,21 +47,21 @@ export class AssetsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
-    ) {
-    
-      if (!this.walletService.isWalletReady) {
-        this.router.navigate(['/public']); // Redirect to public page if not authenticated
-      }
+  ) {
 
-      var dashBoardStyle = localStorage.getItem("asset-grid");
-      this.isTable = dashBoardStyle == '0' ? true : false;
-  
-      this.sendForm = new FormGroup({
-        destinationAddress: new FormControl('', Validators.required),
-        amount: new FormControl('', Validators.required),
-        tick: new FormControl('', Validators.required),
-        assetSelect: new FormControl('', Validators.required),
-      });
+    if (!this.walletService.isWalletReady) {
+      this.router.navigate(['/public']); // Redirect to public page if not authenticated
+    }
+
+    var dashBoardStyle = localStorage.getItem("asset-grid");
+    this.isTable = dashBoardStyle == '0' ? true : false;
+
+    this.sendForm = new FormGroup({
+      destinationAddress: new FormControl('', Validators.required),
+      amount: new FormControl('', Validators.required),
+      tick: new FormControl('', Validators.required),
+      assetSelect: new FormControl('', Validators.required),
+    });
 
 
     // subscribe to config changes to receive asset updates
@@ -88,12 +88,31 @@ export class AssetsComponent implements OnInit {
     }
   }
 
+  ngOnInit() {
+    this.loadAssets();
+
+    this.updaterService.currentTick.subscribe(tick => {
+      this.currentTick = tick;
+      this.sendForm.controls['tick'].addValidators(Validators.min(tick));
+      if (!this.tickOverwrite) {
+        this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
+      }
+    })
+  }
+
+  ngAfterViewInit() {
+    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
+    if (this.isBalanceHidden) {
+      this.balanceHidden();
+    }
+  }
+
   @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
     this.balanceHidden();
   }
 
-  balanceHidden():void {
+  balanceHidden(): void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
     disableAreasElements.forEach((area: HTMLElement) => {
       if (area.classList.contains('blurred')) {
@@ -103,16 +122,19 @@ export class AssetsComponent implements OnInit {
         area.classList.add('blurred');
         this.isBalanceHidden = true;
       }
+      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
     });
   }
-  
+
+
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
     localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
-    this.isTable = event.checked;
+    this.isTable = event.checked;    
+    window.location.reload();
   }
 
-
+  
   updateAmountValidator(): void {
     const assetSelectControl = this.sendForm.get('assetSelect');
     const amountControl = this.sendForm.get('amount');
@@ -131,19 +153,7 @@ export class AssetsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.loadAssets();
-
-    this.updaterService.currentTick.subscribe(tick => {
-      this.currentTick = tick;
-      this.sendForm.controls['tick'].addValidators(Validators.min(tick));
-      if (!this.tickOverwrite) {
-        this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
-      }
-    })
-  }
-
-
+  
   refreshData(): void {
     this.loadAssets(true);
   }
@@ -224,10 +234,7 @@ export class AssetsComponent implements OnInit {
   }
 
   async sendAsset() {
-
     // todo: form/input validation
-
-
     // todo: create central transaction service to send transactions!!!!
 
     // sample send asset function
@@ -248,7 +255,7 @@ export class AssetsComponent implements OnInit {
     const targetAddress = new PublicKey(destinationAddressControl.value);
 
     // verify target address
-    if(!(await targetAddress.verifyIdentity())){
+    if (!(await targetAddress.verifyIdentity())) {
       this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
         duration: 10000,
         panelClass: "error"

@@ -68,10 +68,12 @@
               isNegativ: getEpochChanges(address.publicId) < 0,
               cardEpochChanges: true
               }">
-              {{ getEpochChanges(address.publicId) | number : "1.0-0" }}
-              <mat-icon class="up">arrow_upward</mat-icon>
-              <mat-icon class="down">arrow_downward</mat-icon>
-              <mat-icon class="straight">arrow_forward</mat-icon>
+              <span class="disable-area">
+                {{ getEpochChanges(address.publicId) | number : "1.0-0" }}
+                <mat-icon class="up">arrow_upward</mat-icon>
+                <mat-icon class="down">arrow_downward</mat-icon>
+                <mat-icon class="straight">arrow_forward</mat-icon>
+              </span>
             </div>
             <div class="dashboard-balance-name disable-area">
               <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
@@ -94,7 +96,9 @@
         <h3>
           {{ seed.alias }} - <span *ngIf="!seed.lastUpdate">?</span>
           <span *ngIf="seed.lastUpdate">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
-          {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
+          <span class="disable-area">
+            {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
+          </span>
         </h3>
         <div class="flex flex-wrap">
           <div *ngIf="getEpochChanges(seed.publicId) != 0" [class]="{

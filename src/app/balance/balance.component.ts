@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,20 +13,19 @@ import { Router } from '@angular/router';
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss']
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent implements OnInit, AfterViewInit {
 
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
   public transactions: Transaction[] = [];
-  
+
   public isBalanceHidden = false;
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
   }
 
   ngOnInit(): void {
-    
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
@@ -50,12 +49,19 @@ export class BalanceComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
+    if (this.isBalanceHidden) {
+      this.balanceHidden();
+    }
+  }
+
   @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
     this.balanceHidden();
   }
 
-  balanceHidden():void {
+  balanceHidden(): void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
     disableAreasElements.forEach((area: HTMLElement) => {
       if (area.classList.contains('blurred')) {
@@ -65,6 +71,7 @@ export class BalanceComponent implements OnInit {
         area.classList.add('blurred');
         this.isBalanceHidden = true;
       }
+      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
     });
   }
 
@@ -137,16 +144,16 @@ export class BalanceComponent implements OnInit {
 
   private generateCsvContent(): string {
     const csvRows = [];
-  
+
     // sort targetTick 
     const sortedTransactions = this.getTransactions(this.seedFilterFormControl.value).sort((a, b) => {
       return a.targetTick - b.targetTick;
     });
-  
+
     // Header
     const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
     csvRows.push(headers.join(','));
-  
+
     // Datenzeilen hinzufügen
     sortedTransactions.forEach(transaction => {
       const row = [
@@ -160,11 +167,11 @@ export class BalanceComponent implements OnInit {
       ];
       csvRows.push(row.join(','));
     });
-  
+
     return csvRows.join('\n');
   }
-  
-  
+
+
 
   private getTransactionStatusLabel(status: string): string {
     switch (status) {
