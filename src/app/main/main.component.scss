@@ -94,6 +94,7 @@ mat-card {
     margin-top: 20px;
 }
 
+
 .mat-mdc-form-field {
     width: 100%;
 }
@@ -101,3 +102,18 @@ mat-card {
 tr{
     height: 70px;
 }
+
+.dashboard-amount-container {
+    display: flex;
+    justify-content: flex-end; /* Elemente nach rechts ausrichten */
+    align-items: center;       /* Elemente vertikal zentrieren */
+  }
+  
+  .dashboard-amount-text {
+    margin-right: 10px; /* Abstand zwischen Text und Bild */
+  }
+  
+  .eye-icon {
+    cursor: pointer; /* Zeigt den Mauszeiger als Hand an, wenn über dem Bild */
+  }
+  

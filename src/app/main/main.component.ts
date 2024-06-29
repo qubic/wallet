@@ -40,6 +40,7 @@ export class MainComponent implements AfterViewInit {
   isVaultExportDialog: boolean = false;
   currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public isMobile = false;
+  public isBalanceHidden = false;
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
@@ -141,12 +142,18 @@ export class MainComponent implements AfterViewInit {
 
   @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
+    this.balanceHidden();
+  }
+
+  balanceHidden():void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
     disableAreasElements.forEach((area: HTMLElement) => {
       if (area.classList.contains('blurred')) {
         area.classList.remove('blurred');
+        this.isBalanceHidden = false;
       } else {
         area.classList.add('blurred');
+        this.isBalanceHidden = true;
       }
     });
   }
