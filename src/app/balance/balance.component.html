@@ -23,9 +23,9 @@
                         t("general.currency") }}</strong> =
                     {{ t("balanceComponent.overview.estimatedWalletValue") }} {{ t("balanceComponent.overview.baseDate")
                     }} {{ getDate() | date }}
-                    <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="!isBalanceHidden"
+                    <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
                         (click)="balanceHidden()" title="Hide Balance" />
-                    <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="isBalanceHidden"
+                    <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden"
                         (click)="balanceHidden()" title="Show Balance" />
                 </div>
                 <div *ngIf="accountBalances.length > 0 && hasSeeds()">

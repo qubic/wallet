@@ -13,10 +13,10 @@
       </div>
       <div style="margin-left: auto;" class="text-right">
         <div class="dashboard-amount-container dashboard-amount-name ">
-          <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="!isBalanceHidden" (click)="balanceHidden()"
-            title="Hide Balance" />
-          <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="isBalanceHidden"
-            (click)="balanceHidden()" title="Show Balance" />
+          <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
+          (click)="balanceHidden()" title="Hide Balance" />
+        <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()"
+          title="Show Balance" />
         </div>
     </div>
   </div>
