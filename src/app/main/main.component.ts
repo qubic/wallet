@@ -41,6 +41,7 @@ export class MainComponent implements AfterViewInit {
   currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public isMobile = false;
   isBalanceHidden: boolean = false;
+  textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
@@ -90,6 +91,7 @@ export class MainComponent implements AfterViewInit {
     });
 
     //1. vault file export due to move to new wallet
+    // if (domain === 'wallet.qubic.li' || domain === 'localhost') {
     if (domain === 'wallet.qubic.li') {
       if (walletService.privateKey == null) {
         if (!this.isVaultExportDialog) {
@@ -114,6 +116,8 @@ export class MainComponent implements AfterViewInit {
       } else {
         this.openVaultExportDialog();
       }
+    }else{
+      this.textQubicLiShutdown = "";
     }
   }
 

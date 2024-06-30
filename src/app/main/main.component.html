@@ -1,5 +1,8 @@
 <ng-container *transloco="let t">
   <div class="content_container">
+    <div *ngIf="textQubicLiShutdown">
+      <h1 [innerHTML]="textQubicLiShutdown" class="danger text-center"></h1>
+    </div>
     <div class="flex flex-wrap card-list">
       <div>
         <h1 *ngIf="isTable">{{ t("seedOverviewComponent.title") }}</h1>
@@ -40,9 +43,11 @@
       <div style="margin-left: auto;" class="text-right">
         <div class="dashboard-amount-container dashboard-amount-name ">
           <span class="dashboard-amount-text">{{ t("dashboard.totalBalance") }}</span>
-          <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="!isBalanceHidden" (click)="balanceHidden()" title="Hide Balance" />
-          <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()" title="Show Balance" />
-        </div>  
+          <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="!isBalanceHidden" (click)="balanceHidden()"
+            title="Hide Balance" />
+          <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="isBalanceHidden"
+            (click)="balanceHidden()" title="Show Balance" />
+        </div>
         <span class="disable-area">
           {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
         </span> /
