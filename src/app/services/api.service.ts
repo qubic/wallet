@@ -19,7 +19,7 @@ export class ApiService {
   public currentIpoContracts: BehaviorSubject<ContractDto[]> = new BehaviorSubject<ContractDto[]>([]);
   public currentPeerList: BehaviorSubject<PeerDto[]> = new BehaviorSubject<PeerDto[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private basePath = environment.apiUrl;
+  private basePath = environment.apiQliUrl;
   private authenticationActive = false;
 
   constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
