@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { 
-    AuthResponseArchive, BalanceResponseArchive, ContractDtoArchive, CurrentTickResponseArchive,
-    MarketInformationArchive, NetworkBalanceArchive, PeerDtoArchive, ProposalCreateRequestArchive, 
-    ProposalCreateResponseArchive, ProposalDtoArchive, QubicAssetArchive, SubmitTransactionRequestArchive, 
-    SubmitTransactionResponseArchive, TransactionArchive 
-} from './api.archive.model';
+import {
+  LatestTickResponseArchiver,
+  AuthResponseArchiver, BalanceResponseArchiver, ContractDtoArchiver,
+  MarketInformationArchiver, NetworkBalanceArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
+  ProposalCreateResponseArchiver, ProposalDtoArchiver, QubicAssetArchiver, SubmitTransactionRequestArchiver,
+  SubmitTransactionResponseArchiver, TransactionArchiver
+} from './api.archiver.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
   HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
@@ -18,11 +19,11 @@ import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiArchiveService {
+export class ApiArchiverService {
 
-  public currentProposals: BehaviorSubject<ProposalDtoArchive[]> = new BehaviorSubject<ProposalDtoArchive[]>([]);
-  public currentIpoContracts: BehaviorSubject<ContractDtoArchive[]> = new BehaviorSubject<ContractDtoArchive[]>([]);
-  public currentPeerList: BehaviorSubject<PeerDtoArchive[]> = new BehaviorSubject<PeerDtoArchive[]>([]);
+  public currentProposals: BehaviorSubject<ProposalDtoArchiver[]> = new BehaviorSubject<ProposalDtoArchiver[]>([]);
+  public currentIpoContracts: BehaviorSubject<ContractDtoArchiver[]> = new BehaviorSubject<ContractDtoArchiver[]>([]);
+  public currentPeerList: BehaviorSubject<PeerDtoArchiver[]> = new BehaviorSubject<PeerDtoArchiver[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private basePath = environment.apiArchiverUrl;
   private authenticationActive = false;
@@ -63,7 +64,7 @@ export class ApiArchiveService {
 
   public login(authRequest: { username: string, password: string }) {
     let localVarPath = `/Auth/Login`;
-    return this.httpClient.request<AuthResponseArchive>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<AuthResponseArchiver>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         body: authRequest,
@@ -72,9 +73,31 @@ export class ApiArchiveService {
     );
   }
 
+
+
+  
+  public getCurrentTick() {
+    let localVarPath = `/v1/latestTick`;
+    return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
+      {
+        context: new HttpContext(),
+        responseType: 'json'
+      }
+    );
+  }
+  
+
+
+
+
+
+  //Todo 
+  //old endpoints from qli-Api
+
+
   public getCurrentBalance(publicIds: string[]) {
     let localVarPath = `/Wallet/CurrentBalance`;
-    return this.httpClient.request<BalanceResponseArchive[]>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<BalanceResponseArchiver[]>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -88,7 +111,7 @@ export class ApiArchiveService {
 
   public getNetworkBalances(publicIds: string[]) {
     let localVarPath = `/Wallet/NetworkBalances`;
-    return this.httpClient.request<NetworkBalanceArchive[]>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<NetworkBalanceArchiver[]>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -102,7 +125,7 @@ export class ApiArchiveService {
 
   public getOwnedAssets(publicIds: string[]) {
     let localVarPath = `/Wallet/Assets`;
-    return this.httpClient.request<QubicAssetArchive[]>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<QubicAssetArchiver[]>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -116,7 +139,7 @@ export class ApiArchiveService {
 
   public getCurrentPrice() {
     let localVarPath = `/Public/MarketInformation`;
-    return this.httpClient.request<MarketInformationArchive>('get', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<MarketInformationArchiver>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         responseType: 'json'
@@ -126,7 +149,7 @@ export class ApiArchiveService {
 
   public getCurrentIpoBids(publicIds: string[]) {
     let localVarPath = `/Wallet/CurrentIpoBids`;
-    return this.httpClient.request<TransactionArchive[]>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<TransactionArchiver[]>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -138,9 +161,9 @@ export class ApiArchiveService {
     );
   }
 
-  public submitTransaction(submitTransaction: SubmitTransactionRequestArchive) {
+  public submitTransaction(submitTransaction: SubmitTransactionRequestArchiver) {
     let localVarPath = `/Public/SubmitTransaction`;
-    return this.httpClient.request<SubmitTransactionResponseArchive>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<SubmitTransactionResponseArchiver>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -149,17 +172,9 @@ export class ApiArchiveService {
         body: submitTransaction,
         responseType: 'json'
       })
-    }
-
-  public getCurrentTick() {
-    let localVarPath = `/Public/CurrentTick`;
-    return this.httpClient.request<CurrentTickResponseArchive>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        responseType: 'json'
-      }
-    );
   }
+
+ 
 
   public getProtocol() {
     let localVarPath = `/Public/Protocol`;
@@ -179,7 +194,7 @@ export class ApiArchiveService {
 
   public getProposals() {
     let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalDtoArchive[]>('get', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<ProposalDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -195,7 +210,7 @@ export class ApiArchiveService {
 
   public getIpoContracts() {
     let localVarPath = `/Wallet/IpoContracts`;
-    return this.httpClient.request<ContractDtoArchive[]>('get', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<ContractDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -209,9 +224,9 @@ export class ApiArchiveService {
     }));
   }
 
-  public submitProposalCreateRequest(proposal: ProposalCreateRequestArchive) {
+  public submitProposalCreateRequest(proposal: ProposalCreateRequestArchiver) {
     let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalCreateResponseArchive>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<ProposalCreateResponseArchiver>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -225,7 +240,7 @@ export class ApiArchiveService {
 
   public submitProposalPublished(proposalId: string) {
     let localVarPath = `/Voting/Proposal/` + proposalId + "/publish";
-    return this.httpClient.request<ProposalCreateResponseArchive>('post', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<ProposalCreateResponseArchiver>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {
@@ -238,7 +253,7 @@ export class ApiArchiveService {
 
   public getPeerList() {
     let localVarPath = `/Public/Peers`;
-    return this.httpClient.request<PeerDtoArchive[]>('get', `${this.basePath}${localVarPath}`,
+    return this.httpClient.request<PeerDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         headers: {

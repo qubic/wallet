@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
 import { ApiService } from './api.service';
-import { ApiArchiveService } from './api.archive.service';
+import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 
@@ -24,7 +24,7 @@ export class UpdaterService {
   private isActive = true;
   private lastAssetsLoaded: Date | undefined;
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchive: ApiArchiveService, private walletService: WalletService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService) {
     this.init();
   }
 
