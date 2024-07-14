@@ -1,7 +1,40 @@
 export interface LatestTickResponseArchiver {
-  tick: number;
+  latestTick: number;
 }
 
+
+export interface TransactionDetails {
+  sourceId: string;
+  destId: string;
+  amount: string;
+  tickNumber: number;
+  inputType: number;
+  inputSize: number;
+  inputHex: string;
+  signatureHex: string;
+  txId: string;
+}
+
+export interface Transaction {
+  transaction: TransactionDetails;
+  timestamp: string;
+  moneyFlew: boolean;
+}
+
+export interface TransactionRecord {
+  tickNumber: number;
+  identity: string;
+  transactions: Transaction[];
+}
+
+export interface TranscationsArchiver {
+  transactions: TransactionRecord[];
+}
+
+
+
+
+//************************************* */
 
 export interface AuthResponseArchiver {
   success?: boolean;
@@ -51,10 +84,12 @@ export interface BalanceResponseArchiver {
 }
 
 export interface NetworkBalanceArchiver {
+  //identity: string;
   // publicId: string;
   // amount: number;
   // tick: number;
 }
+
 
 export interface MarketInformationArchiver {
   // supply: number;

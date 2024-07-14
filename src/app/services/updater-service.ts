@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
+import { TranscationsArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
@@ -13,6 +14,8 @@ import { VisibilityService } from './visibility.service';
 export class UpdaterService {
 
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
+  public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
+  // public currentTickArchiver = 0;
   public currentBalance: BehaviorSubject<BalanceResponse[]> = new BehaviorSubject<BalanceResponse[]>([]);
   public currentPrice: BehaviorSubject<MarketInformation> = new BehaviorSubject<MarketInformation>({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public internalTransactions: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]); // used to store internal tx
@@ -21,8 +24,10 @@ export class UpdaterService {
   private balanceLoading = false;
   private currentPriceLoading = false;
   private networkBalanceLoading = false;
+  private transactionArchiverLoading = false;
   private isActive = true;
   private lastAssetsLoaded: Date | undefined;
+  private transactionsArray: TranscationsArchiver[] = [];
 
   constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService) {
     this.init();
@@ -30,17 +35,21 @@ export class UpdaterService {
 
 
   private init(): void {
+    this.getCurrentTickArchiver();
     this.getCurrentTick();
+    this.getTransactionsArchiver();
     this.getCurrentBalance();
     this.getNetworkBalances();
     this.getAssets();
     this.getCurrentPrice();
     // every 30 seconds
     setInterval(() => {
+      this.getCurrentTickArchiver();
       this.getCurrentTick();
     }, 30000);
     // every minute
     setInterval(() => {
+      this.getTransactionsArchiver();
       this.getCurrentBalance();
       this.getNetworkBalances();
       this.getAssets();
@@ -77,6 +86,7 @@ export class UpdaterService {
       this.tickLoading = false;
     });
   }
+
 
   public loadCurrentBalance(force = false) {
     this.getCurrentBalance(force);
@@ -152,6 +162,70 @@ export class UpdaterService {
     }
   }
 
+  //#region 
+
+  //**  new Archiver Api */
+
+  private getCurrentTickArchiver() {
+    if (this.tickLoading || !this.isActive)
+      return;
+
+    this.tickLoading = true;
+    // todo: Use Websocket!
+
+    this.apiArchiver.getCurrentTick().subscribe(latestTick => {
+      if (latestTick) {
+        this.currentTickArchiver.next(latestTick);
+      }
+      this.tickLoading = false;
+    }, errorResponse => {
+      this.processError(errorResponse, false);
+      this.tickLoading = false;
+    });
+  }
+
+
+  /**
+   * load transactions 
+   * @returns 
+   */
+  private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
+       if ((this.transactionArchiverLoading || this.currentTickArchiver.value === 0))
+      return;
+
+    if (!publicIds)
+      publicIds = this.walletService.getSeeds().map(m => m.publicId);
+
+    console.log("-----publicIds:" + publicIds.length);
+    this.transactionArchiverLoading = true;
+    if (this.walletService.getSeeds().length > 0) {
+
+      publicIds.forEach(publicId => {
+        this.apiArchiver.getTransactions(publicId, 0, this.currentTickArchiver.value).subscribe(r => {
+          if (r) {
+            if (Array.isArray(r)) {
+              this.transactionsArray.push(...r);
+          } else {
+              this.transactionsArray.push(r);
+          }
+            // r.forEach(transaction => this.transactionsArray.push(transaction));
+            this.transactionsArray.forEach(entrys => {
+              //this.walletService.updateBalance(entry.publicId, entry.amount, entry.tick);             
+              entrys.transactions.forEach(t => {
+                console.log("-----entrys: " + t.identity);
+              });
+            });
+          }
+          this.transactionArchiverLoading = false;
+        }, errorResponse => {
+          // this.processError(errorResponse, false);
+          this.transactionArchiverLoading = false;
+        });
+      });
+    }
+  }
+
+  //#endregion
   // todo: put this in a helper class/file
   private groupBy<T>(arr: T[], fn: (item: T) => any) {
     return arr.reduce<Record<string, T[]>>((prev, curr) => {
@@ -187,9 +261,9 @@ export class UpdaterService {
           // remove old entries
           const tickValue = r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
           if (tickValue !== 0) {
-              this.walletService.removeOldAssets(tickValue);
+            this.walletService.removeOldAssets(tickValue);
           }
-          
+
           if (callbackFn)
             callbackFn(r);
         }
@@ -213,11 +287,11 @@ export class UpdaterService {
     this.api.getCurrentPrice().subscribe((r: MarketInformation) => {
       if (r) {
         this.currentPrice.next(r);
-       
+
         if (callbackFn)
           callbackFn(r);
 
-          
+
       }
       this.currentPriceLoading = false;
     }, errorResponse => {

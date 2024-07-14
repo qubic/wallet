@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
+
+
 import {
   LatestTickResponseArchiver,
   AuthResponseArchiver, BalanceResponseArchiver, ContractDtoArchiver,
-  MarketInformationArchiver, NetworkBalanceArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
+  MarketInformationArchiver, TranscationsArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
   ProposalCreateResponseArchiver, ProposalDtoArchiver, QubicAssetArchiver, SubmitTransactionRequestArchiver,
   SubmitTransactionResponseArchiver, TransactionArchiver
 } from './api.archiver.model';
@@ -29,63 +32,44 @@ export class ApiArchiverService {
   private authenticationActive = false;
 
   constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
-    this.reAuthenticate();
-  }
 
-  public reAuthenticate() {
-    if (this.authenticationActive)
-      return;
-
-    this.authenticationActive = true;
-    // temp login for current use with public user
-    // login to qubic.li
-    this.login({
-      username: 'guest@qubic.li',
-      password: 'guest13@Qubic.li'
-    }).subscribe(r => {
-      if (r && r.token) {
-        this.onAuthenticated(r.token);
-      }
-      this.authenticationActive = false;
-    }, (e) => {
-      this.authenticationActive = false;
-    });
-  }
-
-  private onAuthenticated(token: string) {
-    this.setToken(token);
-    this.getProtocol().subscribe();
-    this.getPeerList().subscribe();
-  }
-
-  private setToken(token: string) {
-    this.tokenSerice.nextToken(token);
-  }
-
-  public login(authRequest: { username: string, password: string }) {
-    let localVarPath = `/Auth/Login`;
-    return this.httpClient.request<AuthResponseArchiver>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        body: authRequest,
-        responseType: 'json'
-      }
-    );
   }
 
 
 
-  
-  public getCurrentTick() {
+
+  public getCurrentTick(): Observable<number> {
     let localVarPath = `/v1/latestTick`;
     return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
         responseType: 'json'
       }
+    ).pipe(
+      map((response: LatestTickResponseArchiver) => {
+        if (response && typeof response.latestTick === 'number') {
+          return response.latestTick;
+        } else {
+          throw new Error('Invalid response format');
+        }
+      })
     );
   }
-  
+
+
+
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number) {
+    const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
+
+    return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
+      context: new HttpContext(),
+      responseType: 'json'
+    }).pipe(
+      tap(response => {
+        console.log('Response from getTransactions:', response);
+      })
+    );
+  }
 
 
 
@@ -109,19 +93,7 @@ export class ApiArchiverService {
     );
   }
 
-  public getNetworkBalances(publicIds: string[]) {
-    let localVarPath = `/Wallet/NetworkBalances`;
-    return this.httpClient.request<NetworkBalanceArchiver[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
+
 
   public getOwnedAssets(publicIds: string[]) {
     let localVarPath = `/Wallet/Assets`;
@@ -174,7 +146,7 @@ export class ApiArchiverService {
       })
   }
 
- 
+
 
   public getProtocol() {
     let localVarPath = `/Public/Protocol`;
