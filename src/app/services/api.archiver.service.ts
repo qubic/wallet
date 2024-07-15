@@ -61,6 +61,8 @@ export class ApiArchiverService {
   public getTransactions(publicId: string, startTick: number = 0, lastTick: number) {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
 
+    console.log(`${this.basePath}${localVarPath}`);
+
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'

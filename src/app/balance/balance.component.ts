@@ -1,12 +1,16 @@
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, Transaction } from '../services/api.model';
+import { TranscationsArchiver, TransactionRecord } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'app-balance',
@@ -18,17 +22,27 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
+  public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
-
   public isBalanceHidden = false;
+  public isShowAllTransactions = false;
 
-  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
+  public transactionsArchiver: TranscationsArchiver[] = [];
+  public transactionsRecord: TransactionRecord[] = [];
+
+  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
+    this.getCurrentTickArchiver();
   }
 
   ngOnInit(): void {
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
+
+
+    this.seedFilterFormControl.valueChanges.subscribe(value => {
+      this.getAllTransactionByPublicId(value);
+    });
 
     if (this.hasSeeds()) {
       this.us.currentTick.subscribe(s => {
@@ -55,6 +69,53 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       this.balanceHidden();
     }
   }
+
+
+  toggleShowAllTransactionsView(event: MatSlideToggleChange) {
+    this.isShowAllTransactions = !this.isShowAllTransactions;
+
+    if (this.seedFilterFormControl.value) {
+      // this.seedFilterFormControl.setValue(null);
+    } else {
+      const seeds = this.getSeeds();
+      if (seeds.length > 0) {
+        this.seedFilterFormControl.setValue(seeds[0].publicId);
+      }
+    }
+
+    if (this.isShowAllTransactions) {
+      this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    }
+  }
+
+
+  private getCurrentTickArchiver() {
+    this.apiArchiver.getCurrentTick().subscribe(latestTick => {
+      if (latestTick) {
+        this.currentTickArchiver.next(latestTick);
+      }
+    });
+  }
+
+
+  getAllTransactionByPublicId(publicId: string): void {
+    if (!this.isShowAllTransactions) {
+      return;
+    }
+    this.transactionsRecord = [];
+
+    this.apiArchiver.getTransactions(publicId, 0, this.currentTickArchiver.value).subscribe(r => {
+        if (r) {
+          if (Array.isArray(r)) {
+            this.transactionsArchiver.push(...r);
+          } else {
+            this.transactionsArchiver.push(r);
+          }          
+          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions)
+        }     
+    });
+  }
+
 
   @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
@@ -134,13 +195,12 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
   exportTransactionsToCsv() {
     const now = new Date();
-
     // Create file names with timestamp
     const filenameWithTimestamp = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}_transactions.csv`;
-
     const csvContent = this.generateCsvContent();
     this.downloadCsv(csvContent, filenameWithTimestamp);
   }
+
 
   private generateCsvContent(): string {
     const csvRows = [];
@@ -154,7 +214,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
     csvRows.push(headers.join(','));
 
-    // Datenzeilen hinzufügen
+    // add row
     sortedTransactions.forEach(transaction => {
       const row = [
         transaction.targetTick,
@@ -167,10 +227,8 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       ];
       csvRows.push(row.join(','));
     });
-
     return csvRows.join('\n');
   }
-
 
 
   private getTransactionStatusLabel(status: string): string {

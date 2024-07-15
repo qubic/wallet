@@ -37,7 +37,7 @@ export class UpdaterService {
   private init(): void {
     this.getCurrentTickArchiver();
     this.getCurrentTick();
-    this.getTransactionsArchiver();
+    //this.getTransactionsArchiver();
     this.getCurrentBalance();
     this.getNetworkBalances();
     this.getAssets();
@@ -49,7 +49,7 @@ export class UpdaterService {
     }, 30000);
     // every minute
     setInterval(() => {
-      this.getTransactionsArchiver();
+      //this.getTransactionsArchiver();
       this.getCurrentBalance();
       this.getNetworkBalances();
       this.getAssets();
@@ -212,7 +212,7 @@ export class UpdaterService {
             this.transactionsArray.forEach(entrys => {
               //this.walletService.updateBalance(entry.publicId, entry.amount, entry.tick);             
               entrys.transactions.forEach(t => {
-                console.log("-----entrys: " + t.identity);
+                //console.log("-----entrys: " + t.identity);
               });
             });
           }
