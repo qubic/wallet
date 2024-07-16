@@ -329,6 +329,7 @@
     },
     "transactions": {
       "title": "Transacciones de la época actual",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "Los datos del resumen no pudieron ser verificados",
       "noTransactions": "No se encontraron transacciones",
       "send.tooltip": "Transferencia saliente",

@@ -330,6 +330,7 @@
     },
     "transactions": {
       "title": "Mevcut Dönemdeki İşlemler",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "Önizleme verileri doğrulanamadı",
       "noTransactions": "İşlem bulunamadı",
       "send.tooltip": "Giden Transfer",

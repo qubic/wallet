@@ -1,7 +1,6 @@
 @import "../../vars.scss";
 
 .alert {
-
     border: 1px solid red;
     padding: 5px;
     margin: 5px;
@@ -115,10 +114,33 @@
 }
 
 .balance-amount {
-    margin-right: 5px; 
-  }
+    margin-right: 5px;
+}
 
 .eye-icon {
     cursor: pointer;
     margin-left: 10px;
+}
+
+.transaction-list-compact {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 10px;
+    padding: 12px 0px 12px 0px;
+    border-bottom: 1px solid gray;
+
+    .col-title {
+        // font-weight: bold;
+        min-width: 180px;
+        display: flex;
+    }
+
+    .copy {
+        width: inherit;
+        font-family: "Space Mono";
+    }
 }

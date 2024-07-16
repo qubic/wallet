@@ -330,6 +330,7 @@
     },
     "transactions": {
       "title": "Transactions in current Epoch",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "Preview data could not be verified",
       "noTransactions": "No Transactions found",
       "send.tooltip": "Outgoing Transfer",

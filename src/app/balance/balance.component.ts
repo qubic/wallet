@@ -26,6 +26,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public transactions: Transaction[] = [];
   public isBalanceHidden = false;
   public isShowAllTransactions = false;
+  public isOrderByDesc: boolean = true;
 
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
@@ -38,7 +39,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
-
 
     this.seedFilterFormControl.valueChanges.subscribe(value => {
       this.getAllTransactionByPublicId(value);
@@ -103,17 +103,25 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       return;
     }
     this.transactionsRecord = [];
+    this.transactionsArchiver = [];
 
     this.apiArchiver.getTransactions(publicId, 0, this.currentTickArchiver.value).subscribe(r => {
-        if (r) {
-          if (Array.isArray(r)) {
-            this.transactionsArchiver.push(...r);
-          } else {
-            this.transactionsArchiver.push(r);
-          }          
-          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions)
-        }     
+      if (r) {
+        if (Array.isArray(r)) {
+          this.transactionsArchiver.push(...r);
+        } else {
+          this.transactionsArchiver.push(r);
+        }
+        this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+        this.sortTransactions();
+      }
     });
+  }
+
+  sortTransactions(): void {
+    if (this.isOrderByDesc) {
+      this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
+    }
   }
 
 
@@ -205,28 +213,57 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   private generateCsvContent(): string {
     const csvRows = [];
 
-    // sort targetTick 
-    const sortedTransactions = this.getTransactions(this.seedFilterFormControl.value).sort((a, b) => {
-      return a.targetTick - b.targetTick;
-    });
 
-    // Header
-    const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
-    csvRows.push(headers.join(','));
 
-    // add row
-    sortedTransactions.forEach(transaction => {
-      const row = [
-        transaction.targetTick,
-        this.getTransactionStatusLabel(transaction.status),
-        transaction.amount,
-        transaction.created,
-        transaction.id,
-        transaction.sourceId,
-        transaction.destId,
-      ];
-      csvRows.push(row.join(','));
-    });
+
+    if (this.isShowAllTransactions) {
+
+      // Header
+      const headers = ['Tick', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
+      csvRows.push(headers.join(','));
+
+      // sort targetTick 
+      const sortedTransactions = this.transactionsRecord.sort((a, b) => a.tickNumber - b.tickNumber);
+
+      // add row
+      sortedTransactions.forEach(transaction => {
+        const row = [
+          transaction.tickNumber,
+          transaction.transactions[0].transaction.amount,
+          new Date(Number(transaction.transactions[0].timestamp)),
+          transaction.transactions[0].transaction.txId,
+          transaction.transactions[0].transaction.sourceId,
+          transaction.transactions[0].transaction.destId,
+        ];
+        csvRows.push(row.join(','));
+      });
+
+    } else {
+
+      // Header
+      const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
+      csvRows.push(headers.join(','));
+
+      // sort targetTick 
+      const sortedTransactions = this.getTransactions(this.seedFilterFormControl.value).sort((a, b) => {
+        return a.targetTick - b.targetTick;
+      });
+
+      // add row
+      sortedTransactions.forEach(transaction => {
+        const row = [
+          transaction.targetTick,
+          this.getTransactionStatusLabel(transaction.status),
+          transaction.amount,
+          transaction.created,
+          transaction.id,
+          transaction.sourceId,
+          transaction.destId,
+        ];
+        csvRows.push(row.join(','));
+      });
+    }
+
     return csvRows.join('\n');
   }
 
@@ -261,5 +298,8 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     anchor.click();
     window.URL.revokeObjectURL(url);
   }
+
+
+
 
 }

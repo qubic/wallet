@@ -330,6 +330,7 @@
     },
     "transactions": {
       "title": "Aktuelle Buchungen",
+      "showAllTransactions": "Alle Transaktionen anzeigen",
       "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
       "noTransactions": "Keine Buchungen gefunden",
       "send.tooltip": "Ausgehende Überweisung",

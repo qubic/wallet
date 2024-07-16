@@ -1,6 +1,6 @@
 <ng-container *transloco="let t">
     <div class="content_container">
-        <h1>{{ t("balanceComponent.transactions.title") }}</h1>
+        <h1>{{ t("general.navigation.balance") }}</h1>
         <mat-form-field appearance="fill" class="full-width">
             <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
             <mat-select [formControl]="seedFilterFormControl">
@@ -11,11 +11,20 @@
         </mat-form-field>
         <div class="flex flex-wrap card-list">
             <div>
-                <button [disabled]="getTransactions().length <= 0" color="accent" mat-raised-button
-                    (click)="exportTransactionsToCsv()">
-                    <mat-icon>file_download</mat-icon>
-                    {{ t("balanceComponent.transactions.exportButton") }}
-                </button>
+                <span *ngIf="!isShowAllTransactions">
+                    <button [disabled]="getTransactions().length <= 0" color="accent" mat-raised-button
+                        (click)="exportTransactionsToCsv()">
+                        <mat-icon>file_download</mat-icon>
+                        {{ t("balanceComponent.transactions.exportButton") }}
+                    </button>
+                </span>
+                <span *ngIf="isShowAllTransactions">
+                    <button color="accent" mat-raised-button
+                        (click)="exportTransactionsToCsv()">
+                        <mat-icon>file_download</mat-icon>
+                        {{ t("balanceComponent.transactions.exportButton") }}
+                    </button>
+                </span>
                 <mat-slide-toggle (change)="toggleShowAllTransactionsView($event)" [checked]="isShowAllTransactions">{{
                     t('balanceComponent.transactions.showAllTransactions')}}</mat-slide-toggle>
             </div>
@@ -42,88 +51,59 @@
         </div>
         <h2 *ngIf="isShowAllTransactions">{{seedFilterFormControl.value}}</h2>
         <div *ngIf="isShowAllTransactions">
-            <mat-card class="balance-card">
+            <mat-card>
                 <mat-card-content>
                     <div *ngIf="transactionsRecord.length <= 0">
                         {{ t("balanceComponent.transactions.noTransactions") }}
                     </div>
-                    <div *ngFor="let transaction of transactionsRecord" class="transaction-list">
-                        <!-- <qli-transfer-status [transaction]="transaction"></qli-transfer-status> -->
+                    <div *ngFor="let transaction of transactionsRecord" class="transaction-list-compact">
                         <div>
                             <div class="trans-amount currency-value disable-area">
-                                <!-- <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
-                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.id" target="_blank"
-                                    matTooltip="{{ t('balanceComponent.transactions.explorer.tooltip') }}">
-                                    <mat-icon>manage_search</mat-icon>
-                                </a> -->
-                                <!-- <span [class]="{noMoneyFlow: !transaction.isPending && !transaction.moneyFlow}">
-                                    {{ transaction.amount | number: '1.0-0' }}</span>&nbsp;{{ t("general.currency") }} -->
-                            </div>
-                            <div class="trans-date">Tick:
-                                <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
-                                    target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                                </a>
-                            </div>
-                        </div>
-                        <div>
-                            <!-- {{ transaction.created | date}}<br>
-                            {{ transaction.created | date:'HH:mm:ss' }} UTC -->
-                        </div>
-                        <div class="send-receive-indicator">
-                            <!-- <button
-                                *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
-                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
-                                (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
-                            <mat-icon class="send" matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
-                                *ngIf="isOwnId(transaction.sourceId) && !isOwnId(transaction.destId)">arrow_downward</mat-icon>
-                            <mat-icon class="receive"
-                                matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
-                                *ngIf="isOwnId(transaction.destId) && !isOwnId(transaction.sourceId)">arrow_upward</mat-icon>
-                            <mat-icon class="receive"
-                                matTooltip="{{ t('balanceComponent.transactions.exchange.tooltip') }}"
-                                *ngIf="isOwnId(transaction.sourceId) && isOwnId(transaction.destId)">swap_vert</mat-icon> -->
-                        </div>
-                        <div>
-                            <div>
-                                <!-- <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
-                                    target="_blank" title="explorer.qubic.org">
-                                    <mat-icon>explore</mat-icon>
-                                </a> -->
-                            </div>
-                            <div>
-                                <!-- <a [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
-                                    target="_blank" title="explorer.qubic.org">
-                                    <mat-icon>explore</mat-icon>
-                                </a> -->
-                            </div>
-                        </div>
-                        <div>
-                            <!-- <div [class]="{copy: true, ownId: isOwnId(transaction.sourceId)}">
-                                From: <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
-                                    [cdkCopyToClipboard]="transaction.sourceId">{{ transaction.sourceId }}
+                                <span class="col-title">
+                                    Amount<br>
+                                    Type<br>
+                                    Source<br>
+                                    Destination<br>
+                                    Tick<br>
+                                    Tx<br>
                                 </span>
                             </div>
-                            <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">To:&nbsp;&nbsp;
-                                <span class="copy" matTooltip="{{ t('general.copy.tooltip') }}"
-                                    [cdkCopyToClipboard]="transaction.destId">{{ transaction.destId }} </span> 
-                                    
-                                </div>
-                                -->
                         </div>
                         <div>
-                            <div>
-                                <!-- <span>{{ getSeedName(transaction.sourceId) }}</span> -->
-                            </div>
-                            <div>
-                                <!-- <span>{{ getSeedName(transaction.destId) }}</span> -->
-                            </div>
+                            <span>
+                                {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
+                                }}&nbsp;{{
+                                t("general.currency") }}<br>
+                            </span>
+                            <span>
+                                {{ transaction.transactions[0].transaction.inputType }}<br>
+                            </span>
+                            <span>
+                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                    target="_blank">
+                                    {{transaction.transactions[0].transaction.sourceId}}
+                                </a><br>
+                            </span>
+                            <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                target="_blank">
+                                {{transaction.transactions[0].transaction.destId}}
+                            </a><br>
+                            <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
+                            </a>
+                            {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp |
+                            date:'HH:mm:ss' }} UTC
+                            <br>
+                            <a *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
+                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
+                                target="_blank">{{transaction.transactions[0].transaction.txId}}
+                            </a>
                         </div>
                     </div>
                 </mat-card-content>
             </mat-card>
         </div>
-        <h2 *ngIf="!isShowAllTransactions">{{
-            t('balanceComponent.transactions.titleEpoch')}}</h2>
+        <h2 *ngIf="!isShowAllTransactions">{{ t("balanceComponent.transactions.title") }}</h2>
         <div *ngIf="accountBalances.length > 0 && !isShowAllTransactions">
             <mat-card class="balance-card">
                 <mat-card-content>

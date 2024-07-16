@@ -330,6 +330,7 @@
     },
     "transactions": {
       "title": "現在のエポックの取引",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "プレビューデータを検証できませんでした",
       "noTransactions": "取引は見つかりませんでした",
       "send.tooltip": "送金",

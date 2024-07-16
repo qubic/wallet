@@ -329,6 +329,7 @@
     },
     "transactions": {
       "title": "Transacties in huidige Epoch",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "Voorbeeldgegevens konden niet worden gecontroleerd",
       "noTransactions": "Geen transacties gevonden",
       "send.tooltip": "Uitgaande transacties",

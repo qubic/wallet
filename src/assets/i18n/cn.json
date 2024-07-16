@@ -330,6 +330,7 @@
     },
     "transactions": {
       "title": "当前纪元交易",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "预览数据无法验证",
       "noTransactions": "没有发现交易",
       "send.tooltip": "转出记录",

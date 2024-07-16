@@ -328,6 +328,7 @@
     },
     "transactions": {
       "title": "Transações da época atual",
+      "showAllTransactions": "show all transactions",
       "verificationAlert": "Os dados da visualização não puderam ser verificados",
       "noTransactions": "Nenhuma transação encontrada",
       "send.tooltip": "Transferência de saída",
