@@ -51,7 +51,7 @@
         </div>
         <h2 *ngIf="isShowAllTransactions">{{seedFilterFormControl.value}}</h2>
         <div *ngIf="isShowAllTransactions">
-            <mat-card>
+            <mat-card class="balance-card">
                 <mat-card-content>
                     <div *ngIf="transactionsRecord.length <= 0">
                         {{ t("balanceComponent.transactions.noTransactions") }}
