@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <h2 *ngIf="isShowAllTransactions">{{seedFilterFormControl.value}}</h2>
+        <h2 *ngIf="isShowAllTransactions" style="word-break: break-all;">{{seedFilterFormControl.value}}</h2>
         <div *ngIf="isShowAllTransactions">
             <div *ngIf="transactionsRecord.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
