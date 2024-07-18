@@ -220,7 +220,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     if (this.isShowAllTransactions) {
 
       // Header
-      const headers = ['Tick', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
+      const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
       csvRows.push(headers.join(','));
 
       // sort targetTick 
@@ -230,6 +230,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       sortedTransactions.forEach(transaction => {
         const row = [
           transaction.tickNumber,
+          transaction.transactions[0].moneyFlew,
           transaction.transactions[0].transaction.amount,
           new Date(Number(transaction.transactions[0].timestamp)),
           transaction.transactions[0].transaction.txId,
