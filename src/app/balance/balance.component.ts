@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, signal, } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 @Component({
   selector: 'app-balance',
   templateUrl: './balance.component.html',
-  styleUrls: ['./balance.component.scss']
+  styleUrls: ['./balance.component.scss'],
 })
 export class BalanceComponent implements OnInit, AfterViewInit {
 
@@ -25,11 +25,12 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
   public isBalanceHidden = false;
-  public isShowAllTransactions = false;
+  public isShowAllTransactions = true;
   public isOrderByDesc: boolean = true;
 
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
+  readonly panelOpenState = signal(false);
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();

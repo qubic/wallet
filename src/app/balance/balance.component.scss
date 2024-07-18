@@ -144,3 +144,15 @@
         font-family: "Space Mono";
     }
 }
+
+.mat-expansion-panel-header-title{
+    // font-family: "Space Mono";
+}
+
+
+.mat-expansion-panel-header-description{
+    display: block;
+    text-align: right;
+    // font-family: "Space Mono";
+    flex-grow: initial;
+}

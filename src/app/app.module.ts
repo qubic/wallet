@@ -78,6 +78,7 @@ import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 /** Http interceptor providers in outside-in order */
@@ -161,6 +162,7 @@ export const httpInterceptorProviders = [
       registrationStrategy: 'registerWhenStable:30000'
     }),
     MatSliderModule,
+    MatExpansionModule,
   ],
 
   providers: [

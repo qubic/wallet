@@ -19,8 +19,7 @@
                     </button>
                 </span>
                 <span *ngIf="isShowAllTransactions">
-                    <button color="accent" mat-raised-button
-                        (click)="exportTransactionsToCsv()">
+                    <button color="accent" mat-raised-button (click)="exportTransactionsToCsv()">
                         <mat-icon>file_download</mat-icon>
                         {{ t("balanceComponent.transactions.exportButton") }}
                     </button>
@@ -51,12 +50,32 @@
         </div>
         <h2 *ngIf="isShowAllTransactions">{{seedFilterFormControl.value}}</h2>
         <div *ngIf="isShowAllTransactions">
-            <mat-card class="balance-card">
-                <mat-card-content>
-                    <div *ngIf="transactionsRecord.length <= 0">
-                        {{ t("balanceComponent.transactions.noTransactions") }}
-                    </div>
-                    <div *ngFor="let transaction of transactionsRecord" class="transaction-list-compact">
+            <div *ngIf="transactionsRecord.length <= 0">
+                {{ t("balanceComponent.transactions.noTransactions") }}
+            </div>
+            <mat-accordion *ngFor="let transaction of transactionsRecord">
+                <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>                            
+                            <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;">done</mat-icon>
+                            <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red">clear</mat-icon>
+                            &nbsp;
+                            <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
+                            </a>
+                            <span class="desktopOnly">
+                                &nbsp;-
+                                {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp |
+                                    date:'HH:mm:ss' }} UTC
+                                </span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
+                            }}&nbsp;{{
+                            t("general.currency") }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="transaction-list-compact">
                         <div>
                             <div class="trans-amount currency-value disable-area">
                                 <span class="col-title">
@@ -90,7 +109,7 @@
                             </a><br>
                             <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
                                 target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                            </a>
+                            </a>&nbsp;
                             {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp |
                             date:'HH:mm:ss' }} UTC
                             <br>
@@ -100,8 +119,8 @@
                             </a>
                         </div>
                     </div>
-                </mat-card-content>
-            </mat-card>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
         <h2 *ngIf="!isShowAllTransactions">{{ t("balanceComponent.transactions.title") }}</h2>
         <div *ngIf="accountBalances.length > 0 && !isShowAllTransactions">
