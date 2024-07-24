@@ -36,8 +36,6 @@ export class ApiArchiverService {
   }
 
 
-
-
   public getCurrentTick(): Observable<number> {
     let localVarPath = `/v1/latestTick`;
     return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
@@ -60,9 +58,6 @@ export class ApiArchiverService {
 
   public getTransactions(publicId: string, startTick: number = 0, lastTick: number) {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
-
-    console.log(`${this.basePath}${localVarPath}`);
-
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
