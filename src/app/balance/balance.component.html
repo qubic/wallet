@@ -67,55 +67,88 @@
                                     {{ transaction.created | date:'HH:mm:ss' }} UTC
                                 </span>
                             </mat-panel-title>
-                            <mat-panel-description>
+                            <mat-panel-description class="disable-area">
                                 {{ transaction.amount | number: '1.0-0'
                                 }}&nbsp;{{
                                 t("general.currency") }}
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                         <div class="transaction-list-compact">
-                            <div>
-                                <div class="trans-amount currency-value disable-area">
-                                    <span class="col-title">
-                                        Amount<br>
-                                        Status<br>
-                                        Source<br>
-                                        Destination<br>
-                                        Tick<br>
-                                        Tx<br>
-                                    </span>
-                                </div>
-                            </div>
-                            <div>
-                                <span>
-                                    {{ transaction.amount | number: '1.0-0'
-                                    }}&nbsp;{{
-                                    t("general.currency") }}<br>
-                                </span>
-                                <span>
-                                    {{ transaction.status }}<br>
-                                </span>
-                                <span>
-                                    <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
-                                        target="_blank">
-                                        {{transaction.sourceId}}
-                                    </a><br>
-                                </span>
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
-                                    target="_blank">
-                                    {{transaction.destId}}
-                                </a><br>
-                                <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
-                                    target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
-                                </a>&nbsp;
-                                {{ transaction.created | date}}
-                                {{ transaction.created | date:'HH:mm:ss' }} UTC
-                                <br>
-                                <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
-                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.id"
-                                    target="_blank">{{transaction.id}}
-                                </a>
-                            </div>
+                            <mat-card class="responsive-card">
+                                <mat-card-content>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Amount</span>
+                                        </div>
+                                        <div class="col-value">
+                                            <span class="value value"> {{ transaction.amount |
+                                                number:
+                                                '1.0-0'
+                                                }}&nbsp;{{
+                                                t("general.currency") }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Tx</span>
+                                        </div>
+                                        <div class="col-value">
+                                            <span class="value"> <a
+                                                    *ngIf="transaction.id.substring(56) !== 'aaaa'"
+                                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.id"
+                                                    target="_blank">{{transaction.id}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.id">content_copy</mat-icon>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Source</span>
+                                        </div>
+                                        <div class="col-value">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                                    target="_blank">
+                                                    {{transaction.sourceId}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.sourceId">content_copy</mat-icon></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Destination</span>
+                                        </div>
+                                        <div class="col-value">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
+                                                    target="_blank">
+                                                    {{transaction.destId}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Tick</span>
+                                        </div>
+                                        <div class="col-value">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
+                                                    target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>                                   
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </mat-expansion-panel>
                 </mat-accordion>
@@ -155,55 +188,97 @@
                                 date:'HH:mm:ss' }} UTC
                             </span>
                         </mat-panel-title>
-                        <mat-panel-description>
+                        <mat-panel-description class="disable-area">
                             {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
                             }}&nbsp;{{
                             t("general.currency") }}
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="transaction-list-compact">
-                        <div>
-                            <div class="trans-amount currency-value disable-area">
-                                <span class="col-title">
-                                    Amount<br>
-                                    Type<br>
-                                    Source<br>
-                                    Destination<br>
-                                    Tick<br>
-                                    Tx<br>
-                                </span>
-                            </div>
-                        </div>
-                        <div>
-                            <span>
-                                {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
-                                }}&nbsp;{{
-                                t("general.currency") }}<br>
-                            </span>
-                            <span>
-                                {{ transaction.transactions[0].transaction.inputType }}<br>
-                            </span>
-                            <span>
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
-                                    target="_blank">
-                                    {{transaction.transactions[0].transaction.sourceId}}
-                                </a><br>
-                            </span>
-                            <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
-                                target="_blank">
-                                {{transaction.transactions[0].transaction.destId}}
-                            </a><br>
-                            <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
-                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                            </a>&nbsp;
-                            {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp |
-                            date:'HH:mm:ss' }} UTC
-                            <br>
-                            <a *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
-                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
-                                target="_blank">{{transaction.transactions[0].transaction.txId}}
-                            </a>
-                        </div>
+                        <mat-card class="responsive-card">
+                            <mat-card-content>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Amount</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value value"> {{ transaction.transactions[0].transaction.amount |
+                                            number:
+                                            '1.0-0'
+                                            }}&nbsp;{{
+                                            t("general.currency") }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Tx</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value"> <a
+                                                *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
+                                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
+                                                target="_blank">{{transaction.transactions[0].transaction.txId}}
+                                            </a>
+                                            <mat-icon class="icon-color-link icon"
+                                                matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.txId">content_copy</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Source</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value"> <a
+                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                                target="_blank">
+                                                {{transaction.transactions[0].transaction.sourceId}}
+                                            </a>
+                                            <mat-icon class="icon-color-link icon"
+                                            matTooltip="{{ t('general.copy.tooltip') }}"
+                                            [cdkCopyToClipboard]="transaction.transactions[0].transaction.sourceId">content_copy</mat-icon></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Destination</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value"> <a
+                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                                target="_blank">
+                                                {{transaction.transactions[0].transaction.destId}}
+                                            </a>
+                                            <mat-icon class="icon-color-link icon"
+                                            matTooltip="{{ t('general.copy.tooltip') }}"
+                                            [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Tick</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value"> <a
+                                                [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-label">
+                                        <span class="label">Type</span>
+                                    </div>
+                                    <div class="col-value">
+                                        <span class="value"> {{ transaction.transactions[0].transaction.inputType
+                                            }}</span>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
