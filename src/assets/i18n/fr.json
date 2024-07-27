@@ -328,7 +328,8 @@
       "baseDate": "au"
     },
     "transactions": {
-      "title": "Transactions de l'époque actuelle",      
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",     
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Les données de l'aperçu n'ont pas pu être vérifiées",
       "noTransactions": "Aucune transaction trouvée",

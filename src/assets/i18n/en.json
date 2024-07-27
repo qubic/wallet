@@ -329,7 +329,8 @@
       "baseDate": "per"
     },
     "transactions": {
-      "title": "Transactions in current Epoch",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Preview data could not be verified",
       "noTransactions": "No Transactions found",

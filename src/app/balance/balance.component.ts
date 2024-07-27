@@ -1,11 +1,11 @@
-import { Component, OnInit, HostListener, AfterViewInit, signal, } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, signal } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, Transaction } from '../services/api.model';
-import { TranscationsArchiver, TransactionRecord } from '../services/api.archiver.model';
+import { TranscationsArchiver, TransactionRecord, TransactionArchiver } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -20,20 +20,24 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class BalanceComponent implements OnInit, AfterViewInit {
 
   public accountBalances: BalanceResponse[] = [];
-  public seedFilterFormControl: FormControl = new FormControl();
+  public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
+  public numberLastEpoch = 0;
   public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
   public isBalanceHidden = false;
-  public isShowAllTransactions = true;
+  public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
+  public transactionsArchiverSubscribe: TranscationsArchiver[] = [];
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
 
+
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
+    this.seedFilterFormControl.setValue(null);
   }
 
   ngOnInit(): void {
@@ -43,16 +47,28 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
     this.seedFilterFormControl.valueChanges.subscribe(value => {
       this.getAllTransactionByPublicId(value);
+
     });
 
     if (this.hasSeeds()) {
       this.us.currentTick.subscribe(s => {
         this.currentTick = s;
       });
+
+      this.numberLastEpoch = this.us.numberLastEpoch;
+
       this.us.internalTransactions.subscribe(txs => {
         this.transactions = txs;
         this.correctTheTransactionListByPublicId();
       });
+
+      this.us.transactionsArray.subscribe((transactions: TranscationsArchiver[]) => {
+        if (transactions && transactions.length > 0) {
+          this.transactionsArchiverSubscribe = transactions;
+          this.updateTransactionsRecord();
+        }
+      });
+
       this.us.currentBalance.subscribe(response => {
         this.accountBalances = response;
       }, errorResponse => {
@@ -62,6 +78,12 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         });
       });
     }
+  }
+
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    this.balanceHidden();
   }
 
   ngAfterViewInit() {
@@ -74,17 +96,18 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
   toggleShowAllTransactionsView(event: MatSlideToggleChange) {
     this.isShowAllTransactions = !this.isShowAllTransactions;
+    this.updateTransactionsRecord();
 
-    if (this.seedFilterFormControl.value) {
-      // this.seedFilterFormControl.setValue(null);
+    if (!this.isShowAllTransactions) {
+      this.seedFilterFormControl.setValue(null);
     } else {
-      const seeds = this.getSeeds();
-      if (seeds.length > 0) {
-        this.seedFilterFormControl.setValue(seeds[0].publicId);
+      if (!this.seedFilterFormControl.value) {
+        const seeds = this.getSeeds();
+        if (seeds.length > 0) {
+          this.seedFilterFormControl.setValue(seeds[0].publicId);
+        }
       }
-    }
 
-    if (this.isShowAllTransactions) {
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
   }
@@ -113,10 +136,25 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         } else {
           this.transactionsArchiver.push(r);
         }
-        this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+
+        if (this.transactionsRecord.length <= 0) {
+          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+        }
         this.sortTransactions();
       }
     });
+  }
+
+  private updateTransactionsRecord(): void {
+    if (!this.isShowAllTransactions) {
+      this.transactionsRecord = [];
+      this.transactionsArchiverSubscribe.forEach(archiver => {
+        if (archiver.transactions && archiver.transactions.length > 0) {
+          this.transactionsRecord.push(...archiver.transactions);
+        }
+      });
+      this.sortTransactions();
+    }
   }
 
   sortTransactions(): void {
@@ -125,11 +163,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
 
   balanceHidden(): void {
     const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
@@ -167,15 +200,9 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).length > 0;
   }
 
-  // onlyUnique(value: Transaction, index:any, array:Transaction[]) {
-  //   return array.findIndex((f: Transaction) => f.id === value.id) == index;
-  // }
-
   getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(f => publicId == null || f.sourceId == publicId || f.destId == publicId);
-    // return this.accountBalances.flatMap((b) => b.transactions.filter(f => publicId == null || f.sourceId == publicId || f.destId == publicId))
-    //   .filter(this.onlyUnique)
-    //   .sort((a,b) =>  { return (<any>new Date(b.created)) - (<any>new Date(a.created))});
+    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status == 'Pending' || f.status == 'Broadcasted' || f.status == 'Created');
+    // return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId));
   }
 
   isOwnId(publicId: string): boolean {
@@ -214,58 +241,28 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   private generateCsvContent(): string {
     const csvRows = [];
 
+    // if (this.isShowAllTransactions) {
 
+    // Header
+    const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
+    csvRows.push(headers.join(','));
 
+    // sort targetTick 
+    const sortedTransactions = this.transactionsRecord.sort((a, b) => a.tickNumber - b.tickNumber);
 
-    if (this.isShowAllTransactions) {
-
-      // Header
-      const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
-      csvRows.push(headers.join(','));
-
-      // sort targetTick 
-      const sortedTransactions = this.transactionsRecord.sort((a, b) => a.tickNumber - b.tickNumber);
-
-      // add row
-      sortedTransactions.forEach(transaction => {
-        const row = [
-          transaction.tickNumber,
-          transaction.transactions[0].moneyFlew,
-          transaction.transactions[0].transaction.amount,
-          new Date(Number(transaction.transactions[0].timestamp)),
-          transaction.transactions[0].transaction.txId,
-          transaction.transactions[0].transaction.sourceId,
-          transaction.transactions[0].transaction.destId,
-        ];
-        csvRows.push(row.join(','));
-      });
-
-    } else {
-
-      // Header
-      const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
-      csvRows.push(headers.join(','));
-
-      // sort targetTick 
-      const sortedTransactions = this.getTransactions(this.seedFilterFormControl.value).sort((a, b) => {
-        return a.targetTick - b.targetTick;
-      });
-
-      // add row
-      sortedTransactions.forEach(transaction => {
-        const row = [
-          transaction.targetTick,
-          this.getTransactionStatusLabel(transaction.status),
-          transaction.amount,
-          transaction.created,
-          transaction.id,
-          transaction.sourceId,
-          transaction.destId,
-        ];
-        csvRows.push(row.join(','));
-      });
-    }
-
+    // add row
+    sortedTransactions.forEach(transaction => {
+      const row = [
+        transaction.tickNumber,
+        transaction.transactions[0].moneyFlew,
+        transaction.transactions[0].transaction.amount,
+        new Date(Number(transaction.transactions[0].timestamp)),
+        transaction.transactions[0].transaction.txId,
+        transaction.transactions[0].transaction.sourceId,
+        transaction.transactions[0].transaction.destId,
+      ];
+      csvRows.push(row.join(','));
+    });
     return csvRows.join('\n');
   }
 
@@ -291,6 +288,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     }
   }
 
+
   private downloadCsv(data: string, filename: string) {
     const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
@@ -300,8 +298,4 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     anchor.click();
     window.URL.revokeObjectURL(url);
   }
-
-
-
-
 }

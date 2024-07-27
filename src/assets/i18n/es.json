@@ -328,7 +328,8 @@
       "baseDate": "al"
     },
     "transactions": {
-      "title": "Transacciones de la época actual",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Los datos del resumen no pudieron ser verificados",
       "noTransactions": "No se encontraron transacciones",

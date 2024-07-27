@@ -329,7 +329,8 @@
       "baseDate": "日付"
     },
     "transactions": {
-      "title": "現在のエポックの取引",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "プレビューデータを検証できませんでした",
       "noTransactions": "取引は見つかりませんでした",

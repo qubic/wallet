@@ -329,7 +329,8 @@
       "baseDate": "на"
     },
     "transactions": {
-      "title": "Транзакции в текущей эпохе",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Не удалось проверить данные предварительного просмотра",
       "noTransactions": "Транзакции не найдены",

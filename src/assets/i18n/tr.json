@@ -329,7 +329,8 @@
       "baseDate": "per"
     },
     "transactions": {
-      "title": "Mevcut Dönemdeki İşlemler",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Önizleme verileri doğrulanamadı",
       "noTransactions": "İşlem bulunamadı",

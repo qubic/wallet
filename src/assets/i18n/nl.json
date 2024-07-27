@@ -328,7 +328,8 @@
       "baseDate": "per"
     },
     "transactions": {
-      "title": "Transacties in huidige Epoch",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Voorbeeldgegevens konden niet worden gecontroleerd",
       "noTransactions": "Geen transacties gevonden",

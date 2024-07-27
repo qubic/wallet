@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 
 import {
   LatestTickResponseArchiver,
-  AuthResponseArchiver, BalanceResponseArchiver, ContractDtoArchiver,
+  AuthResponseArchiver, StatusArchiver, BalanceResponseArchiver, ContractDtoArchiver,
   MarketInformationArchiver, TranscationsArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
   ProposalCreateResponseArchiver, ProposalDtoArchiver, QubicAssetArchiver, SubmitTransactionRequestArchiver,
   SubmitTransactionResponseArchiver, TransactionArchiver
@@ -36,6 +36,24 @@ export class ApiArchiverService {
   }
 
 
+  public getStatus() {
+    let localVarPath = `/v1/status`;
+    return this.httpClient.request<StatusArchiver>('get', `${this.basePath}${localVarPath}`,
+      {
+        context: new HttpContext(),
+        responseType: 'json'
+      }
+    ).pipe(
+      map((response: StatusArchiver) => {
+        if (response) {
+          return response;
+        } else {
+          throw new Error('Invalid response format');
+        }
+      })
+    );
+  }
+
   public getCurrentTick(): Observable<number> {
     let localVarPath = `/v1/latestTick`;
     return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
@@ -56,20 +74,20 @@ export class ApiArchiverService {
 
 
 
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number) {
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
     }).pipe(
       tap(response => {
-        console.log('Response from getTransactions:', response);
+       // console.log('Response from getTransactions:', response);
       })
     );
   }
 
 
-
+  
 
 
   //Todo 

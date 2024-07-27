@@ -329,7 +329,8 @@
       "baseDate": "vom"
     },
     "transactions": {
-      "title": "Aktuelle Buchungen",
+      "title": "Offene Buchungen",
+      "titleLastEpochs": "Letzten {{lastEpochsText}} Epochen",
       "showAllTransactions": "Alle Transaktionen anzeigen",
       "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
       "noTransactions": "Keine Buchungen gefunden",

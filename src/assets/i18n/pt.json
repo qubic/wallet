@@ -327,7 +327,8 @@
       "baseDate": "em"
     },
     "transactions": {
-      "title": "Transações da época atual",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Os dados da visualização não puderam ser verificados",
       "noTransactions": "Nenhuma transação encontrada",

@@ -329,7 +329,8 @@
       "baseDate": "per"
     },
     "transactions": {
-      "title": "当前纪元交易",
+      "title": "Open transactions",
+      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "预览数据无法验证",
       "noTransactions": "没有发现交易",

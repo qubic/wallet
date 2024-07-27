@@ -1,3 +1,15 @@
 mat-form-field {
     width: 100px;
 }
+
+.loading-btn{
+    width: 20px;
+    height: 20px;
+}
+
+.status-buttons .loading-btn-wrapper {
+    display: inline-block;
+    width: 25px; 
+    height: 0px; 
+    text-align: center;
+}

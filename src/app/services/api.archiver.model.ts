@@ -2,6 +2,51 @@ export interface LatestTickResponseArchiver {
   latestTick: number;
 }
 
+//** status */
+
+
+export interface StatusArchiver {
+  lastProcessedTick: LastProcessedTick;
+  lastProcessedTicksPerEpoch: LastProcessedTicksPerEpoch;
+  skippedTicks: SkippedTick[];
+  processedTickIntervalsPerEpoch: ProcessedTickInterval[];
+}
+
+export interface LastProcessedTick {
+  tickNumber: number;
+  epoch: number;
+}
+
+export interface LastProcessedTicksPerEpoch {
+  additionalProp1: number;
+  additionalProp2: number;
+  additionalProp3: number;
+}
+
+export interface SkippedTick {
+  startTick: number;
+  endTick: number;
+}
+
+export interface Interval {
+  initialProcessedTick: number;
+  lastProcessedTick: number;
+}
+
+export interface ProcessedTickInterval {
+  epoch: number;
+  intervals: Interval[];
+}
+
+
+
+
+//*** Transactions */
+
+
+export interface TranscationsArchiver {
+  transactions: TransactionRecord[];
+}
 
 export interface TransactionDetails {
   sourceId: string;
@@ -27,9 +72,7 @@ export interface TransactionRecord {
   transactions: Transaction[];
 }
 
-export interface TranscationsArchiver {
-  transactions: TransactionRecord[];
-}
+
 
 
 
