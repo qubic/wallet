@@ -211,6 +211,7 @@ export class WalletService {
     if (config.tickAddition !== undefined)
       this.runningConfiguration.tickAddition = config.tickAddition;
     if (config.enableBeta !== undefined)
+      this.runningConfiguration.enableBeta = config.enableBeta;
     if (config.numberLastEpoch !== undefined)
       this.runningConfiguration.numberLastEpoch = config.numberLastEpoch;
     if (config.enableBeta !== undefined)
