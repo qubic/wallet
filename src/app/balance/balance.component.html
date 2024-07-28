@@ -20,24 +20,12 @@
                     t('balanceComponent.transactions.showAllTransactions')}}</mat-slide-toggle>
             </div>
             <div style="margin-left: auto;" class="text-right">
-                <div class="dashboard-amount-container dashboard-amount-name">
-                    <strong class="balance-amount disable-area">{{ getTotalBalance(true) | number: '1.0-0' }} {{
-                        t("general.currency") }}</strong> =
-                    {{ t("balanceComponent.overview.estimatedWalletValue") }} {{ t("balanceComponent.overview.baseDate")
-                    }} {{ getDate() | date }}
+                <div class="eye">          
                     <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
                         (click)="balanceHidden()" title="Hide Balance" />
                     <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden"
                         (click)="balanceHidden()" title="Show Balance" />
-                </div>
-                <div *ngIf="accountBalances.length > 0 && hasSeeds()">
-                    <span class="dashboard-amount-container dashboard-amount-name">
-                        <strong class="balance-amount disable-area">{{ getTotalBalance() | number: '1.0-0' }} {{
-                            t("general.currency") }}</strong> =
-                        {{ t("balanceComponent.overview.totalWalletValue") }} {{ t("balanceComponent.overview.baseDate")
-                        }} {{ accountBalances[0].baseDate | date }}
-                    </span>
-                </div>
+                </div>                
             </div>
         </div>
         <span *ngIf="!isShowAllTransactions">
@@ -51,7 +39,6 @@
                         {{ t("general.loading") }}
                     </div>
                 </div>
-
                 <mat-accordion *ngFor="let transaction of getTransactions()">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
@@ -71,6 +58,16 @@
                                 {{ transaction.amount | number: '1.0-0'
                                 }}&nbsp;{{
                                 t("general.currency") }}
+                                <span class="send-receive-indicator">                                
+                                    <mat-icon class="send" matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.sourceId) && !isOwnId(transaction.destId)">arrow_downward</mat-icon>
+                                    <mat-icon class="receive"
+                                        matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.destId) && !isOwnId(transaction.sourceId)">arrow_upward</mat-icon>
+                                    <mat-icon class="receive"
+                                        matTooltip="{{ t('balanceComponent.transactions.exchange.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.sourceId) && isOwnId(transaction.destId)">swap_vert</mat-icon>
+                                </span>
                             </mat-panel-description>
                         </mat-expansion-panel-header>
                         <div class="transaction-list-compact">
@@ -180,7 +177,7 @@
                             &nbsp;
                             <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
                                 target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                            </a>
+                            </a>                           
                             <span class="desktopOnly">
                                 &nbsp;-
                                 {{ transaction.transactions[0].timestamp | date}} {{
@@ -192,6 +189,16 @@
                             {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
                             }}&nbsp;{{
                             t("general.currency") }}
+                            <span class="send-receive-indicator">                                
+                                <mat-icon class="send" matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                                    *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && !isOwnId(transaction.transactions[0].transaction.destId)">arrow_downward</mat-icon>
+                                <mat-icon class="receive"
+                                    matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
+                                    *ngIf="isOwnId(transaction.transactions[0].transaction.destId) && !isOwnId(transaction.transactions[0].transaction.sourceId)">arrow_upward</mat-icon>
+                                <mat-icon class="receive"
+                                    matTooltip="{{ t('balanceComponent.transactions.exchange.tooltip') }}"
+                                    *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isOwnId(transaction.transactions[0].transaction.destId)">swap_vert</mat-icon>
+                            </span>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div class="transaction-list-compact">

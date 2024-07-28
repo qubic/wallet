@@ -1,100 +1,5 @@
 @import "../../vars.scss";
 
-.alert {
-    border: 1px solid red;
-    padding: 5px;
-    margin: 5px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.noMoneyFlow {
-    text-decoration: line-through;
-}
-
-.balance-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin: 20px 0;
-    overflow-x: auto;
-    min-width: 120px;
-
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .col {
-        flex: 1;
-        margin-right: 20px;
-        margin-bottom: 15px;
-    }
-
-    .col:last-child {
-        margin-right: 0;
-    }
-
-    .padding button {
-        margin: 10px;
-        padding: 10px 40px;
-    }
-}
-
-.transaction-list {
-
-    .center {
-        text-align: center;
-    }
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 10px;
-    padding: 8px 0px 8px 0px;
-
-    .send-receive-indicator {
-        min-width: 180px;
-        text-align: center;
-    }
-
-    .receive {
-        color: green;
-    }
-
-    .send {
-        color: red;
-    }
-
-    .trans-date {
-        font-size: 0.9em;
-    }
-
-    .trans-amount {
-        font-weight: bold;
-        min-width: 180px;
-        display: flex;
-        align-items: center;
-    }
-
-    .ownId {
-        font-weight: normal;
-    }
-
-    .copy {
-        width: inherit;
-        font-family: "Space Mono";
-    }
-
-    .copy span {
-        word-break: break-all;
-    }
-}
-
 
 .full-width {
     width: 100%;
@@ -107,23 +12,20 @@
     padding: 20px 0px 20px 0px;
 }
 
-.dashboard-amount-container {
+.eye {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    .eye-icon {
+        cursor: pointer;
+        margin-left: 10px;
+    }
 }
 
-.balance-amount {
-    margin-right: 5px;
-}
 
-.eye-icon {
-    cursor: pointer;
-    margin-left: 10px;
-}
 
 .transaction-list-compact {
-
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -141,9 +43,69 @@
         width: inherit;
         font-family: "Space Mono";
     }
+
+
+    .responsive-card {
+        margin-bottom: 0px;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .col-label {
+        flex: 1;
+    }
+
+    .col-value {
+        flex: 11;
+        text-align: right;
+    }
+
+    .label {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .value {
+        word-break: break-all;
+    }
+
+    @media (max-width: 600px) {
+        .row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .value {
+            text-align: left;
+            margin-top: 4px;
+        }
+    }
+
 }
 
-.mat-accordion .mat-expansion-panel:first-of-type{
+.send-receive-indicator {
+    min-width: 50px;
+    text-align: center;
+
+    .receive {
+        color: green;
+    }
+
+    .send {
+        color: red;
+    }
+
+    .trans-date {
+        font-size: 0.9em;
+    }
+}
+
+
+.mat-accordion .mat-expansion-panel:first-of-type {
     margin-bottom: 10px;
 }
 
@@ -154,21 +116,16 @@
     padding: 0 10px;
 }
 
-.mat-expansion-panel-header-title{
-    // font-family: "Space Mono";
-}
-
-
-.mat-expansion-panel-header-description{
-    display: block;
+.mat-expansion-panel-header-description {
     text-align: right;
     // font-family: "Space Mono";
     flex-grow: initial;
+    margin-right: 1px;
 }
 
 
-mat-card{
-    width: 100%;   
+mat-card {
+    width: 100%;
     font-size: 1.1rem;
 }
 
@@ -177,53 +134,13 @@ mat-card{
 }
 
 .mat-mdc-card-content:last-child {
-    padding: 15px; 
+    padding: 15px;
 }
 
-.responsive-card {
-    margin-bottom: 0px;
-}
 
-.row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.col-label {
-    flex: 1;
-}
-
-.col-value {
-    flex: 11;
-    text-align: right;
-}
-
-.label {
+.icon-color-link {
     color: rgba(255, 255, 255, 0.7);
 }
-
-.value {
-    word-break: break-all;
-}
-
-@media (max-width: 600px) {
-    .row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .value {
-        text-align: left;
-        margin-top: 4px;
-    }
-}
-
-
-.icon-color-link{
-    color: rgba(255, 255, 255, 0.7);
-} 
 
 .icon {
     transform: scale(0.8);

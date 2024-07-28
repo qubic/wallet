@@ -86,6 +86,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     this.balanceHidden();
   }
 
+
   ngAfterViewInit() {
     this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
     if (this.isBalanceHidden) {
@@ -107,7 +108,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
           this.seedFilterFormControl.setValue(seeds[0].publicId);
         }
       }
-
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
   }
@@ -126,9 +126,9 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     if (!this.isShowAllTransactions) {
       return;
     }
+
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-
     this.apiArchiver.getTransactions(publicId, 0, this.currentTickArchiver.value).subscribe(r => {
       if (r) {
         if (Array.isArray(r)) {
@@ -145,6 +145,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
       this.transactionsRecord = [];
@@ -156,6 +157,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       this.sortTransactions();
     }
   }
+
 
   sortTransactions(): void {
     if (this.isOrderByDesc) {
@@ -178,56 +180,35 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   correctTheTransactionListByPublicId(): void {
     const validSeeds = this.getSeeds().map(seed => seed.publicId);
     this.transactions = this.transactions.filter(transaction => {
       return validSeeds.includes(transaction.sourceId) || validSeeds.includes(transaction.destId);
     });
   }
-
-  getDate() {
-    return new Date();
-  }
-
-  getTotalBalance(estimated = false): number {
-    if (estimated)
-      return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).reduce((a, c) => a + Number(c.balance), 0);
-    else
-      return this.accountBalances.reduce((p, c) => p + (c.epochBaseAmount), 0);
-  }
+ 
 
   hasSeeds() {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).length > 0;
   }
+
 
   getTransactions(publicId: string | null = null): Transaction[] {
     return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status == 'Pending' || f.status == 'Broadcasted' || f.status == 'Created');
     // return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId));
   }
 
+
   isOwnId(publicId: string): boolean {
     return this.walletService.getSeed(publicId) !== undefined;
   }
 
-  getSeedName(publicId: string): string {
-    var seed = this.walletService.getSeed(publicId);
-    if (seed !== undefined)
-      return '- ' + seed.alias;
-    else
-      return '';
-  }
 
   getSeeds() {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
   }
 
-  repeat(transaction: Transaction) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
-  }
 
   exportTransactionsToCsv() {
     const now = new Date();
@@ -240,9 +221,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
   private generateCsvContent(): string {
     const csvRows = [];
-
-    // if (this.isShowAllTransactions) {
-
     // Header
     const headers = ['Tick', 'Status', 'Amount', 'Created UTC', 'Transaction ID', 'Source', 'Destination'];
     csvRows.push(headers.join(','));
@@ -266,29 +244,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     return csvRows.join('\n');
   }
 
-
-  private getTransactionStatusLabel(status: string): string {
-    switch (status) {
-      case 'Pending':
-      case 'Broadcasted':
-        return 'Pending';
-      case 'Confirmed':
-      case 'Staged':
-        return 'Confirmed';
-      case 'Success':
-        return 'Executed';
-      case 'Failed':
-        return 'Dismissed';
-      case 'Unknown':
-        return 'Unknown';
-      case 'Created':
-        return 'Created';
-      default:
-        return '';
-    }
-  }
-
-
+ 
   private downloadCsv(data: string, filename: string) {
     const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
@@ -298,4 +254,46 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     anchor.click();
     window.URL.revokeObjectURL(url);
   }
+
+  
+  // getSeedName(publicId: string): string {
+  //   var seed = this.walletService.getSeed(publicId);
+  //   if (seed !== undefined)
+  //     return '- ' + seed.alias;
+  //   else
+  //     return '';
+  // }
+
+
+  // repeat(transaction: Transaction) {
+  //   this.router.navigate(['payment'], {
+  //     state: {
+  //       template: transaction
+  //     }
+  //   });
+  // }
+
+
+   // private getTransactionStatusLabel(status: string): string {
+  //   switch (status) {
+  //     case 'Pending':
+  //     case 'Broadcasted':
+  //       return 'Pending';
+  //     case 'Confirmed':
+  //     case 'Staged':
+  //       return 'Confirmed';
+  //     case 'Success':
+  //       return 'Executed';
+  //     case 'Failed':
+  //       return 'Dismissed';
+  //     case 'Unknown':
+  //       return 'Unknown';
+  //     case 'Created':
+  //       return 'Created';
+  //     default:
+  //       return '';
+  //   }
+  // }
+
+
 }
