@@ -252,7 +252,20 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     anchor.href = url;
     anchor.download = filename;
     anchor.click();
+    this.sortTransactions();
     window.URL.revokeObjectURL(url);
+  }
+
+
+   displayPublicId(input: string): string {
+    if (input.length <= 10) {
+      return input; 
+    }
+  
+    const start = input.slice(0, 5);
+    const end = input.slice(-5);
+  
+    return `${start}...${end}`;
   }
 
   

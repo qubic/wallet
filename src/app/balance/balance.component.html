@@ -20,12 +20,12 @@
                     t('balanceComponent.transactions.showAllTransactions')}}</mat-slide-toggle>
             </div>
             <div style="margin-left: auto;" class="text-right">
-                <div class="eye">          
+                <div class="eye">
                     <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
                         (click)="balanceHidden()" title="Hide Balance" />
                     <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden"
                         (click)="balanceHidden()" title="Show Balance" />
-                </div>                
+                </div>
             </div>
         </div>
         <span *ngIf="!isShowAllTransactions">
@@ -58,8 +58,9 @@
                                 {{ transaction.amount | number: '1.0-0'
                                 }}&nbsp;{{
                                 t("general.currency") }}
-                                <span class="send-receive-indicator">                                
-                                    <mat-icon class="send" matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                                <span class="send-receive-indicator">
+                                    <mat-icon class="send"
+                                        matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
                                         *ngIf="isOwnId(transaction.sourceId) && !isOwnId(transaction.destId)">arrow_downward</mat-icon>
                                     <mat-icon class="receive"
                                         matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
@@ -90,8 +91,7 @@
                                             <span class="label">Tx</span>
                                         </div>
                                         <div class="col-value">
-                                            <span class="value"> <a
-                                                    *ngIf="transaction.id.substring(56) !== 'aaaa'"
+                                            <span class="value"> <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
                                                     [href]="'https://explorer.qubic.org/network/tx/' + transaction.id"
                                                     target="_blank">{{transaction.id}}
                                                 </a>
@@ -112,8 +112,8 @@
                                                     {{transaction.sourceId}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.sourceId">content_copy</mat-icon></span>
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.sourceId">content_copy</mat-icon></span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -127,8 +127,8 @@
                                                     {{transaction.destId}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
                                             </span>
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@
                                                 </a>
                                             </span>
                                         </div>
-                                    </div>                                   
+                                    </div>
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -177,20 +177,27 @@
                             &nbsp;
                             <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
                                 target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                            </a>                           
+                            </a>
+                            &nbsp;
+                            <span class="display-publicid">
+                                {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                            </span>
                             <span class="desktopOnly">
-                                &nbsp;-
+                                &nbsp; (
+
                                 {{ transaction.transactions[0].timestamp | date}} {{
                                 transaction.transactions[0].timestamp |
                                 date:'HH:mm:ss' }} UTC
+                                )
                             </span>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
                             {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
                             }}&nbsp;{{
                             t("general.currency") }}
-                            <span class="send-receive-indicator">                                
-                                <mat-icon class="send" matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                            <span class="send-receive-indicator">
+                                <mat-icon class="send"
+                                    matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
                                     *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && !isOwnId(transaction.transactions[0].transaction.destId)">arrow_downward</mat-icon>
                                 <mat-icon class="receive"
                                     matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
@@ -243,8 +250,8 @@
                                                 {{transaction.transactions[0].transaction.sourceId}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
-                                            matTooltip="{{ t('general.copy.tooltip') }}"
-                                            [cdkCopyToClipboard]="transaction.transactions[0].transaction.sourceId">content_copy</mat-icon></span>
+                                                matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.sourceId">content_copy</mat-icon></span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -258,8 +265,8 @@
                                                 {{transaction.transactions[0].transaction.destId}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
-                                            matTooltip="{{ t('general.copy.tooltip') }}"
-                                            [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
+                                                matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
                                         </span>
                                     </div>
                                 </div>
