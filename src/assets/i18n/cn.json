@@ -330,7 +330,7 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
+      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "预览数据无法验证",
       "noTransactions": "没有发现交易",

@@ -35,6 +35,7 @@ export class UpdaterService {
   }
 
   private init(): void {
+    this.numberLastEpoch =  this.walletService.getSettings().numberLastEpoch;
     this.getStatusArchiver();
     this.getCurrentTickArchiver();
     this.getCurrentBalance();
@@ -45,7 +46,7 @@ export class UpdaterService {
     // every 30 seconds
     setInterval(() => {
       this.getStatusArchiver();
-      this.getCurrentTickArchiver();
+      this.getCurrentTickArchiver();            
     }, 30000);
     // every minute
     setInterval(() => {
@@ -181,6 +182,7 @@ export class UpdaterService {
 
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
+    this.numberLastEpoch =  this.walletService.getSettings().numberLastEpoch;
     if ((this.transactionArchiverLoading || this.currentTick.value === 0 || !this.status))
       return;
 

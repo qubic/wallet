@@ -329,7 +329,7 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
+      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Voorbeeldgegevens konden niet worden gecontroleerd",
       "noTransactions": "Geen transacties gevonden",

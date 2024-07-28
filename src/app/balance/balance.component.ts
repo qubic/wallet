@@ -55,7 +55,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         this.currentTick = s;
       });
 
-      this.numberLastEpoch = this.us.numberLastEpoch;
+      this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
       this.us.internalTransactions.subscribe(txs => {
         this.transactions = txs;

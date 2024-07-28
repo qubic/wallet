@@ -7,6 +7,7 @@ export interface IConfig {
     webBridges: string[];
     useBridge: boolean;
     tickAddition: number;
+    numberLastEpoch: number;
     enableBeta: boolean;
 }
 

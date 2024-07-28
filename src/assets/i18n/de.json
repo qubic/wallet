@@ -330,7 +330,7 @@
     },
     "transactions": {
       "title": "Offene Buchungen",
-      "titleLastEpochs": "Letzten {{lastEpochsText}} Epochen",
+      "titleLastEpochs": "Transactionen der letzten {{lastEpochsText}} Epochen",
       "showAllTransactions": "Alle Transaktionen anzeigen",
       "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
       "noTransactions": "Keine Buchungen gefunden",

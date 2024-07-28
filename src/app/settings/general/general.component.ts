@@ -25,6 +25,7 @@ export class SettingsGeneralComponent {
 
   form = this.fb.group({
     tickAddition:  [10, Validators.required], 
+    numberLastEpoch:  [10, Validators.required], 
     useBridge: [false],
     enableBeta: [false],
   });
@@ -40,6 +41,7 @@ export class SettingsGeneralComponent {
     const settings = this.walletService.getSettings();
 
     this.form.controls.tickAddition.setValue(settings.tickAddition);
+    this.form.controls.numberLastEpoch.setValue(settings.numberLastEpoch);
     this.form.controls.useBridge.setValue(settings.useBridge);
     this.form.controls.enableBeta.setValue(settings.enableBeta);
   }
@@ -52,6 +54,7 @@ export class SettingsGeneralComponent {
     this.walletService.updateConfig({
       useBridge: this.form.controls.useBridge.value,
       tickAddition: this.form.controls.tickAddition.value,
+      numberLastEpoch: this.form.controls.numberLastEpoch.value,
       enableBeta: this.form.controls.enableBeta.value
     });
   }

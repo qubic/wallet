@@ -78,6 +78,7 @@ export class WalletService {
       seeds: [],
       webBridges: [],
       tickAddition: 10,
+      numberLastEpoch: 10,
       useBridge: (<any>window).require,
       enableBeta: false
     };
@@ -131,6 +132,10 @@ export class WalletService {
     // backward compatibility
     if (!this.runningConfiguration.tickAddition)
       this.runningConfiguration.tickAddition = 20;
+
+    if (!this.runningConfiguration.numberLastEpoch)
+      this.runningConfiguration.numberLastEpoch = 5;
+
 
     // convert json key to internal cryptokey
     if (this.runningConfiguration.publicKey) {
@@ -188,6 +193,7 @@ export class WalletService {
       webBridges: [...this.runningConfiguration.webBridges],
       useBridge: this.runningConfiguration.useBridge,
       tickAddition: this.runningConfiguration.tickAddition,
+      numberLastEpoch: this.runningConfiguration.numberLastEpoch,
       enableBeta: this.runningConfiguration.enableBeta,
     };
   }
@@ -204,6 +210,9 @@ export class WalletService {
   public async updateConfig(config: any): Promise<void> {
     if (config.tickAddition !== undefined)
       this.runningConfiguration.tickAddition = config.tickAddition;
+    if (config.enableBeta !== undefined)
+    if (config.numberLastEpoch !== undefined)
+      this.runningConfiguration.numberLastEpoch = config.numberLastEpoch;
     if (config.enableBeta !== undefined)
       this.runningConfiguration.enableBeta = config.enableBeta;
     if (config.useBridge !== undefined)
@@ -755,6 +764,7 @@ export class WalletService {
       webBridges: this.runningConfiguration.webBridges,
       useBridge: this.runningConfiguration.useBridge,
       tickAddition: this.runningConfiguration.tickAddition,
+      numberLastEpoch: this.runningConfiguration.numberLastEpoch,
       enableBeta: this.runningConfiguration.enableBeta
     };
     return exportConfig;

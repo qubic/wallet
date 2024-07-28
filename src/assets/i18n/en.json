@@ -330,7 +330,7 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Last {{lastEpochsText}} epochs",
+      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Preview data could not be verified",
       "noTransactions": "No Transactions found",
