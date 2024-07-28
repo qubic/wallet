@@ -175,16 +175,14 @@
                                 style="color: yellowgreen;">done</mat-icon>
                             <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red">clear</mat-icon>
                             &nbsp;
-                            <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
-                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                            </a>
-                            &nbsp;
                             <span class="display-publicid">
-                                {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                    target="_blank">
+                                    {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                                </a>
                             </span>
-                            <span class="desktopOnly">
+                            <span class="desktopOnly secondary ">
                                 &nbsp; (
-
                                 {{ transaction.transactions[0].timestamp | date}} {{
                                 transaction.transactions[0].timestamp |
                                 date:'HH:mm:ss' }} UTC
