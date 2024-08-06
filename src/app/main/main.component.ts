@@ -299,6 +299,10 @@ export class MainComponent implements AfterViewInit {
     return (this.walletService.getSeed(publicId)?.assets?.length ?? 0) > 0;
   }
 
+  hasIsOnlyWatch(publicId: string): boolean {
+    return !this.walletService.getSeed(publicId)?.isOnlyWatch ?? false;
+  }
+
   reveal(publicId: string) {
     const confirmDialo = this.dialog.open(RevealSeedDialog, {
       restoreFocus: false, data: {

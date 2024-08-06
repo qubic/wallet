@@ -205,7 +205,7 @@
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"
+    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"
       (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>
