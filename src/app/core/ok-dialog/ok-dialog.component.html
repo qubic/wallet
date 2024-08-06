@@ -1,9 +1,9 @@
 <div *transloco="let t">
-    <h2 mat-dialog-title>{{ t("okDialog.title") }}</h2>
-    <mat-dialog-content>
-      <div [innerHTML]=message></div> 
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-raised-button color="accent" [mat-dialog-close]="true">{{ t("okDialog.button") }}</button>
-    </mat-dialog-actions>
-  </div>
+  <h2 mat-dialog-title>{{ title}}</h2>
+  <mat-dialog-content>
+    <div [innerHTML]=message></div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="accent" [mat-dialog-close]="true">{{ button}}</button>
+  </mat-dialog-actions>
+</div>

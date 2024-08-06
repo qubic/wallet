@@ -53,7 +53,12 @@
       "confirm": "はい、確認します"
     },
     "confirmationText": "よろしいですか？"
-  },
+  }, 
+  "maxNumberOfAddressesDialog": {
+    "title": "Important note",
+    "button": "Okay",
+    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {

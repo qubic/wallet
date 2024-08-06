@@ -53,7 +53,12 @@
       "confirm": "Ja, ich bestätige."
     },
     "confirmationText": "Sind sie sicher?"
-  },
+  },  
+  "maxNumberOfAddressesDialog": {
+    "title": "Wichtiger Hinweis",
+    "button": "Okay",
+    "message": "<div>Sie habe die maximale Anzahl von 15 Adressen in Ihrer Wallet erreicht.</div>"
+   },
    "switchExportDialog": {
     "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
     "buttons": {

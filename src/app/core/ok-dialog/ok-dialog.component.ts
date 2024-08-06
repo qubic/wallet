@@ -13,11 +13,11 @@ import { QubicDialogWrapper } from '../dialog-wrapper/dialog-wrapper';
   templateUrl: './ok-dialog.component.html',
   styleUrls: ['./ok-dialog.component.scss']
 })
-export class OkDialog extends QubicDialogWrapper{
+export class OkDialog extends QubicDialogWrapper {
 
   public title = this.transloco.translate("okDialog.title");
   public message = "null";
-  public button =this.transloco.translate("okDialog.buttons.confirm");
+  public button = this.transloco.translate("okDialog.button");
 
   // constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
   //   super(renderer, themeService);
@@ -35,17 +35,17 @@ export class OkDialog extends QubicDialogWrapper{
 
   constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: DialogRef, private transloco: TranslocoService
   ) {
-     super(renderer, themeService);
+    super(renderer, themeService);
 
-     if (data?.title) {
-          this.title = data.title;
-        }
-        if (data?.message) {
-          this.message = data.message;
-        }
-        if (data?.title) {
-          this.button = data.button;
-        }
+    if (data?.title) {
+      this.title = data.title;
+    }
+    if (data?.message) {
+      this.message = data.message;
+    }
+    if (data?.button) {
+      this.button = data.button;
+    }
   }
 
 }

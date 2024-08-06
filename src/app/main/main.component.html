@@ -4,9 +4,8 @@
       <h1 [innerHTML]="textQubicLiShutdown" class="danger text-center"></h1>
     </div>
     <div class="flex flex-wrap card-list">
-      <div>
-        <h1 *ngIf="isTable">{{ t("seedOverviewComponent.title") }}</h1>
-        <h1 *ngIf="!isTable">{{ t("dashboard.title") }}</h1>
+      <div>       
+        <h1>{{ t("seedOverviewComponent.title") }} ({{walletService.getSeeds().length}}/{{maxNumberOfAddresses}})</h1>
       </div>
       <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
