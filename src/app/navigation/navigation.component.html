@@ -2,45 +2,79 @@
   <div class="container" [class.is-mobile]="mobileQuery.matches">
     <mat-toolbar class="toolbar window-drag" (dblclick)="maximize()">
       <div class="left-icon-area window-no-drag">
-        <button mat-icon-button (click)="snav.toggle()"
-          *ngIf="walletService.isWalletReady && !walletService.configError">
+        <button
+          mat-icon-button
+          (click)="snav.toggle()"
+          *ngIf="walletService.isWalletReady && !walletService.configError"
+        >
           <mat-icon>menu</mat-icon>
         </button>
       </div>
       <div class="header_logo">
-        <img src="assets/logos/qubic_wallet_dark.svg" class="logo" *ngIf="themeService.isDarkTheme" />
-        <img src="assets/logos/qubic_wallet_light.svg" class="logo" *ngIf="!themeService.isDarkTheme" />
+        <img
+          src="assets/logos/qubic_wallet_dark.svg"
+          class="logo"
+          *ngIf="themeService.isDarkTheme"
+        />
+        <img
+          src="assets/logos/qubic_wallet_light.svg"
+          class="logo"
+          *ngIf="!themeService.isDarkTheme"
+        />
       </div>
       <div class="topIcons window-no-drag">
-        <div *ngIf="
+        <div
+          *ngIf="
             walletService.isWalletReady &&
             !walletService.configError &&
             !mobileQuery.matches
-          " class="currentTick">
-          <span class="title">{{ t("general.currentTick", { tick: "" }) }} </span><span
-            [class]="{ 'target-highlight': higlightTick }">{{
+          "
+          class="currentTick"
+        >
+          <span class="title"
+            >{{ t("general.currentTick", { tick: "" }) }} </span
+          ><span [class]="{ 'target-highlight': higlightTick }">{{
             us.currentTick.getValue() | number : "1.0-0"
-            }}</span>
-              <span class="tick-timer" [class]="{ 'tick-timer-error': TickError }">({{
-                  currentTickSec | number : "1.0-0"
-                    }}s)
-              </span>
+          }}</span>
+          <span class="tick-timer" [class]="{ 'tick-timer-error': TickError }"
+            >({{ currentTickSec | number : "1.0-0" }}s)
+          </span>
         </div>
-        <qli-notifys *ngIf="walletService.isWalletReady && !walletService.configError"></qli-notifys>
-        <qli-lock *ngIf="walletService.isWalletReady && !walletService.configError"></qli-lock>
-        <button mat-icon-button (click)="openPrivacyPolicy();" [matTooltip]="t('privacyPolicyIcon.title')">
+        <qli-notifys
+          *ngIf="walletService.isWalletReady && !walletService.configError"
+        ></qli-notifys>
+        <qli-lock
+          *ngIf="walletService.isWalletReady && !walletService.configError"
+        ></qli-lock>
+        <button
+          mat-icon-button
+          (click)="openPrivacyPolicy()"
+          [matTooltip]="t('privacyPolicyIcon.title')"
+        >
           <mat-icon>gavel</mat-icon>
         </button>
         <qli-language-chooser></qli-language-chooser>
-        <button *ngIf="showMinimize && environmentService.isElectron" (click)="minimize()" mat-icon-button>
+        <button
+          *ngIf="showMinimize && environmentService.isElectron"
+          (click)="minimize()"
+          mat-icon-button
+        >
           <mat-icon>minimize</mat-icon>
         </button>
-        <button *ngIf="!mobileQuery.matches && environmentService.isElectron"
-          [matTooltip]="t('general.buttons.maximize')" (click)="maximize()" mat-icon-button>
+        <button
+          *ngIf="!mobileQuery.matches && environmentService.isElectron"
+          [matTooltip]="t('general.buttons.maximize')"
+          (click)="maximize()"
+          mat-icon-button
+        >
           <mat-icon>maximize</mat-icon>
         </button>
-        <button *ngIf="!mobileQuery.matches && environmentService.isElectron" [matTooltip]="t('general.buttons.close')"
-          (click)="close()" mat-icon-button>
+        <button
+          *ngIf="!mobileQuery.matches && environmentService.isElectron"
+          [matTooltip]="t('general.buttons.close')"
+          (click)="close()"
+          mat-icon-button
+        >
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -50,40 +84,115 @@
         <qli-config-error></qli-config-error>
       </div>
     </div>
-    <div *ngIf="!walletService.isWalletReady && !walletService.configError" class="content-container">
+    <div
+      *ngIf="!walletService.isWalletReady && !walletService.configError"
+      class="content-container"
+    >
       <div class="open-wallet-screen">
         <router-outlet></router-outlet>
       </div>
     </div>
-    <mat-sidenav-container *ngIf="walletService.isWalletReady && !walletService.configError" class="sidenav-container"
-      [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-      <mat-sidenav class="navigation" #snav [opened]="!mobileQuery.matches"
-        [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav-container
+      *ngIf="walletService.isWalletReady && !walletService.configError"
+      class="sidenav-container"
+      [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    >
+      <mat-sidenav
+        class="navigation"
+        #snav
+        [opened]="!mobileQuery.matches"
+        [mode]="mobileQuery.matches ? 'over' : 'side'"
+        [fixedInViewport]="mobileQuery.matches"
+        fixedTopGap="56"
+      >
         <mat-nav-list>
-          <a mat-list-item routerLink="." (click)="checkMobileToggle()"  [class.selected-nav]="isHomeSelected"><mat-icon
-              class="icon-color-link icon">home</mat-icon><span>{{ t("general.navigation.home") }}</span></a>
-          <a mat-list-item routerLink="payment" (click)="checkMobileToggle()" [class.selected-nav]="isPaymentSelected"><mat-icon
-              class="icon-color-link icon">payments</mat-icon>{{ t("general.navigation.payment") }}</a>
-          <a mat-list-item routerLink="balance" (click)="checkMobileToggle()" [class.selected-nav]="isBalanceSelected"><mat-icon
-              class="icon-color-link icon">account_balance</mat-icon>{{ t("general.navigation.balance") }}</a>
-          <a mat-list-item routerLink="assets-area" (click)="checkMobileToggle()" [class.selected-nav]="isAssetsSelected"><mat-icon
-              class="icon-color-link icon">category</mat-icon>{{ t("general.navigation.assets") }}</a>
-          <a mat-list-item routerLink="voting" (click)="checkMobileToggle()" [class.selected-nav]="isVotingSelected"><mat-icon
-              class="icon-color-link icon">how_to_vote</mat-icon>{{ t("general.navigation.voting") }}</a>
-          <a mat-list-item routerLink="ipo" (click)="checkMobileToggle()" [class.selected-nav]="isIpoSelected"><mat-icon
-              class="icon-color-link icon">multiline_chart</mat-icon>{{ t("general.navigation.ipo") }}</a>
-          <a mat-list-item routerLink="settings" (click)="checkMobileToggle()" [class.selected-nav]="isSettingsSelected"><mat-icon
-              class="icon-color-link icon">settings</mat-icon>{{ t("general.navigation.settings") }}</a>         
+          <a
+            mat-list-item
+            routerLink="."
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isHomeSelected"
+            ><mat-icon class="icon-color-link icon">home</mat-icon
+            ><span>{{ t("general.navigation.home") }}</span></a
+          >
+          <a
+            mat-list-item
+            routerLink="payment"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isPaymentSelected"
+            ><mat-icon class="icon-color-link icon">payments</mat-icon
+            >{{ t("general.navigation.payment") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="balance"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isBalanceSelected"
+            ><mat-icon class="icon-color-link icon items-center">account_balance</mat-icon
+            >{{ t("general.navigation.balance") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="qearn"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isQearnSelected"
+            ><mat-icon class="icon-color-link icon" svgIcon="qearn_icon"></mat-icon
+            >{{ t("general.navigation.qearn") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="assets-area"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isAssetsSelected"
+            ><mat-icon class="icon-color-link icon filled">category</mat-icon
+            >{{ t("general.navigation.assets") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="voting"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isVotingSelected"
+            ><mat-icon class="icon-color-link icon">how_to_vote</mat-icon
+            >{{ t("general.navigation.voting") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="ipo"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isIpoSelected"
+            ><mat-icon class="icon-color-link icon">multiline_chart</mat-icon
+            >{{ t("general.navigation.ipo") }}</a
+          >
+          <a
+            mat-list-item
+            routerLink="settings"
+            (click)="checkMobileToggle()"
+            [class.selected-nav]="isSettingsSelected"
+            ><mat-icon class="icon-color-link icon">settings</mat-icon
+            >{{ t("general.navigation.settings") }}</a
+          >
         </mat-nav-list>
 
         <div>
           <div class="version">
-            <a href="#" (click)="themeService.toggleTheme()">{{ t("general.themeSwitch") }}</a>
+            <a href="#" (click)="themeService.toggleTheme()">{{
+              t("general.themeSwitch")
+            }}</a>
             <br /><br />
             {{ t("general.version", { version: version }) }}<br />
-            <a href="https://qubic.org" target="_blank">&copy; {{ t("general.version.url") }}</a><br />
-            <a href="https://status.qubic.li/" target="_blank"><br>
-              <iframe src="https://status.qubic.li/embed-status/3472b1c6/dark-sm" width="230" height="41" frameBorder="0" scrolling="no" style="border: none;" > </iframe>
+            <a href="https://qubic.org" target="_blank"
+              >&copy; {{ t("general.version.url") }}</a
+            ><br />
+            <a href="https://status.qubic.li/" target="_blank"
+              ><br />
+              <iframe
+                src="https://status.qubic.li/embed-status/3472b1c6/dark-sm"
+                width="230"
+                height="41"
+                frameBorder="0"
+                scrolling="no"
+                style="border: none"
+              >
+              </iframe>
             </a>
           </div>
         </div>

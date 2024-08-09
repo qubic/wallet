@@ -7,6 +7,7 @@
       "home": "Ana Menü",
       "payment": "Hesap Hareketleri",
       "balance": "Bakiye",
+      "qearn": "Q kazan",
       "settings": "Ayarlar",
       "voting": "Oylama",
       "ipo": "IPO",
@@ -571,6 +572,28 @@
     "buttons": {
       "cancel": "İptal",
       "reset": "Sıfırla"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Qubic'e bahis yapın",
+      "subText": "Coinlerinizi 52 hafta boyunca stake ederek $QUBIC kazanın.",
+      "enterAmount" : "Miktarı girin",
+      "stake" : "Hisse",
+      "availableBalance" : "Kalan bakiye",
+      "weeklySatking" : "Haftalık Staking Potu Kapanıyor",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Kazanılan Ödüller",
+      "unlockEarly" : "Erken Kilidi Açın",
+      "stakedBalance" : "Staked Balance",
+      "earningRate" : "Kazanç oranı",
+      "unlocksIn" : "İçinde Kilidi Açılır",
+      "apy" : "APY",
+      "weeks" : "Haftalar"
     }
   }
 }

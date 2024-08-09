@@ -7,6 +7,7 @@
       "home": "Accueil",
       "payment": "Paiement",
       "balance": "Solde",
+      "qearn": "Q Gagner",
       "settings": "Paramètres",
       "voting": "Vote",
       "ipo": "IPO",
@@ -568,6 +569,28 @@
     "buttons": {
       "cancel": "Annuler",
       "reset": "Réinitialiser"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Participation à Qubic",
+      "subText": "Gagnez des $QUBIC en jalonnant vos pièces pendant 52 semaines.",
+      "enterAmount" : "Entrer le montant",
+      "stake" : "Miser",
+      "availableBalance" : "Solde disponible",
+      "weeklySatking" : "Clôture du pot de jalonnement hebdomadaire",
+      "date" : "j",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Récompenses gagnées",
+      "unlockEarly" : "Débloquer tôt",
+      "stakedBalance" : "Solde mis en jeu",
+      "earningRate" : "Taux de gain",
+      "unlocksIn" : "Déverrouillage dans",
+      "apy" : "APY",
+      "weeks" : "Semaines"
     }
   }
 }

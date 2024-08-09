@@ -93,7 +93,7 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
             this.accountBalances = response;
             this.init();
           }, errorResponse => {
-            this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
+            this._snackBar.open(errorResponse.error, this.transloco.translate("close"), {
               duration: 0,
               panelClass: "error"
             });
