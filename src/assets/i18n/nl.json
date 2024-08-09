@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Betaling",
       "balance": "Account Balans",
+      "qearn": "Qverdienen",
       "settings": "Instellingen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -567,6 +568,28 @@
     "buttons": {
       "cancel": "Cancel",
       "reset": "Reset"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Inzet Qubic",
+      "subText": "Verdien $QUBIC door je munten 52 weken lang te staken.",
+      "enterAmount" : "Voer een bedrag in",
+      "stake" : "Inzet",
+      "availableBalance" : "beschikbaar saldo",
+      "weeklySatking" : "Wekelijkse inzetpot sluit over",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Verdiende beloningen",
+      "unlockEarly" : "Vroegtijdig ontgrendelen",
+      "stakedBalance" : "Ingezette balans",
+      "earningRate" : "Verdienpercentage",
+      "unlocksIn" : "Ontgrendelt in",
+      "apy" : "APY",
+      "weeks" : "Weken"
     }
   }
 }

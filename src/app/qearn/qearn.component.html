@@ -1,0 +1,70 @@
+<ng-container *transloco="let t">
+  <div class="content_container">
+    <h1>{{ t("general.navigation.qearn") }}</h1>
+    <div class="col-4 col-sm-12 gap-4">
+      <mat-card class="general-card">
+        <mat-card-content>
+          <div class="example-stake">
+            <mat-label class="label-container">{{
+              t("qearn.stakeQubic.title")
+            }}</mat-label>
+            <div class="subText">{{ t("qearn.stakeQubic.subText") }}</div>
+            <div>
+              <mat-form-field class="amount-input">
+                <mat-label>{{ t("qearn.stakeQubic.enterAmount") }}</mat-label>
+                <input matInput #input />
+              </mat-form-field>
+              <div class="mat-toolbar example-balance">
+                <span>{{ t("qearn.stakeQubic.availableBalance") }}</span>
+                <span>12,000,000,000</span>
+              </div>
+            </div>
+            <button color="accent" mat-raised-button class="full-width button">
+              {{ t("qearn.stakeQubic.stake") }}
+            </button>
+            <div class="stake-col">
+              <span class="stake-bottom">{{
+                t("qearn.stakeQubic.weeklySatking")
+              }}</span>
+              <span class="stake-bottom stake-bottom-value"
+                >1{{ t("qearn.stakeQubic.date") }} 12{{
+                  t("qearn.stakeQubic.hour")
+                }}
+                12{{ t("qearn.stakeQubic.minute") }}</span
+              >
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="mt-4 general-card">
+        <mat-card-content>
+          <div class="balance">
+            <div class="balance balance-rewards">
+              <mat-icon svgIcon="reward_icon"></mat-icon>
+              <div class="rewards_flex_column">
+                <span class="subText">{{t("qearn.Earned.rewards")}} </span>
+                <span class="value value"> 300000 </span>
+              </div>
+            </div>
+            <div class="unlock">{{t("qearn.Earned.unlockEarly")}}</div>
+          </div>
+          <mat-divider class="my-4"></mat-divider>
+          <div class="stake-col">
+            <div class="rewards_flex_column">
+              <span class="subText text-md">{{t("qearn.Earned.rewards")}} </span>
+              <span> 10,442,000,000</span>
+            </div>
+            <div class="rewards_flex_column">
+              <span class="subText text-md">{{t("qearn.Earned.earningRate")}} </span>
+              <span> 9.8% {{t("qearn.Earned.apy")}} </span>
+            </div>
+            <div class="rewards_flex_column">
+              <span class="subText text-md">{{t("qearn.Earned.unlocksIn")}} </span>
+              <span>48 {{t("qearn.Earned.weeks")}} </span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</ng-container>

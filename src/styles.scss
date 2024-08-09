@@ -325,6 +325,10 @@ table {
   font-size: 1em !important;
 }
 
+.items-center {
+  align-items: center;
+}
+
 .mdc-list-item__primary-text {
   display: flex;
   align-items: center;
@@ -1002,6 +1006,9 @@ mat-hint{
   flex-wrap: wrap;
 }
 
+.back-none {
+   background: none;
+}
 .col-1 {
   flex: 0 0 8.333333%;
   max-width: 8.333333%;
@@ -1119,4 +1126,7 @@ mat-hint{
       padding-left: 48px;
       padding-right: 48px;
   }
+}
+.mt-4 {
+  margin-top: 24px !important;
 }

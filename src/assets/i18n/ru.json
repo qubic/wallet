@@ -7,6 +7,7 @@
       "home": "Главная",
       "payment": "Платежи",
       "balance": "Баланс",
+      "qearn": "Q печелят",
       "settings": "Настройки",
       "voting": "Голосование",
       "ipo": "IPO",
@@ -569,6 +570,28 @@
     "buttons": {
       "cancel": "Отмена",
       "reset": "Перезагрузить"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Ставка Кубик",
+      "subText": "Зарабатывайте $QUBIC, размещая свои монеты на 52 недели.",
+      "enterAmount" : "Введите сумму",
+      "stake" : "Ставка",
+      "availableBalance" : "доступные средства",
+      "weeklySatking" : "Еженедельный банк ставок закрывается",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Заработанные награды",
+      "unlockEarly" : "Разблокировать рано",
+      "stakedBalance" : "Баланс ставки",
+      "earningRate" : "Норма прибыли",
+      "unlocksIn" : "Разблокируется в",
+      "apy" : "APY",
+      "weeks" : "Недели"
     }
   }
 }

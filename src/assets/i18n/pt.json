@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Pagamento",
       "balance": "Saldo",
+      "qearn": "Q ganhar",
       "settings": "Configurações",
       "voting": "Votação",
       "ipo": "IPO",
@@ -567,6 +568,28 @@
     "buttons": {
       "cancel": "Cancel",
       "reset": "Reset"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Estaca Qubic",
+      "subText": "Earn $QUBIC by staking your coins for 52 weeks.",
+      "enterAmount" : "Insira o valor",
+      "stake" : "Estaca",
+      "availableBalance" : "Saldo disponível",
+      "weeklySatking" : "O pote de apostas semanal fecha",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Recompensas Ganhas",
+      "unlockEarly" : "Desbloqueie cedo",
+      "stakedBalance" : "Saldo apostado",
+      "earningRate" : "Taxa de ganho",
+      "unlocksIn" : "Desbloqueia em",
+      "apy" : "APY",
+      "weeks" : "Semanas"
     }
   }
 }

@@ -7,6 +7,7 @@
       "home": "主页",
       "payment": "支付",
       "balance": "交易",
+      "qearn": "Q 赚",
       "settings": "设置",
       "voting": "投票",
       "ipo": "IPO",
@@ -570,6 +571,28 @@
     "buttons": {
       "cancel": "取消",
       "reset": "重置"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "股权 Qubic",
+      "subText": "通过质押您的代币 52 周来赚取 $QUBIC。",
+      "enterAmount" : "输入金额",
+      "stake" : "赌注",
+      "availableBalance" : "可用余额",
+      "weeklySatking" : "每周质押奖金即将结束",
+      "date" : "日",
+      "hour" : "小时",
+      "minute": "分钟"
+    },
+    "Earned" : {
+      "rewards": "已获奖励",
+      "unlockEarly" : "提前解锁",
+      "stakedBalance" : "质押余额",
+      "earningRate" : "收益率",
+      "unlocksIn" : "解锁",
+      "apy" : "年利率",
+      "weeks" : "周数"
     }
   }
 }

@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Payment",
       "balance": "Transactions",
+      "qearn": "Qearn",
       "settings": "Settings",
       "voting": "Voting",
       "ipo": "IPO",
@@ -31,7 +32,7 @@
       "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
       "timeoutTryAgain": "We run into a timeout. Please try again."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -571,6 +572,28 @@
     "buttons": {
       "cancel": "Cancel",
       "reset": "Reset"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Stake Qubic",
+      "subText": "Earn $QUBIC by staking your coins for 52 weeks.",
+      "enterAmount" : "Enter amount",
+      "stake" : "Stake",
+      "availableBalance" : "Available Balance",
+      "weeklySatking" : "Weekly Staking Pot Closes In",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned" : {
+      "rewards": "Earned Rewards",
+      "unlockEarly" : "Unlock Early",
+      "stakedBalance" : "Staked Balance",
+      "earningRate" : "Earning rate",
+      "unlocksIn" : "Unlocks In",
+      "apy" : "APY",
+      "weeks" : "Weeks"
     }
   }
 }

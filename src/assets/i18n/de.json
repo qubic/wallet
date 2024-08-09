@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Zahlung",
       "balance": "Buchungen",
+      "qearn": "Q verdienen",
       "settings": "Einstellungen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -572,5 +573,27 @@
       "cancel": "Abbrechen",
       "reset": "Zurücksetzen"
     }    
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Pfahl Qubic",
+      "subText": "Verdienen Sie $QUBIC, indem Sie Ihre Münzen 52 Wochen lang einsetzen.",
+      "enterAmount" : "Menge eingeben",
+      "stake" : "Einsatz",
+      "availableBalance" : "Verfügbares Guthaben",
+      "weeklySatking" : "Der wöchentliche Staking Pot schließt sich",
+      "date" : "d",
+      "hour" : "h",
+      "minute": "min"
+    },
+    "Earned": {
+      "rewards": "Verdiente Belohnungen",
+      "unlockEarly": "Frühzeitig freischalten",
+      "stakedBalance": "Eingesetztes Guthaben",
+      "earningRate": "Verdienstrate",
+      "unlocksIn": "Wird freigeschaltet in",
+      "apy": "APY",
+      "weeks": "Wochen"
+    }
   }
 }
