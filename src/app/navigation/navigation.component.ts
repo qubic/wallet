@@ -1,49 +1,41 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-  Renderer2,
-} from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Observable } from "rxjs";
-import { map, shareReplay } from "rxjs/operators";
-import { MediaMatcher } from "@angular/cdk/layout";
-import { WalletService } from "../services/wallet.service";
-import { ThemeService } from "../services/theme.service";
-import { environment } from "src/environments/environment";
-import { UpdaterService } from "../services/updater-service";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { TranslocoService } from "@ngneat/transloco";
-import { MarketInformation } from "../services/api.model";
-import { EnvironmentService } from "../services/env.service";
-import { NavigationEnd, Router } from "@angular/router";
-import { filter } from "rxjs/operators";
+import { ChangeDetectorRef, Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { WalletService } from '../services/wallet.service';
+import { ThemeService } from '../services/theme.service';
+import { environment } from 'src/environments/environment';
+import { UpdaterService } from '../services/updater-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoService } from '@ngneat/transloco';
+import { MarketInformation } from '../services/api.model';
+import { EnvironmentService } from '../services/env.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: "app-navigation",
-  templateUrl: "./navigation.component.html",
-  styleUrls: ["./navigation.component.scss"],
+  selector: 'app-navigation',
+  templateUrl: './navigation.component.html',
+  styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  @ViewChild("snav") snav: any;
+  @ViewChild('snav') snav: any;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay()
+  );
 
   mobileQuery!: MediaQueryList;
-  title = "qubic-wallet";
+  title = 'qubic-wallet';
   public version = 0.0;
   public higlightTick = false;
   private currentTick = 0;
 
   public TickError = false;
   public currentTickSec = 0;
-  private currentErrorState = "";
+  private currentErrorState = '';
   private intervalId: any;
 
   private isMaximized = false;
@@ -52,7 +44,7 @@ export class NavigationComponent implements OnInit {
     supply: 0,
     price: 0,
     capitalization: 0,
-    currency: "USD",
+    currency: 'USD',
   };
   private _mobileQueryListener!: () => void;
 
@@ -80,34 +72,27 @@ export class NavigationComponent implements OnInit {
     private router: Router
   ) {
     this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd
-        )
-      )
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const currentUrl = event.urlAfterRedirects;
-        this.isHomeSelected = currentUrl === "/";
-        this.isPaymentSelected = currentUrl === "/payment";
-        this.isQearnSelected = currentUrl === "/qearn";
-        this.isBalanceSelected = currentUrl === "/balance";
-        this.isAssetsSelected = currentUrl === "/assets-area";
-        this.isVotingSelected = currentUrl === "/voting";
-        this.isIpoSelected = currentUrl === "/ipo";
-        this.isSettingsSelected = currentUrl === "/settings";
+        this.isHomeSelected = currentUrl === '/';
+        this.isPaymentSelected = currentUrl === '/payment';
+        this.isQearnSelected = currentUrl === '/qearn';
+        this.isBalanceSelected = currentUrl === '/balance';
+        this.isAssetsSelected = currentUrl === '/assets-area';
+        this.isVotingSelected = currentUrl === '/voting';
+        this.isIpoSelected = currentUrl === '/ipo';
+        this.isSettingsSelected = currentUrl === '/settings';
       });
   }
 
   ngOnInit(): void {
-    this.mobileQuery = this.media.matchMedia("(max-width: 600px)");
+    this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.version = environment.version;
 
-    this.renderer.addClass(
-      document.body,
-      this.themeService.isDarkTheme ? "darkTheme" : "light"
-    );
+    this.renderer.addClass(document.body, this.themeService.isDarkTheme ? 'darkTheme' : 'light');
 
     // if ((<any>window).require) {
     //   this.showMinimize = true;
@@ -118,14 +103,10 @@ export class NavigationComponent implements OnInit {
         this.currentPrice = response;
       },
       (errorResponse) => {
-        this._snackBar.open(
-          errorResponse.error,
-          this.transloco.translate("general.close"),
-          {
-            duration: 0,
-            panelClass: "error",
-          }
-        );
+        this._snackBar.open(errorResponse.error, this.transloco.translate('general.close'), {
+          duration: 0,
+          panelClass: 'error',
+        });
       }
     );
 
@@ -142,16 +123,12 @@ export class NavigationComponent implements OnInit {
     });
 
     this.us.errorStatus.subscribe((s) => {
-      if (s != "" && s != this.currentErrorState) {
+      if (s != '' && s != this.currentErrorState) {
         this.currentErrorState = s;
-        this._snackBar.open(
-          this.currentErrorState,
-          this.transloco.translate("general.close"),
-          {
-            duration: 0,
-            panelClass: "error",
-          }
-        );
+        this._snackBar.open(this.currentErrorState, this.transloco.translate('general.close'), {
+          duration: 0,
+          panelClass: 'error',
+        });
       }
     });
   }
@@ -247,6 +224,6 @@ export class NavigationComponent implements OnInit {
   }
 
   openPrivacyPolicy() {
-    window.open("https://qubic.org/Privacy-policy", "_blank");
+    window.open('https://qubic.org/Privacy-policy', '_blank');
   }
 }
