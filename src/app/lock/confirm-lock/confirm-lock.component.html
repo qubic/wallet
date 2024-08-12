@@ -30,11 +30,11 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <div class="button-container">
-        <button mat-raised-button *ngIf="!showSave && !keyDownload" color="primary" (click)="showSave = true">{{ t("lockComponent.buttons.enableExport") }}</button>
-        <button mat-raised-button type="button" color="accent" (click)="saveAndCloseWallet()" [disabled]="!exportForm.valid" *ngIf="showSave || keyDownload"> {{ t("lockComponent.buttons.exportAndCloseWallet")}}</button>
-        <button mat-raised-button color="accent" (click)="closeWallet()" *ngIf="!keyDownload && !showSave"> {{ t("lockComponent.buttons.closeWallet")}}</button>
-        <button mat-raised-button color="accent" mat-dialog-close *ngIf="keyDownload && isVaultFileExported">  {{ t("lockComponent.forceDownload.buttons.allOk")}}</button>
         <button mat-raised-button mat-dialog-close *ngIf="!keyDownload"> {{ t("lockComponent.buttons.cancel")}}</button>
+        <button mat-raised-button *ngIf="!showSave && !keyDownload" color="accent" (click)="showSave = true">{{ t("lockComponent.buttons.enableExport") }}</button>
+        <button mat-raised-button type="button" color="accent" (click)="saveAndCloseWallet()" [disabled]="!exportForm.valid" *ngIf="showSave || keyDownload"> {{ t("lockComponent.buttons.exportAndCloseWallet")}}</button>
+        <button mat-raised-button color="accent" mat-dialog-close *ngIf="keyDownload && isVaultFileExported">  {{ t("lockComponent.forceDownload.buttons.allOk")}}</button>
+        <button mat-raised-button color="primary" (click)="closeWallet()" *ngIf="!keyDownload && !showSave"> {{ t("lockComponent.buttons.closeWallet")}}</button>
       </div>
     </mat-dialog-actions>
   </form>

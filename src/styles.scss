@@ -163,16 +163,16 @@ body {
 }
 
 $mat-accent: (
-  main: #1bdef5,
-  lighter: #1bdef5,
-  darker: #2472a7,
+  main: #1adef51a,    
+  lighter: lighten(#1adef51a, 20%), 
+  darker: darken(#1adef51a, 20%),   
   200: $light-link,
   // For slide toggle,
   contrast:
     (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
+      main: #ffffff,
+      lighter:  #ffffff,
+      darker: #ffffff,
     ),
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
@@ -216,6 +216,7 @@ $altTheme: (
   foreground: $mat-dark-theme-foreground,
   background: $mat-dark-theme-background,
 );
+
 
 // Theme Init
 @include mat.all-component-themes($theme);
@@ -263,6 +264,10 @@ $altTheme: (
 
   .mdc-switch.mdc-switch--selected .mdc-switch__track {
     background-color: rgb(97, 97, 97);
+  }
+
+  button.mat-accent {
+    color: #ffffff !important;
   }
 }
 

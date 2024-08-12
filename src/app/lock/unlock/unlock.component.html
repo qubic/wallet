@@ -76,26 +76,27 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <div class="button-container">
-        <button
-          *ngIf="!isNewUser()"
-          [disabled]="!importForm.valid"
-          mat-raised-button
-          color="accent"
-          (click)="unlock()"
-        >
-          {{ t("unlockComponent.buttons.unlock") }}
+        <button *ngIf="dialogRef" mat-raised-button mat-dialog-close>
+          {{ t("unlockComponent.buttons.cancel") }}
         </button>
         <button
           *ngIf="!isNewUser() && walletService.isWalletReady"
           mat-raised-button
-          color="primary"
+          color="accent"accent
           (click)="lock()"
         >
           {{ t("unlockComponent.buttons.closeWallet") }}
         </button>
-        <button *ngIf="dialogRef" mat-raised-button mat-dialog-close>
-          {{ t("unlockComponent.buttons.cancel") }}
+        <button
+          *ngIf="!isNewUser()"
+          [disabled]="!importForm.valid"
+          mat-raised-button
+          color="primary"
+          (click)="unlock()"
+        >
+          {{ t("unlockComponent.buttons.unlock") }}
         </button>
+       
       </div>
     </mat-dialog-actions>
   </div>
