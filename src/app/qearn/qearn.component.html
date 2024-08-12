@@ -1,12 +1,27 @@
 <ng-container *transloco="let t">
-  <div class="content_container">
+  <form [formGroup]="stakeForm" novalidate (ngSubmit)="onSubmit()" class="content_container">
     <h1>{{ t('general.navigation.qearn') }}</h1>
-    <div class="col-4 col-sm-12 gap-4">
+    <div class="col-6 col-sm-12 gap-4">
       <mat-card class="general-card">
         <mat-card-content>
           <div class="example-stake">
             <mat-label class="label-container">{{ t('qearn.stakeQubic.title') }}</mat-label>
             <div class="subText">{{ t('qearn.stakeQubic.subText') }}</div>
+            <div class="col">
+              <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
+                <mat-label>{{ t("paymentComponent.form.sourceSeed.label") }}</mat-label>
+                <mat-select formControlName="sourceId" panelClass="full-width">
+                  <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
+                    class="custom-mat-option">
+                    {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
+                    {{ t("general.currency") }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="stakeForm.controls['sourceId'].hasError('required')">
+                  {{ t("paymentComponent.form.sourceSeed.error.required") }}
+                </mat-error>
+              </mat-form-field>
+            </div>
             <div>
               <mat-form-field class="amount-input">
                 <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
@@ -14,19 +29,18 @@
               </mat-form-field>
               <div class="mat-toolbar example-balance">
                 <span>{{ t('qearn.stakeQubic.availableBalance') }}</span>
-                <span>12,000,000,000</span>
+                <span>{{ maxAmount }}</span>
               </div>
             </div>
-            <button color="accent" mat-raised-button class="full-width button">
+            <button color="accent" mat-raised-button class="full-width button" (click)="confirmLock()">
               {{ t('qearn.stakeQubic.stake') }}
             </button>
             <div class="stake-col">
               <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
-              <span class="stake-bottom stake-bottom-value"
-                >1{{ t('qearn.stakeQubic.date') }} 12{{ t('qearn.stakeQubic.hour') }} 12{{
-                  t('qearn.stakeQubic.minute')
-                }}</span
-              >
+              <span class="stake-bottom stake-bottom-value">1{{ t('qearn.stakeQubic.date') }} 12{{
+                t('qearn.stakeQubic.hour') }} 12{{
+                t('qearn.stakeQubic.minute')
+                }}</span>
             </div>
           </div>
         </mat-card-content>
@@ -61,5 +75,5 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+  </form>
 </ng-container>
