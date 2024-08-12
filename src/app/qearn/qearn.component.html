@@ -1,7 +1,7 @@
 <ng-container *transloco="let t">
-  <form [formGroup]="stakeForm" novalidate (ngSubmit)="onSubmit()" class="content_container">
-    <h1>{{ t('general.navigation.qearn') }}</h1>
-    <div class="col-6 col-sm-12 gap-4">
+  <div class="col-6 col-sm-12 gap-4">
+    <form [formGroup]="stakeForm" novalidate (ngSubmit)="onSubmit()" class="content_container">
+      <h1>{{ t('general.navigation.qearn') }}</h1>
       <mat-card class="general-card">
         <mat-card-content>
           <div class="example-stake">
@@ -74,6 +74,9 @@
           </div>
         </mat-card-content>
       </mat-card>
-    </div>
-  </form>
+    </form>
+  </div>
+  <mat-card-content class="col-6 col-sm-12 gap-4 content_container">
+    <app-reward-table></app-reward-table>
+  </mat-card-content>
 </ng-container>

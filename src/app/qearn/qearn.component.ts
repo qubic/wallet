@@ -64,7 +64,7 @@ export class QearnComponent implements OnInit {
         title: `Staking ${this.transloco.translate("general.currency")}`,
         message: `Do you want to lock ${this.stakeAmount} ${this.transloco.translate("general.currency")}?`,
         cancel: 'Cancel',
-        confirm: 'Confirm',
+        confirm: 'Ok',
       },
     });
     confirmDialog.afterClosed().subscribe((result) => {

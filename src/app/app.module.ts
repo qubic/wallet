@@ -80,6 +80,7 @@ import { FileSelectorComponent } from './common/file-selector/file-selector.comp
 import { MatSliderModule } from '@angular/material/slider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { QearnComponent } from './qearn/qearn.component';
+import { RewardTableComponent } from './qearn/reward-table/reward-table.component';
 
 /** Http interceptor providers in outside-in order */
 export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }];
@@ -122,6 +123,7 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     PublicUnLockComponent,
     ImportVaultComponent,
     FileSelectorComponent,
+    RewardTableComponent,
   ],
   imports: [
     BrowserModule,
