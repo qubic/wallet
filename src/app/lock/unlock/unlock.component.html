@@ -1,15 +1,7 @@
 <ng-container *transloco="let t">
   <div *ngIf="!dialogRef" class="title">
-    <img
-      src="assets/logos/Logo_light.webp"
-      class="logo-title"
-      *ngIf="themeService.isDarkTheme"
-    />
-    <img
-      src="assets/logos/Logo_dark.webp"
-      class="logo-title"
-      *ngIf="!themeService.isDarkTheme"
-    />
+    <img src="assets/logos/Logo_light.webp" class="logo-title" *ngIf="themeService.isDarkTheme" />
+    <img src="assets/logos/Logo_dark.webp" class="logo-title" *ngIf="!themeService.isDarkTheme" />
   </div>
   <div class="start_container">
     <h2 mat-dialog-title *ngIf="!isNewUser()">
@@ -29,30 +21,18 @@
         <hr />
         <br />
         <form [formGroup]="importForm" novalidate (ngSubmit)="onSubmit($event)">
-          <app-file-selector
-            class="flex flex-center"
-            (fileSelected)="onFileSelected($event)"
+          <app-file-selector class="flex flex-center" (fileSelected)="onFileSelected($event)"
             requredText="{{ t('unlockComponent.form.file.error.required') }}"
-            selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"
-          ></app-file-selector>
+            selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"></app-file-selector>
 
           <mat-form-field class="full-width">
-            <input
-              matInput
-              placeholder="Password"
-              formControlName="password"
-              type="password"
-              (input)="onPasswordChange()"
-            />
+            <input matInput placeholder="Password" formControlName="password" type="password"
+              (input)="onPasswordChange()" />
 
-            <mat-error
-              *ngIf="importForm.controls['password'].hasError('required')"
-            >
+            <mat-error *ngIf="importForm.controls['password'].hasError('required')">
               {{ t("unlockComponent.form.password.error.required") }}
             </mat-error>
-            <mat-error
-              *ngIf="importForm.controls['password'].hasError('minlength')"
-            >
+            <mat-error *ngIf="importForm.controls['password'].hasError('minlength')">
               {{ t("unlockComponent.form.password.error.min") }}
             </mat-error>
             <mat-error *ngIf="pwdWrong">
@@ -60,14 +40,9 @@
             </mat-error>
           </mat-form-field>
           <div *ngIf="!hasExistingConfig() && !selectedFileIsVaultFile">
-            <app-file-selector
-              class="flex flex-center"
-              (fileSelected)="onConfigFileSelected($event)"
-              requredText="{{
+            <app-file-selector class="flex flex-center" (fileSelected)="onConfigFileSelected($event)" requredText="{{
                 t('unlockComponent.form.configFile.error.required')
-              }}"
-              selectFileText="{{ t('unlockComponent.chooseConfigFile') }}"
-            ></app-file-selector>
+              }}" selectFileText="{{ t('unlockComponent.chooseConfigFile') }}"></app-file-selector>
           </div>
         </form>
       </div>
@@ -79,24 +54,14 @@
         <button *ngIf="dialogRef" mat-raised-button mat-dialog-close>
           {{ t("unlockComponent.buttons.cancel") }}
         </button>
-        <button
-          *ngIf="!isNewUser() && walletService.isWalletReady"
-          mat-raised-button
-          color="accent"accent
-          (click)="lock()"
-        >
+        <button *ngIf="!isNewUser() && walletService.isWalletReady" mat-raised-button color="accent" accent
+          (click)="lock()">
           {{ t("unlockComponent.buttons.closeWallet") }}
         </button>
-        <button
-          *ngIf="!isNewUser()"
-          [disabled]="!importForm.valid"
-          mat-raised-button
-          color="primary"
-          (click)="unlock()"
-        >
+        <button *ngIf="!isNewUser()" [disabled]="!importForm.valid" mat-raised-button color="primary"
+          (click)="unlock()">
           {{ t("unlockComponent.buttons.unlock") }}
         </button>
-       
       </div>
     </mat-dialog-actions>
   </div>

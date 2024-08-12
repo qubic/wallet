@@ -14,7 +14,7 @@
         </div>
         <div *ngIf="accountBalances.length > 0">
             <div *ngIf="hasComputors()">
-                <button [routerLink]="['/voting/create']" mat-raised-button color="accent">
+                <button [routerLink]="['/voting/create']" mat-raised-button color="primary">
                     {{ t("votingComponent.proposals.createButton") }}
                 </button>
             </div>
@@ -58,7 +58,7 @@
                         </div>
                         <hr *ngIf="hasComputors()">
                         <button *ngIf="hasComputors() && p.isPublished"
-                            [routerLink]="['/voting/participate/', p.computorIndex]" mat-raised-button color="accent">
+                            [routerLink]="['/voting/participate/', p.computorIndex]" mat-raised-button color="primary">
                             <mat-icon>how_to_vote</mat-icon> {{ t("votingComponent.proposals.voteButton") }}
                         </button>
                         <button *ngIf="isOwnId(p.computorId) && !p.isPublished"

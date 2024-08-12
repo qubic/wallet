@@ -4,14 +4,14 @@
         <div class="flex flex-wrap card-list">
             <div>
                 <span *ngIf="!isShowAllTransactions">
-                    <button [disabled]="transactionsRecord.length <= 0" color="accent" mat-raised-button
+                    <button [disabled]="transactionsRecord.length <= 0" color="primary" mat-raised-button
                         (click)="exportTransactionsToCsv()">
                         <mat-icon>file_download</mat-icon>
                         {{ t("balanceComponent.transactions.exportButton") }}
                     </button>
                 </span>
                 <span *ngIf="isShowAllTransactions">
-                    <button color="accent" mat-raised-button (click)="exportTransactionsToCsv()">
+                    <button color="primary" mat-raised-button (click)="exportTransactionsToCsv()">
                         <mat-icon>file_download</mat-icon>
                         {{ t("balanceComponent.transactions.exportButton") }}
                     </button>

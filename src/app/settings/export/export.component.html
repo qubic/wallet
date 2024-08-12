@@ -16,7 +16,7 @@
                 <br><br>
                 <div *ngIf="configToImport" class="flex-center">
                     {{ t("settings.import.seedsMessage", { amount: configToImport.seeds.length}) }}<br><br>
-                    <button mat-raised-button color="accent" (click)="import()">{{ t("settings.import.buttons.import")
+                    <button mat-raised-button color="primary" (click)="import()">{{ t("settings.import.buttons.import")
                     }}</button>
                 </div>            
                 <div *ngIf="fileError">
@@ -33,7 +33,7 @@
                  {{ t("settings.export.hint") }}
                  <br>
                  <br>
-                <button mat-raised-button color="accent" (click)="export()">{{ t("settings.export.buttons.export")
+                <button mat-raised-button color="primary" (click)="export()">{{ t("settings.export.buttons.export")
                     }}</button>
             </div>
             </mat-card-content>
