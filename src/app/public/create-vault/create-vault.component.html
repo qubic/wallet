@@ -50,13 +50,6 @@
           <mat-error *ngIf="createAddressForm.controls['seed'].hasError('pattern')">
             {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
           </mat-error>
-          <div *ngIf="generatedPublicId.length === 60" class="word-break">
-            <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
-            {{
-            generatedPublicId
-            }}
-          </div>
-          <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint">  {{ t("ownSeedWarningDialog.hint")}}</div>
           <div class="flex full-width button-container">
             <button  [disabled]="!fieldSeedDisabled" mat-raised-button color="warn" (click)="resetSeed()">
               {{ t('ownSeedWarningDialog.button') }}
@@ -64,6 +57,15 @@
             <button mat-raised-button color="accent" (click)="randomizeSeed()">
               {{ t('createVaultComponent.createAddress.radomizeSeed') }}
             </button>
+          </div>
+          <div *ngIf="generatedPublicId.length === 60" class="word-break">
+            <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
+            {{
+            generatedPublicId
+            }}
+          </div>
+          <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint">  {{ t("ownSeedWarningDialog.hint")}}</div>
+          <div class="flex full-width button-container">           
             <button mat-raised-button color="primary" (click)="createAddress()"
               [disabled]="!this.createAddressForm.valid">
               {{ t('createVaultComponent.createAddress.button') }}
