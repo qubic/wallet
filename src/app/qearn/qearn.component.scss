@@ -109,7 +109,7 @@ mat-form-field {
   padding: 0 8px;
   opacity: 0.5;
   &-value {
-   opacity: 1; 
+    opacity: 1;
   }
 }
 .stake-col {
@@ -119,33 +119,36 @@ mat-form-field {
   flex-wrap: wrap;
   padding-bottom: 16px;
 }
-.rewards_flex_column{
+.rewards_flex_column {
   display: flex;
   padding-right: 24px;
   min-width: 112px;
   flex-direction: column;
   span {
-     padding: 3px;
+    padding: 3px;
   }
 }
 
-.unlock{
+.unlock {
   background: none;
-  color: #61F0FE;
+  color: #61f0fe;
   padding: 8px 24px;
   cursor: pointer;
 }
 
-.text-md{
+.text-md {
   font-size: 14px !important;
 }
 
-.py-4{
+.py-4 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.my-4{
+.my-4 {
   margin-top: 16px;
   margin-bottom: 16px;
+}
+.amount-input {
+  margin-bottom: 18px;
 }

@@ -32,7 +32,7 @@
       "balanceReceived": "A rede indica um saldo de {{balance}} QUBIC para {{publicId}}.",
       "timeoutTryAgain": "We run into a timeout. Please try again."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -574,22 +574,28 @@
     "stakeQubic": {
       "title": "Estaca Qubic",
       "subText": "Earn $QUBIC by staking your coins for 52 weeks.",
-      "enterAmount" : "Insira o valor",
-      "stake" : "Estaca",
-      "availableBalance" : "Saldo disponível",
-      "weeklySatking" : "O pote de apostas semanal fecha",
-      "date" : "d",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Insira o valor",
+      "stake": "Estaca",
+      "availableBalance": "Saldo disponível",
+      "weeklySatking": "O pote de apostas semanal fecha",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "O valor é obrigatório",
+        "min": "O valor deve ser maior que 10M",
+        "numberOnly": "Apenas números são permitidos",
+        "exceedsBalance": "O valor não pode exceder o saldo disponível"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Recompensas Ganhas",
-      "unlockEarly" : "Desbloqueie cedo",
-      "stakedBalance" : "Saldo apostado",
-      "earningRate" : "Taxa de ganho",
-      "unlocksIn" : "Desbloqueia em",
-      "apy" : "APY",
-      "weeks" : "Semanas"
+      "unlockEarly": "Desbloqueie cedo",
+      "stakedBalance": "Saldo apostado",
+      "earningRate": "Taxa de ganho",
+      "unlocksIn": "Desbloqueia em",
+      "apy": "APY",
+      "weeks": "Semanas"
     }
   }
 }

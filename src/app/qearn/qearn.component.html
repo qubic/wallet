@@ -11,7 +11,8 @@
               <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
                 <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
                 <mat-select formControlName="sourceId" panelClass="full-width">
-                  <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId" class="custom-mat-option">
+                  <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
+                    class="custom-mat-option">
                     {{ seed.publicId }}<br />
                     {{ seed.alias }} - {{ seed.balance | number : '1.0-0' }}
                     {{ t('general.currency') }}
@@ -25,21 +26,37 @@
             <div>
               <mat-form-field class="amount-input">
                 <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
-                <input matInput #input />
+                <input matInput #input formControlName="amount" type="number" (input)="validateAmount($event)" />
+                <mat-error *ngIf="stakeForm.controls['amount'].hasError('required')">
+                  {{ t('qearn.stakeQubic.error.required') }}
+                </mat-error>
+                <mat-error
+                  *ngIf="stakeForm.controls['amount'].hasError('min') && !stakeForm.controls['amount'].hasError('required')">
+                  {{ t('qearn.stakeQubic.error.min') }}
+                </mat-error>
+                <mat-error
+                  *ngIf="stakeForm.controls['amount'].hasError('pattern') && !stakeForm.controls['amount'].hasError('required') && !stakeForm.controls['amount'].hasError('min')">
+                  {{ t('qearn.stakeQubic.error.numberOnly') }}
+                </mat-error>
+                <mat-error
+                  *ngIf="stakeForm.controls['amount'].hasError('exceedsBalance') && !stakeForm.controls['amount'].hasError('required') && !stakeForm.controls['amount'].hasError('min') && !stakeForm.controls['amount'].hasError('pattern')">
+                  {{ t('qearn.stakeQubic.error.exceedsBalance') }}
+                </mat-error>
               </mat-form-field>
               <div class="mat-toolbar example-balance">
                 <span>{{ t('qearn.stakeQubic.availableBalance') }}</span>
                 <span>{{ maxAmount }}</span>
               </div>
             </div>
-            <button color="accent" mat-raised-button class="full-width button" (click)="confirmLock()">
+            <button color="accent" mat-raised-button class="full-width button" (click)="confirmLock()"
+              [disabled]="stakeForm.invalid">
               {{ t('qearn.stakeQubic.stake') }}
             </button>
             <div class="stake-col">
               <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
-              <span class="stake-bottom stake-bottom-value"
-                >{{ remainingTime.days }} {{ t('qearn.stakeQubic.date') }} {{ remainingTime.hours }} {{ t('qearn.stakeQubic.hour') }} {{ remainingTime.minutes }} {{ t('qearn.stakeQubic.minute') }}</span
-              >
+              <span class="stake-bottom stake-bottom-value">{{ remainingTime.days }} {{ t('qearn.stakeQubic.date') }} {{
+                remainingTime.hours }} {{ t('qearn.stakeQubic.hour') }} {{ remainingTime.minutes }} {{
+                t('qearn.stakeQubic.minute') }}</span>
             </div>
           </div>
         </mat-card-content>

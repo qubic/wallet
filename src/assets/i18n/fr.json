@@ -32,7 +32,7 @@
       "balanceReceived": "Le réseau indique un solde de {{balance}} QUBIC pour {{publicId}}.",
       "timeoutTryAgain": "délai dépassé, essayez à nouveau."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -330,7 +330,7 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",     
+      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
       "showAllTransactions": "show all transactions",
       "verificationAlert": "Les données de l'aperçu n'ont pas pu être vérifiées",
       "noTransactions": "Aucune transaction trouvée",
@@ -575,22 +575,28 @@
     "stakeQubic": {
       "title": "Participation à Qubic",
       "subText": "Gagnez des $QUBIC en jalonnant vos pièces pendant 52 semaines.",
-      "enterAmount" : "Entrer le montant",
-      "stake" : "Miser",
-      "availableBalance" : "Solde disponible",
-      "weeklySatking" : "Clôture du pot de jalonnement hebdomadaire",
-      "date" : "j",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Entrer le montant",
+      "stake": "Miser",
+      "availableBalance": "Solde disponible",
+      "weeklySatking": "Clôture du pot de jalonnement hebdomadaire",
+      "date": "j",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "Le montant est requis",
+        "min": "Le montant doit être supérieur à 10M",
+        "numberOnly": "Seuls les chiffres sont autorisés",
+        "exceedsBalance": "Le montant ne peut pas dépasser le solde disponible"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Récompenses gagnées",
-      "unlockEarly" : "Débloquer tôt",
-      "stakedBalance" : "Solde mis en jeu",
-      "earningRate" : "Taux de gain",
-      "unlocksIn" : "Déverrouillage dans",
-      "apy" : "APY",
-      "weeks" : "Semaines"
+      "unlockEarly": "Débloquer tôt",
+      "stakedBalance": "Solde mis en jeu",
+      "earningRate": "Taux de gain",
+      "unlocksIn": "Déverrouillage dans",
+      "apy": "APY",
+      "weeks": "Semaines"
     }
   }
 }

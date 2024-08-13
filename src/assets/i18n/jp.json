@@ -32,7 +32,7 @@
       "balanceReceived": "ネットワークから {{balance}} QUBICが {{publicId}}に報告されました。",
       "timeoutTryAgain": "タイムアウトしました。もう一度試してください。"
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -578,22 +578,28 @@
     "stakeQubic": {
       "title": "ステーク Qubic",
       "subText": "コインを 52 週間ステーキングして $QUBIC を獲得しましょう。",
-      "enterAmount" : "金額を入力します",
-      "stake" : "ステーク",
-      "availableBalance" : "利用可能残高",
-      "weeklySatking" : "ウィークリーステーキングポットが終了",
-      "date" : "日",
-      "hour" : "時間",
-      "minute": "分"
+      "enterAmount": "金額を入力します",
+      "stake": "ステーク",
+      "availableBalance": "利用可能残高",
+      "weeklySatking": "ウィークリーステーキングポットが終了",
+      "date": "日",
+      "hour": "時間",
+      "minute": "分",
+      "error": {
+        "required": "金額は必須です",
+        "min": "金額は10Mより大きくなければなりません",
+        "numberOnly": "数字のみが許可されています",
+        "exceedsBalance": "金額が利用可能な残高を超えることはできません"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "獲得した報酬",
-      "unlockEarly" : "早期ロック解除",
-      "stakedBalance" : "賭けられたバランス",
-      "earningRate" : "収益率",
-      "unlocksIn" : "ロック解除",
-      "apy" : "年利",
-      "weeks" : "週"
+      "unlockEarly": "早期ロック解除",
+      "stakedBalance": "賭けられたバランス",
+      "earningRate": "収益率",
+      "unlocksIn": "ロック解除",
+      "apy": "年利",
+      "weeks": "週"
     }
   }
 }

@@ -32,7 +32,7 @@
       "balanceReceived": "Network reported {{balance}} QUBIC for {{publicId}}.",
       "timeoutTryAgain": "We run into a timeout. Please try again."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -574,22 +574,28 @@
     "stakeQubic": {
       "title": "Inzet Qubic",
       "subText": "Verdien $QUBIC door je munten 52 weken lang te staken.",
-      "enterAmount" : "Voer een bedrag in",
-      "stake" : "Inzet",
-      "availableBalance" : "beschikbaar saldo",
-      "weeklySatking" : "Wekelijkse inzetpot sluit over",
-      "date" : "d",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Voer een bedrag in",
+      "stake": "Inzet",
+      "availableBalance": "beschikbaar saldo",
+      "weeklySatking": "Wekelijkse inzetpot sluit over",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "Bedrag is vereist",
+        "min": "Het bedrag moet groter zijn dan 10M",
+        "numberOnly": "Alleen cijfers zijn toegestaan",
+        "exceedsBalance": "Het bedrag mag het beschikbare saldo niet overschrijden"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Verdiende beloningen",
-      "unlockEarly" : "Vroegtijdig ontgrendelen",
-      "stakedBalance" : "Ingezette balans",
-      "earningRate" : "Verdienpercentage",
-      "unlocksIn" : "Ontgrendelt in",
-      "apy" : "APY",
-      "weeks" : "Weken"
+      "unlockEarly": "Vroegtijdig ontgrendelen",
+      "stakedBalance": "Ingezette balans",
+      "earningRate": "Verdienpercentage",
+      "unlocksIn": "Ontgrendelt in",
+      "apy": "APY",
+      "weeks": "Weken"
     }
   }
 }

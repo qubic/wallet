@@ -584,7 +584,13 @@
       "weeklySatking" : "Weekly Staking Pot Closes In",
       "date" : "d",
       "hour" : "h",
-      "minute": "min"
+      "minute": "min",
+      "error": {
+        "required": "Amount is required",
+        "min": "Amount must be greater than 10M",
+        "numberOnly": "Only numbers are allowed",
+        "exceedsBalance": "Amount cannot exceed available balance"
+      }
     },
     "Earned" : {
       "rewards": "Earned Rewards",

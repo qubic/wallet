@@ -577,22 +577,28 @@
     "stakeQubic": {
       "title": "股权 Qubic",
       "subText": "通过质押您的代币 52 周来赚取 $QUBIC。",
-      "enterAmount" : "输入金额",
-      "stake" : "赌注",
-      "availableBalance" : "可用余额",
-      "weeklySatking" : "每周质押奖金即将结束",
-      "date" : "日",
-      "hour" : "小时",
-      "minute": "分钟"
+      "enterAmount": "输入金额",
+      "stake": "赌注",
+      "availableBalance": "可用余额",
+      "weeklySatking": "每周质押奖金即将结束",
+      "date": "日",
+      "hour": "小时",
+      "minute": "分钟",
+      "error": {
+        "required": "金额为必填项",
+        "min": "金额必须大于10M",
+        "numberOnly": "只允许输入数字",
+        "exceedsBalance": "金额不能超过可用余额"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "已获奖励",
-      "unlockEarly" : "提前解锁",
-      "stakedBalance" : "质押余额",
-      "earningRate" : "收益率",
-      "unlocksIn" : "解锁",
-      "apy" : "年利率",
-      "weeks" : "周数"
+      "unlockEarly": "提前解锁",
+      "stakedBalance": "质押余额",
+      "earningRate": "收益率",
+      "unlocksIn": "解锁",
+      "apy": "年利率",
+      "weeks": "周数"
     }
   }
 }

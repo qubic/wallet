@@ -7,7 +7,7 @@
       "home": "Dashboard",
       "payment": "Pagos",
       "balance": "Saldo",
-      "qearn" : "Q ganar",
+      "qearn": "Q ganar",
       "settings": "Configuraciones",
       "voting": "Votación",
       "ipo": "IPO",
@@ -32,7 +32,7 @@
       "balanceReceived": "La red indica un saldo de {{balance}} QUBIC para {{publicId}}.",
       "timeoutTryAgain": "Se agotó el tiempo de espera del sistema. Por favor, intenta nuevamente."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -575,22 +575,28 @@
     "stakeQubic": {
       "title": "Estaca Qubic",
       "subText": "Ganhe $QUBIC apostando suas moedas por 52 semanas.",
-      "enterAmount" : "Insira o valor",
-      "stake" : "Estaca",
-      "availableBalance" : "Saldo disponível",
-      "weeklySatking" : "O pote de apostas semanal fecha",
-      "date" : "d",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Insira o valor",
+      "stake": "Estaca",
+      "availableBalance": "Saldo disponível",
+      "weeklySatking": "O pote de apostas semanal fecha",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "El monto es obligatorio",
+        "min": "El monto debe ser mayor que 10M",
+        "numberOnly": "Solo se permiten números",
+        "exceedsBalance": "La cantidad no puede exceder el saldo disponible"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Recompensas Ganhas",
-      "unlockEarly" : "Desbloqueie cedo",
-      "stakedBalance" : "Saldo apostado",
-      "earningRate" : "Taxa de ganho",
-      "unlocksIn" : "Desbloqueia em",
-      "apy" : "APY",
-      "weeks" : "Semanas"
+      "unlockEarly": "Desbloqueie cedo",
+      "stakedBalance": "Saldo apostado",
+      "earningRate": "Taxa de ganho",
+      "unlocksIn": "Desbloqueia em",
+      "apy": "APY",
+      "weeks": "Semanas"
     }
   }
 }

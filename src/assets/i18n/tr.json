@@ -32,7 +32,7 @@
       "balanceReceived": "Ağ, {{publicId}} için {{balance}} QUBIC bildirdi.",
       "timeoutTryAgain": "Zaman aşımı yaşanıyor. Lütfen tekrar deneyin."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -344,7 +344,7 @@
       "status.dismissed.tooltip": "Reddedildi",
       "status.unknown.tooltip": "Bilinmiyor",
       "status.confirmed.tooltip": "Aşamalı",
-      "filter.seed.label": "Cüzdana göre filtrele",      
+      "filter.seed.label": "Cüzdana göre filtrele",
       "exportButton": "Dışa Aktar"
     },
     "repeatTransaction": "İşlemi Tekrarla"
@@ -536,7 +536,7 @@
       "message": "Bu adım, cüzdan için özel/genel anahtar çifti oluşturacaktır. Bir ad seçin ve Qubic\r\n        Cüzdanınızı oluşturmak için \"Kasa Oluştur\"u seçin.",
       "stepTitle": "Kasa Oluştur",
       "vaultName": "Ad",
-      "button": "Kasa Oluştur",      
+      "button": "Kasa Oluştur",
       "placeholder": "Tresorunuz için bir isim seçin"
     },
     "createAddress": {
@@ -578,22 +578,28 @@
     "stakeQubic": {
       "title": "Qubic'e bahis yapın",
       "subText": "Coinlerinizi 52 hafta boyunca stake ederek $QUBIC kazanın.",
-      "enterAmount" : "Miktarı girin",
-      "stake" : "Hisse",
-      "availableBalance" : "Kalan bakiye",
-      "weeklySatking" : "Haftalık Staking Potu Kapanıyor",
-      "date" : "d",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Miktarı girin",
+      "stake": "Hisse",
+      "availableBalance": "Kalan bakiye",
+      "weeklySatking": "Haftalık Staking Potu Kapanıyor",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "Tutar gereklidir",
+        "min": "Tutar 10M'den büyük olmalıdır",
+        "numberOnly": "Yalnızca sayılar kabul edilir",
+        "exceedsBalance": "Tutar mevcut bakiyeyi aşamaz"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Kazanılan Ödüller",
-      "unlockEarly" : "Erken Kilidi Açın",
-      "stakedBalance" : "Staked Balance",
-      "earningRate" : "Kazanç oranı",
-      "unlocksIn" : "İçinde Kilidi Açılır",
-      "apy" : "APY",
-      "weeks" : "Haftalar"
+      "unlockEarly": "Erken Kilidi Açın",
+      "stakedBalance": "Staked Balance",
+      "earningRate": "Kazanç oranı",
+      "unlocksIn": "İçinde Kilidi Açılır",
+      "apy": "APY",
+      "weeks": "Haftalar"
     }
   }
 }

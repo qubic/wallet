@@ -32,7 +32,7 @@
       "balanceReceived": "Ответ сети {{balance}} QUBIC для {{publicId}}.",
       "timeoutTryAgain": "Таймаут. Попробуйте еще раз."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -576,22 +576,28 @@
     "stakeQubic": {
       "title": "Ставка Кубик",
       "subText": "Зарабатывайте $QUBIC, размещая свои монеты на 52 недели.",
-      "enterAmount" : "Введите сумму",
-      "stake" : "Ставка",
-      "availableBalance" : "доступные средства",
-      "weeklySatking" : "Еженедельный банк ставок закрывается",
-      "date" : "d",
-      "hour" : "h",
-      "minute": "min"
+      "enterAmount": "Введите сумму",
+      "stake": "Ставка",
+      "availableBalance": "доступные средства",
+      "weeklySatking": "Еженедельный банк ставок закрывается",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "error": {
+        "required": "Требуется сумма",
+        "min": "Сумма должна быть больше 10M",
+        "numberOnly": "Допускаются только цифры",
+        "exceedsBalance": "Сумма не может превышать доступный баланс"
+      }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Заработанные награды",
-      "unlockEarly" : "Разблокировать рано",
-      "stakedBalance" : "Баланс ставки",
-      "earningRate" : "Норма прибыли",
-      "unlocksIn" : "Разблокируется в",
-      "apy" : "APY",
-      "weeks" : "Недели"
+      "unlockEarly": "Разблокировать рано",
+      "stakedBalance": "Баланс ставки",
+      "earningRate": "Норма прибыли",
+      "unlocksIn": "Разблокируется в",
+      "apy": "APY",
+      "weeks": "Недели"
     }
   }
 }
