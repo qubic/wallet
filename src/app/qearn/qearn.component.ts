@@ -6,6 +6,7 @@ import { Transaction } from '../services/api.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
 import { TranslocoService } from '@ngneat/transloco';
+import { TimeService } from '../services/time.service';
 
 @Component({
   selector: 'app-qearn',
@@ -27,11 +28,12 @@ export class QearnComponent implements OnInit {
   })
   public tickOverwrite = false;
   public selectedAccountId = false;
-
+  public remainingTime = { days: 0, hours: 0, minutes: 0 };
   constructor(
     private fb: FormBuilder,
     private router: Router,
     public walletService: WalletService,
+    private timeService: TimeService,
     private dialog: MatDialog,
     private transloco: TranslocoService) {
     this.stakeAmount = 0;
@@ -41,8 +43,15 @@ export class QearnComponent implements OnInit {
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
-
-    this.maxAmount = this.walletService.getSeeds()[0]?.balance || 0;
+    this.stakeForm.controls.sourceId.valueChanges.subscribe(s => {
+      if (s) {
+        this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
+        console.log(this.walletService.getSeed(s))
+      }
+    });
+    this.timeService.getTimeToNewEpoch().subscribe(time => {
+      this.remainingTime = time;
+    });
   }
 
   getSeeds(isDestination = false) {

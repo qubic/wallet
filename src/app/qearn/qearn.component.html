@@ -9,16 +9,16 @@
             <div class="subText">{{ t('qearn.stakeQubic.subText') }}</div>
             <div class="col">
               <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
-                <mat-label>{{ t("paymentComponent.form.sourceSeed.label") }}</mat-label>
+                <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
                 <mat-select formControlName="sourceId" panelClass="full-width">
-                  <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
-                    class="custom-mat-option">
-                    {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                    {{ t("general.currency") }}
+                  <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId" class="custom-mat-option">
+                    {{ seed.publicId }}<br />
+                    {{ seed.alias }} - {{ seed.balance | number : '1.0-0' }}
+                    {{ t('general.currency') }}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="stakeForm.controls['sourceId'].hasError('required')">
-                  {{ t("paymentComponent.form.sourceSeed.error.required") }}
+                  {{ t('paymentComponent.form.sourceSeed.error.required') }}
                 </mat-error>
               </mat-form-field>
             </div>
@@ -37,10 +37,9 @@
             </button>
             <div class="stake-col">
               <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
-              <span class="stake-bottom stake-bottom-value">1{{ t('qearn.stakeQubic.date') }} 12{{
-                t('qearn.stakeQubic.hour') }} 12{{
-                t('qearn.stakeQubic.minute')
-                }}</span>
+              <span class="stake-bottom stake-bottom-value"
+                >{{ remainingTime.days }} {{ t('qearn.stakeQubic.date') }} {{ remainingTime.hours }} {{ t('qearn.stakeQubic.hour') }} {{ remainingTime.minutes }} {{ t('qearn.stakeQubic.minute') }}</span
+              >
             </div>
           </div>
         </mat-card-content>
