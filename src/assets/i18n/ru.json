@@ -588,6 +588,12 @@
         "min": "Сумма должна быть больше 10M",
         "numberOnly": "Допускаются только цифры",
         "exceedsBalance": "Сумма не может превышать доступный баланс"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Подтвердить стейкинг",
+        "confirmLockMessage": "Вы хотите заблокировать {{amount}} {{currency}} для стейкинга?",
+        "confirm": "Заблокировать",
+        "cancel": "Отмена"
       }
     },
     "Earned": {

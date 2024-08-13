@@ -589,6 +589,12 @@
         "min": "金额必须大于10M",
         "numberOnly": "只允许输入数字",
         "exceedsBalance": "金额不能超过可用余额"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "确认质押",
+        "confirmLockMessage": "您确定要锁定 {{amount}} {{currency}} 进行质押吗？",
+        "confirm": "锁定",
+        "cancel": "取消"
       }
     },
     "Earned": {

@@ -586,6 +586,12 @@
         "min": "Het bedrag moet groter zijn dan 10M",
         "numberOnly": "Alleen cijfers zijn toegestaan",
         "exceedsBalance": "Het bedrag mag het beschikbare saldo niet overschrijden"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Staking bevestigen",
+        "confirmLockMessage": "Wilt u {{amount}} {{currency}} vergrendelen voor staking?",
+        "confirm": "Vergrendelen",
+        "cancel": "Annuleren"
       }
     },
     "Earned": {

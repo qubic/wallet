@@ -590,6 +590,12 @@
         "min": "金額は10Mより大きくなければなりません",
         "numberOnly": "数字のみが許可されています",
         "exceedsBalance": "金額が利用可能な残高を超えることはできません"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "ステーキングを確認",
+        "confirmLockMessage": "{{amount}} {{currency}} をロックしてステーキングしますか？",
+        "confirm": "ロック",
+        "cancel": "キャンセル"
       }
     },
     "Earned": {

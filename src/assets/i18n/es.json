@@ -587,6 +587,12 @@
         "min": "El monto debe ser mayor que 10M",
         "numberOnly": "Solo se permiten números",
         "exceedsBalance": "La cantidad no puede exceder el saldo disponible"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Confirmar Stake",
+        "confirmLockMessage": "¿Desea bloquear {{amount}} {{currency}} para staking?",
+        "confirm": "Bloquear",
+        "cancel": "Cancelar"
       }
     },
     "Earned": {

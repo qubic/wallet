@@ -590,6 +590,12 @@
         "min": "Der Betrag muss größer als 10M sein",
         "numberOnly": "Nur Zahlen sind erlaubt",
         "exceedsBalance": "Der Betrag darf das verfügbare Guthaben nicht überschreiten"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Einsatz bestätigen",
+        "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für das Staking sperren?",
+        "confirm": "Sperren",
+        "cancel": "Abbrechen"
       }
     },
     "Earned": {

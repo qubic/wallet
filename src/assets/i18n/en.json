@@ -578,28 +578,34 @@
     "stakeQubic": {
       "title": "Stake Qubic",
       "subText": "Earn $QUBIC by staking your coins for 52 weeks.",
-      "enterAmount" : "Enter amount",
-      "stake" : "Stake",
-      "availableBalance" : "Available Balance",
-      "weeklySatking" : "Weekly Staking Pot Closes In",
-      "date" : "d",
-      "hour" : "h",
+      "enterAmount": "Enter amount",
+      "stake": "Stake",
+      "availableBalance": "Available Balance",
+      "weeklySatking": "Weekly Staking Pot Closes In",
+      "date": "d",
+      "hour": "h",
       "minute": "min",
       "error": {
         "required": "Amount is required",
         "min": "Amount must be greater than 10M",
         "numberOnly": "Only numbers are allowed",
         "exceedsBalance": "Amount cannot exceed available balance"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Confirm Staking",
+        "confirmLockMessage": "Do you want to lock {{amount}} {{currency}} for staking?",
+        "confirm": "Lock",
+        "cancel": "Cancel"
       }
     },
-    "Earned" : {
+    "Earned": {
       "rewards": "Earned Rewards",
-      "unlockEarly" : "Unlock Early",
-      "stakedBalance" : "Staked Balance",
-      "earningRate" : "Earning rate",
-      "unlocksIn" : "Unlocks In",
-      "apy" : "APY",
-      "weeks" : "Weeks"
+      "unlockEarly": "Unlock Early",
+      "stakedBalance": "Staked Balance",
+      "earningRate": "Earning rate",
+      "unlocksIn": "Unlocks In",
+      "apy": "APY",
+      "weeks": "Weeks"
     }
   }
 }

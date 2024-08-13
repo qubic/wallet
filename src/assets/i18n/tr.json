@@ -590,6 +590,12 @@
         "min": "Tutar 10M'den büyük olmalıdır",
         "numberOnly": "Yalnızca sayılar kabul edilir",
         "exceedsBalance": "Tutar mevcut bakiyeyi aşamaz"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Stake'i Onayla",
+        "confirmLockMessage": "{{amount}} {{currency}} kilitlemek istiyor musunuz?",
+        "confirm": "Kilitle",
+        "cancel": "İptal"
       }
     },
     "Earned": {

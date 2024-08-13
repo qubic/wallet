@@ -96,24 +96,51 @@ export class QearnComponent implements OnInit {
   }
 
   confirmLock(): void {
+    const amountToStake = this.stakeForm.controls.amount.value;
+    const currency = this.transloco.translate('general.currency');
+
     const confirmDialog = this.dialog.open(ConfirmDialog, {
       restoreFocus: false,
       data: {
-        title: `Staking ${this.transloco.translate('general.currency')}`,
-        message: `Do you want to lock ${this.stakeAmount} ${this.transloco.translate('general.currency')}?`,
-        cancel: 'Cancel',
-        confirm: 'Ok',
+        title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
+        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: amountToStake, currency })}`,
+        confirm: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirm'),
       },
     });
 
     confirmDialog.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
+        console.log('Staking confirmed:', result);
+
+      } else {
+        console.log('Staking cancelled');
+      }
+    });
+  }
+
+  showResult(result: any): void {
+    const amountToStake = this.stakeForm.controls.amount.value;
+    const currency = this.transloco.translate('general.currency');
+
+    const resultDialog = this.dialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
+        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: amountToStake, currency })}`,
+      },
+    });
+
+    resultDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Staking confirmed:', result);
+
+      } else {
+        console.log('Staking cancelled');
       }
     });
   }
 
   onSubmit(): void {
-    // Add form submission logic here
+
   }
 }
