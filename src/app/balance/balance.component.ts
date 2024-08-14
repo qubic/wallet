@@ -33,12 +33,26 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
+  
+  
+  selectedElement = new FormControl('element1'); // Das ist ein FormControl, nicht nur ein String
+
+  SegmentedControlAction(): void {
+    const element = this.selectedElement.value; // Hier wird der Wert des FormControl verwendet
+    if (element === 'element1') {
+      this.isShowAllTransactions = false;
+    } else if (element === 'element2') {
+      this.isShowAllTransactions = true;
+    }
+  }
 
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
+
+  
 
   ngOnInit(): void {
     if (!this.walletService.isWalletReady) {

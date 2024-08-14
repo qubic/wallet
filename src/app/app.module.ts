@@ -79,6 +79,7 @@ import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 /** Http interceptor providers in outside-in order */
@@ -163,6 +164,7 @@ export const httpInterceptorProviders = [
     }),
     MatSliderModule,
     MatExpansionModule,
+    MatButtonToggleModule,
   ],
 
   providers: [

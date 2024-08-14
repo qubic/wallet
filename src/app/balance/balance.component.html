@@ -1,6 +1,6 @@
 <ng-container *transloco="let t">
     <div class="content_container">
-        <h1>{{ t("general.navigation.balance") }}</h1>
+        <h1>{{ t("general.navigation.balance") }}</h1>        
         <div class="flex flex-wrap card-list">
             <div>
                 <span *ngIf="!isShowAllTransactions">
@@ -16,8 +16,6 @@
                         {{ t("balanceComponent.transactions.exportButton") }}
                     </button>
                 </span>
-                <mat-slide-toggle (change)="toggleShowAllTransactionsView($event)" [checked]="isShowAllTransactions">{{
-                    t('balanceComponent.transactions.showAllTransactions')}}</mat-slide-toggle>
             </div>
             <div style="margin-left: auto;" class="text-right">
                 <div class="eye">
@@ -27,7 +25,14 @@
                         (click)="balanceHidden()" title="Show Balance" />
                 </div>
             </div>
-        </div>
+        </div>  
+        <div class="flex flex-wrap card-list">
+            <mat-button-toggle-group [formControl]="selectedElement" aria-label="Segmented Control"
+                (change)="SegmentedControlAction()">
+                <mat-button-toggle value="element1">Current Epoch</mat-button-toggle>
+                <mat-button-toggle value="element2">All Epochs</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>     
         <span *ngIf="!isShowAllTransactions">
             <div *ngIf="getTransactions().length > 0">
                 <h2 *ngIf="!isShowAllTransactions">{{ t("balanceComponent.transactions.title") }}</h2>
