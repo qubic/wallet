@@ -26,7 +26,7 @@
                         <div class="col">
                             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width"
                                 *ngIf="selectedAccountId">
-                                <button type="button" matPrefix mat-icon-button (click)="toggleDestinationSelect()"
+                                <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
                                     matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
                                     <mat-icon>account_balance_wallet</mat-icon>
                                 </button>
@@ -50,7 +50,7 @@
                                     aria-label="Clear" (click)="transferForm.controls['destinationId'].setValue(null)">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <button type="button" matPrefix mat-icon-button (click)="toggleDestinationSelect()"
+                                <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
                                     matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
                                     <mat-icon>import_contacts</mat-icon>
                                 </button>

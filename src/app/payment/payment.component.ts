@@ -124,7 +124,7 @@ export class PaymentComponent implements OnInit {
 
   init() {
     this.transferForm.reset();
-    this.transferForm.controls.amount.setValue(1);
+    this.transferForm.controls.amount.setValue(0);
     this.us.forceUpdateCurrentTick();
   }
 
