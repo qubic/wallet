@@ -63,7 +63,7 @@
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name">
-              {{ address.alias }} <span *ngIf="!address.lastUpdate">?</span>
+              {{ address.alias }}
             </div>
             <br>
             <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
@@ -98,7 +98,7 @@
     <div *ngIf="isTable" class="mobileOnly seedList">
       <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
         <h3>
-          {{ seed.alias }} - <span *ngIf="!seed.lastUpdate">?</span>
+          {{ seed.alias }}
           <span *ngIf="seed.lastUpdate">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
           <span class="disable-area">
             {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
