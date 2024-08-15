@@ -333,8 +333,8 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
-      "showAllTransactions": "show all transactions",
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
+      "titleAllEpochs": "All Epochs",
       "verificationAlert": "Os dados da visualização não puderam ser verificados",
       "noTransactions": "Nenhuma transação encontrada",
       "send.tooltip": "Transferência de saída",

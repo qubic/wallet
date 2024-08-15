@@ -334,8 +334,8 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
-      "showAllTransactions": "show all transactions",
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
+      "titleAllEpochs": "All Epochs",
       "verificationAlert": "Los datos del resumen no pudieron ser verificados",
       "noTransactions": "No se encontraron transacciones",
       "send.tooltip": "Transferencia saliente",

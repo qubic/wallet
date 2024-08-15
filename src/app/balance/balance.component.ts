@@ -33,26 +33,12 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
-  
-  
-  selectedElement = new FormControl('element1'); // Das ist ein FormControl, nicht nur ein String
-
-  SegmentedControlAction(): void {
-    const element = this.selectedElement.value; // Hier wird der Wert des FormControl verwendet
-    if (element === 'element1') {
-      this.isShowAllTransactions = false;
-    } else if (element === 'element2') {
-      this.isShowAllTransactions = true;
-    }
-  }
-
+  selectedElement = new FormControl('element1'); 
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
-
-  
 
   ngOnInit(): void {
     if (!this.walletService.isWalletReady) {
@@ -61,7 +47,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
     this.seedFilterFormControl.valueChanges.subscribe(value => {
       this.getAllTransactionByPublicId(value);
-
     });
 
     if (this.hasSeeds()) {
@@ -108,9 +93,19 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     }
   }
 
+  
+  SegmentedControlAction(): void {
+    const element = this.selectedElement.value;
+    if (element === 'element1') {
+      this.isShowAllTransactions = false;
+    } else if (element === 'element2') {
+      this.isShowAllTransactions = true;
+    }
+    this.toggleShowAllTransactionsView();
+  }
 
-  toggleShowAllTransactionsView(event: MatSlideToggleChange) {
-    this.isShowAllTransactions = !this.isShowAllTransactions;
+
+  toggleShowAllTransactionsView() {
     this.updateTransactionsRecord();
 
     if (!this.isShowAllTransactions) {
@@ -123,6 +118,9 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         }
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    }
+    if (this.isBalanceHidden) {
+      this.balanceHidden();
     }
   }
 

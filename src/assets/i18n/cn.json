@@ -335,8 +335,8 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
-      "showAllTransactions": "show all transactions",
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
+      "titleAllEpochs": "All Epochs",
       "verificationAlert": "预览数据无法验证",
       "noTransactions": "没有发现交易",
       "send.tooltip": "转出记录",

@@ -1,6 +1,6 @@
 <ng-container *transloco="let t">
     <div class="content_container">
-        <h1>{{ t("general.navigation.balance") }}</h1>        
+        <h1>{{ t("general.navigation.balance") }}</h1>
         <div class="flex flex-wrap card-list">
             <div>
                 <span *ngIf="!isShowAllTransactions">
@@ -25,17 +25,19 @@
                         (click)="balanceHidden()" title="Show Balance" />
                 </div>
             </div>
-        </div>  
-        <div class="flex flex-wrap card-list">
+        </div>
+        <div class="text-center">
             <mat-button-toggle-group [formControl]="selectedElement" aria-label="Segmented Control"
                 (change)="SegmentedControlAction()">
-                <mat-button-toggle value="element1">Current Epoch</mat-button-toggle>
-                <mat-button-toggle value="element2">All Epochs</mat-button-toggle>
+                <mat-button-toggle value="element1">{{ t("balanceComponent.transactions.titleLastEpochs", {
+                    lastEpochsText:
+                    numberLastEpoch}) }}</mat-button-toggle>
+                <mat-button-toggle value="element2">{{ t("balanceComponent.transactions.titleAllEpochs")
+                    }}</mat-button-toggle>
             </mat-button-toggle-group>
-        </div>     
+        </div>
         <span *ngIf="!isShowAllTransactions">
             <div *ngIf="getTransactions().length > 0">
-                <h2 *ngIf="!isShowAllTransactions">{{ t("balanceComponent.transactions.title") }}</h2>
                 <div *ngIf="accountBalances.length <= 0 && hasSeeds()">
                     <div class="loading">
                         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
@@ -166,8 +168,6 @@
                 </mat-select>
             </mat-form-field>
         </span>
-        <h2 *ngIf="!isShowAllTransactions">{{ t("balanceComponent.transactions.titleLastEpochs", { lastEpochsText:
-            numberLastEpoch}) }}</h2>
         <div>
             <div *ngIf="transactionsRecord.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
