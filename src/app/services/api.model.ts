@@ -152,3 +152,7 @@ export interface QubicAsset {
   issuerIdentity: string;
 }
 
+export interface IStakingPayLoad{
+  UnlockAmount: bigint;
+  LockedEpoch: number;
+}

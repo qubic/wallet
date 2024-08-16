@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, IStakingPayLoad, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
   HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
@@ -9,7 +9,11 @@ import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
 import { map, Observable, of } from 'rxjs';
 import { TokenService } from './token.service';
+import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
+import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from 'qubic-ts-library/dist/crypto'
 
+const TRANSACTION_SIZE = 144;
+const qHelper = new QubicHelper();
 @Injectable({
   providedIn: 'root'
 })
@@ -119,7 +123,98 @@ export class ApiService {
     );
   }
 
+  /**
+   * Functions for Staking Qubic(Qearn)
+   */
+  public async broadcastTx(tx: Uint8Array) {
+    const url = `/broadcast-transaction`;
+  
+    const binaryString = Array.from(tx)
+      .map((byte) => String.fromCharCode(byte))
+      .join('');
+  
+    // Encode to base64
+    const txEncoded = btoa(binaryString);
+    // const txEncoded = Buffer.from(tx).toString("base64");
+    console.log(txEncoded);
+    const body = { encodedTransaction: txEncoded };
+  
+    try {
+      const response = await fetch(this.basePath + url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
+  public async stakingTransaction(seed: string, inputType: number, inputSize: number, amount: bigint, payload: IStakingPayLoad, tick: number) {
+    try {
+      const idPackage = await qHelper.createIdPackage(seed);
+      const qCrypto = await Crypto;
+      // Get current tick with an offset
+      const tickOffset = 5;
+      // Build transaction
+      const qearnTxSize = TRANSACTION_SIZE + inputSize;
+      const sourcePrivateKey = idPackage.privateKey;
+      const sourcePublicKey = idPackage.publicKey;
+      const tx = new Uint8Array(qearnTxSize).fill(0);
+      const txView = new DataView(tx.buffer);
+      const contractIndex = 6;
+      let offset = 0;
+      let i = 0;
+      for (i = 0; i < PUBLIC_KEY_LENGTH; i++) {
+        tx[i] = sourcePublicKey[i];
+      }
+      offset = i;
+      tx[offset] = contractIndex;
+      offset++;
+      for (i = 1; i < PUBLIC_KEY_LENGTH; i++) {
+        tx[offset + i] = 0;
+      }
+      offset += i - 1;
+      txView.setBigInt64(offset, amount, true);
+      offset += 8;
+      txView.setUint32(offset, tick + tickOffset, true);
+      offset += 4;
+      txView.setUint16(offset, inputType, true);
+      offset += 2;
+      txView.setUint16(offset, inputSize, true);
+      offset += 2;
+      if (payload.UnlockAmount) {
+        txView.setBigUint64(offset, BigInt(payload.UnlockAmount), true);
+        offset += 8;
+      }
+      if (payload.LockedEpoch) {
+        txView.setUint32(offset, payload.LockedEpoch, true);
+        offset += 4;
+      }
+      const digest = new Uint8Array(DIGEST_LENGTH);
+      const toSign = tx.slice(0, offset);
+      qCrypto.K12(toSign, digest, DIGEST_LENGTH);
+      const signedTx = qCrypto.schnorrq.sign(
+        sourcePrivateKey,
+        sourcePublicKey,
+        digest
+      );
+      tx.set(signedTx, offset);
+      offset += SIGNATURE_LENGTH;
+
+      const txResult = await this.broadcastTx(tx);
+      return {
+        txResult,
+      };
+    } catch (error) {
+      console.error("Error signing transaction:", error);
+      throw new Error("Failed to sign and broadcast transaction.");
+    }
+  }
 
   public getCurrentIpoBids(publicIds: string[]) {
     let localVarPath = `/Wallet/CurrentIpoBids`;
