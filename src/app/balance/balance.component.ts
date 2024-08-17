@@ -5,7 +5,7 @@ import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, Transaction } from '../services/api.model';
-import { TranscationsArchiver, TransactionRecord, TransactionArchiver } from '../services/api.archiver.model';
+import { TranscationsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -33,7 +33,12 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public transactionsArchiver: TranscationsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
-  selectedElement = new FormControl('element1'); 
+  selectedElement = new FormControl('element1');
+
+  public status!: StatusArchiver;
+  public currentSelectedEpoch = 0;
+  public initialProcessedTick: number = 0;
+  public lastProcessedTick: number = 0;
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
@@ -41,6 +46,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.getStatusArchiver();
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
@@ -93,15 +99,42 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
+  //**  new Archiver Api */
+  private getStatusArchiver() {
+    this.apiArchiver.getStatus().subscribe(s => {
+      if (s) {
+        this.status = s;
+        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length-1].epoch;
+        this.GetTransactionsByTick(this.currentSelectedEpoch);
+      }
+    }, errorResponse => {
+      console.log('errorResponse:', errorResponse);
+    });
+  }
+
+
   SegmentedControlAction(): void {
     const element = this.selectedElement.value;
     if (element === 'element1') {
       this.isShowAllTransactions = false;
+      this.initialProcessedTick = 0;
+      this.lastProcessedTick = this.currentTickArchiver.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
     }
     this.toggleShowAllTransactionsView();
+  }
+
+
+  GetTransactionsByTick(epoch: number): void {
+    this.status.processedTickIntervalsPerEpoch
+      .filter(t=> t.epoch === epoch)
+      .forEach(e => {
+        this.initialProcessedTick = e.intervals[0].initialProcessedTick;
+        this.lastProcessedTick = e.intervals[0].lastProcessedTick;
+        this.currentSelectedEpoch = e.epoch;
+      });
+    this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
   }
 
 
@@ -112,7 +145,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       this.seedFilterFormControl.setValue(null);
     } else {
       if (!this.seedFilterFormControl.value) {
-        const seeds = this.getSeeds();
+        const seeds = this.getSeedsWithOnlyWatch();
         if (seeds.length > 0) {
           this.seedFilterFormControl.setValue(seeds[0].publicId);
         }
@@ -141,7 +174,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, 0, this.currentTickArchiver.value).subscribe(r => {
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(r => {
       if (r) {
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
@@ -199,7 +232,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
       return validSeeds.includes(transaction.sourceId) || validSeeds.includes(transaction.destId);
     });
   }
- 
+
 
   hasSeeds() {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).length > 0;
@@ -219,6 +252,10 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
   getSeeds() {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
+  }
+
+  getSeedsWithOnlyWatch() {
+    return this.walletService.getSeeds();
   }
 
 
@@ -256,7 +293,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     return csvRows.join('\n');
   }
 
- 
+
   private downloadCsv(data: string, filename: string) {
     const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
@@ -269,18 +306,18 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   }
 
 
-   displayPublicId(input: string): string {
+  displayPublicId(input: string): string {
     if (input.length <= 10) {
-      return input; 
+      return input;
     }
-  
+
     const start = input.slice(0, 5);
     const end = input.slice(-5);
-  
+
     return `${start}...${end}`;
   }
 
-  
+
   // getSeedName(publicId: string): string {
   //   var seed = this.walletService.getSeed(publicId);
   //   if (seed !== undefined)
@@ -299,7 +336,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   // }
 
 
-   // private getTransactionStatusLabel(status: string): string {
+  // private getTransactionStatusLabel(status: string): string {
   //   switch (status) {
   //     case 'Pending':
   //     case 'Broadcasted':
