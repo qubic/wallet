@@ -54,48 +54,55 @@
             <input matInput formControlName="seed" type="text" required [readonly]="fieldSeedDisabled" />
           </mat-form-field>
         </div>
-        <mat-error *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('required')">
+        <mat-error
+          *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('required')">
           {{ t("seedEditComponent.form.seed.error.required")}}
         </mat-error>
-        <mat-error *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('minlength')">
+        <mat-error
+          *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('minlength')">
           {{ t("seedEditComponent.form.seed.error.min")}}
         </mat-error>
-        <mat-error *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('maxlength')">
+        <mat-error
+          *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('maxlength')">
           {{ t("seedEditComponent.form.seed.error.max")}}
         </mat-error>
-        <mat-error *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('pattern')">
+        <mat-error
+          *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && seedEditForm.controls['seed'].hasError('pattern')">
           {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
         </mat-error>
-        <div class="flex full-width button-container">
-          <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" [disabled]="!fieldSeedDisabled"  color="warn" (click)="resetSeed()">
-            {{ t('ownSeedWarningDialog.button') }}
-          </button>
-          <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="accent"
-            (click)="randomizeSeed()">{{ t('seedEditComponent.form.seed.generateSeed') }}</button>
-        </div>
-        <div *ngIf="getPublicId() && !seedEditForm.controls['isWatchOnlyAddress'].value"
-          class="puglicIdView word-break">
-          <strong>{{ t("seedEditComponent.publicIdMessage")}}</strong><br>
-          <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="getPublicId()">
-            {{getPublicId()}}</div>
-          <div *ngIf="!walletService.privateKey" class="keywarning">
-            <br>
-            {{ t("seedEditComponent.privateKeyWarning")}}
-          </div>          
-        </div>
-        <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint">  {{ t("ownSeedWarningDialog.hint")}}</div>       
       </form>
+      <div class="flex full-width button-container">
+        <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew"
+          [disabled]="!fieldSeedDisabled" color="warn" (click)="resetSeed()">
+          {{ t('ownSeedWarningDialog.button') }}
+        </button>
+        <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="accent"
+          (click)="randomizeSeed()">{{ t('seedEditComponent.form.seed.generateSeed') }}</button>
+      </div>
+      <div *ngIf="getPublicId() && !seedEditForm.controls['isWatchOnlyAddress'].value" class="puglicIdView word-break">
+        <strong>{{ t("seedEditComponent.publicIdMessage")}}</strong><br>
+        <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="getPublicId()">
+          {{getPublicId()}}</div>
+        <div *ngIf="!walletService.privateKey" class="keywarning">
+          <br>
+          {{ t("seedEditComponent.privateKeyWarning")}}
+        </div>
+      </div>
+      <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
+      </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="text-center">
-      <button mat-raised-button mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>     
-      <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" [mat-dialog-close]
-        color="accent" (click)="onSubmit()" [disabled]="!this.seedEditForm.valid">{{
+      <button mat-raised-button mat-dialog-close> {{ t("seedEditComponent.buttons.cancel")}}</button>
+      <button mat-raised-button [mat-dialog-close]="true"
+        *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="primary" (click)="onSubmit()"
+        [disabled]="!this.seedEditForm.valid">{{
         t("seedEditComponent.buttons.create")}}</button>
-      <button mat-raised-button *ngIf="seedEditForm.controls['isWatchOnlyAddress'].value && isNew" [mat-dialog-close]
-        color="accent" (click)="onSubmit()">{{ t("seedEditComponent.buttons.create")}}</button>
-      <button mat-raised-button *ngIf="walletService.privateKey && !isNew" [mat-dialog-close]="true" color="accent"
+      <button mat-raised-button [mat-dialog-close]="true"
+        *ngIf="seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="primary" (click)="onSubmit()">{{
+        t("seedEditComponent.buttons.create")}}</button>
+      <button mat-raised-button *ngIf="walletService.privateKey && !isNew" [mat-dialog-close]="true" color="primary"
         (click)="onSubmit()">{{ t("seedEditComponent.buttons.save")}}</button>
     </div>
   </mat-dialog-actions>
