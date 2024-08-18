@@ -85,7 +85,7 @@ export class ApiArchiverService {
       responseType: 'json'
     }).pipe(
       tap(response => {
-      // console.log('Response from getTransactions:', response);
+       //console.log('Response from getTransactions:', response);
       })
     );
   }

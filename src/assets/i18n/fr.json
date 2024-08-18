@@ -335,7 +335,7 @@
     "transactions": {
       "title": "Open transactions",
       "titleLastEpochs": "The last {{lastEpochsText}} epochs",     
-      "titleAllEpochs": "All Epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Les données de l'aperçu n'ont pas pu être vérifiées",
       "noTransactions": "Aucune transaction trouvée",
       "send.tooltip": "Transfert sortant",

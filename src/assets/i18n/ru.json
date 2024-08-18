@@ -336,7 +336,7 @@
     "transactions": {
       "title": "Open transactions",
       "titleLastEpochs": "The last {{lastEpochsText}} epochs",
-      "titleAllEpochs": "All Epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Не удалось проверить данные предварительного просмотра",
       "noTransactions": "Транзакции не найдены",
       "send.tooltip": "Исходящий перевод",

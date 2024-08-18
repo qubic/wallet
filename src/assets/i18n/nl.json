@@ -335,7 +335,7 @@
     "transactions": {
       "title": "Open transactions",
       "titleLastEpochs": "The last {{lastEpochsText}} epochs",
-      "titleAllEpochs": "All Epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Voorbeeldgegevens konden niet worden gecontroleerd",
       "noTransactions": "Geen transacties gevonden",
       "send.tooltip": "Uitgaande transacties",

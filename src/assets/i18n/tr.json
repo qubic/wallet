@@ -336,7 +336,7 @@
     "transactions": {
       "title": "Open transactions",
       "titleLastEpochs": "The last {{lastEpochsText}} epochs",
-      "titleAllEpochs": "All Epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Önizleme verileri doğrulanamadı",
       "noTransactions": "İşlem bulunamadı",
       "send.tooltip": "Giden Transfer",
