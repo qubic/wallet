@@ -6,6 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../core/confirm-dialog/confirm-dialog.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { TimeService } from '../../services/time.service';
+import { ApiService } from 'src/app/services/api.service';
+import { UpdaterService } from 'src/app/services/updater-service';
+import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
+import { lastValueFrom } from 'rxjs';
+import { QearnService } from 'src/app/services/qearn.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-staking',
@@ -13,10 +19,10 @@ import { TimeService } from '../../services/time.service';
   styleUrls: ['./staking.component.scss'],
 })
 export class StakingComponent {
-  public maxAmount = 0;
-  public stakeAmount = 0;
+  public maxAmount = 0n;
+  public stakeAmount = 0n;
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
-
+  public tick = 0;
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
     amount: [0, [Validators.required, Validators.min(10000000), Validators.pattern(/^[0-9]*$/)]],
@@ -31,7 +37,11 @@ export class StakingComponent {
     private walletService: WalletService,
     private timeService: TimeService,
     private dialog: MatDialog,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
+    private apiService: ApiService,
+    private updaterService: UpdaterService,
+    private qearnService: QearnService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -40,16 +50,35 @@ export class StakingComponent {
     this.subscribeToTimeUpdates();
   }
 
+  async lockQubic(seed: string, amount: bigint, tick: number) {
+    return this.qearnService.lockQubic(seed, amount, tick);
+  }
+
+  async unLockQubic(seed: string, amount: bigint, epoch: number, tick: number) {
+    return this.qearnService.unLockQubic(seed, amount, epoch, tick);
+  }
+
+  async getLockInfoPerEpoch(epoch: number) {
+    return this.qearnService.getLockInfoPerEpoch(epoch);
+  }
+
+  async getUserLockInfo(user: Uint8Array, epoch: number) {
+    return this.qearnService.getUserLockInfo(user, epoch);
+  }
+
   private redirectIfWalletNotReady(): void {
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']);
     }
+    this.apiService.getCurrentTick().subscribe((s) => {
+      this.tick = s.tickInfo.tick;
+    });
   }
 
   private setupSourceIdValueChange(): void {
     this.stakeForm.controls.sourceId.valueChanges.subscribe((s) => {
       if (s) {
-        this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
+        this.maxAmount = BigInt(this.walletService.getSeed(s)?.balance ?? 0);
       }
     });
   }
@@ -67,6 +96,7 @@ export class StakingComponent {
 
   validateAmount(event: any): void {
     const value = event.target.value;
+    this.stakeAmount = BigInt(value);
     if (!/^[0-9]*$/.test(value)) {
       this.stakeForm.controls.amount.setErrors({ pattern: true });
     }
@@ -98,11 +128,24 @@ export class StakingComponent {
       },
     });
 
-    confirmDialog.afterClosed().subscribe((result) => {
+    confirmDialog.afterClosed().subscribe(async (result) => {
       if (result) {
-        console.log('Staking confirmed:', result);
+        try {
+          const seed = await this.walletService.revealSeed(this.stakeForm.controls.sourceId.value!);
+          const result = await this.qearnService.lockQubic(seed, this.stakeAmount, this.tick);
+          if (result.txResult)
+            this._snackBar.open('Success!', this.transloco.translate('general.close'), {
+              duration: 0,
+              panelClass: 'success',
+            });
+        } catch (error) {
+          console.log(error);
+          this._snackBar.open('Something went wrong!', this.transloco.translate('general.close'), {
+            duration: 0,
+            panelClass: 'error',
+          });
+        }
       } else {
-        console.log('Staking cancelled');
       }
     });
   }
