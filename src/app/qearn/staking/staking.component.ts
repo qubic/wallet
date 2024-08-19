@@ -35,12 +35,12 @@ export class StakingComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private walletService: WalletService,
+    public walletService: WalletService,
     private timeService: TimeService,
     private dialog: MatDialog,
     private transloco: TranslocoService,
     private apiService: ApiService,
-    private updaterService: UpdaterService,
+    private us: UpdaterService,
     private qearnService: QearnService,
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService
@@ -115,6 +115,14 @@ export class StakingComponent {
   }
 
   confirmLock(): void {
+    if (!this.walletService.privateKey) {
+      this._snackBar.open(this.transloco.translate('paymentComponent.messages.pleaseUnlock'), this.transloco.translate('general.close'), {
+        duration: 5000,
+        panelClass: 'error',
+      });
+      return;
+    }
+
     const amountToStake = this.stakeForm.controls.amount.value;
     const currency = this.transloco.translate('general.currency');
 
@@ -139,7 +147,6 @@ export class StakingComponent {
               panelClass: 'success',
             });
         } catch (error) {
-          console.log(error);
           this._snackBar.open('Something went wrong!', this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',

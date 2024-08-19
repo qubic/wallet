@@ -14,6 +14,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
+import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 
 export interface IStakeHistory {
   publicId: string;
@@ -60,12 +61,12 @@ export class HistoryComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   async ngOnIinit() {
-    // await this.fetchData();
+    await this.fetchData();
   }
 
   async ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    // await this.fetchData();
+    await this.fetchData();
   }
 
   public async fetchData() {
@@ -73,7 +74,7 @@ export class HistoryComponent implements AfterViewInit {
     const seeds = this.walletService.getSeeds();
     const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
     for (const seedObj of seeds) {
-      const pubKey = this.qearnService.getPublicKeyFromIdentity(seedObj.publicId);
+      const pubKey = new PublicKey(seedObj.publicId).getPackageData();
       for (let j = 0; j < 4; j++) {
         const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(122 - j);
         const lockAmount = await this.qearnService.getUserLockInfo(pubKey, 122 - j);
@@ -108,6 +109,14 @@ export class HistoryComponent implements AfterViewInit {
   }
 
   openEarlyUnlockModal(element: IStakeHistory): void {
+    if (!this.walletService.privateKey) {
+      this._snackBar.open(this.transloco.translate('paymentComponent.messages.pleaseUnlock'), this.transloco.translate('general.close'), {
+        duration: 5000,
+        panelClass: 'error',
+      });
+      return;
+    }
+
     const dialogRef = this.dialog.open(ConfirmDialog, {
       restoreFocus: false,
       data: {
@@ -129,7 +138,6 @@ export class HistoryComponent implements AfterViewInit {
             });
           }
         } catch (error) {
-          console.log(error);
           this._snackBar.open('Something went wrong during unlock!', this.transloco.translate('general.close'), {
             duration: 3000,
             panelClass: 'error',

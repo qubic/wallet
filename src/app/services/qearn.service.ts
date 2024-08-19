@@ -8,23 +8,6 @@ import { lastValueFrom } from 'rxjs';
 export class QearnService {
   constructor(private apiService: ApiService) {}
 
-  public getPublicKeyFromIdentity(identity: string) {
-    const publicKeyBuffer = new Uint8Array(32);
-    for (let i = 0; i < 4; i++) {
-      let value = 0n;
-      for (let j = 13; j >= 0; j--) {
-        const char = identity[i * 14 + j];
-        if (char < 'A' || char > 'Z') {
-          throw new Error('Invalid character in identity');
-        }
-        value = value * 26n + BigInt(char.charCodeAt(0) - 'A'.charCodeAt(0));
-      }
-      const view = new DataView(publicKeyBuffer.buffer);
-      view.setBigUint64(i * 8, value, true);
-    }
-    return publicKeyBuffer;
-  }
-
   public async lockQubic(seed: string, amount: bigint, tick: number) {
     const res = await this.apiService.contractTransaction(seed, 1, 0, amount, {}, tick);
     return res;
