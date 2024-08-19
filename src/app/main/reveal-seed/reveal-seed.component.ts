@@ -18,12 +18,15 @@ import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 })
 export class RevealSeedDialog extends QubicDialogWrapper {
   public s = '';
+  public addressAlias = '';
   constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, chgd: ChangeDetectorRef, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar) {
     super(renderer, themeService);
     this.walletService.revealSeed(data.publicId).then(s => {
       this.s = s;
       chgd.detectChanges();
     });
+
+    this.addressAlias = this.walletService.getSeed(data.publicId)?.alias ?? '';
   }
 
 

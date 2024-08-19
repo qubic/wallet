@@ -45,7 +45,8 @@ export class ApiArchiverService {
       }
     ).pipe(
       map((response: StatusArchiver) => {
-        if (response) {
+        if (response) {          
+          //console.log('Response from getStatus:', response);
           return response;
         } else {
           throw new Error('Invalid response format');
@@ -64,6 +65,7 @@ export class ApiArchiverService {
     ).pipe(
       map((response: LatestTickResponseArchiver) => {
         if (response && typeof response.latestTick === 'number') {
+          // console.log('Response from getCurrentTick:', response);
           return response.latestTick;
         } else {
           throw new Error('Invalid response format');
@@ -76,12 +78,14 @@ export class ApiArchiverService {
 
   public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
+    // alert(localVarPath);
+    // console.log('localVarPath: ', localVarPath);
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
     }).pipe(
       tap(response => {
-       // console.log('Response from getTransactions:', response);
+       //console.log('Response from getTransactions:', response);
       })
     );
   }

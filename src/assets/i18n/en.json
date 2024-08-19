@@ -54,7 +54,12 @@
       "confirm": "Yes, I confirm"
     },
     "confirmationText": "Are you sure?"
-  },
+  },  
+  "maxNumberOfAddressesDialog": {
+    "title": "Important note",
+    "button": "Okay",
+    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -251,7 +256,7 @@
     "unlock": "Unlock Vault"
   },
   "lockComponent": {
-    "title": "Close Vault?",
+    "title": "Lock Vault?",
     "forceDownload": {
       "title": "Download Vault File",
       "reason": "When you lock your Wallet your loaded Vault file is automatically deleted. Without this Vault file no transactions can be made. Please be aware your Vault file is safely stored. Export it again in case of any doubt...",
@@ -331,8 +336,8 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
-      "showAllTransactions": "show all transactions",
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Preview data could not be verified",
       "noTransactions": "No Transactions found",
       "send.tooltip": "Outgoing Transfer",

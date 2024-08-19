@@ -19,8 +19,9 @@
                                 <div class="col">
                                     <mat-form-field appearance="fill" placeholder="Computor Seed" class="full-width">
                                         <mat-label>{{ t("votingComponent.create.form.sourceSeed.label") }}</mat-label>
-                                        <mat-select formControlName="computorId">                                           
-                                            <mat-option *ngFor="let seed of getComputors()" [value]="seed.publicId" class="custom-mat-option">
+                                        <mat-select formControlName="computorId">
+                                            <mat-option *ngFor="let seed of getComputors()" [value]="seed.publicId"
+                                                class="custom-mat-option">
                                                 {{ seed.publicId }} <br />{{seed.alias}}
                                             </mat-option>
                                         </mat-select>
@@ -202,26 +203,28 @@
                                 </div>
                             </div>
                             <div>
-                                <button mat-raised-button color="accent" type="submit"
-                                    [disabled]="!proposalForm.valid">{{
-                                    t("votingComponent.create.buttons.create") }}</button>
-                                <button mat-raised-button (click)="stepper.reset()" type="button">{{
-                                    t("votingComponent.create.buttons.reset") }}</button>
                                 <button [routerLink]="['/voting']" mat-raised-button type="button">
                                     {{ t("votingComponent.create.cancelButton") }}
                                 </button>
+                                <button mat-raised-button (click)="stepper.reset()" color="accent" type="button">{{
+                                    t("votingComponent.create.buttons.reset") }}</button>
+                                <button mat-raised-button color="primary" type="submit"
+                                    [disabled]="!proposalForm.valid">{{
+                                    t("votingComponent.create.buttons.create") }}</button>
                             </div>
                         </form>
                     </mat-step>
-                    <mat-step [stepControl]="isPublishedFormControl" label="{{ t('votingComponent.create.publishStep.label') }}"
-                        [completed]="this.isPublished" [editable]="false">
+                    <mat-step [stepControl]="isPublishedFormControl"
+                        label="{{ t('votingComponent.create.publishStep.label') }}" [completed]="this.isPublished"
+                        [editable]="false">
                         <form [formGroup]="publishForm" novalidate (ngSubmit)="submitPublishForm()">
                             <div class="row">
                                 <div class="col">
                                     <mat-form-field appearance="fill" placeholder="Operator Seed" class="full-width">
                                         <mat-label>{{ t("votingComponent.create.form.operatorSeed.label") }}</mat-label>
-                                        <mat-select formControlName="operatorId">                                           
-                                            <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId" class="custom-mat-option">
+                                        <mat-select formControlName="operatorId">
+                                            <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId"
+                                                class="custom-mat-option">
                                                 {{ seed.publicId }} <br />{{seed.alias}}
                                             </mat-option>
                                         </mat-select>
@@ -257,13 +260,13 @@
                                     <div></div>
                                 </div>
                                 <div *ngIf="!isPublishing">
+                                    <button mat-raised-button (click)="stepper.reset()">Reset</button>
                                     <button *ngIf="!walletService.privateKey" mat-raised-button color="accent"
-                                        type="button" (click)="loadKey()">{{
+                                    type="button" (click)="loadKey()">{{
                                         t("votingComponent.create.buttons.loadPrivateKey") }}</button>
-                                    <button *ngIf="walletService.privateKey" mat-raised-button color="accent"
+                                    <button *ngIf="walletService.privateKey" mat-raised-button color="primary"
                                         type="submit" [disabled]="!proposalForm.valid">{{
                                         t("votingComponent.create.buttons.publish") }}</button>
-                                    <button mat-raised-button (click)="stepper.reset()">Reset</button>
                                 </div>
                             </div>
                         </form>
@@ -271,7 +274,7 @@
                     <mat-step label="{{ t('votingComponent.create.finishStep.label') }}">
                         <p>{{ t('votingComponent.create.finishStep.success') }}</p>
                         <div>
-                            <button mat-raised-button color="accent" [routerLink]="['/voting']" type="button">{{
+                            <button mat-raised-button color="primary" [routerLink]="['/voting']" type="button">{{
                                 t("votingComponent.create.buttons.finish") }}</button>
                         </div>
                     </mat-step>

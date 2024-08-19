@@ -23,7 +23,7 @@
             <mat-card class="proposal-card word-break" *ngFor="let p of ipoContracts">
                 <mat-card-content>
                     <h2>{{ p.name }}</h2>
-                    <button [routerLink]="['/ipo/participate/', p.index]" mat-raised-button color="accent">
+                    <button [routerLink]="['/ipo/participate/', p.index]" mat-raised-button color="primary">
                         <mat-icon>payments</mat-icon> {{ t("ipoComponent.buttons.place-bid") }}
                     </button>
                     <button mat-raised-button (click)="init()">

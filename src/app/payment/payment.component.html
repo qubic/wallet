@@ -26,7 +26,7 @@
                         <div class="col">
                             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width"
                                 *ngIf="selectedAccountId">
-                                <button type="button" matPrefix mat-icon-button (click)="toggleDestinationSelect()"
+                                <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
                                     matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
                                     <mat-icon>account_balance_wallet</mat-icon>
                                 </button>
@@ -50,7 +50,7 @@
                                     aria-label="Clear" (click)="transferForm.controls['destinationId'].setValue(null)">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <button type="button" matPrefix mat-icon-button (click)="toggleDestinationSelect()"
+                                <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
                                     matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
                                     <mat-icon>import_contacts</mat-icon>
                                 </button>
@@ -124,7 +124,9 @@
                         </div>
                     </div>
                 </mat-card-content>
-                <mat-card-actions class="padding">
+                <mat-card-actions class="padding">                    
+                    <button mat-raised-button type="button" (click)="init()">{{
+                        t("paymentComponent.buttons.reset") }}</button>
                     <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
                         [disabled]="!transferForm.valid || !walletService.privateKey || isBroadcasting">
                         <span *ngIf="!isBroadcasting">
@@ -134,11 +136,9 @@
                         </mat-progress-spinner>
                     </button>
                     <div *ngIf="!walletService.privateKey">
-                        <button mat-raised-button color="accent" type="button" (click)="loadKey()">{{
+                        <button mat-raised-button color="primary" type="button" (click)="loadKey()">{{
                             t("paymentComponent.buttons.loadPrivateKey") }}</button>
                     </div>
-                    <button mat-raised-button type="button" (click)="init()">{{
-                        t("paymentComponent.buttons.reset") }}</button>
                 </mat-card-actions>
             </mat-card>
         </form>

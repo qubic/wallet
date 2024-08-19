@@ -229,7 +229,10 @@
             t("assetsComponent.form.buttons.error.balance") }}
           </div>
           <mat-card-actions class="padding">
-            <button *ngIf="!walletService.privateKey" mat-raised-button color="accent" type="button"
+            <button mat-raised-button type="button" (click)="cancelSendForm()">
+              {{ t("assetsComponent.form.buttons.cancel") }}
+            </button>
+            <button *ngIf="!walletService.privateKey" mat-raised-button color="primary" type="button"
               (click)="loadKey()">{{ t("votingComponent.create.buttons.loadPrivateKey") }}
             </button>
             <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
@@ -238,11 +241,7 @@
               <mat-progress-spinner *ngIf="isSending" mode="indeterminate" [diameter]="20">
               </mat-progress-spinner>
             </button>
-            <button mat-raised-button type="button" (click)="cancelSendForm()">
-              {{ t("assetsComponent.form.buttons.cancel") }}
-            </button>
           </mat-card-actions>
-
         </form>
       </mat-card-content>
     </mat-card>

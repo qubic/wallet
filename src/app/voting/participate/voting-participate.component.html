@@ -92,7 +92,16 @@
                 {{getSelectedComputorCount()}} {{ t("votingComponent.participate.computorsSelected") }}
                 <hr>
                 <div>
-                    <button mat-raised-button *ngIf="walletService.privateKey" color="accent" [disabled]="isPublishing"
+                    <button *ngIf="!isPublishing" [routerLink]="['/voting']" mat-raised-button type="button">
+                        {{ t("votingComponent.participate.cancelButton") }}
+                    </button>
+                    <button *ngIf="isPublishing" mat-raised-button (click)="cancelPublish()" type="button">
+                        {{ t("votingComponent.participate.cancelButton") }}
+                    </button>
+                    <button *ngIf="!walletService.privateKey" mat-raised-button color="accent" type="button"
+                    (click)="loadKey()">{{
+                    t("votingComponent.create.buttons.loadPrivateKey") }}</button>
+                    <button mat-raised-button *ngIf="walletService.privateKey" color="primary" [disabled]="isPublishing"
                         [disabled]="!publishForm.valid || getSelectedComputorCount() <= 0" (click)="sendVotes()">
                         <mat-icon>how_to_vote</mat-icon>
                         <span *ngIf="!isPublishing">
@@ -100,15 +109,6 @@
                         </span>
                         <mat-progress-spinner mode="indeterminate" [diameter]="20" *ngIf="isPublishing">
                         </mat-progress-spinner>
-                    </button>
-                    <button *ngIf="isPublishing" mat-raised-button (click)="cancelPublish()" type="button">
-                        {{ t("votingComponent.participate.cancelButton") }}
-                    </button>
-                    <button *ngIf="!walletService.privateKey" mat-raised-button color="accent" type="button"
-                        (click)="loadKey()">{{
-                        t("votingComponent.create.buttons.loadPrivateKey") }}</button>
-                    <button *ngIf="!isPublishing" [routerLink]="['/voting']" mat-raised-button type="button">
-                        {{ t("votingComponent.participate.cancelButton") }}
                     </button>
                 </div>
             </mat-card-content>

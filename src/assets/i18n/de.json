@@ -56,6 +56,13 @@
     "confirmationText": "Sind sie sicher?"
   },
   "switchExportDialog": {
+  },  
+  "maxNumberOfAddressesDialog": {
+    "title": "Wichtiger Hinweis",
+    "button": "Okay",
+    "message": "<div>Sie habe die maximale Anzahl von 15 Adressen in Ihrer Wallet erreicht.</div>"
+   },
+   "switchExportDialog": {
     "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
     "buttons": {
       "cancel": "Abbrechen",
@@ -331,8 +338,8 @@
     },
     "transactions": {
       "title": "Offene Buchungen",
-      "titleLastEpochs": "Transactionen der letzten {{lastEpochsText}} Epochen",
-      "showAllTransactions": "Alle Transaktionen anzeigen",
+      "titleLastEpochs": "Die letzten {{lastEpochsText}} Epochen",
+      "titleAllEpochs": "Nach Epochen",
       "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
       "noTransactions": "Keine Buchungen gefunden",
       "send.tooltip": "Ausgehende Überweisung",
@@ -375,13 +382,13 @@
   },
   "votingComponent": {
     "title": "Qubic Computor Abstimmung",
-    "description": "Das Qubic-Computervoting dient der Konsensfindung über zu entscheidende Themen im gesamten Netzwerk. Dies kann das Akzeptieren intelligenter Verträge oder das Treffen anderer Protokollentscheidungen umfassen. Es dürfen nur Computer teilnehmen.",
+    "description": "Die Qubic-Computor-Abstimmung dient der Konsensfindung über zu entscheidende Themen im gesamten Netzwerk. Dies kann das Akzeptieren intelligenter Verträge oder das Treffen anderer Protokollentscheidungen umfassen. Es dürfen nur Computor teilnehmen.",
     "proposals": {
       "editButton": "Bearbeiten",
       "createButton": "Vorschlag erstellen",
       "voteButton": "Abstimmen",
       "title": "{{amount}} Vorschläge",
-      "noComputorHint": "Du hast keine registrierten Computors. Wenn du etwas vorschlagen möchtest, musst du mindestens einen Computor haben.",
+      "noComputorHint": "Du hast keinen registrierten Computor. Wenn du etwas vorschlagen möchtest, musst du mindestens einen Computor haben.",
       "votingResult": "Ergebnis",
       "noVotes": "keine Stimmen",
       "from": "Von:",
@@ -404,14 +411,14 @@
         "create": "Vorschlag erstellen",
         "publish": "Verbinden und Vorschlag publizieren",
         "reset": "Zurücksetzen",
-        "loadPrivateKey": "Vault öffnen",
+        "loadPrivateKey": "Tresor-Datei öffnen",
         "finish": "Zeige Vorschläge"
       },
       "form": {
         "operatorSeed.label": "Operator Seed",
         "operatorSeed.error.required": "Operator ist erforderlich",
-        "sourceSeed.label": "Computer",
-        "sourceSeed.error.required": "Computer ist erforderlich",
+        "sourceSeed.label": "Computor",
+        "sourceSeed.error.required": "Computor ist erforderlich",
         "title.label": "Titel",
         "title.placeholder": "Titel",
         "title.error.required": "Titel ist erforderlich",

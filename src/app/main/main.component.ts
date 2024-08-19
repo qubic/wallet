@@ -42,6 +42,8 @@ export class MainComponent implements AfterViewInit {
   public isMobile = false;
   isBalanceHidden: boolean = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
+  maxNumberOfAddresses: number = 15;
+
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
@@ -231,6 +233,17 @@ export class MainComponent implements AfterViewInit {
   }
 
   addSeed() {
+    if(this.walletService.getSeeds().length >= this.maxNumberOfAddresses){
+      const dialogRef = this.dialog.open(OkDialog, {
+        data: {
+          title: this.transloco.translate("maxNumberOfAddressesDialog.title"),
+          message: this.transloco.translate("maxNumberOfAddressesDialog.message"),
+          button: this.transloco.translate("maxNumberOfAddressesDialog.button")
+        },
+      });
+      return;
+    }
+
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
     } else {
@@ -284,6 +297,10 @@ export class MainComponent implements AfterViewInit {
 
   hasAssets(publicId: string): boolean {
     return (this.walletService.getSeed(publicId)?.assets?.length ?? 0) > 0;
+  }
+
+  hasIsOnlyWatch(publicId: string): boolean {
+    return !this.walletService.getSeed(publicId)?.isOnlyWatch ?? false;
   }
 
   reveal(publicId: string) {

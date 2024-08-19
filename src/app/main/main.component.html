@@ -4,9 +4,8 @@
       <h1 [innerHTML]="textQubicLiShutdown" class="danger text-center"></h1>
     </div>
     <div class="flex flex-wrap card-list">
-      <div>
-        <h1 *ngIf="isTable">{{ t("seedOverviewComponent.title") }}</h1>
-        <h1 *ngIf="!isTable">{{ t("dashboard.title") }}</h1>
+      <div>       
+        <h1>{{ t("seedOverviewComponent.title") }} ({{walletService.getSeeds().length}}/{{maxNumberOfAddresses}})</h1>
       </div>
       <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
@@ -24,7 +23,7 @@
     </mat-form-field>
     <div class="flex flex-wrap card-list">
       <div>
-        <button color="accent" mat-raised-button (click)="addSeed()">
+        <button color="primary" mat-raised-button (click)="addSeed()">
           <mat-icon>add_circle</mat-icon>
           {{ t("seedOverviewComponent.addSeedButton") }}
         </button>&nbsp;
@@ -64,7 +63,7 @@
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name">
-              {{ address.alias }} <span *ngIf="!address.lastUpdate">?</span>
+              {{ address.alias }}
             </div>
             <br>
             <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
@@ -99,7 +98,7 @@
     <div *ngIf="isTable" class="mobileOnly seedList">
       <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
         <h3>
-          {{ seed.alias }} - <span *ngIf="!seed.lastUpdate">?</span>
+          {{ seed.alias }}
           <span *ngIf="seed.lastUpdate">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
           <span class="disable-area">
             {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
@@ -206,7 +205,7 @@
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"
+    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"
       (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>

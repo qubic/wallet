@@ -84,6 +84,9 @@ import { RewardTableComponent } from './qearn/reward-table/reward-table.componen
 import { StakingComponent } from './qearn/staking/staking.component';
 import { HistoryComponent } from './qearn/history/history.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 /** Http interceptor providers in outside-in order */
 export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }];
@@ -170,6 +173,7 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     }),
     MatSliderModule,
     MatExpansionModule,
+    MatButtonToggleModule,
   ],
 
   providers: [

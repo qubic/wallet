@@ -54,7 +54,12 @@
       "confirm": "Sí, confirmo"
     },
     "confirmationText": "¿Estás seguro?"
-  },
+  }, 
+  "maxNumberOfAddressesDialog": {
+    "title": "Important note",
+    "button": "Okay",
+    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -330,8 +335,8 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "Transactions of the last {{lastEpochsText}} epochs",
-      "showAllTransactions": "show all transactions",
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
+      "titleAllEpochs": "By Epochs",
       "verificationAlert": "Los datos del resumen no pudieron ser verificados",
       "noTransactions": "No se encontraron transacciones",
       "send.tooltip": "Transferencia saliente",

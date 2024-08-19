@@ -142,7 +142,7 @@ mat-card {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.secondary  {
+.secondary {
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -153,6 +153,28 @@ mat-card {
     cursor: pointer;
 }
 
-.display-publicid{
+.display-publicid {
     padding-left: 5px;
+}
+
+.epoch {
+    font-size: 2.5em;
+
+    .label-epoch {
+        font-size: 0.7em;
+    }
+
+    mat-icon {
+        color: grey;
+    }
+
+    .large-icon {
+        font-size: xx-large;
+    }
+}
+
+
+.ticks {
+    font-size: 1.2em;
+    color: grey;
 }

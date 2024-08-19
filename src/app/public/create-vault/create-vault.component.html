@@ -31,13 +31,14 @@
             <div [innerHTML]="t('seedEditComponent.seedWarning')"></div>
           </div>
           <div class="seedInput">
-            <mat-form-field appearance="fill" class="full-width" >             
+            <mat-form-field appearance="fill" class="full-width">
               <mat-label>{{ createAddressForm.controls['seed'].value?.length }} /
                 55 {{ t('createVaultComponent.createAddress.seed') }} </mat-label>
-              <input  type="text" matInput formControlName="seed"
-                placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required [readonly]="fieldSeedDisabled" />
-            </mat-form-field>           
-          </div>         
+              <input type="text" matInput formControlName="seed"
+                placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required
+                [readonly]="fieldSeedDisabled" />
+            </mat-form-field>
+          </div>
           <mat-error *ngIf="createAddressForm.controls['seed'].hasError('required')">
             {{ t("seedEditComponent.form.seed.error.required")}}
           </mat-error>
@@ -50,26 +51,29 @@
           <mat-error *ngIf="createAddressForm.controls['seed'].hasError('pattern')">
             {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
           </mat-error>
-          <div *ngIf="generatedPublicId.length === 60" class="word-break">
-            <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
-            {{
-            generatedPublicId
-            }}
-          </div>
-          <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint">  {{ t("ownSeedWarningDialog.hint")}}</div>
-          <div class="flex full-width button-container">
-            <button  [disabled]="!fieldSeedDisabled" mat-raised-button color="warn" (click)="resetSeed()">
-              {{ t('ownSeedWarningDialog.button') }}
-            </button>
-            <button mat-raised-button color="accent" (click)="randomizeSeed()">
-              {{ t('createVaultComponent.createAddress.radomizeSeed') }}
-            </button>
-            <button mat-raised-button color="primary" (click)="createAddress()"
-              [disabled]="!this.createAddressForm.valid">
-              {{ t('createVaultComponent.createAddress.button') }}
-            </button>
-          </div>
         </form>
+        <div class="flex full-width button-container">
+          <button [disabled]="!fieldSeedDisabled" mat-raised-button color="warn" (click)="resetSeed()">
+            {{ t('ownSeedWarningDialog.button') }}
+          </button>
+          <button mat-raised-button color="accent" (click)="randomizeSeed()">
+            {{ t('createVaultComponent.createAddress.radomizeSeed') }}
+          </button>
+        </div>
+        <div *ngIf="generatedPublicId.length === 60" class="word-break">
+          <strong>{{ t('createVaultComponent.createAddress.publicId') }}</strong><br>
+          {{
+          generatedPublicId
+          }}
+        </div>
+        <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
+        </div>
+        <div class="flex full-width button-container">
+          <button mat-raised-button color="primary" (click)="createAddress()"
+            [disabled]="!this.createAddressForm.valid">
+            {{ t('createVaultComponent.createAddress.button') }}
+          </button>
+        </div>
       </mat-step>
       <mat-step [completed]="vaultExported" [editable]="true">
         <form [formGroup]="vaultPasswordFormGroup">
