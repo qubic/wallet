@@ -32,16 +32,16 @@ export class UnLockComponent extends QubicDialogWrapper {
   dialogRef: DialogRef | null = null;
 
   constructor(
-        renderer: Renderer2,
-        themeService: ThemeService,
-        public walletService: WalletService,
-        public updaterService: UpdaterService,
-        private transloco: TranslocoService,
-        private cdr: ChangeDetectorRef,
-        private fb: FormBuilder,
-        private dialog: MatDialog,
-        private _snackBar: MatSnackBar,
-        private injector: Injector) {
+    renderer: Renderer2,
+    themeService: ThemeService,
+    public walletService: WalletService,
+    public updaterService: UpdaterService,
+    private transloco: TranslocoService,
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    private injector: Injector) {
     super(renderer, themeService);
     this.dialogRef = injector.get(DialogRef, null)
     this.newUser = this.walletService.getSeeds().length <= 0 && !this.walletService.publicKey;
@@ -140,7 +140,7 @@ export class UnLockComponent extends QubicDialogWrapper {
           const config = JSON.parse(jsonData);
 
           // import configuration
-          if((await this.unlock())){
+          if ((await this.unlock())) {
             // legacy format
             await this.walletService.importConfig(config);
             this.updaterService.loadCurrentBalance(true);
@@ -213,13 +213,23 @@ export class UnLockComponent extends QubicDialogWrapper {
           const seeds = this.walletService.getSeeds();
           let decryptedSeed = '';
           try {
-            decryptedSeed = await this.walletService.revealSeed(
-              seeds[0].publicId
-            );
+            for (const seed of seeds) {
+              if (decryptedSeed == '') {
+                decryptedSeed = await this.walletService.revealSeed(seed.publicId);
+              }
+            }
           } catch (e) {
             console.error(e);
           }
 
+          //check only-watch-address
+          if (decryptedSeed == '') {
+            if(seeds.filter(seed=> !seed.isOnlyWatch).length == 0){
+              decryptedSeed = "only-watch"
+            }           
+          }
+
+          alert(decryptedSeed);
           if (seeds && seeds.length > 0 && decryptedSeed == '') {
             this._snackBar.open(
               'Unlock Failed: Private- and PublicKey mismatch',
