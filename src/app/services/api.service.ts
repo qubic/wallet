@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, IStakingPayLoad, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, QuerySmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
   HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
@@ -126,35 +126,39 @@ export class ApiService {
   /**
    * Functions for Staking Qubic(Qearn)
    */
-  public async broadcastTx(tx: Uint8Array) {
-    const url = `/broadcast-transaction`;
-  
+  public querySmartContract(jsonData: QuerySmartContract) {
+    const localVarPath = "/querySmartContract";
+    return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`,
+      {
+        context: new HttpContext(),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: jsonData,
+        responseType: 'json'
+      }
+    );
+  }
+
+  public broadcastTx(tx: Uint8Array){
+    const localVarPath = `/broadcast-transaction`;
     const binaryString = Array.from(tx)
       .map((byte) => String.fromCharCode(byte))
       .join('');
-  
-    // Encode to base64
     const txEncoded = btoa(binaryString);
-    // const txEncoded = Buffer.from(tx).toString("base64");
-    console.log(txEncoded);
     const body = { encodedTransaction: txEncoded };
+    return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`, {
+      context: new HttpContext(),
+      responseType: 'json',
+      body: body,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
   
-    try {
-      const response = await fetch(this.basePath + url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
-  public async stakingTransaction(seed: string, inputType: number, inputSize: number, amount: bigint, payload: IStakingPayLoad, tick: number) {
+  
+  public async contractTransaction(seed: string, inputType: number, inputSize: number, amount: bigint, payload: any, tick: number) {
     try {
       const idPackage = await qHelper.createIdPackage(seed);
       const qCrypto = await Crypto;
@@ -206,7 +210,7 @@ export class ApiService {
       tx.set(signedTx, offset);
       offset += SIGNATURE_LENGTH;
 
-      const txResult = await this.broadcastTx(tx);
+      const txResult = await lastValueFrom(this.broadcastTx(tx));
       return {
         txResult,
       };
@@ -214,6 +218,20 @@ export class ApiService {
       console.error("Error signing transaction:", error);
       throw new Error("Failed to sign and broadcast transaction.");
     }
+  }
+
+  public queryStakingData(jsonData: any){
+    let localVarPath = `/querySmartContract`;
+    return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`,
+      {
+        context: new HttpContext(),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: jsonData,
+        responseType: 'json'
+      }
+    );
   }
 
   public getCurrentIpoBids(publicIds: string[]) {

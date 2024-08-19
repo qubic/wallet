@@ -152,7 +152,9 @@ export interface QubicAsset {
   issuerIdentity: string;
 }
 
-export interface IStakingPayLoad{
-  UnlockAmount: bigint;
-  LockedEpoch: number;
+export interface QuerySmartContract {
+  contractIndex: number, 
+  inputType: number,
+  inputSize: number,
+  requestData: string,
 }
