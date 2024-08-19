@@ -7,13 +7,25 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../core/confirm-dialog/confirm-dialog.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { TimeService } from '../../services/time.service';
-import { IStakeHistory } from './mock-data';
 import { MatTableDataSource } from '@angular/material/table';
-import { QearnService } from 'src/app/services/qearn.service';
+import { QearnService } from '../../services/qearn.service';
 import { REWARD_DATA } from '../reward-table/table-data';
 import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom } from 'rxjs';
+import { ApiArchiverService } from 'src/app/services/api.archiver.service';
+
+export interface IStakeHistory {
+  publicId: string;
+  lockedEpoch: number;
+  lockedAmount: bigint;
+  lockedWeeks: number;
+  totalLockedAmountInEpoch: bigint;
+  currentBonusAmountInEpoch: bigint;
+  earlyUnlockPercent: number;
+  fullUnlockPercent: number;
+}
+
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -41,7 +53,8 @@ export class HistoryComponent implements AfterViewInit {
     private apiService: ApiService,
     private qearnService: QearnService,
     private walletService: WalletService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private apiArchiver: ApiArchiverService
   ) {}
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -52,18 +65,18 @@ export class HistoryComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    await this.fetchData();
+    // await this.fetchData();
   }
 
   public async fetchData() {
     this.isLoading = true;
     const seeds = this.walletService.getSeeds();
-    const tickInfo = await lastValueFrom(this.apiService.getCurrentTick());
+    const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
     for (const seedObj of seeds) {
       const pubKey = this.qearnService.getPublicKeyFromIdentity(seedObj.publicId);
       for (let j = 0; j < 4; j++) {
-        const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(tickInfo.tickInfo.epoch - j);
-        const lockAmount = await this.qearnService.getUserLockInfo(pubKey, tickInfo.tickInfo.epoch - j);
+        const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(122 - j);
+        const lockAmount = await this.qearnService.getUserLockInfo(pubKey, 122 - j);
         if (lockAmount) {
           const earlyUnlockPercent = REWARD_DATA.find((f) => f.weekFrom <= j && f.weekTo > j)?.earlyUnlock!;
 
@@ -106,9 +119,9 @@ export class HistoryComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
         try {
-          const tickInfo = await lastValueFrom(this.apiService.getCurrentTick());
+          const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
           const seed = await this.walletService.revealSeed(element.publicId);
-          const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tickInfo.tickInfo.tick);
+          const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tick);
           if (unlockResult) {
             this._snackBar.open('Unlock Successful!', this.transloco.translate('general.close'), {
               duration: 3000, // Duration in milliseconds

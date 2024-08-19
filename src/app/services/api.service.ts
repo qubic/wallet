@@ -7,7 +7,7 @@ import {
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
-import { map, Observable, of } from 'rxjs';
+import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { TokenService } from './token.service';
 import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
 import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from 'qubic-ts-library/dist/crypto'

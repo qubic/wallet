@@ -10,8 +10,9 @@ import { ApiService } from 'src/app/services/api.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
 import { lastValueFrom } from 'rxjs';
-import { QearnService } from 'src/app/services/qearn.service';
+import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 
 @Component({
   selector: 'app-staking',
@@ -41,7 +42,8 @@ export class StakingComponent {
     private apiService: ApiService,
     private updaterService: UpdaterService,
     private qearnService: QearnService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private apiArchiver: ApiArchiverService
   ) {}
 
   ngOnInit(): void {
@@ -70,9 +72,6 @@ export class StakingComponent {
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']);
     }
-    this.apiService.getCurrentTick().subscribe((s) => {
-      this.tick = s.tickInfo.tick;
-    });
   }
 
   private setupSourceIdValueChange(): void {
@@ -131,8 +130,9 @@ export class StakingComponent {
     confirmDialog.afterClosed().subscribe(async (result) => {
       if (result) {
         try {
+          const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
           const seed = await this.walletService.revealSeed(this.stakeForm.controls.sourceId.value!);
-          const result = await this.qearnService.lockQubic(seed, this.stakeAmount, this.tick);
+          const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
           if (result.txResult)
             this._snackBar.open('Success!', this.transloco.translate('general.close'), {
               duration: 0,
