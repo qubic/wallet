@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { lastValueFrom } from 'rxjs';
 import { WalletService } from './wallet.service';
+import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { REWARD_DATA } from '../qearn/reward-table/table-data';
 
 interface LockInfoPerEpoch {
   lockAmount: number;
@@ -13,20 +15,32 @@ interface LockInfoPerEpoch {
   yieldPercentage: number;
 }
 
+export interface IStakeStatus {
+  publicId: string;
+  lockedEpoch: number;
+  lockedAmount: number;
+  lockedWeeks: number;
+  totalLockedAmountInEpoch: number;
+  currentBonusAmountInEpoch: number;
+  earlyUnlockReward: number;
+  fullUnlockReward: number;
+  earlyUnlockRewardRatio: number;
+  fullUnlockRewardRatio: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class QearnService {
   public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
+  public stakeData: { [key: string]: IStakeStatus[] } = {};
+  public isLoading = false;
+
   constructor(private apiService: ApiService, private walletService: WalletService) {}
 
-  public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
-    for (let idx = 0; idx < 52; idx++) {
-      const epochInfo = await this.getLockInfoPerEpoch(epoch - idx);
-      this.epochInfo[epoch - idx] = epochInfo;
-    }
-  }
-
+  /**
+   * Main Query, Transaction Functions
+   */
   public async lockQubic(seed: string, amount: number, tick: number) {
     const res = await this.apiService.contractTransaction(seed, 1, 0, amount, {}, tick);
     return res;
@@ -118,5 +132,69 @@ export class QearnService {
     const state = dataView.getUint32(0, true);
 
     return { state };
+  }
+
+  /**
+   * Utilities
+   */
+  public async fetchLockInfo(epoch: number) {
+    const epochInfo = await this.getLockInfoPerEpoch(epoch);
+    this.epochInfo[epoch] = epochInfo;
+  }
+
+  public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
+    this.isLoading = true;
+    for (let i = 0; i < 52; i++) {
+      await this.fetchLockInfo(epoch - i);
+    }
+    this.isLoading = false;
+  }
+
+  public async fetchStakeDataPerEpoch(publicId: string, epoch: number, currentEpoch: number) {
+    if (!this.epochInfo[epoch]) {
+      await this.fetchLockInfo(epoch);
+    }
+    const pubKey = new PublicKey(publicId).getPackageData();
+    const lockAmount = await this.getUserLockInfo(pubKey, epoch);
+    if (lockAmount) {
+      if (!this.stakeData[publicId]) {
+        this.stakeData[publicId] = [];
+      }
+      const totalLockedAmountInEpoch = this.epochInfo[epoch].currentLockedAmount;
+      const currentBonusAmountInEpoch = this.epochInfo[epoch].currentBonusAmount;
+      const yieldPercentage = this.epochInfo[epoch].yieldPercentage;
+
+      const fullUnlockPercent = yieldPercentage / 100000;
+      const fullUnlockRewardRatio = lockAmount / totalLockedAmountInEpoch;
+      const fullUnlockReward = currentBonusAmountInEpoch * fullUnlockRewardRatio;
+
+      const earlyUnlockPercent = REWARD_DATA.find((data) => data.weekFrom <= currentEpoch - epoch && data.weekTo >= currentEpoch - epoch)?.earlyUnlock || 0;
+      const earlyUnlockRewardRatio = (lockAmount * earlyUnlockPercent) / (100 * totalLockedAmountInEpoch);
+      const earlyUnlockReward = currentBonusAmountInEpoch * earlyUnlockRewardRatio;
+
+      const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch);
+      if (!existingData) {
+        this.stakeData[publicId].push({
+          publicId: publicId,
+          lockedEpoch: epoch,
+          lockedAmount: lockAmount,
+          lockedWeeks: currentEpoch - epoch,
+          totalLockedAmountInEpoch: totalLockedAmountInEpoch,
+          currentBonusAmountInEpoch: currentBonusAmountInEpoch,
+          earlyUnlockReward,
+          earlyUnlockRewardRatio,
+          fullUnlockReward,
+          fullUnlockRewardRatio,
+        });
+      }
+    }
+  }
+
+  public async fetchStakeDataOfPublicId(publicId: string, currentEpoch: number) {
+    this.isLoading = true;
+    for (let i = 0; i < 52; i++) {
+      await this.fetchStakeDataPerEpoch(publicId, currentEpoch - i, currentEpoch);
+    }
+    this.isLoading = false;
   }
 }

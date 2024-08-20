@@ -13,11 +13,11 @@
         </mat-form-field>
       </div>
     </form>
-    <div *ngIf="isLoading" class="loading-container">
+    <div *ngIf="qearnService.isLoading" class="loading-container">
       <mat-spinner></mat-spinner>
     </div>
     <!-- Table -->
-    <div class="table-responsive" *ngIf="!isLoading">
+    <div class="table-responsive" *ngIf="!qearnService.isLoading">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <!-- Locked Epoch Column -->
         <ng-container matColumnDef="lockedEpoch">
