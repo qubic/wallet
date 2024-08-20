@@ -70,15 +70,18 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   onSubmit(): void {
-    if (this.walletService.getSeeds().filter(s => 
-      s.publicId === this.seedEditForm.controls.publicId.value ||
-      s.publicId === this.seedEditFormPublicId.controls.publicId.value 
-    ).length > 0) {
-      this._snackBar.open(this.transloco.translate("seedEditComponent.form.error.publicIdAvailable"), this.transloco.translate("seedEditComponent.form.error.close"), {
-        duration: 5000,
-        panelClass: "error"
-      });
-      return;
+    // Is the Publicid already present in the accounts?
+    if (this.isNew) {
+      if (this.walletService.getSeeds().filter(s =>
+        s.publicId === this.seedEditForm.controls.publicId.value ||
+        s.publicId === this.seedEditFormPublicId.controls.publicId.value
+      ).length > 0) {
+        this._snackBar.open(this.transloco.translate("seedEditComponent.form.error.publicIdAvailable"), this.transloco.translate("seedEditComponent.form.error.close"), {
+          duration: 5000,
+          panelClass: "error"
+        });
+        return;
+      }
     }
 
     if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
