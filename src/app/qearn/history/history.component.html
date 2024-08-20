@@ -73,14 +73,16 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
         <!-- No Data Message -->
-        <tr *matNoDataRow>
+        <tr *ngIf="isLoading">
           <td [attr.colspan]="displayedColumns.length">
             <div *ngIf="isLoading" class="no-data-message">
               <mat-spinner></mat-spinner>
             </div>
-            <div *ngIf="!isLoading" class="no-data-message">
-              <p>{{ t('qearn.history.noDataMessage') }}</p>
-            </div>
+            <!-- <div *matNoDataRow>
+              <div *ngIf="!isLoading" class="no-data-message">
+                <p>{{ t('qearn.history.noDataMessage') }}</p>
+              </div>
+            </div> -->
           </td>
         </tr>
       </table>

@@ -21,7 +21,7 @@ export interface IStakeStatus {
   totalLockedAmountInEpoch: bigint;
   currentBonusAmountInEpoch: bigint;
   earlyUnlockPercent: number;
-  fullUnlockPercent: number;
+  fullUnlockPercent: string;
 }
 
 @Component({
@@ -35,6 +35,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   public stakeData: { [key: string]: IStakeStatus[] } = {};
   public isLoading = false;
   public form: FormGroup;
+  public epoch: number = 122;
 
   constructor(
     private dialog: MatDialog,
@@ -52,6 +53,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
+    this.qearnService.fetchAllLockInfoFromCurrentEpoch(this.epoch);
     this.setupSourceIdValueChange();
   }
 
@@ -73,28 +75,29 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   public async fetchData(publicId: string) {
     this.isLoading = true;
+    if (!this.qearnService.epochInfo) {
+      await this.qearnService.fetchAllLockInfoFromCurrentEpoch(this.epoch);
+    }
     const pubKey = new PublicKey(publicId).getPackageData();
     for (let idx = 0; idx < 52; idx++) {
-      const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(122 - idx);
-      const lockAmount = await this.qearnService.getUserLockInfo(pubKey, 122 - idx);
+      const lockAmount = await this.qearnService.getUserLockInfo(pubKey, this.epoch - idx);
       if (lockAmount) {
-        const earlyUnlockPercent = REWARD_DATA.find((f) => f.weekFrom <= idx && f.weekTo > idx)?.earlyUnlock!;
-
         if (!this.stakeData[publicId]) {
           this.stakeData[publicId] = [];
         }
-
-        const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === 122 - idx);
+        const fullUnlockPercent = Number(this.qearnService.epochInfo[this.epoch - idx].yieldPercentage) / 100000;
+        const earlyUnlockPercent = ((REWARD_DATA.find((data) => data.weekFrom < this.epoch - idx && data.weekTo >= this.epoch - idx)?.earlyUnlock || 0) * 100) / fullUnlockPercent;
+        const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === this.epoch - idx);
         if (!existingData) {
           this.stakeData[publicId].push({
             publicId: publicId,
-            lockedEpoch: 122 - idx,
+            lockedEpoch: this.epoch - idx,
             lockedAmount: lockAmount,
             lockedWeeks: idx,
-            totalLockedAmountInEpoch: totalLockedAmount,
-            currentBonusAmountInEpoch: bonusAmount,
-            earlyUnlockPercent,
-            fullUnlockPercent: 100,
+            totalLockedAmountInEpoch: this.qearnService.epochInfo[this.epoch - idx].currentLockedAmount,
+            currentBonusAmountInEpoch: this.qearnService.epochInfo[this.epoch - idx].currentBonusAmount,
+            earlyUnlockPercent: earlyUnlockPercent || 0,
+            fullUnlockPercent: fullUnlockPercent.toFixed(2),
           });
         }
       }

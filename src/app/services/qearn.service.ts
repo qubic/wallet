@@ -17,7 +17,15 @@ interface LockInfoPerEpoch {
   providedIn: 'root',
 })
 export class QearnService {
+  public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
   constructor(private apiService: ApiService, private walletService: WalletService) {}
+
+  public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
+    for (let idx = 0; idx < 52; idx++) {
+      const epochInfo = await this.getLockInfoPerEpoch(epoch - idx);
+      this.epochInfo[epoch - idx] = epochInfo;
+    }
+  }
 
   public async lockQubic(seed: string, amount: bigint, tick: number) {
     const res = await this.apiService.contractTransaction(seed, 1, 0, amount, {}, tick);
