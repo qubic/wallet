@@ -20,8 +20,10 @@ export interface IStakeStatus {
   lockedWeeks: number;
   totalLockedAmountInEpoch: number;
   currentBonusAmountInEpoch: number;
-  earlyUnlockPercent: number;
-  fullUnlockPercent: string;
+  earlyUnlockReward: number;
+  fullUnlockReward: number;
+  earlyUnlockRewardRatio: number;
+  fullUnlockRewardRatio: number;
 }
 
 @Component({
@@ -89,8 +91,18 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         if (!this.stakeData[publicId]) {
           this.stakeData[publicId] = [];
         }
-        const fullUnlockPercent = this.qearnService.epochInfo[this.epoch - idx].yieldPercentage / 100000;
-        const earlyUnlockPercent = ((REWARD_DATA.find((data) => data.weekFrom < this.epoch - idx && data.weekTo >= this.epoch - idx)?.earlyUnlock || 0) * 100) / fullUnlockPercent;
+        const totalLockedAmountInEpoch = this.qearnService.epochInfo[this.epoch - idx].currentLockedAmount;
+        const currentBonusAmountInEpoch = this.qearnService.epochInfo[this.epoch - idx].currentBonusAmount;
+        const yieldPercentage = this.qearnService.epochInfo[this.epoch - idx].yieldPercentage;
+
+        const fullUnlockPercent = yieldPercentage / 100000;
+        const fullUnlockRewardRatio = lockAmount / totalLockedAmountInEpoch;
+        const fullUnlockReward = currentBonusAmountInEpoch * fullUnlockRewardRatio;
+        
+        const earlyUnlockPercent = (REWARD_DATA.find((data) => data.weekFrom < this.epoch - idx && data.weekTo >= this.epoch - idx)?.earlyUnlock || 0);
+        const earlyUnlockRewardRatio = lockAmount * earlyUnlockPercent / totalLockedAmountInEpoch;
+        const earlyUnlockReward = currentBonusAmountInEpoch * earlyUnlockRewardRatio;
+        
         const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === this.epoch - idx);
         if (!existingData) {
           this.stakeData[publicId].push({
@@ -98,10 +110,12 @@ export class HistoryComponent implements OnInit, AfterViewInit {
             lockedEpoch: this.epoch - idx,
             lockedAmount: lockAmount,
             lockedWeeks: idx,
-            totalLockedAmountInEpoch: this.qearnService.epochInfo[this.epoch - idx].currentLockedAmount,
-            currentBonusAmountInEpoch: this.qearnService.epochInfo[this.epoch - idx].currentBonusAmount,
-            earlyUnlockPercent: earlyUnlockPercent || 0,
-            fullUnlockPercent: fullUnlockPercent.toFixed(2),
+            totalLockedAmountInEpoch: totalLockedAmountInEpoch,
+            currentBonusAmountInEpoch: currentBonusAmountInEpoch,
+            earlyUnlockReward,
+            earlyUnlockRewardRatio,
+            fullUnlockReward,
+            fullUnlockRewardRatio,
           });
         }
       }
@@ -153,13 +167,5 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }
       }
     });
-  }
-
-  removeElement(element: IStakeStatus): void {
-    const index = this.dataSource.data.indexOf(element);
-    if (index > -1) {
-      this.dataSource.data.splice(index, 1);
-      this.dataSource._updateChangeSubscription(); // Refresh the table
-    }
   }
 }

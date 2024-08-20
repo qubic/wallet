@@ -28,7 +28,7 @@
         <!-- Locked Amount Column -->
         <ng-container matColumnDef="lockedAmount">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedAmount') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.lockedAmount }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.lockedAmount | number: '1.0-0' }}</td>
         </ng-container>
 
         <!-- Locked Weeks Column -->
@@ -40,25 +40,25 @@
         <!-- Total Locked Amount in Epoch Column -->
         <ng-container matColumnDef="totalLockedAmountInEpoch">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.totalLockedAmountInEpoch') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.totalLockedAmountInEpoch }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.totalLockedAmountInEpoch | number: '1.0-0' }}</td>
         </ng-container>
 
         <!-- Current Bonus Amount in Epoch Column -->
         <ng-container matColumnDef="currentBonusAmountInEpoch">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.currentBonusAmountInEpoch') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.currentBonusAmountInEpoch }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.currentBonusAmountInEpoch | number: '1.0-0' }}</td>
         </ng-container>
 
         <!-- Early Unlock % Column -->
         <ng-container matColumnDef="earlyUnlockPercent">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.earlyUnlockPercent') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.earlyUnlockPercent }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.earlyUnlockReward | number: '1.0-0' }}/{{ (element.earlyUnlockRewardRatio * 100).toFixed(2) }}%</td>
         </ng-container>
 
         <!-- Full Unlock % Column -->
         <ng-container matColumnDef="fullUnlockPercent">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.fullUnlockPercent') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.fullUnlockPercent }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.fullUnlockReward | number: '1.0-0' }}/{{ (element.fullUnlockRewardRatio * 100).toFixed(2) }}%</td>
         </ng-container>
 
         <!-- Actions Column -->

@@ -146,7 +146,7 @@ export class StakingComponent {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
-        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: amountToStake, currency })}`,
+        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: formatNumberWithCommas(amountToStake || '0'), currency })}`,
         confirm: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirm'),
       },
     });
@@ -169,27 +169,6 @@ export class StakingComponent {
           });
         }
       } else {
-      }
-    });
-  }
-
-  showResult(result: any): void {
-    const amountToStake = this.stakeForm.controls.amount.value;
-    const currency = this.transloco.translate('general.currency');
-
-    const resultDialog = this.dialog.open(ConfirmDialog, {
-      restoreFocus: false,
-      data: {
-        title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
-        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: amountToStake, currency })}`,
-      },
-    });
-
-    resultDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Staking confirmed:', result);
-      } else {
-        console.log('Staking cancelled');
       }
     });
   }
