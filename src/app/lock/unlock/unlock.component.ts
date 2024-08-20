@@ -229,7 +229,6 @@ export class UnLockComponent extends QubicDialogWrapper {
             }           
           }
 
-          alert(decryptedSeed);
           if (seeds && seeds.length > 0 && decryptedSeed == '') {
             this._snackBar.open(
               'Unlock Failed: Private- and PublicKey mismatch',
