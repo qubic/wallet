@@ -1,12 +1,21 @@
 <ng-container *transloco="let t">
   <div class="content_container stake-history">
-    <!-- Spinner -->
-    <div *ngIf="isLoading" class="loading-container">
-      <mat-spinner></mat-spinner>
-    </div>
+    <form [formGroup]="form">
+      <div class="form-field">
+        <mat-form-field appearance="fill" placeholder="Seed" class="full-width">
+          <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
+          <mat-select formControlName="sourceId" panelClass="full-width" [value]="getSeeds()[0].publicId || ''">
+            <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
+              class="custom-mat-option">
+              {{ seed.publicId }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
 
     <!-- Table -->
-    <div *ngIf="!isLoading" class="table-responsive">
+    <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <!-- Locked Epoch Column -->
         <ng-container matColumnDef="lockedEpoch">
@@ -62,7 +71,20 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- No Data Message -->
+        <tr *matNoDataRow>
+          <td [attr.colspan]="displayedColumns.length">
+            <div *ngIf="isLoading" class="no-data-message">
+              <mat-spinner></mat-spinner>
+            </div>
+            <div *ngIf="!isLoading" class="no-data-message">
+              <p>Not Found Any Staking Data</p>
+            </div>
+          </td>
+        </tr>
       </table>
+
     </div>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" class="paginator" showFirstLastButtons></mat-paginator>
   </div>

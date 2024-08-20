@@ -84,7 +84,6 @@ import { RewardTableComponent } from './qearn/reward-table/reward-table.componen
 import { StakingComponent } from './qearn/staking/staking.component';
 import { HistoryComponent } from './qearn/history/history.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatExpansionModule} from '@angular/material/expansion';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 

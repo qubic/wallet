@@ -9,6 +9,10 @@
   -webkit-overflow-scrolling: touch; /* Adds momentum scrolling for iOS devices */
 }
 
+.full-width {
+  width: 100%;
+}
+
 table {
   width: 100%; /* Ensures the table takes up 100% width */
   min-width: 600px; /* Ensures the table does not get too small */
@@ -33,8 +37,19 @@ td.mat-cell {
   height: 100%;
   padding: 20px;
 }
-.paginator{
-  border-radius: 5px;
+
+.paginator {
+  border-radius: 8px;
+}
+
+.no-data-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  font-size: 16px;
 }
 
 @media screen and (max-width: 768px) {

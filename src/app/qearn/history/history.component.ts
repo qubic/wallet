@@ -1,22 +1,19 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../core/confirm-dialog/confirm-dialog.component';
 import { TranslocoService } from '@ngneat/transloco';
-import { TimeService } from '../../services/time.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { QearnService } from '../../services/qearn.service';
 import { REWARD_DATA } from '../reward-table/table-data';
-import { ApiService } from 'src/app/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 
-export interface IStakeHistory {
+export interface IStackStatus {
   publicId: string;
   lockedEpoch: number;
   lockedAmount: bigint;
@@ -32,64 +29,71 @@ export interface IStakeHistory {
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
 })
-export class HistoryComponent implements AfterViewInit {
-  public displayedColumns: string[] = [
-    'lockedEpoch',
-    'lockedAmount',
-    'lockedWeeks',
-    'totalLockedAmountInEpoch',
-    'currentBonusAmountInEpoch',
-    'earlyUnlockPercent',
-    'fullUnlockPercent',
-    'actions',
-  ];
-  // public dataSource = new MatTableDataSource<IStakeHistory>(MOCK_LOCK_DATA);
-  public dataSource = new MatTableDataSource<IStakeHistory>([]);
-  public allStakeData: { [key: string]: IStakeHistory[] } = {};
+export class HistoryComponent implements OnInit, AfterViewInit {
+  public displayedColumns: string[] = ['lockedEpoch', 'lockedAmount', 'lockedWeeks', 'totalLockedAmountInEpoch', 'currentBonusAmountInEpoch', 'earlyUnlockPercent', 'fullUnlockPercent', 'actions'];
+  // public dataSource = new MatTableDataSource<IStackStatus>(MOCK_LOCK_DATA);
+  public dataSource = new MatTableDataSource<IStackStatus>([]);
+  public stakeData: { [key: string]: IStackStatus[] } = {};
   public isLoading = false;
   public tick = 0;
+  public form: FormGroup;
+
   constructor(
     private dialog: MatDialog,
     private transloco: TranslocoService,
-    private apiService: ApiService,
     private qearnService: QearnService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private apiArchiver: ApiArchiverService
-  ) {}
-
+    private apiArchiver: ApiArchiverService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      sourceId: [''],
+    });
+  }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  async ngOnIinit() {
-    await this.fetchData();
+  ngOnInit() {
+    this.setupSourceIdValueChange();
   }
 
-  async ngAfterViewInit() {
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    await this.fetchData();
   }
 
-  public async fetchData() {
+  private setupSourceIdValueChange(): void {
+    this.form.controls['sourceId'].valueChanges.subscribe((s) => {
+      console.log(s);
+      if (s) {
+        this.fetchData(s);
+      }
+    });
+  }
+
+  public getSeeds() {
+    return this.walletService.getSeeds();
+  }
+
+  public async fetchData(publicId: string) {
     this.isLoading = true;
-    const seeds = this.walletService.getSeeds();
-    const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-    for (const seedObj of seeds) {
-      const pubKey = new PublicKey(seedObj.publicId).getPackageData();
-      for (let j = 0; j < 4; j++) {
-        const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(122 - j);
-        const lockAmount = await this.qearnService.getUserLockInfo(pubKey, 122 - j);
-        if (lockAmount) {
-          const earlyUnlockPercent = REWARD_DATA.find((f) => f.weekFrom <= j && f.weekTo > j)?.earlyUnlock!;
+    const pubKey = new PublicKey(publicId).getPackageData();
+    for (let idx = 0; idx < 52; idx++) {
+      const { bonusAmount, lockAmount: totalLockedAmount } = await this.qearnService.getLockInfoPerEpoch(122 - idx);
+      const lockAmount = await this.qearnService.getUserLockInfo(pubKey, 122 - idx);
+      if (lockAmount) {
+        const earlyUnlockPercent = REWARD_DATA.find((f) => f.weekFrom <= idx && f.weekTo > idx)?.earlyUnlock!;
 
-          if (!this.allStakeData[seedObj.publicId]) {
-            this.allStakeData[seedObj.publicId] = [];
-          }
+        if (!this.stakeData[publicId]) {
+          this.stakeData[publicId] = [];
+        }
 
-          this.allStakeData[seedObj.publicId].push({
-            publicId: seedObj.publicId,
-            lockedEpoch: 122 - j,
+        const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === 122 - idx);
+        if (!existingData) {
+          this.stakeData[publicId].push({
+            publicId: publicId,
+            lockedEpoch: 122 - idx,
             lockedAmount: lockAmount,
-            lockedWeeks: j,
+            lockedWeeks: idx,
             totalLockedAmountInEpoch: totalLockedAmount,
             currentBonusAmountInEpoch: bonusAmount,
             earlyUnlockPercent,
@@ -98,7 +102,7 @@ export class HistoryComponent implements AfterViewInit {
         }
       }
     }
-    const allData: IStakeHistory[] = Object.values(this.allStakeData).flat();
+    const allData: IStackStatus[] = Object.values(this.stakeData).flat();
     this.dataSource.data = allData;
     this.isLoading = false;
   }
@@ -108,7 +112,7 @@ export class HistoryComponent implements AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openEarlyUnlockModal(element: IStakeHistory): void {
+  openEarlyUnlockModal(element: IStackStatus): void {
     if (!this.walletService.privateKey) {
       this._snackBar.open(this.transloco.translate('paymentComponent.messages.pleaseUnlock'), this.transloco.translate('general.close'), {
         duration: 5000,
@@ -147,7 +151,7 @@ export class HistoryComponent implements AfterViewInit {
     });
   }
 
-  removeElement(element: IStakeHistory): void {
+  removeElement(element: IStackStatus): void {
     const index = this.dataSource.data.indexOf(element);
     if (index > -1) {
       this.dataSource.data.splice(index, 1);
