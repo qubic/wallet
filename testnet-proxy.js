@@ -25,6 +25,8 @@ function createProxy(mainnetURL, testnetURL, port) {
         handleBalanceRequest(req, res, testnetURL);
       } else if (req.url.includes('/v1/latestTick')) {
         handleTickRequest(req, res, testnetURL);
+      } else if (req.url.includes('/v1/status')) {
+        handleStatusRequest(req, res, testnetURL);
       } else if (req.url.includes('/broadcast-transaction') || req.url.includes('/querySmartContract')) {
         forwardRequest(req, res, testnetURL);
       } else {
@@ -37,6 +39,50 @@ function createProxy(mainnetURL, testnetURL, port) {
   app.listen(app.get('port'), function () {
     console.log('Proxy server listening on port ' + app.get('port'));
   });
+}
+
+function handleStatusRequest(req, res, testnetURL) {
+  let localVarPath = `/tick-info`;
+  request(
+    {
+      url: testnetURL + localVarPath,
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: req.header('Authorization') },
+      json: true,
+    },
+    (error, response, body) => {
+      if (error) {
+        if (!res.headersSent) {
+          res.status(500).send({ error: 'Proxy error' });
+        }
+      } else {
+        const statusResponse = {
+          lastProcessedTick: {
+            tickNumber: body.tickInfo.tick,
+            epoch: body.tickInfo.epoch,
+          },
+          lastProcessedTicksPerEpoch: {
+            additionalProp1: 0,
+            additionalProp2: 0,
+            additionalProp3: 0,
+          },
+          skippedTicks: [], // Assuming no skipped ticks for simplicity
+          processedTickIntervalsPerEpoch: [
+            {
+              epoch: body.tickInfo.epoch,
+              intervals: [
+                {
+                  initialProcessedTick: body.tickInfo.initialTick,
+                  lastProcessedTick: body.tickInfo.tick,
+                },
+              ],
+            },
+          ],
+        };
+        res.status(200).send(statusResponse);
+      }
+    }
+  );
 }
 
 function handleBalanceRequest(req, res, testnetURL) {

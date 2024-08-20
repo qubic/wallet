@@ -55,6 +55,10 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.qearnService.fetchAllLockInfoFromCurrentEpoch(this.epoch);
     this.setupSourceIdValueChange();
+    this.apiArchiver.getStatus().subscribe((res) => {
+      this.epoch = res.lastProcessedTick.epoch;
+      console.log(this.epoch);
+    });
   }
 
   ngAfterViewInit() {
