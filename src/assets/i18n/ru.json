@@ -7,7 +7,7 @@
       "home": "Главная",
       "payment": "Платежи",
       "balance": "Баланс",
-      "qearn": "Q печелят",
+      "qearn": "Qearn",
       "settings": "Настройки",
       "voting": "Голосование",
       "ipo": "IPO",
@@ -579,34 +579,55 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Ставка Кубик",
-      "subText": "Зарабатывайте $QUBIC, размещая свои монеты на 52 недели.",
+      "title": "Стейкинг Qubic",
+      "subText": "Зарабатывайте $QUBIC, ставя свои монеты на 52 недели.",
       "enterAmount": "Введите сумму",
-      "stake": "Ставка",
-      "availableBalance": "доступные средства",
-      "weeklySatking": "Еженедельный банк ставок закрывается",
-      "date": "d",
-      "hour": "h",
-      "minute": "min",
+      "stake": "Стейкинг",
+      "availableBalance": "Доступный баланс",
+      "weeklySatking": "Еженедельный стейкинг закрывается через",
+      "date": "д",
+      "hour": "ч",
+      "minute": "мин",
       "error": {
-        "required": "Требуется сумма",
+        "required": "Сумма обязательна",
         "min": "Сумма должна быть больше 10M",
-        "numberOnly": "Допускаются только цифры",
+        "numberOnly": "Разрешены только числа",
         "exceedsBalance": "Сумма не может превышать доступный баланс"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Подтвердить стейкинг",
+        "confirmLockTitle": "Подтвердите стейкинг",
         "confirmLockMessage": "Вы хотите заблокировать {{amount}} {{currency}} для стейкинга?",
-        "confirm": "Заблокировать",
-        "cancel": "Отмена"
+        "confirm": "Блокировать",
+        "cancel": "Отмена",
+        "success": "Успех!",
+        "error": "Что-то пошло не так во время блокировки!"
       }
+    },
+    "history": {
+      "lockedEpoch": "Заблокированная эпоха",
+      "lockedAmount": "Заблокированная сумма",
+      "lockedWeeks": "Заблокированные недели",
+      "totalLockedAmountInEpoch": "Общая заблокированная сумма (в эту эпоху)",
+      "currentBonusAmountInEpoch": "Текущая бонусная сумма (в эту эпоху)",
+      "earlyUnlockPercent": "Награда за досрочную разблокировку",
+      "fullUnlockPercent": "Награда за полную разблокировку",
+      "actions": "Действия",
+      "noDataMessage": "Данные стейкинга не найдены",
+      "unlock": {
+        "title": "Разблокировать",
+        "message": "Хотите разблокировать досрочно?",
+        "confirm": "Подтвердить",
+        "success": "Успешная разблокировка!",
+        "error": "Что-то пошло не так во время разблокировки!"
+      },
+      "pleaseUnlock": "Пожалуйста, сначала разблокируйте свой кошелек."
     },
     "Earned": {
       "rewards": "Заработанные награды",
-      "unlockEarly": "Разблокировать рано",
-      "stakedBalance": "Баланс ставки",
-      "earningRate": "Норма прибыли",
-      "unlocksIn": "Разблокируется в",
+      "unlockEarly": "Разблокировать досрочно",
+      "stakedBalance": "Заблокированный баланс",
+      "earningRate": "Скорость заработка",
+      "unlocksIn": "Разблокируется через",
       "apy": "APY",
       "weeks": "Недели"
     }

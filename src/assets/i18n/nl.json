@@ -7,7 +7,7 @@
       "home": "Dashboard",
       "payment": "Betaling",
       "balance": "Account Balans",
-      "qearn": "Qverdienen",
+      "qearn": "Qearn",
       "settings": "Instellingen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -577,34 +577,55 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Inzet Qubic",
-      "subText": "Verdien $QUBIC door je munten 52 weken lang te staken.",
-      "enterAmount": "Voer een bedrag in",
-      "stake": "Inzet",
-      "availableBalance": "beschikbaar saldo",
-      "weeklySatking": "Wekelijkse inzetpot sluit over",
+      "title": "Qubic staken",
+      "subText": "Verdien $QUBIC door je munten 52 weken te staken.",
+      "enterAmount": "Voer bedrag in",
+      "stake": "Stake",
+      "availableBalance": "Beschikbaar saldo",
+      "weeklySatking": "Wekelijkse Staking-pot sluit over",
       "date": "d",
-      "hour": "h",
+      "hour": "u",
       "minute": "min",
       "error": {
-        "required": "Bedrag is vereist",
+        "required": "Bedrag is verplicht",
         "min": "Het bedrag moet groter zijn dan 10M",
         "numberOnly": "Alleen cijfers zijn toegestaan",
         "exceedsBalance": "Het bedrag mag het beschikbare saldo niet overschrijden"
       },
       "confirmDialog": {
         "confirmLockTitle": "Staking bevestigen",
-        "confirmLockMessage": "Wilt u {{amount}} {{currency}} vergrendelen voor staking?",
+        "confirmLockMessage": "Wil je {{amount}} {{currency}} staken?",
         "confirm": "Vergrendelen",
-        "cancel": "Annuleren"
+        "cancel": "Annuleren",
+        "success": "Succes!",
+        "error": "Er ging iets mis tijdens het vergrendelen!"
       }
+    },
+    "history": {
+      "lockedEpoch": "Vergrendelde Epoch",
+      "lockedAmount": "Vergrendeld bedrag",
+      "lockedWeeks": "Vergrendelde weken",
+      "totalLockedAmountInEpoch": "Totaal vergrendeld bedrag in deze Epoch",
+      "currentBonusAmountInEpoch": "Huidige bonusbedrag in deze Epoch",
+      "earlyUnlockPercent": "Vroegtijdige vergrendelingsbeloning",
+      "fullUnlockPercent": "Volledige ontgrendelingsbeloning",
+      "actions": "Acties",
+      "noDataMessage": "Geen stakinggegevens gevonden",
+      "unlock": {
+        "title": "Ontgrendelen",
+        "message": "Wil je vroegtijdig ontgrendelen?",
+        "confirm": "Bevestigen",
+        "success": "Ontgrendeling succesvol!",
+        "error": "Er ging iets mis tijdens het ontgrendelen!"
+      },
+      "pleaseUnlock": "Ontgrendel eerst je wallet."
     },
     "Earned": {
       "rewards": "Verdiende beloningen",
       "unlockEarly": "Vroegtijdig ontgrendelen",
-      "stakedBalance": "Ingezette balans",
-      "earningRate": "Verdienpercentage",
-      "unlocksIn": "Ontgrendelt in",
+      "stakedBalance": "Gestaked saldo",
+      "earningRate": "Verdieningspercentage",
+      "unlocksIn": "Ontgrendelt over",
       "apy": "APY",
       "weeks": "Weken"
     }

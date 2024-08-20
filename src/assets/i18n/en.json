@@ -600,8 +600,29 @@
         "confirmLockTitle": "Confirm Staking",
         "confirmLockMessage": "Do you want to lock {{amount}} {{currency}} for staking?",
         "confirm": "Lock",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "sucess": "Success!",
+        "error": "Something went wrong during lock!"
       }
+    },
+    "history": {
+      "lockedEpoch": "Locked Epoch",
+      "lockedAmount": "Locked Amount",
+      "lockedWeeks": "Locked Weeks",
+      "totalLockedAmountInEpoch": "Total Locked Amount (this Epoch)",
+      "currentBonusAmountInEpoch": "Current Bonus Amount (this Epoch)",
+      "earlyUnlockPercent": "Early Locking Reward",
+      "fullUnlockPercent": "Full Unlocking Reward",
+      "actions": "Actions",
+      "noDataMessage": "Not Found Any Staking Data",
+      "unlock": {
+        "title": "Unlock",
+        "message": "Do you want to unlock early?",
+        "confirm": "Confirm",
+        "success": "Unlock Successful!",
+        "error": "Something went wrong during unlock!"
+      },
+      "pleaseUnlock": "Please unlock your wallet first."
     },
     "Earned": {
       "rewards": "Earned Rewards",

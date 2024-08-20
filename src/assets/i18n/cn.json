@@ -7,7 +7,7 @@
       "home": "主页",
       "payment": "支付",
       "balance": "交易",
-      "qearn": "Q 赚",
+      "qearn": "Qearn",
       "settings": "设置",
       "voting": "投票",
       "ipo": "IPO",
@@ -580,36 +580,57 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "股权 Qubic",
-      "subText": "通过质押您的代币 52 周来赚取 $QUBIC。",
+      "title": "质押Qubic",
+      "subText": "通过质押你的币来赚取$QUBIC，锁定52周。",
       "enterAmount": "输入金额",
-      "stake": "赌注",
+      "stake": "质押",
       "availableBalance": "可用余额",
-      "weeklySatking": "每周质押奖金即将结束",
-      "date": "日",
+      "weeklySatking": "每周质押池将在此时间关闭",
+      "date": "天",
       "hour": "小时",
       "minute": "分钟",
       "error": {
-        "required": "金额为必填项",
-        "min": "金额必须大于10M",
-        "numberOnly": "只允许输入数字",
+        "required": "金额是必填项",
+        "min": "金额必须大于1000万",
+        "numberOnly": "只能输入数字",
         "exceedsBalance": "金额不能超过可用余额"
       },
       "confirmDialog": {
         "confirmLockTitle": "确认质押",
-        "confirmLockMessage": "您确定要锁定 {{amount}} {{currency}} 进行质押吗？",
+        "confirmLockMessage": "你是否要锁定{{amount}} {{currency}}进行质押？",
         "confirm": "锁定",
-        "cancel": "取消"
+        "cancel": "取消",
+        "success": "成功！",
+        "error": "质押过程中出现错误！"
       }
     },
+    "history": {
+      "lockedEpoch": "锁定周期",
+      "lockedAmount": "锁定金额",
+      "lockedWeeks": "锁定周数",
+      "totalLockedAmountInEpoch": "本周期锁定的总金额",
+      "currentBonusAmountInEpoch": "本周期当前奖励金额",
+      "earlyUnlockPercent": "提前解锁奖励",
+      "fullUnlockPercent": "全部解锁奖励",
+      "actions": "操作",
+      "noDataMessage": "未找到任何质押数据",
+      "unlock": {
+        "title": "解锁",
+        "message": "你要提前解锁吗？",
+        "confirm": "确认",
+        "success": "解锁成功！",
+        "error": "解锁过程中出现错误！"
+      },
+      "pleaseUnlock": "请先解锁你的钱包。"
+    },
     "Earned": {
-      "rewards": "已获奖励",
+      "rewards": "已赚取的奖励",
       "unlockEarly": "提前解锁",
       "stakedBalance": "质押余额",
       "earningRate": "收益率",
-      "unlocksIn": "解锁",
-      "apy": "年利率",
-      "weeks": "周数"
+      "unlocksIn": "将在以下时间解锁",
+      "apy": "年化收益率",
+      "weeks": "周"
     }
   }
 }

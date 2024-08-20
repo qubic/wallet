@@ -31,11 +31,9 @@ export interface IStakeStatus {
 })
 export class HistoryComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = ['lockedEpoch', 'lockedAmount', 'lockedWeeks', 'totalLockedAmountInEpoch', 'currentBonusAmountInEpoch', 'earlyUnlockPercent', 'fullUnlockPercent', 'actions'];
-  // public dataSource = new MatTableDataSource<IStakeStatus>(MOCK_LOCK_DATA);
   public dataSource = new MatTableDataSource<IStakeStatus>([]);
   public stakeData: { [key: string]: IStakeStatus[] } = {};
   public isLoading = false;
-  public tick = 0;
   public form: FormGroup;
 
   constructor(
@@ -113,7 +111,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   openEarlyUnlockModal(element: IStakeStatus): void {
     if (!this.walletService.privateKey) {
-      this._snackBar.open(this.transloco.translate('paymentComponent.messages.pleaseUnlock'), this.transloco.translate('general.close'), {
+      this._snackBar.open(this.transloco.translate('history.pleaseUnlock'), this.transloco.translate('general.close'), {
         duration: 5000,
         panelClass: 'error',
       });
@@ -123,9 +121,9 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       restoreFocus: false,
       data: {
-        title: 'Unlock',
-        message: 'Do you want to unlock early?',
-        confirm: 'Confirm',
+        title: this.transloco.translate('history.unlock.title'),
+        message: this.transloco.translate('history.unlock.message'),
+        confirm: this.transloco.translate('history.unlock.confirm'),
       },
     });
     dialogRef.afterClosed().subscribe(async (result) => {
@@ -135,13 +133,13 @@ export class HistoryComponent implements OnInit, AfterViewInit {
           const seed = await this.walletService.revealSeed(element.publicId);
           const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tick);
           if (unlockResult) {
-            this._snackBar.open('Unlock Successful!', this.transloco.translate('general.close'), {
+            this._snackBar.open(this.transloco.translate('history.unlock.success'), this.transloco.translate('general.close'), {
               duration: 3000, // Duration in milliseconds
               panelClass: 'success',
             });
           }
         } catch (error) {
-          this._snackBar.open('Something went wrong during unlock!', this.transloco.translate('general.close'), {
+          this._snackBar.open(this.transloco.translate('history.unlock.error'), this.transloco.translate('general.close'), {
             duration: 3000,
             panelClass: 'error',
           });

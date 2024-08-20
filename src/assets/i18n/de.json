@@ -7,7 +7,7 @@
       "home": "Dashboard",
       "payment": "Zahlung",
       "balance": "Buchungen",
-      "qearn": "Q verdienen",
+      "qearn": "Qearn",
       "settings": "Einstellungen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -581,36 +581,58 @@
       "reset": "Zurücksetzen"
     }
   },
+
   "qearn": {
     "stakeQubic": {
-      "title": "Pfahl Qubic",
-      "subText": "Verdienen Sie $QUBIC, indem Sie Ihre Münzen 52 Wochen lang einsetzen.",
-      "enterAmount": "Menge eingeben",
-      "stake": "Einsatz",
+      "title": "Qubic staken",
+      "subText": "Verdiene $QUBIC, indem du deine Coins für 52 Wochen stakst.",
+      "enterAmount": "Betrag eingeben",
+      "stake": "Stake",
       "availableBalance": "Verfügbares Guthaben",
-      "weeklySatking": "Der wöchentliche Staking Pot schließt sich",
-      "date": "d",
-      "hour": "h",
-      "minute": "min",
+      "weeklySatking": "Wöchentliches Staking endet in",
+      "date": "T",
+      "hour": "Std.",
+      "minute": "Min.",
       "error": {
         "required": "Betrag ist erforderlich",
-        "min": "Der Betrag muss größer als 10M sein",
+        "min": "Der Betrag muss größer als 10 Mio. sein",
         "numberOnly": "Nur Zahlen sind erlaubt",
         "exceedsBalance": "Der Betrag darf das verfügbare Guthaben nicht überschreiten"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Einsatz bestätigen",
+        "confirmLockTitle": "Staking bestätigen",
         "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für das Staking sperren?",
         "confirm": "Sperren",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "success": "Erfolg!",
+        "error": "Beim Staking ist ein Fehler aufgetreten!"
       }
+    },
+    "history": {
+      "lockedEpoch": "Gesperrte Epoche",
+      "lockedAmount": "Gesperrter Betrag",
+      "lockedWeeks": "Gesperrte Wochen",
+      "totalLockedAmountInEpoch": "In dieser Epoche gesperrter Gesamtbetrag",
+      "currentBonusAmountInEpoch": "Aktueller Bonusbetrag in dieser Epoche",
+      "earlyUnlockPercent": "Frühzeitige Entsperrungsprämie",
+      "fullUnlockPercent": "Vollständige Entsperrungsprämie",
+      "actions": "Aktionen",
+      "noDataMessage": "Keine Staking-Daten gefunden",
+      "unlock": {
+        "title": "Entsperren",
+        "message": "Möchten Sie frühzeitig entsperren?",
+        "confirm": "Bestätigen",
+        "success": "Entsperrung erfolgreich!",
+        "error": "Beim Entsperren ist ein Fehler aufgetreten!"
+      },
+      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet."
     },
     "Earned": {
       "rewards": "Verdiente Belohnungen",
-      "unlockEarly": "Frühzeitig freischalten",
-      "stakedBalance": "Eingesetztes Guthaben",
+      "unlockEarly": "Frühzeitig entsperren",
+      "stakedBalance": "Gestaktes Guthaben",
       "earningRate": "Verdienstrate",
-      "unlocksIn": "Wird freigeschaltet in",
+      "unlocksIn": "Entsperrt in",
       "apy": "APY",
       "weeks": "Wochen"
     }

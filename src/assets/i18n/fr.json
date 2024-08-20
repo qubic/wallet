@@ -7,7 +7,7 @@
       "home": "Accueil",
       "payment": "Paiement",
       "balance": "Solde",
-      "qearn": "Q Gagner",
+      "qearn": "Qearn",
       "settings": "Paramètres",
       "voting": "Vote",
       "ipo": "IPO",
@@ -578,12 +578,12 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Participation à Qubic",
-      "subText": "Gagnez des $QUBIC en jalonnant vos pièces pendant 52 semaines.",
-      "enterAmount": "Entrer le montant",
-      "stake": "Miser",
+      "title": "Staker Qubic",
+      "subText": "Gagnez $QUBIC en stakant vos pièces pendant 52 semaines.",
+      "enterAmount": "Entrez le montant",
+      "stake": "Staker",
       "availableBalance": "Solde disponible",
-      "weeklySatking": "Clôture du pot de jalonnement hebdomadaire",
+      "weeklySatking": "Le pot de staking hebdomadaire se clôture dans",
       "date": "j",
       "hour": "h",
       "minute": "min",
@@ -597,15 +597,36 @@
         "confirmLockTitle": "Confirmer le staking",
         "confirmLockMessage": "Voulez-vous verrouiller {{amount}} {{currency}} pour le staking ?",
         "confirm": "Verrouiller",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "success": "Succès !",
+        "error": "Quelque chose s'est mal passé lors du verrouillage !"
       }
+    },
+    "history": {
+      "lockedEpoch": "Époque verrouillée",
+      "lockedAmount": "Montant verrouillé",
+      "lockedWeeks": "Semaines verrouillées",
+      "totalLockedAmountInEpoch": "Montant total verrouillé (cette époque)",
+      "currentBonusAmountInEpoch": "Montant de bonus actuel (cette époque)",
+      "earlyUnlockPercent": "Récompense de déverrouillage anticipé",
+      "fullUnlockPercent": "Récompense de déverrouillage complet",
+      "actions": "Actions",
+      "noDataMessage": "Aucune donnée de staking trouvée",
+      "unlock": {
+        "title": "Déverrouiller",
+        "message": "Voulez-vous déverrouiller plus tôt ?",
+        "confirm": "Confirmer",
+        "success": "Déverrouillage réussi !",
+        "error": "Quelque chose s'est mal passé lors du déverrouillage !"
+      },
+      "pleaseUnlock": "Veuillez d'abord déverrouiller votre portefeuille."
     },
     "Earned": {
       "rewards": "Récompenses gagnées",
-      "unlockEarly": "Débloquer tôt",
-      "stakedBalance": "Solde mis en jeu",
+      "unlockEarly": "Déverrouiller plus tôt",
+      "stakedBalance": "Solde staké",
       "earningRate": "Taux de gain",
-      "unlocksIn": "Déverrouillage dans",
+      "unlocksIn": "Déverrouille dans",
       "apy": "APY",
       "weeks": "Semaines"
     }

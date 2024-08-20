@@ -142,12 +142,12 @@ export class StakingComponent {
           const seed = await this.walletService.revealSeed(this.stakeForm.controls.sourceId.value!);
           const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
           if (result.txResult)
-            this._snackBar.open('Success!', this.transloco.translate('general.close'), {
+            this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.success'), this.transloco.translate('general.close'), {
               duration: 0,
               panelClass: 'success',
             });
         } catch (error) {
-          this._snackBar.open('Something went wrong!', this.transloco.translate('general.close'), {
+          this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.error'), this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',
           });

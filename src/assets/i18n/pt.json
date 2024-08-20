@@ -7,7 +7,7 @@
       "home": "Dashboard",
       "payment": "Pagamento",
       "balance": "Saldo",
-      "qearn": "Q ganhar",
+      "qearn": "Qearn",
       "settings": "Configurações",
       "voting": "Votação",
       "ipo": "IPO",
@@ -577,12 +577,12 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Estaca Qubic",
-      "subText": "Earn $QUBIC by staking your coins for 52 weeks.",
-      "enterAmount": "Insira o valor",
-      "stake": "Estaca",
+      "title": "Stake Qubic",
+      "subText": "Ganhe $QUBIC ao apostar suas moedas por 52 semanas.",
+      "enterAmount": "Digite o valor",
+      "stake": "Stake",
       "availableBalance": "Saldo disponível",
-      "weeklySatking": "O pote de apostas semanal fecha",
+      "weeklySatking": "O pote de staking semanal fecha em",
       "date": "d",
       "hour": "h",
       "minute": "min",
@@ -593,15 +593,36 @@
         "exceedsBalance": "O valor não pode exceder o saldo disponível"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Confirmar Staking",
+        "confirmLockTitle": "Confirmar Stake",
         "confirmLockMessage": "Você quer bloquear {{amount}} {{currency}} para staking?",
         "confirm": "Bloquear",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "success": "Sucesso!",
+        "error": "Algo deu errado durante o bloqueio!"
       }
     },
+    "history": {
+      "lockedEpoch": "Época bloqueada",
+      "lockedAmount": "Valor bloqueado",
+      "lockedWeeks": "Semanas bloqueadas",
+      "totalLockedAmountInEpoch": "Valor total bloqueado nesta época",
+      "currentBonusAmountInEpoch": "Valor do bônus atual nesta época",
+      "earlyUnlockPercent": "Recompensa por desbloqueio antecipado",
+      "fullUnlockPercent": "Recompensa por desbloqueio completo",
+      "actions": "Ações",
+      "noDataMessage": "Nenhum dado de staking encontrado",
+      "unlock": {
+        "title": "Desbloquear",
+        "message": "Você quer desbloquear antecipadamente?",
+        "confirm": "Confirmar",
+        "success": "Desbloqueio bem-sucedido!",
+        "error": "Algo deu errado durante o desbloqueio!"
+      },
+      "pleaseUnlock": "Por favor, desbloqueie sua carteira primeiro."
+    },
     "Earned": {
-      "rewards": "Recompensas Ganhas",
-      "unlockEarly": "Desbloqueie cedo",
+      "rewards": "Recompensas ganhas",
+      "unlockEarly": "Desbloquear antecipadamente",
       "stakedBalance": "Saldo apostado",
       "earningRate": "Taxa de ganho",
       "unlocksIn": "Desbloqueia em",
