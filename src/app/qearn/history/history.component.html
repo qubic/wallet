@@ -13,9 +13,11 @@
         </mat-form-field>
       </div>
     </form>
-
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
     <!-- Table -->
-    <div class="table-responsive">
+    <div class="table-responsive" *ngIf="!isLoading">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <!-- Locked Epoch Column -->
         <ng-container matColumnDef="lockedEpoch">
@@ -74,10 +76,7 @@
         <!-- No Data Message -->
         <tr *matNoDataRow>
           <td [attr.colspan]="displayedColumns.length">
-            <div *ngIf="isLoading" class="no-data-message">
-              <mat-spinner></mat-spinner>
-            </div>
-            <div *ngIf="!isLoading" class="no-data-message">
+            <div class="no-data-message">
               <p>{{ t('qearn.history.noDataMessage') }}</p>
             </div>
           </td>

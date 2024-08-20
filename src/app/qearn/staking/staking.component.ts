@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,19 +14,31 @@ import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 
+function trimmedMinValidator(control: AbstractControl): ValidationErrors | null {
+  const trimmedValue = Number(control.value.replace(/\D/g, ''));
+  return trimmedValue > 10000000 ? null : { min: true };
+}
+function formatNumberWithCommas(value: string): string {
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function formatNumberWithSpaces(value: string): string {
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
 @Component({
   selector: 'app-staking',
   templateUrl: './staking.component.html',
   styleUrls: ['./staking.component.scss'],
 })
 export class StakingComponent {
-  public maxAmount = 0n;
-  public stakeAmount = 0n;
+  public maxAmount = 0;
+  public stakeAmount = 0;
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
   public tick = 0;
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
-    amount: [0, [Validators.required, Validators.min(10000000), Validators.pattern(/^[0-9]*$/)]],
+    amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]],
   });
 
   @ViewChild('selectedDestinationId', { static: false })
@@ -52,11 +64,11 @@ export class StakingComponent {
     this.subscribeToTimeUpdates();
   }
 
-  async lockQubic(seed: string, amount: bigint, tick: number) {
+  async lockQubic(seed: string, amount: number, tick: number) {
     return this.qearnService.lockQubic(seed, amount, tick);
   }
 
-  async unLockQubic(seed: string, amount: bigint, epoch: number, tick: number) {
+  async unLockQubic(seed: string, amount: number, epoch: number, tick: number) {
     return this.qearnService.unLockQubic(seed, amount, epoch, tick);
   }
 
@@ -77,13 +89,17 @@ export class StakingComponent {
   private setupSourceIdValueChange(): void {
     this.stakeForm.controls.sourceId.valueChanges.subscribe((s) => {
       if (s) {
-        this.maxAmount = BigInt(this.walletService.getSeed(s)?.balance ?? 0);
+        this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
+        this.updateAmountValidators();
+        if (this.stakeAmount > this.maxAmount) {
+          this.stakeForm.controls.amount.setErrors({ exceedsBalance: true });
+        }
       }
     });
   }
 
   private updateAmountValidators(): void {
-    this.stakeForm.controls.amount.setValidators([Validators.required, Validators.min(10000000), Validators.pattern(/^[0-9]*$/)]);
+    this.stakeForm.controls.amount.setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]);
     this.stakeForm.controls.amount.updateValueAndValidity();
   }
 
@@ -95,11 +111,11 @@ export class StakingComponent {
 
   validateAmount(event: any): void {
     const value = event.target.value;
-    this.stakeAmount = BigInt(value);
-    if (!/^[0-9]*$/.test(value)) {
+    this.stakeAmount = Number(value.replace(/\D/g, ''));
+    if (!/^[0-9, ]*$/.test(value)) {
       this.stakeForm.controls.amount.setErrors({ pattern: true });
     }
-    if (event.target.value > this.maxAmount) {
+    if (this.stakeAmount > this.maxAmount) {
       this.stakeForm.controls.amount.setErrors({ exceedsBalance: true });
     }
   }
@@ -110,7 +126,7 @@ export class StakingComponent {
 
   setStaking(amount: number): void {
     if (this.stakeForm.valid) {
-      this.stakeForm.controls.amount.setValue(amount);
+      this.stakeForm.controls.amount.setValue(amount.toString());
     }
   }
 
@@ -176,6 +192,11 @@ export class StakingComponent {
         console.log('Staking cancelled');
       }
     });
+  }
+
+  onInputChange(event: any) {
+    this.validateAmount(event);
+    event.target.value = formatNumberWithCommas(event.target.value.replace(/\D/g, ''));
   }
 
   onSubmit(): void {}

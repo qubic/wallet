@@ -16,10 +16,10 @@ import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 export interface IStakeStatus {
   publicId: string;
   lockedEpoch: number;
-  lockedAmount: bigint;
+  lockedAmount: number;
   lockedWeeks: number;
-  totalLockedAmountInEpoch: bigint;
-  currentBonusAmountInEpoch: bigint;
+  totalLockedAmountInEpoch: number;
+  currentBonusAmountInEpoch: number;
   earlyUnlockPercent: number;
   fullUnlockPercent: string;
 }
@@ -89,7 +89,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         if (!this.stakeData[publicId]) {
           this.stakeData[publicId] = [];
         }
-        const fullUnlockPercent = Number(this.qearnService.epochInfo[this.epoch - idx].yieldPercentage) / 100000;
+        const fullUnlockPercent = this.qearnService.epochInfo[this.epoch - idx].yieldPercentage / 100000;
         const earlyUnlockPercent = ((REWARD_DATA.find((data) => data.weekFrom < this.epoch - idx && data.weekTo >= this.epoch - idx)?.earlyUnlock || 0) * 100) / fullUnlockPercent;
         const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === this.epoch - idx);
         if (!existingData) {
@@ -106,7 +106,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    const allData: IStakeStatus[] = Object.values(this.stakeData).flat();
+    const allData: IStakeStatus[] = this.stakeData[publicId];
     this.dataSource.data = allData;
     this.isLoading = false;
   }

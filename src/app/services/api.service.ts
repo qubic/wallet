@@ -158,7 +158,7 @@ export class ApiService {
   };
   
   
-  public async contractTransaction(seed: string, inputType: number, inputSize: number, amount: bigint, payload: any, tick: number) {
+  public async contractTransaction(seed: string, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
     try {
       const idPackage = await qHelper.createIdPackage(seed);
       const qCrypto = await Crypto;
@@ -183,7 +183,7 @@ export class ApiService {
         tx[offset + i] = 0;
       }
       offset += i - 1;
-      txView.setBigInt64(offset, amount, true);
+      txView.setBigInt64(offset, BigInt(amount), true);
       offset += 8;
       txView.setUint32(offset, tick + tickOffset, true);
       offset += 4;

@@ -4,13 +4,13 @@ import { lastValueFrom } from 'rxjs';
 import { WalletService } from './wallet.service';
 
 interface LockInfoPerEpoch {
-  lockAmount: bigint;
-  bonusAmount: bigint;
-  currentLockedAmount: bigint;
-  currentBonusAmount: bigint;
-  finalLockedAmount: bigint;
-  finalBonusAmount: bigint;
-  yieldPercentage: bigint;
+  lockAmount: number;
+  bonusAmount: number;
+  currentLockedAmount: number;
+  currentBonusAmount: number;
+  finalLockedAmount: number;
+  finalBonusAmount: number;
+  yieldPercentage: number;
 }
 
 @Injectable({
@@ -27,13 +27,13 @@ export class QearnService {
     }
   }
 
-  public async lockQubic(seed: string, amount: bigint, tick: number) {
+  public async lockQubic(seed: string, amount: number, tick: number) {
     const res = await this.apiService.contractTransaction(seed, 1, 0, amount, {}, tick);
     return res;
   }
 
-  public async unLockQubic(seed: string, amount: bigint, epoch: number, tick: number) {
-    const res = await this.apiService.contractTransaction(seed, 2, 12, 0n, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
+  public async unLockQubic(seed: string, amount: number, epoch: number, tick: number) {
+    const res = await this.apiService.contractTransaction(seed, 2, 12, 0, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
     return res;
   }
 
@@ -52,23 +52,23 @@ export class QearnService {
       })
     );
     if (!res.responseData) {
-      return { lockAmount: 0n, bonusAmount: 0n, currentLockedAmount: 0n, currentBonusAmount: 0n, finalLockedAmount: 0n, finalBonusAmount: 0n, yieldPercentage: 0n };
+      return { lockAmount: 0, bonusAmount: 0, currentLockedAmount: 0, currentBonusAmount: 0, finalLockedAmount: 0, finalBonusAmount: 0, yieldPercentage: 0 };
     }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
     const dataView = new DataView(responseBuffer);
-    const lockAmount = dataView.getBigUint64(0, true);
-    const bonusAmount = dataView.getBigUint64(8, true);
-    const currentLockedAmount = dataView.getBigUint64(16, true);
-    const currentBonusAmount = dataView.getBigUint64(24, true);
-    const finalLockedAmount = dataView.getBigUint64(32, true);
-    const finalBonusAmount = dataView.getBigUint64(40, true);
-    const yieldPercentage = dataView.getBigUint64(48, true);
+    const lockAmount = Number(dataView.getBigUint64(0, true));
+    const bonusAmount = Number(dataView.getBigUint64(8, true));
+    const currentLockedAmount = Number(dataView.getBigUint64(16, true));
+    const currentBonusAmount = Number(dataView.getBigUint64(24, true));
+    const finalLockedAmount = Number(dataView.getBigUint64(32, true));
+    const finalBonusAmount = Number(dataView.getBigUint64(40, true));
+    const yieldPercentage = Number(dataView.getBigUint64(48, true));
 
     return { lockAmount, bonusAmount, currentLockedAmount, currentBonusAmount, finalLockedAmount, finalBonusAmount, yieldPercentage };
   }
 
-  public async getUserLockInfo(user: Uint8Array, epoch: number): Promise<bigint> {
+  public async getUserLockInfo(user: Uint8Array, epoch: number): Promise<number> {
     const buffer = new ArrayBuffer(36);
     const dataView = new DataView(buffer);
 
@@ -87,11 +87,11 @@ export class QearnService {
     );
 
     if (!res.responseData) {
-      return 0n;
+      return 0;
     }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
-    return new DataView(responseBuffer).getBigUint64(0, true);
+    return Number(new DataView(responseBuffer).getBigUint64(0, true));
   }
 
   public async getStateOfRound(epoch: number): Promise<{ state: number }> {

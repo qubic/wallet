@@ -58,8 +58,8 @@ function handleStatusRequest(req, res, testnetURL) {
       } else {
         const statusResponse = {
           lastProcessedTick: {
-            tickNumber: body.tickInfo.tick,
-            epoch: body.tickInfo.epoch,
+            tickNumber: body.tickInfo?.tick,
+            epoch: body.tickInfo?.epoch,
           },
           lastProcessedTicksPerEpoch: {
             additionalProp1: 0,
@@ -69,11 +69,11 @@ function handleStatusRequest(req, res, testnetURL) {
           skippedTicks: [], // Assuming no skipped ticks for simplicity
           processedTickIntervalsPerEpoch: [
             {
-              epoch: body.tickInfo.epoch,
+              epoch: body.tickInfo?.epoch,
               intervals: [
                 {
-                  initialProcessedTick: body.tickInfo.initialTick,
-                  lastProcessedTick: body.tickInfo.tick,
+                  initialProcessedTick: body.tickInfo?.initialTick,
+                  lastProcessedTick: body.tickInfo?.tick,
                 },
               ],
             },

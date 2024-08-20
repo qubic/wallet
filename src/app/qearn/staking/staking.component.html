@@ -23,7 +23,7 @@
           <div>
             <mat-form-field class="amount-input">
               <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
-              <input matInput #input formControlName="amount" type="number" (input)="validateAmount($event)" />
+              <input matInput #input formControlName="amount" (input)="onInputChange($event)" />
               <mat-error *ngIf="stakeForm.controls['amount'].hasError('required')">
                 {{ t('qearn.stakeQubic.error.required') }}
               </mat-error>
@@ -52,10 +52,10 @@
             </mat-form-field>
             <div class="mat-toolbar example-balance">
               <span>{{ t('qearn.stakeQubic.availableBalance') }}</span>
-              <span>{{ maxAmount }}</span>
+              <span>{{ maxAmount | number: '1.0-0' }}</span>
             </div>
           </div>
-          <button color="accent" mat-raised-button class="full-width button" (click)="confirmLock()" [disabled]="stakeForm.invalid">
+          <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()" [disabled]="stakeForm.invalid">
             {{ t('qearn.stakeQubic.stake') }}
           </button>
           <div class="stake-col">
