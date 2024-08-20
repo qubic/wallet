@@ -172,6 +172,7 @@
       },
       "error": {
         "text": "Please check the form.",
+        "publicIdAvailable": "This PublicId is already present in your accounts.",
         "close": "close"
       }
     },

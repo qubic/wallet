@@ -172,6 +172,7 @@
       },
       "error": {
         "text": "Пожалуйста, проверьте форму",
+        "publicIdAvailable": "This PublicId is already present in your accounts.",
         "close": "Закрыть"
       }
     },

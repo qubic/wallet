@@ -26,6 +26,10 @@ export class SeedEditDialog extends QubicDialogWrapper {
     publicId: ['', [Validators.required, Validators.minLength(60), Validators.maxLength(60), Validators.pattern('[A-Z]*')]],
     isWatchOnlyAddress: [false],
   });
+  seedEditFormPublicId = this.fb.group({
+    alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    publicId: ['', [Validators.required, Validators.minLength(60), Validators.maxLength(60), Validators.pattern('[A-Z]*')]],
+  });
 
   isNew = true;
   seed: IDecodedSeed = (<IDecodedSeed>{});
@@ -54,6 +58,8 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.seedEditForm.controls.alias.setValue(this.seed.alias);
       this.seedEditForm.controls.publicId.setValue(this.seed.publicId);
       this.seedEditForm.controls.publicId.clearValidators();
+      this.seedEditFormPublicId.controls.publicId.setValue(this.seed.publicId);
+      this.seedEditFormPublicId.controls.publicId.clearValidators();
       this.seedEditForm.controls.seed.clearValidators();
     }
     this.seedEditForm.controls.isWatchOnlyAddress.setValue(this.seed.isOnlyWatch!);
@@ -64,6 +70,17 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   onSubmit(): void {
+    if (this.walletService.getSeeds().filter(s => 
+      s.publicId === this.seedEditForm.controls.publicId.value ||
+      s.publicId === this.seedEditFormPublicId.controls.publicId.value 
+    ).length > 0) {
+      this._snackBar.open(this.transloco.translate("seedEditComponent.form.error.publicIdAvailable"), this.transloco.translate("seedEditComponent.form.error.close"), {
+        duration: 5000,
+        panelClass: "error"
+      });
+      return;
+    }
+
     if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
       this.saveOnlyPublicKey();
     } else {
@@ -92,13 +109,13 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   async saveOnlyPublicKey() {
-    if (this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.valid) {
+    if (this.seedEditFormPublicId.controls.alias.valid && this.seedEditFormPublicId.controls.publicId.valid) {
       if (!this.isNew) {
         this.walletService.updateSeedAlias(this.seed.publicId, this.seedEditForm.controls.alias.value!)
         this.walletService.updateSeedIsOnlyWatch(this.seed.publicId, this.seedEditForm.controls.isWatchOnlyAddress.value!)
       } else {
         this.seed.alias = this.seedEditForm.controls.alias.value!;
-        this.seed.publicId = this.seedEditForm.controls.publicId.value!;
+        this.seed.publicId = this.seedEditFormPublicId.controls.publicId.value!;
         this.seed.isOnlyWatch = this.seedEditForm.controls.isWatchOnlyAddress.value!;
         await this.walletService.addSeed(this.seed);
       }
@@ -127,7 +144,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   toggleWatchOnlyAddress(): void {
-    
+
     if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
       this.seedEditForm.controls.seed.setValue("");
       this.fieldSeedDisabled = true;

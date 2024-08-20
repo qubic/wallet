@@ -172,6 +172,7 @@
       },
       "error": {
         "text": "フォームを確認してください。",
+        "publicIdAvailable": "This PublicId is already present in your accounts.",
         "close": "閉じる"
       }
     },

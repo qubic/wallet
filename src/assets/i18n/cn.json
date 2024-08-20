@@ -172,6 +172,7 @@
       },
       "error": {
         "text": "请检查表格",
+        "publicIdAvailable": "This PublicId is already present in your accounts.",
         "close": "关闭"
       }
     },
