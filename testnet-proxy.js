@@ -57,9 +57,9 @@ function handleBalanceRequest(req, res, testnetURL) {
             return reject(error);
           }
           let modifiedResponse = {
-            publicId: body.balance.id,
-            amount: Number(body.balance.balance),
-            tick: Number(body.balance.validForTick),
+            publicId: body.balance?.id,
+            amount: Number(body.balance?.balance),
+            tick: Number(body.balance?.validForTick),
           };
           result.push(modifiedResponse);
           resolve();
@@ -98,7 +98,7 @@ function handleTickRequest(req, res, testnetURL) {
       }
 
       let modifiedResponse = {
-        latestTick: body.tickInfo.tick,
+        latestTick: body.tickInfo?.tick,
       };
 
       if (!res.headersSent) {
