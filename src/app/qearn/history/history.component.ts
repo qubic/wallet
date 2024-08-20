@@ -13,7 +13,7 @@ import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 
-export interface IStackStatus {
+export interface IStakeStatus {
   publicId: string;
   lockedEpoch: number;
   lockedAmount: bigint;
@@ -31,9 +31,9 @@ export interface IStackStatus {
 })
 export class HistoryComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = ['lockedEpoch', 'lockedAmount', 'lockedWeeks', 'totalLockedAmountInEpoch', 'currentBonusAmountInEpoch', 'earlyUnlockPercent', 'fullUnlockPercent', 'actions'];
-  // public dataSource = new MatTableDataSource<IStackStatus>(MOCK_LOCK_DATA);
-  public dataSource = new MatTableDataSource<IStackStatus>([]);
-  public stakeData: { [key: string]: IStackStatus[] } = {};
+  // public dataSource = new MatTableDataSource<IStakeStatus>(MOCK_LOCK_DATA);
+  public dataSource = new MatTableDataSource<IStakeStatus>([]);
+  public stakeData: { [key: string]: IStakeStatus[] } = {};
   public isLoading = false;
   public tick = 0;
   public form: FormGroup;
@@ -63,7 +63,6 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private setupSourceIdValueChange(): void {
     this.form.controls['sourceId'].valueChanges.subscribe((s) => {
-      console.log(s);
       if (s) {
         this.fetchData(s);
       }
@@ -102,7 +101,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    const allData: IStackStatus[] = Object.values(this.stakeData).flat();
+    const allData: IStakeStatus[] = Object.values(this.stakeData).flat();
     this.dataSource.data = allData;
     this.isLoading = false;
   }
@@ -112,7 +111,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openEarlyUnlockModal(element: IStackStatus): void {
+  openEarlyUnlockModal(element: IStakeStatus): void {
     if (!this.walletService.privateKey) {
       this._snackBar.open(this.transloco.translate('paymentComponent.messages.pleaseUnlock'), this.transloco.translate('general.close'), {
         duration: 5000,
@@ -151,7 +150,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     });
   }
 
-  removeElement(element: IStackStatus): void {
+  removeElement(element: IStakeStatus): void {
     const index = this.dataSource.data.indexOf(element);
     if (index > -1) {
       this.dataSource.data.splice(index, 1);
