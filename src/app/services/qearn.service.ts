@@ -43,7 +43,9 @@ export class QearnService {
         requestData: base64String,
       })
     );
-
+    if (!res.responseData) {
+      return { lockAmount: 0n, bonusAmount: 0n, currentLockedAmount: 0n, currentBonusAmount: 0n, finalLockedAmount: 0n, finalBonusAmount: 0n, yieldPercentage: 0n };
+    }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
     const dataView = new DataView(responseBuffer);
@@ -76,6 +78,9 @@ export class QearnService {
       })
     );
 
+    if (!res.responseData) {
+      return 0n;
+    }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
     return new DataView(responseBuffer).getBigUint64(0, true);
@@ -96,6 +101,9 @@ export class QearnService {
       })
     );
 
+    if (!res.responseData) {
+      return { state: 0 };
+    }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
     const dataView = new DataView(responseBuffer);

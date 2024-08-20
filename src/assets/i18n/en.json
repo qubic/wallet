@@ -601,7 +601,7 @@
         "confirmLockMessage": "Do you want to lock {{amount}} {{currency}} for staking?",
         "confirm": "Lock",
         "cancel": "Cancel",
-        "sucess": "Success!",
+        "success": "Success!",
         "error": "Something went wrong during lock!"
       }
     },
