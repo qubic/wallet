@@ -117,9 +117,10 @@ export class SeedEditDialog extends QubicDialogWrapper {
         this.walletService.updateSeedAlias(this.seed.publicId, this.seedEditForm.controls.alias.value!)
         this.walletService.updateSeedIsOnlyWatch(this.seed.publicId, this.seedEditForm.controls.isWatchOnlyAddress.value!)
       } else {
+        this.seed.isOnlyWatch = this.seedEditForm.controls.isWatchOnlyAddress.value!;
         this.seed.alias = this.seedEditForm.controls.alias.value!;
         this.seed.publicId = this.seedEditFormPublicId.controls.publicId.value!;
-        this.seed.isOnlyWatch = this.seedEditForm.controls.isWatchOnlyAddress.value!;
+        this.seed.seed = '';
         await this.walletService.addSeed(this.seed);
       }
       this.dialogRef.close();
@@ -147,7 +148,6 @@ export class SeedEditDialog extends QubicDialogWrapper {
   }
 
   toggleWatchOnlyAddress(): void {
-
     if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
       this.seedEditForm.controls.seed.setValue("");
       this.fieldSeedDisabled = true;

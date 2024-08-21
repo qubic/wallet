@@ -332,6 +332,12 @@ export class WalletService {
   }
 
   public addSeed(seed: IDecodedSeed): Promise<ISeed> {
+    //In Safari there is a problem with encryption with an empty seed.
+    //https://github.com/qubic/wallet/issues/60
+    if(!seed.seed){
+      seed.seed = "onlywatch";
+    }
+
     return this.encrypt(seed.seed).then((encryptedSeed) => {
       const newSeed = <ISeed>{
         encryptedSeed: btoa(
