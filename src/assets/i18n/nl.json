@@ -597,7 +597,7 @@
         "confirmLockMessage": "Wil je {{amount}} {{currency}} staken?",
         "confirm": "Vergrendelen",
         "cancel": "Annuleren",
-        "success": "Succes!",
+        "success": "Transactie verzonden! Het zal enige tijd duren om te bevestigen.",
         "error": "Er ging iets mis tijdens het vergrendelen!"
       }
     },
@@ -615,7 +615,7 @@
         "title": "Ontgrendelen",
         "message": "Wil je vroegtijdig ontgrendelen?",
         "confirm": "Bevestigen",
-        "success": "Ontgrendeling succesvol!",
+        "success": "Transactie verzonden! Het zal enige tijd duren om te bevestigen.",
         "error": "Er ging iets mis tijdens het ontgrendelen!"
       },
       "pleaseUnlock": "Ontgrendel eerst je wallet."

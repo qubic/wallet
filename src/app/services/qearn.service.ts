@@ -26,6 +26,13 @@ export interface IStakeStatus {
   fullUnlockRewardRatio: number;
 }
 
+interface PendingStake {
+  publicId: string;
+  amount: number;
+  targetTick: number;
+  type: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,6 +40,7 @@ export class QearnService {
   public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
   public stakeData: { [key: string]: IStakeStatus[] } = {};
   public isLoading = false;
+  public pendingStake: PendingStake | null = null;
 
   constructor(private apiService: ApiService, private walletService: WalletService) {}
 
@@ -231,6 +239,8 @@ export class QearnService {
           fullUnlockRewardRatio,
         });
       }
+    } else {
+      this.stakeData[publicId] = this.stakeData[publicId].filter((data) => data.lockedEpoch !== epoch);
     }
   }
 
@@ -241,5 +251,9 @@ export class QearnService {
       await this.fetchStakeDataPerEpoch(publicId, currentEpoch - i, currentEpoch);
     }
     this.isLoading = false;
+  }
+
+  public setPendingStake(pendingStake: PendingStake | null) {
+    this.pendingStake = pendingStake;
   }
 }

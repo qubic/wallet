@@ -597,7 +597,7 @@
         "confirmLockMessage": "Você quer bloquear {{amount}} {{currency}} para staking?",
         "confirm": "Bloquear",
         "cancel": "Cancelar",
-        "success": "Sucesso!",
+        "success": "Transação enviada! A confirmação levará algum tempo.",
         "error": "Algo deu errado durante o bloqueio!"
       }
     },
@@ -615,7 +615,7 @@
         "title": "Desbloquear",
         "message": "Você quer desbloquear antecipadamente?",
         "confirm": "Confirmar",
-        "success": "Desbloqueio bem-sucedido!",
+        "success": "Transação enviada! A confirmação levará algum tempo.",
         "error": "Algo deu errado durante o desbloqueio!"
       },
       "pleaseUnlock": "Por favor, desbloqueie sua carteira primeiro."

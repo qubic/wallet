@@ -598,7 +598,7 @@
         "confirmLockMessage": "Voulez-vous verrouiller {{amount}} {{currency}} pour le staking ?",
         "confirm": "Verrouiller",
         "cancel": "Annuler",
-        "success": "Succès !",
+        "success": "Transaction envoyée ! La confirmation prendra un certain temps.",
         "error": "Quelque chose s'est mal passé lors du verrouillage !"
       }
     },
@@ -616,7 +616,7 @@
         "title": "Déverrouiller",
         "message": "Voulez-vous déverrouiller plus tôt ?",
         "confirm": "Confirmer",
-        "success": "Déverrouillage réussi !",
+        "success": "Transaction envoyée ! La confirmation prendra un certain temps.",
         "error": "Quelque chose s'est mal passé lors du déverrouillage !"
       },
       "pleaseUnlock": "Veuillez d'abord déverrouiller votre portefeuille."

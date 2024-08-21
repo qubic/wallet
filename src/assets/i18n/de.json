@@ -604,7 +604,7 @@
         "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für das Staking sperren?",
         "confirm": "Sperren",
         "cancel": "Abbrechen",
-        "success": "Erfolg!",
+        "success": "Transaktion gesendet! Die Bestätigung wird einige Zeit in Anspruch nehmen",
         "error": "Beim Staking ist ein Fehler aufgetreten!"
       }
     },
@@ -622,7 +622,7 @@
         "title": "Entsperren",
         "message": "Möchten Sie frühzeitig entsperren?",
         "confirm": "Bestätigen",
-        "success": "Entsperrung erfolgreich!",
+        "success": "Transaktion gesendet! Die Bestätigung wird einige Zeit in Anspruch nehmen",
         "error": "Beim Entsperren ist ein Fehler aufgetreten!"
       },
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet."

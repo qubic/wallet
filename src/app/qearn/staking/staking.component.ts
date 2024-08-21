@@ -55,7 +55,7 @@ export class StakingComponent {
     private transloco: TranslocoService,
     private apiService: ApiService,
     private us: UpdaterService,
-    private qearnService: QearnService,
+    public qearnService: QearnService,
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService
   ) {}
@@ -144,7 +144,7 @@ export class StakingComponent {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
-        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: formatNumberWithCommas(amountToStake || '0'), currency })}`,
+        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: formatNumberWithCommas(amountToStake!.replace(/\D/g, '') || '0'), currency })}`,
         confirm: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirm'),
       },
     });
@@ -152,46 +152,55 @@ export class StakingComponent {
     confirmDialog.afterClosed().subscribe(async (result) => {
       if (result) {
         try {
-          const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
           const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
           const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
+
+          const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
+          console.log(initialBalance)
+          const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find(data => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+          console.log(initialLockedAmountOfThisEpoch)
+          
           const seed = await this.walletService.revealSeed(publicId);
           const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
 
           if (result.txResult) {
             const tickAddition = this.walletService.getSettings().tickAddition;
             const newTick = tick + tickAddition;
+            this.qearnService.setPendingStake({
+              publicId,
+              amount: this.stakeAmount,
+              targetTick: newTick,
+              type: 'LOCK',
+            });
 
-            this.isChecking = true;
-            // // Wait for the tick to change
-            // const checkTickChange = async () => {
-            //   let currentTick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-            //   while (currentTick < newTick + 3) {
-            //     await new Promise(resolve => setTimeout(resolve, 1000));
-            //     currentTick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-            //   }
-            // };
-
-            // await checkTickChange();
-
-            // const newBalance = await this.walletService.getSeed(publicId)?.balance ?? 0;
-            // if (newBalance !== initialBalance) {
             this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.success'), this.transloco.translate('general.close'), {
               duration: 0,
               panelClass: 'success',
             });
-            setTimeout(() => {
-              if (publicId) this.qearnService.fetchStakeDataPerEpoch(publicId, epoch, epoch);
-              this.us.loadCurrentBalance();
-              this.router.navigate(['/']);
-            }, 2000);
-            this.isChecking = false;
-            // } else {
-            //   this.isChecking = false;
-            //   throw new Error('Balance did not change');
-            // }
+
+            this.us.currentTick.subscribe(async (tick) => {
+              console.log(tick, this.qearnService.pendingStake?.targetTick)
+              if(this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 2) {
+                if (publicId) await this.qearnService.fetchStakeDataPerEpoch(publicId, epoch, epoch);
+                const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId].find(data => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+                console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch)
+                if(initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
+                  this._snackBar.open("Transaction Failed", this.transloco.translate('general.close'), {
+                    duration: 0,
+                    panelClass: 'error',
+                  });
+                } else {
+                  this._snackBar.open("Transaction Successed!", this.transloco.translate('general.close'), {
+                    duration: 0,
+                    panelClass: 'success',
+                  });
+                }
+                this.qearnService.setPendingStake(null);
+              }
+            })
           }
         } catch (error) {
+          console.log(error)
           this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.error'), this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',

@@ -12,6 +12,7 @@ import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { Router } from '@angular/router';
+import { QearnComponent } from '../qearn.component';
 
 @Component({
   selector: 'app-history',
@@ -32,7 +33,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     private apiArchiver: ApiArchiverService,
     private us: UpdaterService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private qearnComponent: QearnComponent
   ) {
     this.form = this.fb.group({
       sourceId: [''],
@@ -96,15 +98,48 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       const seed = await this.walletService.revealSeed(publicId);
       const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tick);
       if (unlockResult) {
-        this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
-          duration: 3000,
-          panelClass: 'success',
-        });
-        setTimeout(() => {
-          if (publicId) this.qearnService.fetchStakeDataPerEpoch(publicId, element.lockedEpoch, element.lockedEpoch);
-          this.us.loadCurrentBalance();
-          this.router.navigate(['/']);
-        }, 2000);
+        const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
+        const initialLockedAmountOfThisEpoch = element.lockedAmount;
+
+        const seed = await this.walletService.revealSeed(publicId);
+        const result = await this.qearnService.lockQubic(seed, element.lockedAmount, tick);
+
+        if (result.txResult) {
+          const tickAddition = this.walletService.getSettings().tickAddition;
+          const newTick = tick + tickAddition;
+
+          this.qearnService.setPendingStake({
+            publicId,
+            amount: element.lockedAmount,
+            targetTick: newTick,
+            type: 'UNLOCK',
+          });
+
+          this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
+            duration: 3000,
+            panelClass: 'success',
+          });
+          this.us.currentTick.subscribe(async (tick) => {
+            console.log(tick, this.qearnService.pendingStake?.targetTick);
+            if (this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 1) {
+              if (publicId) await this.qearnService.fetchStakeDataPerEpoch(publicId, element.lockedEpoch, this.qearnComponent.epoch);
+              const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === element.lockedEpoch)?.lockedAmount ?? 0;
+              console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch);
+              if (initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
+                this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
+                  duration: 0,
+                  panelClass: 'error',
+                });
+              } else {
+                this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
+                  duration: 0,
+                  panelClass: 'success',
+                });
+              }
+              this.qearnService.setPendingStake(null);
+            }
+          });
+        }
       }
     } catch (error) {
       this._snackBar.open(this.transloco.translate('qearn.history.unlock.error'), this.transloco.translate('general.close'), {

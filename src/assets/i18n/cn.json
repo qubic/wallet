@@ -600,7 +600,7 @@
         "confirmLockMessage": "你是否要锁定{{amount}} {{currency}}进行质押？",
         "confirm": "锁定",
         "cancel": "取消",
-        "success": "成功！",
+        "success": "交易已发送！确认可能需要一些时间。",
         "error": "质押过程中出现错误！"
       }
     },
@@ -618,7 +618,7 @@
         "title": "解锁",
         "message": "你要提前解锁吗？",
         "confirm": "确认",
-        "success": "解锁成功！",
+        "success": "交易已发送！确认可能需要一些时间。",
         "error": "解锁过程中出现错误！"
       },
       "pleaseUnlock": "请先解锁你的钱包。"

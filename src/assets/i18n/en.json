@@ -601,7 +601,7 @@
         "confirmLockMessage": "Do you want to lock {{amount}} {{currency}} for staking?",
         "confirm": "Lock",
         "cancel": "Cancel",
-        "success": "Success!",
+        "success": "Transaction Sent! It will take some time to confirm.",
         "error": "Something went wrong during lock!"
       }
     },
@@ -619,7 +619,7 @@
         "title": "Unlock",
         "message": "Do you want to unlock early?",
         "confirm": "Confirm",
-        "success": "Unlock Successful!",
+        "success": "Transaction Sent! It will take some time to confirm.",
         "error": "Something went wrong during unlock!"
       },
       "pleaseUnlock": "Please unlock your wallet first."

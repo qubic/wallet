@@ -598,7 +598,7 @@
         "confirmLockMessage": "¿Quieres bloquear {{amount}} {{currency}} para la apuesta?",
         "confirm": "Bloquear",
         "cancel": "Cancelar",
-        "success": "¡Éxito!",
+        "success": "¡Transacción enviada! La confirmación tomará algún tiempo.",
         "error": "¡Algo salió mal durante el bloqueo!"
       }
     },
@@ -616,7 +616,7 @@
         "title": "Desbloquear",
         "message": "¿Quieres desbloquear anticipadamente?",
         "confirm": "Confirmar",
-        "success": "¡Desbloqueo exitoso!",
+        "success": "¡Transacción enviada! La confirmación tomará algún tiempo.",
         "error": "¡Algo salió mal durante el desbloqueo!"
       },
       "pleaseUnlock": "Por favor, desbloquea tu billetera primero."

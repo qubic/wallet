@@ -22,9 +22,6 @@ export class QearnComponent implements OnInit {
     
     for (let i = 0; i < seeds.length; i++) {
       const epochs = await this.qearnService.getUserLockStatus(new PublicKey(seeds[i].publicId).getPackageData(), this.epoch);
-      
-      console.log(epochs)
-      
       for (let j = 0; j < epochs.length; j++) {
         this.qearnService.fetchLockInfo(epochs[j]);
         this.qearnService.fetchStakeDataPerEpoch(seeds[i].publicId, epochs[j], this.epoch);

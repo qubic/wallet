@@ -601,7 +601,7 @@
         "confirmLockMessage": "{{amount}} {{currency}} stake için kilitlenmesini istiyor musunuz?",
         "confirm": "Kilit",
         "cancel": "İptal",
-        "success": "Başarılı!",
+        "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
         "error": "Kilitlenirken bir sorun oluştu!"
       }
     },
@@ -619,7 +619,7 @@
         "title": "Kilidi Aç",
         "message": "Erken kilidini açmak istiyor musunuz?",
         "confirm": "Onayla",
-        "success": "Kilidi Başarıyla Açıldı!",
+        "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
         "error": "Kilidi açarken bir sorun oluştu!"
       },
       "pleaseUnlock": "Lütfen önce cüzdanınızın kilidini açın."
