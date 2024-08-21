@@ -130,6 +130,40 @@ export class QearnService {
     return { state };
   }
 
+  public async getUserLockStatus(user: Uint8Array, currentEpoch: number): Promise<number[]> {
+    const buffer = new ArrayBuffer(32);
+    const dataView = new DataView(buffer);
+
+    user.forEach((byte, index) => dataView.setUint8(index, byte));
+
+    const base64String = this.walletService.arrayBufferToBase64(buffer);
+
+    const res = await lastValueFrom(
+      this.apiService.queryStakingData({
+        contractIndex: 6,
+        inputType: 4,
+        inputSize: 32,
+        requestData: base64String,
+      })
+    );
+
+    if (!res.responseData) {
+      return [];
+    }
+    const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
+    const responseView = new DataView(responseBuffer);
+    const state = Number(responseView.getBigUint64(0, true));
+
+    const binaryState = state.toString(2);
+    const epochs = [];
+    for (let i = binaryState.length - 1; i >= 0; i--) {
+      if (binaryState[i] === '1') {
+        epochs.push(currentEpoch - i);
+      }
+    }
+    return epochs;
+  }
+
   /**
    * Utilities
    */
