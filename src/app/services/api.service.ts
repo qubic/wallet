@@ -11,6 +11,7 @@ import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { TokenService } from './token.service';
 import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
 import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from 'qubic-ts-library/dist/crypto'
+import { WalletService } from './wallet.service';
 
 const TRANSACTION_SIZE = 144;
 const qHelper = new QubicHelper();
@@ -26,7 +27,7 @@ export class ApiService {
   private basePath = environment.apiQliUrl;
   private authenticationActive = false;
 
-  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
+  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor, private walletService: WalletService) {
     this.reAuthenticate();
   }
 
@@ -163,7 +164,7 @@ export class ApiService {
       const idPackage = await qHelper.createIdPackage(seed);
       const qCrypto = await Crypto;
       // Get current tick with an offset
-      const tickOffset = 5;
+      const tickOffset = this.walletService.getSettings().tickAddition;
       // Build transaction
       const qearnTxSize = TRANSACTION_SIZE + inputSize;
       const sourcePrivateKey = idPackage.privateKey;

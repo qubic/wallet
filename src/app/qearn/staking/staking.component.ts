@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
@@ -40,9 +40,11 @@ export class StakingComponent {
     sourceId: ['', Validators.required],
     amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]],
   });
+  public seeds = this.walletService.getSeeds();
 
   @ViewChild('selectedDestinationId', { static: false })
   public tickOverwrite = false;
+  public isChecking = false;
 
   constructor(
     private fb: FormBuilder,
@@ -120,10 +122,6 @@ export class StakingComponent {
     }
   }
 
-  getSeeds(isDestination = false) {
-    return this.walletService.getSeeds().filter((seed) => !isDestination || seed.publicId !== this.stakeForm.controls.sourceId.value);
-  }
-
   setStaking(amount: number): void {
     if (this.stakeForm.valid) {
       this.stakeForm.controls.amount.setValue(amount.toString());
@@ -138,7 +136,7 @@ export class StakingComponent {
       });
       return;
     }
-
+    const publicId = this.stakeForm.controls.sourceId.value!;
     const amountToStake = this.stakeForm.controls.amount.value;
     const currency = this.transloco.translate('general.currency');
 
@@ -154,21 +152,51 @@ export class StakingComponent {
     confirmDialog.afterClosed().subscribe(async (result) => {
       if (result) {
         try {
+          const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
           const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-          const seed = await this.walletService.revealSeed(this.stakeForm.controls.sourceId.value!);
+          const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
+          const seed = await this.walletService.revealSeed(publicId);
           const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
-          if (result.txResult)
+
+          if (result.txResult) {
+            const tickAddition = this.walletService.getSettings().tickAddition;
+            const newTick = tick + tickAddition;
+
+            this.isChecking = true;
+            // // Wait for the tick to change
+            // const checkTickChange = async () => {
+            //   let currentTick = await lastValueFrom(this.apiArchiver.getCurrentTick());
+            //   while (currentTick < newTick + 3) {
+            //     await new Promise(resolve => setTimeout(resolve, 1000));
+            //     currentTick = await lastValueFrom(this.apiArchiver.getCurrentTick());
+            //   }
+            // };
+
+            // await checkTickChange();
+
+            // const newBalance = await this.walletService.getSeed(publicId)?.balance ?? 0;
+            // if (newBalance !== initialBalance) {
             this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.success'), this.transloco.translate('general.close'), {
               duration: 0,
               panelClass: 'success',
             });
+            setTimeout(() => {
+              if (publicId) this.qearnService.fetchStakeDataPerEpoch(publicId, epoch, epoch);
+              this.us.loadCurrentBalance();
+              this.router.navigate(['/']);
+            }, 2000);
+            this.isChecking = false;
+            // } else {
+            //   this.isChecking = false;
+            //   throw new Error('Balance did not change');
+            // }
+          }
         } catch (error) {
           this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.error'), this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',
           });
         }
-      } else {
       }
     });
   }

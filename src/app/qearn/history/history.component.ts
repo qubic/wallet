@@ -10,6 +10,8 @@ import { IStakeStatus, QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
+import { UpdaterService } from 'src/app/services/updater-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-history',
@@ -28,6 +30,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService,
+    private us: UpdaterService,
+    private router: Router,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
@@ -87,14 +91,20 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private async handleUnlockAction(element: IStakeStatus) {
     try {
+      const publicId = element.publicId;
       const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-      const seed = await this.walletService.revealSeed(element.publicId);
+      const seed = await this.walletService.revealSeed(publicId);
       const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tick);
       if (unlockResult) {
         this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
           duration: 3000,
           panelClass: 'success',
         });
+        setTimeout(() => {
+          if (publicId) this.qearnService.fetchStakeDataPerEpoch(publicId, element.lockedEpoch, element.lockedEpoch);
+          this.us.loadCurrentBalance();
+          this.router.navigate(['/']);
+        }, 2000);
       }
     } catch (error) {
       this._snackBar.open(this.transloco.translate('qearn.history.unlock.error'), this.transloco.translate('general.close'), {

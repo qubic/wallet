@@ -10,8 +10,6 @@ interface LockInfoPerEpoch {
   bonusAmount: number;
   currentLockedAmount: number;
   currentBonusAmount: number;
-  finalLockedAmount: number;
-  finalBonusAmount: number;
   yieldPercentage: number;
 }
 
@@ -66,7 +64,7 @@ export class QearnService {
       })
     );
     if (!res.responseData) {
-      return { lockAmount: 0, bonusAmount: 0, currentLockedAmount: 0, currentBonusAmount: 0, finalLockedAmount: 0, finalBonusAmount: 0, yieldPercentage: 0 };
+      return { lockAmount: 0, bonusAmount: 0, currentLockedAmount: 0, currentBonusAmount: 0, yieldPercentage: 0 };
     }
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
 
@@ -75,11 +73,9 @@ export class QearnService {
     const bonusAmount = Number(dataView.getBigUint64(8, true));
     const currentLockedAmount = Number(dataView.getBigUint64(16, true));
     const currentBonusAmount = Number(dataView.getBigUint64(24, true));
-    const finalLockedAmount = Number(dataView.getBigUint64(32, true));
-    const finalBonusAmount = Number(dataView.getBigUint64(40, true));
-    const yieldPercentage = Number(dataView.getBigUint64(48, true));
+    const yieldPercentage = Number(dataView.getBigUint64(32, true));
 
-    return { lockAmount, bonusAmount, currentLockedAmount, currentBonusAmount, finalLockedAmount, finalBonusAmount, yieldPercentage };
+    return { lockAmount, bonusAmount, currentLockedAmount, currentBonusAmount, yieldPercentage };
   }
 
   public async getUserLockInfo(user: Uint8Array, epoch: number): Promise<number> {
@@ -145,6 +141,7 @@ export class QearnService {
   public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
     this.isLoading = true;
     for (let i = 0; i < 52; i++) {
+      if (this.epochInfo[epoch - i]) return;
       await this.fetchLockInfo(epoch - i);
     }
     this.isLoading = false;
@@ -172,8 +169,21 @@ export class QearnService {
       const earlyUnlockRewardRatio = (lockAmount * earlyUnlockPercent) / (100 * totalLockedAmountInEpoch);
       const earlyUnlockReward = currentBonusAmountInEpoch * earlyUnlockRewardRatio;
 
-      const existingData = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch);
-      if (!existingData) {
+      const existingDataIndex = this.stakeData[publicId].findIndex((data) => data.lockedEpoch === epoch);
+      if (existingDataIndex !== -1) {
+        this.stakeData[publicId][existingDataIndex] = {
+          publicId: publicId,
+          lockedEpoch: epoch,
+          lockedAmount: lockAmount,
+          lockedWeeks: currentEpoch - epoch,
+          totalLockedAmountInEpoch: totalLockedAmountInEpoch,
+          currentBonusAmountInEpoch: currentBonusAmountInEpoch,
+          earlyUnlockReward,
+          earlyUnlockRewardRatio,
+          fullUnlockReward,
+          fullUnlockRewardRatio,
+        };
+      } else {
         this.stakeData[publicId].push({
           publicId: publicId,
           lockedEpoch: epoch,
@@ -193,6 +203,7 @@ export class QearnService {
   public async fetchStakeDataOfPublicId(publicId: string, currentEpoch: number) {
     this.isLoading = true;
     for (let i = 0; i < 52; i++) {
+      if (this.stakeData[publicId]?.find((data) => data.lockedEpoch === currentEpoch - i)) return;
       await this.fetchStakeDataPerEpoch(publicId, currentEpoch - i, currentEpoch);
     }
     this.isLoading = false;
