@@ -42,7 +42,7 @@ export class QearnService {
   public isLoading = false;
   public pendingStake: PendingStake | null = null;
 
-  constructor(private apiService: ApiService, private walletService: WalletService) {}
+  constructor(private apiService: ApiService, private walletService: WalletService) { }
 
   /**
    * Main Query, Transaction Functions
@@ -204,12 +204,12 @@ export class QearnService {
       const yieldPercentage = this.epochInfo[epoch].yieldPercentage;
 
       const fullUnlockPercent = yieldPercentage / 100000;
-      const fullUnlockRewardRatio = lockAmount / totalLockedAmountInEpoch;
-      const fullUnlockReward = currentBonusAmountInEpoch * fullUnlockRewardRatio;
+      // const fullUnlockRewardRatio = lockAmount / totalLockedAmountInEpoch;
+      const fullUnlockReward = currentBonusAmountInEpoch * (lockAmount / totalLockedAmountInEpoch);
 
       const earlyUnlockPercent = REWARD_DATA.find((data) => data.weekFrom <= currentEpoch - epoch && data.weekTo >= currentEpoch - epoch)?.earlyUnlock || 0;
-      const earlyUnlockRewardRatio = (lockAmount * earlyUnlockPercent) / (100 * totalLockedAmountInEpoch);
-      const earlyUnlockReward = currentBonusAmountInEpoch * earlyUnlockRewardRatio;
+      // const earlyUnlockRewardRatio = fullUnlockPercent *earlyUnlockPercent /100; //(lockAmount * earlyUnlockPercent) / (100 * totalLockedAmountInEpoch);
+      const earlyUnlockReward = currentBonusAmountInEpoch * (lockAmount / totalLockedAmountInEpoch) * (earlyUnlockPercent / 100);
 
       const existingDataIndex = this.stakeData[publicId].findIndex((data) => data.lockedEpoch === epoch);
       if (existingDataIndex !== -1) {
@@ -221,9 +221,9 @@ export class QearnService {
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
-          earlyUnlockRewardRatio,
+          earlyUnlockRewardRatio: fullUnlockPercent * earlyUnlockPercent / 100,
           fullUnlockReward,
-          fullUnlockRewardRatio,
+          fullUnlockRewardRatio: fullUnlockPercent,
         };
       } else {
         this.stakeData[publicId].push({
@@ -234,9 +234,9 @@ export class QearnService {
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
-          earlyUnlockRewardRatio,
+          earlyUnlockRewardRatio : fullUnlockPercent * earlyUnlockPercent / 100,
           fullUnlockReward,
-          fullUnlockRewardRatio,
+          fullUnlockRewardRatio : fullUnlockPercent,
         });
       }
     } else {
@@ -255,5 +255,9 @@ export class QearnService {
 
   public setPendingStake(pendingStake: PendingStake | null) {
     this.pendingStake = pendingStake;
+  }
+
+  public setLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 }

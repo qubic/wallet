@@ -19,7 +19,7 @@ export class QearnComponent implements OnInit {
     });
     
     const seeds = this.walletService.getSeeds();
-    
+    this.qearnService.setLoading(true);
     for (let i = 0; i < seeds.length; i++) {
       const epochs = await this.qearnService.getUserLockStatus(new PublicKey(seeds[i].publicId).getPackageData(), this.epoch);
       for (let j = 0; j < epochs.length; j++) {
@@ -27,5 +27,6 @@ export class QearnComponent implements OnInit {
         this.qearnService.fetchStakeDataPerEpoch(seeds[i].publicId, epochs[j], this.epoch);
       }
     }
+    this.qearnService.setLoading(false);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
@@ -9,7 +9,7 @@ import { TimeService } from '../../services/time.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
-import { lastValueFrom } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
@@ -31,11 +31,11 @@ function formatNumberWithSpaces(value: string): string {
   templateUrl: './staking.component.html',
   styleUrls: ['./staking.component.scss'],
 })
-export class StakingComponent {
+export class StakingComponent implements OnInit {
   public maxAmount = 0;
   public stakeAmount = 0;
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
-  public tick = 0;
+  public tick: number = 0;
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
     amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]],
@@ -156,10 +156,10 @@ export class StakingComponent {
           const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
 
           const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
-          console.log(initialBalance)
-          const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find(data => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
-          console.log(initialLockedAmountOfThisEpoch)
-          
+          console.log(initialBalance);
+          const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+          console.log(initialLockedAmountOfThisEpoch);
+
           const seed = await this.walletService.revealSeed(publicId);
           const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
 
@@ -179,28 +179,28 @@ export class StakingComponent {
             });
 
             this.us.currentTick.subscribe(async (tick) => {
-              console.log(tick, this.qearnService.pendingStake?.targetTick)
-              if(this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 2) {
+              console.log(tick, this.qearnService.pendingStake?.targetTick);
+              if (this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 2) {
                 if (publicId) await this.qearnService.fetchStakeDataPerEpoch(publicId, epoch, epoch);
-                const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId].find(data => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
-                console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch)
-                if(initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
-                  this._snackBar.open("Transaction Failed", this.transloco.translate('general.close'), {
+                const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+                console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch);
+                if (initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
+                  this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
                     duration: 0,
                     panelClass: 'error',
                   });
                 } else {
-                  this._snackBar.open("Transaction Successed!", this.transloco.translate('general.close'), {
+                  this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
                     duration: 0,
                     panelClass: 'success',
                   });
                 }
                 this.qearnService.setPendingStake(null);
               }
-            })
+            });
           }
         } catch (error) {
-          console.log(error)
+          console.log(error);
           this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.error'), this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',
