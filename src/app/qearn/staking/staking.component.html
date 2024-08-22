@@ -20,38 +20,8 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div>
-            <mat-form-field class="amount-input">
-              <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
-              <input matInput #input formControlName="amount" (input)="onInputChange($event)" />
-              <mat-error *ngIf="stakeForm.controls['amount'].hasError('required')">
-                {{ t('qearn.stakeQubic.error.required') }}
-              </mat-error>
-              <mat-error
-                *ngIf="stakeForm.controls['amount'].hasError('min') && !stakeForm.controls['amount'].hasError('required')">
-                {{ t('qearn.stakeQubic.error.min') }}
-              </mat-error>
-              <mat-error *ngIf="
-                  stakeForm.controls['amount'].hasError('pattern') &&
-                  !stakeForm.controls['amount'].hasError('required') &&
-                  !stakeForm.controls['amount'].hasError('min')
-                ">
-                {{ t('qearn.stakeQubic.error.numberOnly') }}
-              </mat-error>
-              <mat-error *ngIf="
-                  stakeForm.controls['amount'].hasError('exceedsBalance') &&
-                  !stakeForm.controls['amount'].hasError('required') &&
-                  !stakeForm.controls['amount'].hasError('min') &&
-                  !stakeForm.controls['amount'].hasError('pattern')
-                ">
-                {{ t('qearn.stakeQubic.error.exceedsBalance') }}
-              </mat-error>
-            </mat-form-field>
-            <div class="mat-toolbar example-balance">
-              <span>{{ t('qearn.stakeQubic.availableBalance') }}</span>
-              <span>{{ maxAmount | number: '1.0-0' }}</span>
-            </div>
-          </div>
+          <app-stake-input [formGroup]="stakeForm" [maxAmount]="maxAmount"></app-stake-input>
+
           <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()"
             [disabled]="stakeForm.invalid || isChecking || qearnService.pendingStake">
             <div *ngIf="!isChecking && qearnService.pendingStake === null">{{ t('qearn.stakeQubic.stake') }}</div>

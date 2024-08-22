@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
 import { WalletService } from './wallet.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 import { REWARD_DATA } from '../qearn/reward-table/table-data';
+import { UpdaterService } from './updater-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoService } from '@ngneat/transloco';
 
 interface LockInfoPerEpoch {
   lockAmount: number;
@@ -41,8 +44,15 @@ export class QearnService {
   public stakeData: { [key: string]: IStakeStatus[] } = {};
   public isLoading = false;
   public pendingStake: PendingStake | null = null;
+  public txSuccessSubject = new Subject<any>();
+  public selectedPublicId = new Subject<string>();
 
-  constructor(private apiService: ApiService, private walletService: WalletService) { }
+  constructor(
+    private apiService: ApiService, 
+    private walletService: WalletService,
+    private us: UpdaterService,
+    private _snackBar: MatSnackBar,
+    private transloco: TranslocoService) {}
 
   /**
    * Main Query, Transaction Functions
@@ -164,8 +174,8 @@ export class QearnService {
 
     const binaryState = state.toString(2);
     const epochs = [];
-    for (let i = binaryState.length - 1; i >= 0; i--) {
-      if (binaryState[i] === '1') {
+    for (let i = 0; i <= binaryState.length - 1; i++) {
+      if (binaryState[binaryState.length - 1 - i] === '1') {
         epochs.push(currentEpoch - i);
       }
     }
@@ -195,6 +205,7 @@ export class QearnService {
     }
     const pubKey = new PublicKey(publicId).getPackageData();
     const lockAmount = await this.getUserLockInfo(pubKey, epoch);
+
     if (lockAmount) {
       if (!this.stakeData[publicId]) {
         this.stakeData[publicId] = [];
@@ -221,7 +232,7 @@ export class QearnService {
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
-          earlyUnlockRewardRatio: fullUnlockPercent * earlyUnlockPercent / 100,
+          earlyUnlockRewardRatio: (fullUnlockPercent * earlyUnlockPercent) / 100,
           fullUnlockReward,
           fullUnlockRewardRatio: fullUnlockPercent,
         };
@@ -234,9 +245,9 @@ export class QearnService {
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
-          earlyUnlockRewardRatio : fullUnlockPercent * earlyUnlockPercent / 100,
+          earlyUnlockRewardRatio: (fullUnlockPercent * earlyUnlockPercent) / 100,
           fullUnlockReward,
-          fullUnlockRewardRatio : fullUnlockPercent,
+          fullUnlockRewardRatio: fullUnlockPercent,
         });
       }
     } else {
@@ -259,5 +270,50 @@ export class QearnService {
 
   public setLoading(isLoading: boolean) {
     this.isLoading = isLoading;
+  }
+
+  monitorStakeTransaction(publicId: string, initialLockedAmount: number, epoch: number): void {
+    this.us.currentTick.subscribe(async (tick) => {
+      if (this.pendingStake !== null && tick > this.pendingStake.targetTick + 2) {
+        await this.fetchStakeDataPerEpoch(publicId, epoch, epoch);
+        const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+        if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {
+          this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
+            duration: 0,
+            panelClass: 'error',
+          });
+        } else {
+          this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
+            duration: 0,
+            panelClass: 'success',
+          });
+        }
+        this.pendingStake = null;
+        this.txSuccessSubject.next(publicId);
+      }
+    });
+  }
+
+  monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, historyComponent: any): void {
+    this.us.currentTick.subscribe(async (tick) => {
+      if (this.pendingStake !== null && tick > this.pendingStake.targetTick + 1) {
+        // Fetch the stake data and check if the transaction was successful
+        await this.fetchStakeDataPerEpoch(publicId, historyComponent.lockedEpoch, currentEpoch);
+        const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === historyComponent.lockedEpoch)?.lockedAmount ?? 0;
+        if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {
+          this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
+            duration: 0,
+            panelClass: 'error',
+          });
+        } else {
+          this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
+            duration: 0,
+            panelClass: 'success',
+          });
+        }
+        this.pendingStake = null;
+        this.txSuccessSubject.next(publicId);
+      }
+    });
   }
 }

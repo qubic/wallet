@@ -1,30 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialog } from '../../core/confirm-dialog/confirm-dialog.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { TimeService } from '../../services/time.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UpdaterService } from 'src/app/services/updater-service';
-import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
-
-function trimmedMinValidator(control: AbstractControl): ValidationErrors | null {
-  const trimmedValue = Number(control.value.replace(/\D/g, ''));
-  return trimmedValue > 10000000 ? null : { min: true };
-}
-function formatNumberWithCommas(value: string): string {
-  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-function formatNumberWithSpaces(value: string): string {
-  return value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
+import { lastValueFrom } from 'rxjs';
+import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
+import { QearnComponent } from '../qearn.component';
 
 @Component({
   selector: 'app-staking',
@@ -33,17 +21,12 @@ function formatNumberWithSpaces(value: string): string {
 })
 export class StakingComponent implements OnInit {
   public maxAmount = 0;
-  public stakeAmount = 0;
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
-  public tick: number = 0;
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
-    amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]],
+    amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]],
   });
   public seeds = this.walletService.getSeeds();
-
-  @ViewChild('selectedDestinationId', { static: false })
-  public tickOverwrite = false;
   public isChecking = false;
 
   constructor(
@@ -57,29 +40,19 @@ export class StakingComponent implements OnInit {
     private us: UpdaterService,
     public qearnService: QearnService,
     private _snackBar: MatSnackBar,
-    private apiArchiver: ApiArchiverService
+    private apiArchiver: ApiArchiverService,
+    public qearnComponent: QearnComponent
   ) {}
 
   ngOnInit(): void {
     this.redirectIfWalletNotReady();
     this.setupSourceIdValueChange();
     this.subscribeToTimeUpdates();
-  }
-
-  async lockQubic(seed: string, amount: number, tick: number) {
-    return this.qearnService.lockQubic(seed, amount, tick);
-  }
-
-  async unLockQubic(seed: string, amount: number, epoch: number, tick: number) {
-    return this.qearnService.unLockQubic(seed, amount, epoch, tick);
-  }
-
-  async getLockInfoPerEpoch(epoch: number) {
-    return this.qearnService.getLockInfoPerEpoch(epoch);
-  }
-
-  async getUserLockInfo(user: Uint8Array, epoch: number) {
-    return this.qearnService.getUserLockInfo(user, epoch);
+    this.qearnService.txSuccessSubject.subscribe((publicId) => {
+      if (publicId) {
+        this.qearnComponent.selectHistoryTabAndAddress(publicId);
+      }
+    });
   }
 
   private redirectIfWalletNotReady(): void {
@@ -93,7 +66,7 @@ export class StakingComponent implements OnInit {
       if (s) {
         this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
         this.updateAmountValidators();
-        if (this.stakeAmount > this.maxAmount) {
+        if (Number(this.stakeForm.controls['amount'].value?.replace(/\D/g, '')) > this.maxAmount) {
           this.stakeForm.controls.amount.setErrors({ exceedsBalance: true });
         }
       }
@@ -101,7 +74,7 @@ export class StakingComponent implements OnInit {
   }
 
   private updateAmountValidators(): void {
-    this.stakeForm.controls.amount.setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), trimmedMinValidator]);
+    this.stakeForm.controls.amount.setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]);
     this.stakeForm.controls.amount.updateValueAndValidity();
   }
 
@@ -111,21 +84,9 @@ export class StakingComponent implements OnInit {
     });
   }
 
-  validateAmount(event: any): void {
-    const value = event.target.value;
-    this.stakeAmount = Number(value.replace(/\D/g, ''));
-    if (!/^[0-9, ]*$/.test(value)) {
-      this.stakeForm.controls.amount.setErrors({ pattern: true });
-    }
-    if (this.stakeAmount > this.maxAmount) {
-      this.stakeForm.controls.amount.setErrors({ exceedsBalance: true });
-    }
-  }
-
-  setStaking(amount: number): void {
-    if (this.stakeForm.valid) {
-      this.stakeForm.controls.amount.setValue(amount.toString());
-    }
+  private trimmedMinValidator(control: AbstractControl) {
+    const trimmedValue = Number(control.value.replace(/\D/g, ''));
+    return trimmedValue > 10000000 ? null : { min: true };
   }
 
   confirmLock(): void {
@@ -144,7 +105,7 @@ export class StakingComponent implements OnInit {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
-        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: formatNumberWithCommas(amountToStake!.replace(/\D/g, '') || '0'), currency })}`,
+        message: `${this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', { amount: this.formatNumberWithCommas(amountToStake!.replace(/\D/g, '') || '0'), currency })}`,
         confirm: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirm'),
       },
     });
@@ -156,19 +117,17 @@ export class StakingComponent implements OnInit {
           const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
 
           const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
-          console.log(initialBalance);
           const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
-          console.log(initialLockedAmountOfThisEpoch);
 
           const seed = await this.walletService.revealSeed(publicId);
-          const result = await this.qearnService.lockQubic(seed, this.stakeAmount, tick);
+          const result = await this.qearnService.lockQubic(seed, Number(amountToStake?.replace(/\D/g, '')), tick);
 
           if (result.txResult) {
             const tickAddition = this.walletService.getSettings().tickAddition;
             const newTick = tick + tickAddition;
             this.qearnService.setPendingStake({
               publicId,
-              amount: this.stakeAmount,
+              amount: Number(amountToStake?.replace(/\D/g, '')),
               targetTick: newTick,
               type: 'LOCK',
             });
@@ -178,29 +137,9 @@ export class StakingComponent implements OnInit {
               panelClass: 'success',
             });
 
-            this.us.currentTick.subscribe(async (tick) => {
-              console.log(tick, this.qearnService.pendingStake?.targetTick);
-              if (this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 2) {
-                if (publicId) await this.qearnService.fetchStakeDataPerEpoch(publicId, epoch, epoch);
-                const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
-                console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch);
-                if (initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
-                  this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
-                    duration: 0,
-                    panelClass: 'error',
-                  });
-                } else {
-                  this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
-                    duration: 0,
-                    panelClass: 'success',
-                  });
-                }
-                this.qearnService.setPendingStake(null);
-              }
-            });
+            this.qearnService.monitorStakeTransaction(publicId, initialLockedAmountOfThisEpoch, epoch);
           }
         } catch (error) {
-          console.log(error);
           this._snackBar.open(this.transloco.translate('qearn.stakeQubic.confirmDialog.error'), this.transloco.translate('general.close'), {
             duration: 0,
             panelClass: 'error',
@@ -210,10 +149,11 @@ export class StakingComponent implements OnInit {
     });
   }
 
-  onInputChange(event: any) {
-    this.validateAmount(event);
-    event.target.value = formatNumberWithCommas(event.target.value.replace(/\D/g, ''));
+  onSubmit(): void {
+    // Handle form submission if necessary
   }
 
-  onSubmit(): void {}
+  private formatNumberWithCommas(value: string): string {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 }

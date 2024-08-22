@@ -13,6 +13,7 @@ import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { Router } from '@angular/router';
 import { QearnComponent } from '../qearn.component';
+import { UnlockInputDialogComponent } from '../components/unlock-input-dialog/unlock-input-dialog.component';
 
 @Component({
   selector: 'app-history',
@@ -40,9 +41,16 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       sourceId: [''],
     });
   }
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
+    this.qearnService.selectedPublicId.subscribe((publicId) => {
+      if (publicId) {
+        this.form.controls['sourceId'].setValue(publicId);
+      }
+    });
+
     this.setupSourceIdValueChange();
   }
 
@@ -76,28 +84,49 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {
+    const inputDialogRef = this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
       data: {
-        title: this.transloco.translate('qearn.history.unlock.title'),
-        message: this.transloco.translate('qearn.history.unlock.message'),
-        confirm: this.transloco.translate('qearn.history.unlock.confirm'),
+        maxUnlockAmount: element.lockedAmount,
       },
     });
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        this.handleUnlockAction(element);
+
+    inputDialogRef.afterClosed().subscribe((unlockAmount: number) => {
+      if (unlockAmount) {
+        this.openConfirmDialog(element, unlockAmount);
       }
     });
   }
 
-  private async handleUnlockAction(element: IStakeStatus) {
+  private openConfirmDialog(element: IStakeStatus, unlockAmount: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        title: this.transloco.translate('qearn.history.unlock.title'),
+        message: this.transloco.translate('qearn.history.unlock.message', { amount: unlockAmount }),
+        confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.handleUnlockAction(element, unlockAmount);
+      }
+    });
+  }
+
+  private async handleUnlockAction(element: IStakeStatus, unlockAmount: number) {
     try {
       const publicId = element.publicId;
       const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
       const seed = await this.walletService.revealSeed(publicId);
-      const unlockResult = await this.qearnService.unLockQubic(seed, element.lockedAmount, element.lockedEpoch, tick);
+      const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, element.lockedEpoch, tick);
+
       if (unlockResult) {
+        this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
+          duration: 3000,
+          panelClass: 'success',
+        });
         const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
         const initialLockedAmountOfThisEpoch = element.lockedAmount;
 
@@ -119,26 +148,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
             duration: 3000,
             panelClass: 'success',
           });
-          this.us.currentTick.subscribe(async (tick) => {
-            console.log(tick, this.qearnService.pendingStake?.targetTick);
-            if (this.qearnService.pendingStake !== null && tick > this.qearnService.pendingStake.targetTick + 1) {
-              if (publicId) await this.qearnService.fetchStakeDataPerEpoch(publicId, element.lockedEpoch, this.qearnComponent.epoch);
-              const updatedLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === element.lockedEpoch)?.lockedAmount ?? 0;
-              console.log(initialLockedAmountOfThisEpoch, updatedLockedAmountOfThisEpoch);
-              if (initialLockedAmountOfThisEpoch === updatedLockedAmountOfThisEpoch) {
-                this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
-                  duration: 0,
-                  panelClass: 'error',
-                });
-              } else {
-                this._snackBar.open('Transaction Successed!', this.transloco.translate('general.close'), {
-                  duration: 0,
-                  panelClass: 'success',
-                });
-              }
-              this.qearnService.setPendingStake(null);
-            }
-          });
+          this.qearnService.monitorUnlockTransaction(publicId, initialLockedAmountOfThisEpoch, this.qearnComponent.epoch, this);
         }
       }
     } catch (error) {
