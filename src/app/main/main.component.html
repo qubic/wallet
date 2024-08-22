@@ -4,7 +4,7 @@
       <h1 [innerHTML]="textQubicLiShutdown" class="danger text-center"></h1>
     </div>
     <div class="flex flex-wrap card-list">
-      <div>       
+      <div>
         <h1>{{ t("seedOverviewComponent.title") }} ({{walletService.getSeeds().length}}/{{maxNumberOfAddresses}})</h1>
       </div>
       <div class="flex-grow"></div>
@@ -29,23 +29,11 @@
         </button>&nbsp;
         <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
           t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
-        <!-- <div>&nbsp;</div> -->
-        <!-- <button mat-raised-button aria-label="Export Addresses" title="Export Addresses" (click)="openExportDialog(false)">
-          <mat-icon>download_file</mat-icon>
-          {{ t("seedOverviewComponent.exportButton") }}
-        </button>
-        <button mat-raised-button aria-label="Import Addresses" title="Import Addresses" (click)="openExportDialog(false)">
-          <mat-icon>upload_file</mat-icon>
-          {{ t("seedOverviewComponent.importButton") }}
-        </button> -->
       </div>
       <div style="margin-left: auto;" class="text-right">
         <div class="dashboard-amount-container dashboard-amount-name ">
           <span class="dashboard-amount-text">{{ t("dashboard.totalBalance") }}</span>
-          <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
-            (click)="balanceHidden()" title="Hide Balance" />
-          <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()"
-            title="Show Balance" />
+          <qli-balance-hidden></qli-balance-hidden>
         </div>
         <span class="disable-area">
           {{ getTotalBalance() | number : "1.0-0"}} {{ t("general.currency") }}
@@ -205,8 +193,8 @@
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.makePayment')"
-      (click)="payment(publicId)">
+    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+      [title]="t('seedOverviewComponent.table.actions.makePayment')" (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>
     <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.refreshBalance')"

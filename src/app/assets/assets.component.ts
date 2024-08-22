@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -24,13 +24,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./assets.component.scss']
 })
 
-export class AssetsComponent implements OnInit, AfterViewInit {
+export class AssetsComponent implements OnInit {
 
   displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
   public currentTick = 0;
   public tickOverwrite = false;
-  public isBalanceHidden = false;
 
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
@@ -100,33 +99,7 @@ export class AssetsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
-    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
-  }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
-
-  balanceHidden(): void {
-    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
-    disableAreasElements.forEach((area: HTMLElement) => {
-      if (area.classList.contains('blurred')) {
-        area.classList.remove('blurred');
-        this.isBalanceHidden = false;
-      } else {
-        area.classList.add('blurred');
-        this.isBalanceHidden = true;
-      }
-      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
-    });
-  }
-
-
+ 
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
     localStorage.setItem("asset-grid", this.isTable ? '0' : '1');

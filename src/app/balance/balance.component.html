@@ -19,10 +19,7 @@
             </div>
             <div style="margin-left: auto;" class="text-right">
                 <div class="eye">
-                    <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
-                        (click)="balanceHidden()" title="Hide Balance" />
-                    <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden"
-                        (click)="balanceHidden()" title="Show Balance" />
+                    <qli-balance-hidden></qli-balance-hidden>
                 </div>
             </div>
         </div>
@@ -159,22 +156,23 @@
             </div>
         </span>
         <span *ngIf="isShowAllTransactions">
-            <div *ngIf="isShowAllTransactions" class="epoch">               
-                <button [disabled]="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch <= currentSelectedEpoch" mat-icon-button
-                    (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
+            <div *ngIf="isShowAllTransactions" class="epoch">
+                <button
+                    [disabled]="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch <= currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
                 {{currentSelectedEpoch}} <span class="label-epoch">epoch</span>
-                <button [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button 
-                    (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
             </div>
-            <div *ngIf="isShowAllTransactions" class="ticks">  
+            <div *ngIf="isShowAllTransactions" class="ticks">
                 Ticks {{initialProcessedTick}} - {{lastProcessedTick}}
             </div>
             <br>
-            
+
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
                 <mat-select [formControl]="seedFilterFormControl">

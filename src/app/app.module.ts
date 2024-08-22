@@ -80,6 +80,7 @@ import { FileSelectorComponent } from './common/file-selector/file-selector.comp
 import { MatSliderModule } from '@angular/material/slider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -123,7 +124,8 @@ export const httpInterceptorProviders = [
     CreateVaultComponent,
     PublicUnLockComponent,
     ImportVaultComponent,
-    FileSelectorComponent
+    FileSelectorComponent,
+    BalanceHiddenComponent
   ],
   imports: [
     BrowserModule,

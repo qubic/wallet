@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -17,7 +17,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit, AfterViewInit {
+export class BalanceComponent implements OnInit {
 
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
@@ -25,7 +25,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public numberLastEpoch = 0;
   public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
-  public isBalanceHidden = false;
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
@@ -86,19 +85,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
-
-
-  ngAfterViewInit() {
-    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
-  }
-
   //**  new Archiver Api */
   private getStatusArchiver() {
     this.apiArchiver.getStatus().subscribe(s => {
@@ -151,10 +137,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         }
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
-    }
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
+    }    
   }
 
 
@@ -208,21 +191,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     if (this.isOrderByDesc) {
       this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
     }
-  }
-
-
-  balanceHidden(): void {
-    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
-    disableAreasElements.forEach((area: HTMLElement) => {
-      if (area.classList.contains('blurred')) {
-        area.classList.remove('blurred');
-        this.isBalanceHidden = false;
-      } else {
-        area.classList.add('blurred');
-        this.isBalanceHidden = true;
-      }
-      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
-    });
   }
 
 
