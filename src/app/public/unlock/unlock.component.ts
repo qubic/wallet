@@ -100,10 +100,17 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
           let decryptedSeed = '';
           try {
             decryptedSeed = await this.walletService.revealSeed(
-              seeds[0].publicId
+              seeds.sort((a, b) => (a.isOnlyWatch ? 1 : 0) - (b.isOnlyWatch ? 1 : 0))[0].publicId
             );
           } catch (e) {
             console.error(e);
+          }
+
+          //check only-watch-address
+          if (decryptedSeed == '') {
+            if(seeds.filter(seed=> !seed.isOnlyWatch).length == 0){
+              decryptedSeed = "only-watch"
+            }           
           }
 
           if (seeds && seeds.length > 0 && decryptedSeed == '') {
