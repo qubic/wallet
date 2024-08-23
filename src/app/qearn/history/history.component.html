@@ -71,7 +71,7 @@
               *ngIf="qearnService.pendingStake === null" (click)="openEarlyUnlockModal(element)">
               {{ t('qearn.Earned.unlockEarly') }}
             </div>
-            <mat-spinner *ngIf="qearnService.pendingStake !== null" [diameter]="20"></mat-spinner>
+            <mat-spinner *ngIf="qearnService.pendingStake != null && qearnService.pendingStake.type=='UNLOCK' && qearnService.pendingStake.publicId == element.publicId" [diameter]="20"></mat-spinner>
           </td>
         </ng-container>
 

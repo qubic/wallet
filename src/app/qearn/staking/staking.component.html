@@ -25,7 +25,7 @@
           <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()"
             [disabled]="stakeForm.invalid || isChecking || qearnService.pendingStake">
             <div *ngIf="!isChecking && qearnService.pendingStake === null">{{ t('qearn.stakeQubic.stake') }}</div>
-            <mat-spinner *ngIf="isChecking || qearnService.pendingStake !== null" [diameter]="20"></mat-spinner>
+            <mat-spinner *ngIf="qearnService.pendingStake != null && qearnService.pendingStake.type=='LOCK' && qearnService.pendingStake.publicId == element.publicId" [diameter]="20"></mat-spinner>
           </button>
           <div class="stake-col">
             <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
