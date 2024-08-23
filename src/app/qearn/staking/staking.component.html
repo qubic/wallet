@@ -24,9 +24,18 @@
 
           <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()"
             [disabled]="stakeForm.invalid || isChecking || qearnService.pendingStake">
-            <div *ngIf="!isChecking && qearnService.pendingStake === null">{{ t('qearn.stakeQubic.stake') }}</div>
-            <mat-spinner *ngIf="isChecking || qearnService.pendingStake !== null" [diameter]="20"></mat-spinner>
+
+            <ng-container *ngIf="!qearnService.pendingStake || !(qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value)">
+              {{ t('qearn.stakeQubic.stake') }}
+            </ng-container>
+
+            <ng-container
+              *ngIf="qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value">
+              <mat-spinner [diameter]="20"></mat-spinner>
+            </ng-container>
+
           </button>
+
           <div class="stake-col">
             <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
             <span class="stake-bottom stake-bottom-value">{{ remainingTime.days }} {{ t('qearn.stakeQubic.date') }} {{

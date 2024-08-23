@@ -32,6 +32,7 @@ export interface IStakeStatus {
 interface PendingStake {
   publicId: string;
   amount: number;
+  epoch: number;
   targetTick: number;
   type: string;
 }

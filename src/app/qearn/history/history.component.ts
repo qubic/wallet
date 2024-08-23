@@ -146,6 +146,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
           this.qearnService.setPendingStake({
             publicId,
             amount: element.lockedAmount,
+            epoch: element.lockedEpoch,
             targetTick: newTick,
             type: 'UNLOCK',
           });

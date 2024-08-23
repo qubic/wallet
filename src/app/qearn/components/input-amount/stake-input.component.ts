@@ -15,22 +15,21 @@ export class StakeInputComponent {
     return trimmedValue > 10000000 ? null : { min: true };
   }
 
+  private trimmedMaxValidator(control: AbstractControl) {
+    const trimmedValue = Number(control.value.replace(/\D/g, ''));
+    return trimmedValue > this.maxAmount ? { exceedsBalance: true } : null;
+  }
+
   onInputChange(event: any) {
     const value = event.target.value;
-    this.validateAmount(event);
     event.target.value = this.formatNumberWithCommas(value.replace(/\D/g, ''));
+    this.validateAmount(event);
   }
 
   validateAmount(event: any): void {
     const value = event.target.value;
     const amount = Number(value.replace(/\D/g, ''));
-    if (!/^[0-9, ]*$/.test(value)) {
-      this.formGroup.controls['amount'].setErrors({ pattern: true });
-    }
-    if (amount > this.maxAmount) {
-      this.formGroup.controls['amount'].setErrors({ exceedsBalance: true });
-    }
-    this.formGroup.controls['amount'].setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator.bind(this)]);
+    this.formGroup.controls['amount'].setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator.bind(this), this.trimmedMaxValidator.bind(this)]);
     this.formGroup.controls['amount'].updateValueAndValidity();
   }
 

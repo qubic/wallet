@@ -24,7 +24,7 @@ export class StakingComponent implements OnInit {
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
-    amount: ['0', [Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]],
+    amount: ['0'] // , [Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]],
   });
   public seeds = this.walletService.getSeeds();
   public isChecking = false;
@@ -71,28 +71,15 @@ export class StakingComponent implements OnInit {
     this.stakeForm.controls.sourceId.valueChanges.subscribe((s) => {
       if (s) {
         this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
-        this.updateAmountValidators();
-        if (Number(this.stakeForm.controls['amount'].value?.replace(/\D/g, '')) > this.maxAmount) {
-          this.stakeForm.controls.amount.setErrors({ exceedsBalance: true });
-        }
       }
     });
   }
 
-  private updateAmountValidators(): void {
-    this.stakeForm.controls.amount.setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]);
-    this.stakeForm.controls.amount.updateValueAndValidity();
-  }
 
   private subscribeToTimeUpdates(): void {
     this.timeService.getTimeToNewEpoch().subscribe((time) => {
       this.remainingTime = time;
     });
-  }
-
-  private trimmedMinValidator(control: AbstractControl) {
-    const trimmedValue = Number(control.value.replace(/\D/g, ''));
-    return trimmedValue > 10000000 ? null : { min: true };
   }
 
   confirmLock(): void {
@@ -134,6 +121,7 @@ export class StakingComponent implements OnInit {
             this.qearnService.setPendingStake({
               publicId,
               amount: Number(amountToStake?.replace(/\D/g, '')),
+              epoch,
               targetTick: newTick,
               type: 'LOCK',
             });
