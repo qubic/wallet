@@ -6,7 +6,7 @@
       <div class="copy" [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="data.publicId">
         {{ data.publicId }}
       </div>
-      <strong>{{ t("revealSeedComponent.privateId") }}</strong>
+      <strong *ngIf="!data.isOnlyWatch">{{ t("revealSeedComponent.privateId") }}</strong>
       <div class="copy" [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="s">
         {{ s }}
       </div>
