@@ -103,7 +103,13 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.history.unlock.title'),
-        message: this.transloco.translate('qearn.history.unlock.message', { amount: unlockAmount }),
+        message: this.transloco.translate('qearn.history.unlock.message', {
+          amount:
+            unlockAmount
+              .toString()
+              .replace(/\D/g, '')
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+        }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },
     });

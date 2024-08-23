@@ -199,13 +199,13 @@ export class QearnService {
     this.isLoading = false;
   }
 
-  public async fetchStakeDataPerEpoch(publicId: string, epoch: number, currentEpoch: number) {
-    if (!this.epochInfo[epoch]) {
+  public async fetchStakeDataPerEpoch(publicId: string, epoch: number, currentEpoch: number, update: boolean = false) {
+    if (!this.epochInfo[epoch] || update) {
       await this.fetchLockInfo(epoch);
     }
     const pubKey = new PublicKey(publicId).getPackageData();
     const lockAmount = await this.getUserLockInfo(pubKey, epoch);
-
+    console.log('lockAmount', lockAmount);
     if (lockAmount) {
       if (!this.stakeData[publicId]) {
         this.stakeData[publicId] = [];
@@ -218,7 +218,7 @@ export class QearnService {
       // const fullUnlockRewardRatio = lockAmount / totalLockedAmountInEpoch;
       const fullUnlockReward = currentBonusAmountInEpoch * (lockAmount / totalLockedAmountInEpoch);
 
-      const earlyUnlockPercent = REWARD_DATA.find((data) => data.weekFrom <= currentEpoch - epoch && data.weekTo >= currentEpoch - epoch)?.earlyUnlock || 0;
+      const earlyUnlockPercent = REWARD_DATA.find((data) => data.weekFrom < currentEpoch - epoch && data.weekTo + 1 >= currentEpoch - epoch)?.earlyUnlock || 0;
       // const earlyUnlockRewardRatio = fullUnlockPercent *earlyUnlockPercent /100; //(lockAmount * earlyUnlockPercent) / (100 * totalLockedAmountInEpoch);
       const earlyUnlockReward = currentBonusAmountInEpoch * (lockAmount / totalLockedAmountInEpoch) * (earlyUnlockPercent / 100);
 
@@ -274,8 +274,10 @@ export class QearnService {
 
   monitorStakeTransaction(publicId: string, initialLockedAmount: number, epoch: number): void {
     this.us.currentTick.subscribe(async (tick) => {
-      if (this.pendingStake !== null && tick > this.pendingStake.targetTick + 2) {
-        await this.fetchStakeDataPerEpoch(publicId, epoch, epoch);
+      console.log('tick', tick, "targetTick", this.pendingStake?.targetTick);
+      if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
+        console.log('FETCHING STAKEDATA', publicId, epoch, epoch);
+        await this.fetchStakeDataPerEpoch(publicId, epoch, epoch, true);
         const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
         if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {
           this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {
@@ -296,9 +298,11 @@ export class QearnService {
 
   monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, historyComponent: any): void {
     this.us.currentTick.subscribe(async (tick) => {
-      if (this.pendingStake !== null && tick > this.pendingStake.targetTick + 1) {
+      console.log('tick', tick, "targetTick", this.pendingStake?.targetTick);
+      if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
         // Fetch the stake data and check if the transaction was successful
-        await this.fetchStakeDataPerEpoch(publicId, historyComponent.lockedEpoch, currentEpoch);
+        console.log('FETCHING STAKEDATA', publicId, historyComponent.lockedEpoch, currentEpoch);
+        await this.fetchStakeDataPerEpoch(publicId, historyComponent.lockedEpoch, currentEpoch, true);
         const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === historyComponent.lockedEpoch)?.lockedAmount ?? 0;
         if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {
           this._snackBar.open('Transaction Failed', this.transloco.translate('general.close'), {

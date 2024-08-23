@@ -50,7 +50,13 @@ export class StakingComponent implements OnInit {
     this.subscribeToTimeUpdates();
     this.qearnService.txSuccessSubject.subscribe((publicId) => {
       if (publicId) {
+        console.log('publicId', publicId);
         this.qearnComponent.selectHistoryTabAndAddress(publicId);
+        this.us.loadCurrentBalance();
+        this.stakeForm.controls.amount.setValue('0');
+        setTimeout(() => {
+          this.seeds = this.walletService.getSeeds();
+        }, 1000);
       }
     });
   }
