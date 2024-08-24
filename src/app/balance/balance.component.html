@@ -49,14 +49,22 @@
                             <mat-panel-title>
                                 <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
                                 &nbsp;
-                                <a [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
-                                    target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
-                                </a>
-                                <span class="desktopOnly">
-                                    &nbsp;-
+                                <span class="display-publicid">
+                                    <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                        target="_blank">
+                                        {{ displayPublicId(transaction.sourceId)}}
+                                    </a>
+                                </span>
+                                <span class="desktopOnly secondary ">
+                                    &nbsp; (
                                     {{ transaction.created | date}}
                                     {{ transaction.created | date:'HH:mm:ss' }} UTC
+                                    )
                                 </span>
+                                <button
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
+                                    mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                                    (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                             </mat-panel-title>
                             <mat-panel-description class="disable-area">
                                 {{ transaction.amount | number: '1.0-0'
@@ -153,6 +161,8 @@
                         </div>
                     </mat-expansion-panel>
                 </mat-accordion>
+                <br>
+                <hr>
             </div>
         </span>
         <span *ngIf="isShowAllTransactions">
@@ -172,7 +182,6 @@
                 Ticks {{initialProcessedTick}} - {{lastProcessedTick}}
             </div>
             <br>
-
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
                 <mat-select [formControl]="seedFilterFormControl">
@@ -206,7 +215,7 @@
                                 &nbsp; (
                                 {{ transaction.transactions[0].timestamp | date}} {{
                                 transaction.transactions[0].timestamp |
-                                date:'HH:mm:ss' }} UTC
+                                date:'HH:mm:ss' }}
                                 )
                             </span>
                         </mat-panel-title>

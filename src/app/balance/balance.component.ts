@@ -208,8 +208,7 @@ export class BalanceComponent implements OnInit {
 
 
   getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status == 'Pending' || f.status == 'Broadcasted' || f.status == 'Created');
-    // return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId));
+    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status != 'Success');
   }
 
 
@@ -285,6 +284,15 @@ export class BalanceComponent implements OnInit {
     return `${start}...${end}`;
   }
 
+  
+  repeat(transaction: Transaction) {
+    this.router.navigate(['payment'], {
+      state: {
+        template: transaction
+      }
+    });
+  }
+
 
   // getSeedName(publicId: string): string {
   //   var seed = this.walletService.getSeed(publicId);
@@ -293,16 +301,6 @@ export class BalanceComponent implements OnInit {
   //   else
   //     return '';
   // }
-
-
-  // repeat(transaction: Transaction) {
-  //   this.router.navigate(['payment'], {
-  //     state: {
-  //       template: transaction
-  //     }
-  //   });
-  // }
-
 
   // private getTransactionStatusLabel(status: string): string {
   //   switch (status) {
