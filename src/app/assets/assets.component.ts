@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QubicAsset } from "../services/api.model";
+import { QubicAsset, MarketInformation } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
@@ -18,13 +18,29 @@ import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
+
+export interface Share {
+  name: string;
+  publicId: string;
+  ownedAmount: number;
+}
+
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss']
 })
 
+
 export class AssetsComponent implements OnInit {
+
+  public sharesPool: Share[] = [
+    { name: "Qx", publicId: 'BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID', ownedAmount: 0},
+    { name: "Quottery", publicId: 'CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID' , ownedAmount: 0  },
+    { name: "Random", publicId: 'DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID' , ownedAmount: 0  },
+    { name: "Util", publicId: 'EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID' , ownedAmount: 0 },
+    { name: "MLM", publicId: 'FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID' , ownedAmount: 0  },
+  ];
 
   displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
@@ -36,6 +52,9 @@ export class AssetsComponent implements OnInit {
   isSending: boolean = false;
   showSendForm: boolean = false;
   isTable: boolean = false;
+  selectedElement = new FormControl('element1');
+  public isYourAssets = true;
+  currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
 
   constructor(
     private apiService: ApiService,
@@ -60,6 +79,15 @@ export class AssetsComponent implements OnInit {
       amount: new FormControl('', Validators.required),
       tick: new FormControl('', Validators.required),
       assetSelect: new FormControl('', Validators.required),
+    });
+
+    this.updaterService.currentPrice.subscribe(response => {
+      this.currentPrice = response;
+    }, errorResponse => {
+      this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
+        duration: 0,
+        panelClass: "error"
+      });
     });
 
 
@@ -89,6 +117,7 @@ export class AssetsComponent implements OnInit {
 
   ngOnInit() {
     this.loadAssets();
+    this.getSharesPool();
 
     this.updaterService.currentTick.subscribe(tick => {
       this.currentTick = tick;
@@ -99,15 +128,51 @@ export class AssetsComponent implements OnInit {
     })
   }
 
- 
+
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
     localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
-    this.isTable = event.checked;    
+    this.isTable = event.checked;
     window.location.reload();
   }
 
-  
+
+  SegmentedControlAction(): void {
+    const element = this.selectedElement.value;
+    if (element === 'element1') {
+      this.isYourAssets = true;
+    } else if (element === 'element2') {
+      this.isYourAssets = false;
+    }
+  }
+
+  getSharesPool() {
+    this.apiService.getCurrentBalance(this.sharesPool.map(item => item.publicId)).subscribe(r => {
+      if (r) {
+        // Angenommen, 'r' ist ein Array von Objekten [{id: '...', balance: ...}, ...]
+        this.sharesPool.forEach(share => {
+          const balanceData = r.find(b => b.publicId === share.publicId);
+          if (balanceData) {
+            share.ownedAmount = balanceData.currentEstimatedAmount
+          }
+        });
+      }
+    }, errorResponse => {
+      console.log('errorResponse:', errorResponse);
+    });
+  }
+
+  displayPublicId(input: string): string {
+    if (input.length <= 10) {
+      return input;
+    }
+
+    const start = input.slice(0, 5);
+    const end = input.slice(-5);
+
+    return `${start}...${end}`;
+  }
+
   updateAmountValidator(): void {
     const assetSelectControl = this.sendForm.get('assetSelect');
     const amountControl = this.sendForm.get('amount');
@@ -126,7 +191,7 @@ export class AssetsComponent implements OnInit {
     }
   }
 
-  
+
   refreshData(): void {
     this.loadAssets(true);
   }
