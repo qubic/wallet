@@ -87,12 +87,12 @@
       <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
         <h3>
           {{ seed.alias }}
-          <span *ngIf="seed.lastUpdate">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
+          <span *ngIf="seed.lastUpdate" class="disable-area">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
           <span class="disable-area">
             {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
           </span>
         </h3>
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap disable-area">
           <div *ngIf="getEpochChanges(seed.publicId) != 0" [class]="{
             epochChanges: true,
             isPositiv: getEpochChanges(seed.publicId) > 0,
@@ -106,7 +106,7 @@
         <div class="flex flex-wrap">
           <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: seed"></ng-container>
         </div>
-        <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="seed.publicId">
+        <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="seed.publicId">
           {{ seed.publicId }}
         </div>
       </div>
@@ -121,7 +121,7 @@
         </th>
         <td mat-cell *matCellDef="let element">
           {{ element.alias }}
-          <div class="copy" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="element.publicId">
+          <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="element.publicId">
             {{ element.publicId }}
           </div>
         </td>
@@ -137,7 +137,7 @@
                 t('seedOverviewComponent.hasPendingTransaction')
               }}">hourglass_empty</mat-icon>
             <span *ngIf="!element.lastUpdate">?</span>
-            <span class="epochChanges" *ngIf="element.lastUpdate">{{
+            <span class="epochChanges " *ngIf="element.lastUpdate">{{
               getBalance(element.publicId) | number : "1.0-0"
               }}</span>
           </div>
