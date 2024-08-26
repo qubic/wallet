@@ -80,9 +80,8 @@ mat-card {
 ::ng-deep {
     .is-mobile {
         mat-card {
-            min-width: 280px;
             font-size: 80%;
-            margin: 20px auto;
+            margin: 16px 0px 16px;
         }
     }
 }
