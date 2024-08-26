@@ -29,6 +29,11 @@ export interface IStakeStatus {
   fullUnlockRewardRatio: number;
 }
 
+export interface IEndedStakeStatus {
+  unLockedAmount: number;
+  rewardedAmount: number;
+  status?: boolean;
+}
 interface PendingStake {
   publicId: string;
   amount: number;
@@ -43,17 +48,13 @@ interface PendingStake {
 export class QearnService {
   public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
   public stakeData: { [key: string]: IStakeStatus[] } = {};
+  public endedStakeData: { [key: string]: IEndedStakeStatus[] } = {};
   public isLoading = false;
   public pendingStake: PendingStake | null = null;
   public txSuccessSubject = new Subject<any>();
   public selectedPublicId = new Subject<string>();
 
-  constructor(
-    private apiService: ApiService, 
-    private walletService: WalletService,
-    private us: UpdaterService,
-    private _snackBar: MatSnackBar,
-    private transloco: TranslocoService) {}
+  constructor(private apiService: ApiService, private walletService: WalletService, private us: UpdaterService, private _snackBar: MatSnackBar, private transloco: TranslocoService) {}
 
   /**
    * Main Query, Transaction Functions
@@ -183,6 +184,36 @@ export class QearnService {
     return epochs;
   }
 
+  public async getEndedStatus(user: Uint8Array): Promise<{ fullUnlockedAmount?: number; fullRewardedAmount?: number; earlyUnlockedAmount?: number; earlyRewardedAmount?: number }> {
+    const buffer = new ArrayBuffer(32);
+    const dataView = new DataView(buffer);
+
+    user.forEach((byte, index) => dataView.setUint8(index, byte));
+
+    const base64String = this.walletService.arrayBufferToBase64(buffer);
+
+    const res = await lastValueFrom(
+      this.apiService.queryStakingData({
+        contractIndex: 6,
+        inputType: 5,
+        inputSize: 32,
+        requestData: base64String,
+      })
+    );
+    if (!res.responseData) {
+      return {};
+    }
+    const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
+    const responseView = new DataView(responseBuffer);
+
+    const fullUnlockedAmount = Number(responseView.getBigUint64(0, true));
+    const fullRewardedAmount = Number(responseView.getBigUint64(8, true));
+    const earlyUnlockedAmount = Number(responseView.getBigUint64(16, true));
+    const earlyRewardedAmount = Number(responseView.getBigUint64(24, true));
+
+    return { fullUnlockedAmount, fullRewardedAmount, earlyUnlockedAmount, earlyRewardedAmount };
+  }
+
   /**
    * Utilities
    */
@@ -229,7 +260,7 @@ export class QearnService {
           publicId: publicId,
           lockedEpoch: epoch,
           lockedAmount: lockAmount,
-          lockedWeeks: currentEpoch - epoch,
+          lockedWeeks: currentEpoch - epoch > 0 ? currentEpoch - epoch - 1 : 0,
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
@@ -242,7 +273,7 @@ export class QearnService {
           publicId: publicId,
           lockedEpoch: epoch,
           lockedAmount: lockAmount,
-          lockedWeeks: currentEpoch - epoch,
+          lockedWeeks: currentEpoch - epoch > 0 ? currentEpoch - epoch - 1 : 0,
           totalLockedAmountInEpoch: totalLockedAmountInEpoch,
           currentBonusAmountInEpoch: currentBonusAmountInEpoch,
           earlyUnlockReward,
@@ -265,6 +296,18 @@ export class QearnService {
     this.isLoading = false;
   }
 
+  public async fetchEndedStakeData(publicId: string) {
+    const endedStatus = await this.getEndedStatus(new PublicKey(publicId).getPackageData());
+    if (endedStatus) {
+      if (!this.endedStakeData[publicId]) {
+        this.endedStakeData[publicId] = [];
+      }
+      this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.fullUnlockedAmount ?? 0, rewardedAmount: endedStatus.fullRewardedAmount ?? 0, status: true });
+      this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.earlyUnlockedAmount ?? 0, rewardedAmount: endedStatus.earlyRewardedAmount ?? 0, status: false });
+      console.log(this.endedStakeData[publicId]);
+    }
+  }
+
   public setPendingStake(pendingStake: PendingStake | null) {
     this.pendingStake = pendingStake;
   }
@@ -273,9 +316,9 @@ export class QearnService {
     this.isLoading = isLoading;
   }
 
-  monitorStakeTransaction(publicId: string, initialLockedAmount: number, epoch: number): void {
+  public monitorStakeTransaction(publicId: string, initialLockedAmount: number, epoch: number): void {
     this.us.currentTick.subscribe(async (tick) => {
-      console.log('tick', tick, "targetTick", this.pendingStake?.targetTick);
+      console.log('tick', tick, 'targetTick', this.pendingStake?.targetTick);
       if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
         console.log('FETCHING STAKEDATA', publicId, epoch, epoch);
         await this.fetchStakeDataPerEpoch(publicId, epoch, epoch, true);
@@ -297,9 +340,9 @@ export class QearnService {
     });
   }
 
-  monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, historyComponent: any): void {
+  public monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, historyComponent: any): void {
     this.us.currentTick.subscribe(async (tick) => {
-      console.log('tick', tick, "targetTick", this.pendingStake?.targetTick);
+      console.log('tick', tick, 'targetTick', this.pendingStake?.targetTick);
       if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
         // Fetch the stake data and check if the transaction was successful
         console.log('FETCHING STAKEDATA', publicId, historyComponent.lockedEpoch, currentEpoch);

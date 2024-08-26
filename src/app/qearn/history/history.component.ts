@@ -22,8 +22,10 @@ import { UnlockInputDialogComponent } from '../components/unlock-input-dialog/un
 })
 export class HistoryComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = ['lockedEpoch', 'lockedAmount', 'lockedWeeks', 'totalLockedAmountInEpoch', 'currentBonusAmountInEpoch', 'earlyUnlockPercent', 'fullUnlockPercent', 'actions'];
-  public dataSource = new MatTableDataSource<IStakeStatus>([]);
+  public endedColumns: string[] = ['status', 'unLockedAmount', 'rewardedAmount'];
+  public dataSource = new MatTableDataSource<any>([]);
   public form: FormGroup;
+  public showingEnded = false;
 
   constructor(
     private dialog: MatDialog,
@@ -60,14 +62,27 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private setupSourceIdValueChange(): void {
     this.form.controls['sourceId'].valueChanges.subscribe((s) => {
-      if (s) {
-        this.dataSource.data = this.qearnService.stakeData[s];
-      }
+      this.loadData(s);
     });
+  }
+
+  private loadData(sourceId: string): void {
+    if (this.showingEnded) {
+      this.dataSource.data = this.qearnService.endedStakeData[sourceId] || [];
+    } else {
+      this.dataSource.data = this.qearnService.stakeData[sourceId] || [];
+    }
+    console.log(this.dataSource);
   }
 
   public getSeeds() {
     return this.walletService.getSeeds();
+  }
+
+  public toggleView(): void {
+    this.showingEnded = !this.showingEnded;
+    const sourceId = this.form.controls['sourceId'].value;
+    this.loadData(sourceId);
   }
 
   applyFilter(event: Event) {
@@ -104,11 +119,10 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       data: {
         title: this.transloco.translate('qearn.history.unlock.title'),
         message: this.transloco.translate('qearn.history.unlock.message', {
-          amount:
-            unlockAmount
-              .toString()
-              .replace(/\D/g, '')
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+          amount: unlockAmount
+            .toString()
+            .replace(/\D/g, '')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
         }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },

@@ -52,6 +52,14 @@ td.mat-cell {
   font-size: 16px;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
 @media screen and (max-width: 768px) {
   /* On smaller screens, make some columns less important */
   th.mat-header-cell,

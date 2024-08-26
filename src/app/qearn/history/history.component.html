@@ -4,7 +4,7 @@
       <div class="form-field">
         <mat-form-field appearance="fill" placeholder="Seed" class="full-width">
           <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
-          <mat-select formControlName="sourceId" panelClass="full-width" [value]="getSeeds()[0].publicId || ''">
+          <mat-select formControlName="sourceId" panelClass="full-width">
             <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
               class="custom-mat-option">
               {{ seed.publicId }}
@@ -13,89 +13,101 @@
         </mat-form-field>
       </div>
     </form>
+
+    <mat-slide-toggle [checked]="showingEnded" (change)="toggleView()" class="text-right">
+      {{ showingEnded ? "Unlocked Status" : "Locked Status" }}
+    </mat-slide-toggle>
+
     <div *ngIf="qearnService.isLoading" class="loading-container">
       <mat-spinner></mat-spinner>
     </div>
-    <!-- Table -->
+
     <div class="table-responsive" *ngIf="!qearnService.isLoading">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-        <!-- Locked Epoch Column -->
-        <ng-container matColumnDef="lockedEpoch">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedEpoch') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.lockedEpoch }}</td>
+        <ng-container *ngIf="!showingEnded">
+          <!-- Active stake columns go here -->
+          <ng-container matColumnDef="lockedEpoch">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedEpoch') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.lockedEpoch }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="lockedAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedAmount') }}</th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.lockedAmount | number: '1.0-0' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="lockedWeeks">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedWeeks') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.lockedWeeks }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalLockedAmountInEpoch">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.totalLockedAmountInEpoch') }}</th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.totalLockedAmountInEpoch | number: '1.0-0' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="currentBonusAmountInEpoch">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.currentBonusAmountInEpoch') }}
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.currentBonusAmountInEpoch | number: '1.0-0' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="earlyUnlockPercent">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.earlyUnlockPercent') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.earlyUnlockReward | number: '1.0-0' }} / {{
+              element.earlyUnlockRewardRatio.toFixed(2) }}%</td>
+          </ng-container>
+
+          <ng-container matColumnDef="fullUnlockPercent">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.fullUnlockPercent') }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.fullUnlockReward | number: '1.0-0' }} / {{
+              element.fullUnlockRewardRatio.toFixed(2) }}%</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{ t('qearn.history.actions') }}</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container
+                *ngIf="!qearnService.pendingStake || (qearnService.pendingStake && (qearnService.pendingStake.publicId !== form.controls['sourceId'].value || qearnService.pendingStake.epoch !== element.lockedEpoch))">
+                <div mat-raised-button class="unlock" color="primary" (click)="openEarlyUnlockModal(element)">
+                  {{ t('qearn.Earned.unlockEarly') }}
+                </div>
+              </ng-container>
+              <ng-container
+                *ngIf="qearnService.pendingStake && qearnService.pendingStake.type === 'UNLOCK' && qearnService.pendingStake.publicId === form.controls['sourceId'].value && qearnService.pendingStake.epoch === element.lockedEpoch">
+                <mat-spinner [diameter]="20"></mat-spinner>
+              </ng-container>
+            </td>
+          </ng-container>
         </ng-container>
 
-        <!-- Locked Amount Column -->
-        <ng-container matColumnDef="lockedAmount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedAmount') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.lockedAmount | number: '1.0-0' }}</td>
+        <ng-container *ngIf="showingEnded">
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "Unlock Status" }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.status ? "Full Unlocked" : "Early Unlocked" }}</td>
+          </ng-container>
+          <ng-container matColumnDef="unLockedAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "Unlocked Amount" }}</th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.unLockedAmount | number: '1.0-0' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rewardedAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ "Rewarded Amount" }}</th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.rewardedAmount | number: '1.0-0' }}</td>
+          </ng-container>
         </ng-container>
 
-        <!-- Locked Weeks Column -->
-        <ng-container matColumnDef="lockedWeeks">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.lockedWeeks') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.lockedWeeks }}</td>
-        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="showingEnded ? endedColumns : displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: showingEnded ? endedColumns : displayedColumns"></tr>
 
-        <!-- Total Locked Amount in Epoch Column -->
-        <ng-container matColumnDef="totalLockedAmountInEpoch">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.totalLockedAmountInEpoch') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.totalLockedAmountInEpoch | number: '1.0-0' }}</td>
-        </ng-container>
-
-        <!-- Current Bonus Amount in Epoch Column -->
-        <ng-container matColumnDef="currentBonusAmountInEpoch">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.currentBonusAmountInEpoch') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.currentBonusAmountInEpoch | number: '1.0-0' }}</td>
-        </ng-container>
-
-        <!-- Early Unlock % Column -->
-        <ng-container matColumnDef="earlyUnlockPercent">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.earlyUnlockPercent') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.earlyUnlockReward | number: '1.0-0' }}/{{
-            (element.earlyUnlockRewardRatio).toFixed(2) }}%</td>
-        </ng-container>
-
-        <!-- Full Unlock % Column -->
-        <ng-container matColumnDef="fullUnlockPercent">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.fullUnlockPercent') }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.fullUnlockReward | number: '1.0-0' }}/{{
-            (element.fullUnlockRewardRatio).toFixed(2) }}%</td>
-        </ng-container>
-
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>{{ t('qearn.history.actions') }}</th>
-          <td mat-cell *matCellDef="let element">
-            <!-- Check if there is no pending stake or if the pending stake does not match the current element -->
-            <ng-container
-              *ngIf="!qearnService.pendingStake || (qearnService.pendingStake && (qearnService.pendingStake.publicId !== form.controls['sourceId'].value || qearnService.pendingStake.epoch !== element.lockedEpoch))">
-              <div mat-raised-button class="unlock" color="primary" (click)="openEarlyUnlockModal(element)">
-                {{ t('qearn.Earned.unlockEarly') }}
-              </div>
-            </ng-container>
-
-            <!-- Show spinner if there's a pending unlock stake that matches the current element -->
-            <ng-container
-              *ngIf="qearnService.pendingStake && qearnService.pendingStake.type === 'UNLOCK' && qearnService.pendingStake.publicId === form.controls['sourceId'].value && qearnService.pendingStake.epoch === element.lockedEpoch">
-              <mat-spinner [diameter]="20"></mat-spinner>
-            </ng-container>
-          </td>
-        </ng-container>
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <!-- No Data Message -->
         <tr *matNoDataRow>
-          <td [attr.colspan]="displayedColumns.length">
+          <td [attr.colspan]="showingEnded ? endedColumns.length : displayedColumns.length">
             <div class="no-data-message">
               <p>{{ t('qearn.history.noDataMessage') }}</p>
             </div>
           </td>
         </tr>
       </table>
-
     </div>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" class="paginator" showFirstLastButtons></mat-paginator>
   </div>
