@@ -580,56 +580,63 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "质押Qubic",
-      "subText": "通过质押你的币来赚取$QUBIC，锁定52周。",
+      "title": "锁定 Qubic",
+      "subText": "通过锁定你的硬币 52 周来赚取 $QUBIC。",
       "enterAmount": "输入金额",
-      "stake": "质押",
+      "stake": "锁定",
       "availableBalance": "可用余额",
-      "weeklySatking": "每周质押池将在此时间关闭",
+      "weeklySatking": "每周锁定池将在以下时间关闭",
       "date": "天",
       "hour": "小时",
       "minute": "分钟",
       "error": {
-        "required": "金额是必填项",
-        "min": "金额必须大于1000万",
-        "numberOnly": "只能输入数字",
+        "required": "金额为必填项",
+        "min": "金额必须大于 1000 万",
+        "numberOnly": "只允许输入数字",
         "exceedsBalance": "金额不能超过可用余额"
       },
       "confirmDialog": {
-        "confirmLockTitle": "确认质押",
-        "confirmLockMessage": "你是否要锁定{{amount}} {{currency}}进行质押？",
+        "confirmLockTitle": "确认锁定",
+        "confirmLockMessage": "您要锁定 {{amount}} {{currency}} 吗？",
         "confirm": "锁定",
         "cancel": "取消",
-        "success": "交易已发送！确认可能需要一些时间。",
-        "error": "质押过程中出现错误！"
+        "success": "交易已发送！确认需要一些时间。",
+        "error": "锁定过程中出现问题！"
       }
     },
     "history": {
-      "lockedEpoch": "锁定周期",
+      "lockedEpoch": "锁定时期",
       "lockedAmount": "锁定金额",
       "lockedWeeks": "锁定周数",
-      "totalLockedAmountInEpoch": "锁定的总金额",
-      "currentBonusAmountInEpoch": "当前奖励金额",
+      "totalLockedAmountInEpoch": "总锁定金额",
+      "currentBonusAmountInEpoch": "当前奖金金额",
       "earlyUnlockPercent": "提前解锁奖励",
-      "fullUnlockPercent": "全部解锁奖励",
+      "fullUnlockPercent": "完全解锁奖励",
       "actions": "操作",
-      "noDataMessage": "未找到任何质押数据",
+      "noDataMessage": "未找到锁定数据",
+      "unlockedStatus": "解锁状态",
+      "lockedStatus": "锁定状态",
+      "unlockStatus": "解锁状态",
+      "fullUnlocked": "完全解锁",
+      "earlyUnlocked": "提前解锁",
+      "unlockedAmount": "解锁金额",
+      "rewardedAmount": "奖励金额",
       "unlock": {
         "title": "解锁",
-        "message": "你要提前解锁吗？",
+        "message": "您要提前解锁 {{amount}} {{currency}} 吗？",
         "confirm": "确认",
-        "success": "交易已发送！确认可能需要一些时间。",
-        "error": "解锁过程中出现错误！"
+        "success": "交易已发送！确认需要一些时间。",
+        "error": "解锁过程中出现问题！"
       },
       "pleaseUnlock": "请先解锁你的钱包。"
     },
     "Earned": {
-      "rewards": "已赚取的奖励",
+      "rewards": "赚取的奖励",
       "unlockEarly": "提前解锁",
-      "stakedBalance": "质押余额",
+      "lockedBalance": "锁定余额",
       "earningRate": "收益率",
-      "unlocksIn": "将在以下时间解锁",
-      "apy": "年化收益率",
+      "unlocksIn": "解锁时间",
+      "apy": "年收益率",
       "weeks": "周"
     }
   }

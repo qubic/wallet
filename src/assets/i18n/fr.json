@@ -578,12 +578,12 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Staker Qubic",
-      "subText": "Gagnez $QUBIC en stakant vos pièces pendant 52 semaines.",
+      "title": "Verrouiller Qubic",
+      "subText": "Gagnez $QUBIC en verrouillant vos pièces pendant 52 semaines.",
       "enterAmount": "Entrez le montant",
-      "stake": "Staker",
+      "stake": "Verrouiller",
       "availableBalance": "Solde disponible",
-      "weeklySatking": "Le pot de staking hebdomadaire se clôture dans",
+      "weeklySatking": "Le pot de verrouillage hebdomadaire se ferme dans",
       "date": "j",
       "hour": "h",
       "minute": "min",
@@ -594,12 +594,12 @@
         "exceedsBalance": "Le montant ne peut pas dépasser le solde disponible"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Confirmer le staking",
-        "confirmLockMessage": "Voulez-vous verrouiller {{amount}} {{currency}} pour le staking ?",
+        "confirmLockTitle": "Confirmer le verrouillage",
+        "confirmLockMessage": "Voulez-vous verrouiller {{amount}} {{currency}} pour le verrouillage ?",
         "confirm": "Verrouiller",
         "cancel": "Annuler",
-        "success": "Transaction envoyée ! La confirmation prendra un certain temps.",
-        "error": "Quelque chose s'est mal passé lors du verrouillage !"
+        "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
+        "error": "Quelque chose s'est mal passé lors du verrouillage !"
       }
     },
     "history": {
@@ -607,26 +607,33 @@
       "lockedAmount": "Montant verrouillé",
       "lockedWeeks": "Semaines verrouillées",
       "totalLockedAmountInEpoch": "Montant total verrouillé",
-      "currentBonusAmountInEpoch": "Montant de bonus actuel",
+      "currentBonusAmountInEpoch": "Montant du bonus actuel",
       "earlyUnlockPercent": "Récompense de déverrouillage anticipé",
       "fullUnlockPercent": "Récompense de déverrouillage complet",
       "actions": "Actions",
-      "noDataMessage": "Aucune donnée de staking trouvée",
+      "noDataMessage": "Aucune donnée de verrouillage trouvée",
+      "unlockedStatus": "Statut déverrouillé",
+      "lockedStatus": "Statut verrouillé",
+      "unlockStatus": "Statut de déverrouillage",
+      "fullUnlocked": "Complètement déverrouillé",
+      "earlyUnlocked": "Déverrouillé en avance",
+      "unlockedAmount": "Montant déverrouillé",
+      "rewardedAmount": "Montant récompensé",
       "unlock": {
         "title": "Déverrouiller",
-        "message": "Voulez-vous déverrouiller plus tôt ?",
+        "message": "Voulez-vous déverrouiller {{amount}} {{currency}} en avance ?",
         "confirm": "Confirmer",
-        "success": "Transaction envoyée ! La confirmation prendra un certain temps.",
-        "error": "Quelque chose s'est mal passé lors du déverrouillage !"
+        "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
+        "error": "Quelque chose s'est mal passé lors du déverrouillage !"
       },
       "pleaseUnlock": "Veuillez d'abord déverrouiller votre portefeuille."
     },
     "Earned": {
       "rewards": "Récompenses gagnées",
-      "unlockEarly": "Déverrouiller plus tôt",
-      "stakedBalance": "Solde staké",
+      "unlockEarly": "Déverrouiller en avance",
+      "lockedBalance": "Solde verrouillé",
       "earningRate": "Taux de gain",
-      "unlocksIn": "Déverrouille dans",
+      "unlocksIn": "Déverrouillage dans",
       "apy": "APY",
       "weeks": "Semaines"
     }

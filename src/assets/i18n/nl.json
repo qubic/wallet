@@ -577,55 +577,62 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Qubic staken",
-      "subText": "Verdien $QUBIC door je munten 52 weken te staken.",
+      "title": "Vergrendel Qubic",
+      "subText": "Verdien $QUBIC door uw munten 52 weken te vergrendelen.",
       "enterAmount": "Voer bedrag in",
-      "stake": "Stake",
+      "stake": "Vergrendelen",
       "availableBalance": "Beschikbaar saldo",
-      "weeklySatking": "Wekelijkse Staking-pot sluit over",
+      "weeklySatking": "Wekelijkse vergrendeling sluit in",
       "date": "d",
       "hour": "u",
       "minute": "min",
       "error": {
-        "required": "Bedrag is verplicht",
-        "min": "Het bedrag moet groter zijn dan 10M",
+        "required": "Bedrag is vereist",
+        "min": "Bedrag moet groter zijn dan 10M",
         "numberOnly": "Alleen cijfers zijn toegestaan",
-        "exceedsBalance": "Het bedrag mag het beschikbare saldo niet overschrijden"
+        "exceedsBalance": "Bedrag mag het beschikbare saldo niet overschrijden"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Staking bevestigen",
-        "confirmLockMessage": "Wil je {{amount}} {{currency}} staken?",
+        "confirmLockTitle": "Vergrendeling bevestigen",
+        "confirmLockMessage": "Wilt u {{amount}} {{currency}} vergrendelen?",
         "confirm": "Vergrendelen",
         "cancel": "Annuleren",
-        "success": "Transactie verzonden! Het zal enige tijd duren om te bevestigen.",
-        "error": "Er ging iets mis tijdens het vergrendelen!"
+        "success": "Transactie verzonden! Het duurt even voordat het is bevestigd.",
+        "error": "Er is iets misgegaan tijdens het vergrendelen!"
       }
     },
     "history": {
-      "lockedEpoch": "Vergrendelde Epoch",
+      "lockedEpoch": "Vergrendelde periode",
       "lockedAmount": "Vergrendeld bedrag",
       "lockedWeeks": "Vergrendelde weken",
       "totalLockedAmountInEpoch": "Totaal vergrendeld bedrag",
       "currentBonusAmountInEpoch": "Huidige bonusbedrag",
-      "earlyUnlockPercent": "Vroegtijdige vergrendelingsbeloning",
-      "fullUnlockPercent": "Volledige ontgrendelingsbeloning",
+      "earlyUnlockPercent": "Vroege ontgrendelingsbonus",
+      "fullUnlockPercent": "Volledige ontgrendelingsbonus",
       "actions": "Acties",
-      "noDataMessage": "Geen stakinggegevens gevonden",
+      "noDataMessage": "Geen vergrendelingsgegevens gevonden",
+      "unlockedStatus": "Ontgrendelde status",
+      "lockedStatus": "Vergrendelde status",
+      "unlockStatus": "Ontgrendelingsstatus",
+      "fullUnlocked": "Volledig ontgrendeld",
+      "earlyUnlocked": "Vroegtijdig ontgrendeld",
+      "unlockedAmount": "Ontgrendeld bedrag",
+      "rewardedAmount": "Beloningsbedrag",
       "unlock": {
         "title": "Ontgrendelen",
-        "message": "Wil je vroegtijdig ontgrendelen?",
+        "message": "Wilt u {{amount}} {{currency}} vroegtijdig ontgrendelen?",
         "confirm": "Bevestigen",
-        "success": "Transactie verzonden! Het zal enige tijd duren om te bevestigen.",
-        "error": "Er ging iets mis tijdens het ontgrendelen!"
+        "success": "Transactie verzonden! Het duurt even voordat het is bevestigd.",
+        "error": "Er is iets misgegaan tijdens het ontgrendelen!"
       },
-      "pleaseUnlock": "Ontgrendel eerst je wallet."
+      "pleaseUnlock": "Ontgrendel eerst uw portemonnee."
     },
     "Earned": {
       "rewards": "Verdiende beloningen",
       "unlockEarly": "Vroegtijdig ontgrendelen",
-      "stakedBalance": "Gestaked saldo",
+      "lockedBalance": "Vergrendeld saldo",
       "earningRate": "Verdieningspercentage",
-      "unlocksIn": "Ontgrendelt over",
+      "unlocksIn": "Ontgrendelt in",
       "apy": "APY",
       "weeks": "Weken"
     }

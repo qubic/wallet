@@ -581,57 +581,63 @@
       "reset": "Zurücksetzen"
     }
   },
-
   "qearn": {
     "stakeQubic": {
-      "title": "Qubic staken",
-      "subText": "Verdiene $QUBIC, indem du deine Coins für 52 Wochen stakst.",
+      "title": "Qubic sperren",
+      "subText": "Verdienen Sie $QUBIC, indem Sie Ihre Münzen für 52 Wochen sperren.",
       "enterAmount": "Betrag eingeben",
-      "stake": "Stake",
+      "stake": "Sperren",
       "availableBalance": "Verfügbares Guthaben",
-      "weeklySatking": "Wöchentliches Staking endet in",
+      "weeklySatking": "Wöchentlicher Sperrtopf schließt in",
       "date": "T",
       "hour": "Std.",
       "minute": "Min.",
       "error": {
         "required": "Betrag ist erforderlich",
-        "min": "Der Betrag muss größer als 10 Mio. sein",
+        "min": "Betrag muss größer als 10M sein",
         "numberOnly": "Nur Zahlen sind erlaubt",
-        "exceedsBalance": "Der Betrag darf das verfügbare Guthaben nicht überschreiten"
+        "exceedsBalance": "Betrag darf das verfügbare Guthaben nicht überschreiten"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Staking bestätigen",
-        "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für das Staking sperren?",
+        "confirmLockTitle": "Sperrung bestätigen",
+        "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für die Sperrung sperren?",
         "confirm": "Sperren",
         "cancel": "Abbrechen",
-        "success": "Transaktion gesendet! Die Bestätigung wird einige Zeit in Anspruch nehmen",
-        "error": "Beim Staking ist ein Fehler aufgetreten!"
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Sperrung ist etwas schief gelaufen!"
       }
     },
     "history": {
       "lockedEpoch": "Gesperrte Epoche",
       "lockedAmount": "Gesperrter Betrag",
       "lockedWeeks": "Gesperrte Wochen",
-      "totalLockedAmountInEpoch": "Gesperrter Gesamtbetrag",
+      "totalLockedAmountInEpoch": "Gesamtgesperrter Betrag",
       "currentBonusAmountInEpoch": "Aktueller Bonusbetrag",
-      "earlyUnlockPercent": "Frühzeitige Entsperrungsprämie",
-      "fullUnlockPercent": "Vollständige Entsperrungsprämie",
+      "earlyUnlockPercent": "Frühe Entsperrbelohnung",
+      "fullUnlockPercent": "Volle Entsperrbelohnung",
       "actions": "Aktionen",
-      "noDataMessage": "Keine Staking-Daten gefunden",
+      "noDataMessage": "Keine Sperrdaten gefunden",
+      "unlockedStatus": "Entsperrstatus",
+      "lockedStatus": "Sperrstatus",
+      "unlockStatus": "Entsperrstatus",
+      "fullUnlocked": "Vollständig entsperrt",
+      "earlyUnlocked": "Frühe Entsperrung",
+      "unlockedAmount": "Entsperrter Betrag",
+      "rewardedAmount": "Belohnter Betrag",
       "unlock": {
         "title": "Entsperren",
-        "message": "Möchten Sie frühzeitig entsperren?",
+        "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",
         "confirm": "Bestätigen",
-        "success": "Transaktion gesendet! Die Bestätigung wird einige Zeit in Anspruch nehmen",
-        "error": "Beim Entsperren ist ein Fehler aufgetreten!"
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Entsperrung ist etwas schief gelaufen!"
       },
-      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet."
+      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Brieftasche."
     },
     "Earned": {
       "rewards": "Verdiente Belohnungen",
-      "unlockEarly": "Frühzeitig entsperren",
-      "stakedBalance": "Gestaktes Guthaben",
-      "earningRate": "Verdienstrate",
+      "unlockEarly": "Frühe Entsperrung",
+      "lockedBalance": "Gesperrtes Guthaben",
+      "earningRate": "Verdienstquote",
       "unlocksIn": "Entsperrt in",
       "apy": "APY",
       "weeks": "Wochen"

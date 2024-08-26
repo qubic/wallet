@@ -578,27 +578,27 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Apostar Qubic",
-      "subText": "Gana $QUBIC apostando tus monedas durante 52 semanas.",
-      "enterAmount": "Introducir cantidad",
-      "stake": "Apostar",
+      "title": "Bloquear Qubic",
+      "subText": "Gana $QUBIC bloqueando tus monedas durante 52 semanas.",
+      "enterAmount": "Ingrese cantidad",
+      "stake": "Bloquear",
       "availableBalance": "Saldo disponible",
-      "weeklySatking": "El fondo de apuestas semanal cierra en",
+      "weeklySatking": "El pote de bloqueo semanal se cierra en",
       "date": "d",
       "hour": "h",
       "minute": "min",
       "error": {
-        "required": "La cantidad es obligatoria",
+        "required": "Cantidad requerida",
         "min": "La cantidad debe ser mayor a 10M",
         "numberOnly": "Solo se permiten números",
-        "exceedsBalance": "La cantidad no puede superar el saldo disponible"
+        "exceedsBalance": "La cantidad no puede exceder el saldo disponible"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Confirmar apuesta",
-        "confirmLockMessage": "¿Quieres bloquear {{amount}} {{currency}} para la apuesta?",
+        "confirmLockTitle": "Confirmar bloqueo",
+        "confirmLockMessage": "¿Quieres bloquear {{amount}} {{currency}} para el bloqueo?",
         "confirm": "Bloquear",
         "cancel": "Cancelar",
-        "success": "¡Transacción enviada! La confirmación tomará algún tiempo.",
+        "success": "¡Transacción enviada! Tardará un tiempo en ser confirmada.",
         "error": "¡Algo salió mal durante el bloqueo!"
       }
     },
@@ -607,16 +607,23 @@
       "lockedAmount": "Cantidad bloqueada",
       "lockedWeeks": "Semanas bloqueadas",
       "totalLockedAmountInEpoch": "Cantidad total bloqueada",
-      "currentBonusAmountInEpoch": "Cantidad de bonificación actual",
+      "currentBonusAmountInEpoch": "Cantidad de bono actual",
       "earlyUnlockPercent": "Recompensa por desbloqueo anticipado",
-      "fullUnlockPercent": "Recompensa por desbloqueo total",
+      "fullUnlockPercent": "Recompensa por desbloqueo completo",
       "actions": "Acciones",
-      "noDataMessage": "No se encontraron datos de apuestas",
+      "noDataMessage": "No se encontraron datos de bloqueo",
+      "unlockedStatus": "Estado desbloqueado",
+      "lockedStatus": "Estado bloqueado",
+      "unlockStatus": "Estado de desbloqueo",
+      "fullUnlocked": "Desbloqueado por completo",
+      "earlyUnlocked": "Desbloqueado anticipadamente",
+      "unlockedAmount": "Cantidad desbloqueada",
+      "rewardedAmount": "Cantidad recompensada",
       "unlock": {
         "title": "Desbloquear",
-        "message": "¿Quieres desbloquear anticipadamente?",
+        "message": "¿Deseas desbloquear {{amount}} {{currency}} anticipadamente?",
         "confirm": "Confirmar",
-        "success": "¡Transacción enviada! La confirmación tomará algún tiempo.",
+        "success": "¡Transacción enviada! Tardará un tiempo en ser confirmada.",
         "error": "¡Algo salió mal durante el desbloqueo!"
       },
       "pleaseUnlock": "Por favor, desbloquea tu billetera primero."
@@ -624,9 +631,9 @@
     "Earned": {
       "rewards": "Recompensas ganadas",
       "unlockEarly": "Desbloqueo anticipado",
-      "stakedBalance": "Saldo apostado",
-      "earningRate": "Tasa de ganancias",
-      "unlocksIn": "Desbloquea en",
+      "lockedBalance": "Saldo bloqueado",
+      "earningRate": "Tasa de ganancia",
+      "unlocksIn": "Desbloqueo en",
       "apy": "APY",
       "weeks": "Semanas"
     }

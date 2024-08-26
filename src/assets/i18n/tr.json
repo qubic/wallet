@@ -581,55 +581,62 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Qubic Stake Et",
-      "subText": "Coin'lerinizi 52 hafta stake ederek $QUBIC kazanın.",
-      "enterAmount": "Miktar girin",
-      "stake": "Stake Et",
+      "title": "Qubic Kilitle",
+      "subText": "Paralarınızı 52 hafta kilitleyerek $QUBIC kazanın.",
+      "enterAmount": "Miktarı girin",
+      "stake": "Kilitle",
       "availableBalance": "Mevcut Bakiye",
-      "weeklySatking": "Haftalık Stake Potu şu kadar sürede kapanır",
+      "weeklySatking": "Haftalık Kilitleme Havuzu Kapanışına",
       "date": "g",
-      "hour": "s",
+      "hour": "sa",
       "minute": "dk",
       "error": {
-        "required": "Miktar zorunludur",
-        "min": "Miktar 10M'den fazla olmalıdır",
-        "numberOnly": "Yalnızca sayılar kabul edilir",
+        "required": "Miktar gerekli",
+        "min": "Miktar 10M'dan fazla olmalıdır",
+        "numberOnly": "Sadece sayılar girilebilir",
         "exceedsBalance": "Miktar mevcut bakiyeyi aşamaz"
       },
       "confirmDialog": {
-        "confirmLockTitle": "Staking'i Onayla",
-        "confirmLockMessage": "{{amount}} {{currency}} stake için kilitlenmesini istiyor musunuz?",
-        "confirm": "Kilit",
+        "confirmLockTitle": "Kilitlemeyi Onayla",
+        "confirmLockMessage": "{{amount}} {{currency}} kilitlemek istiyor musunuz?",
+        "confirm": "Kilitle",
         "cancel": "İptal",
         "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
-        "error": "Kilitlenirken bir sorun oluştu!"
+        "error": "Kilitleme sırasında bir hata oluştu!"
       }
     },
     "history": {
-      "lockedEpoch": "Kilitli Epoch",
+      "lockedEpoch": "Kilitli Dönem",
       "lockedAmount": "Kilitli Miktar",
       "lockedWeeks": "Kilitli Haftalar",
-      "totalLockedAmountInEpoch": "Kilitlenen Toplam Miktar",
-      "currentBonusAmountInEpoch": "Mevcut Bonus Miktarı",
-      "earlyUnlockPercent": "Erken Kilit Açma Ödülü",
-      "fullUnlockPercent": "Tam Kilit Açma Ödülü",
-      "actions": "Eylemler",
-      "noDataMessage": "Herhangi Bir Staking Verisi Bulunamadı",
+      "totalLockedAmountInEpoch": "Dönem İçindeki Toplam Kilitli Miktar",
+      "currentBonusAmountInEpoch": "Dönemdeki Güncel Bonus Miktarı",
+      "earlyUnlockPercent": "Erken Kilitleme Ödülü",
+      "fullUnlockPercent": "Tam Kilitleme Ödülü",
+      "actions": "İşlemler",
+      "noDataMessage": "Kilitleme verisi bulunamadı",
+      "unlockedStatus": "Kilidi Açılmış Durum",
+      "lockedStatus": "Kilitli Durum",
+      "unlockStatus": "Kilidi Açma Durumu",
+      "fullUnlocked": "Tamamen Kilidi Açılmış",
+      "earlyUnlocked": "Erken Kilidi Açılmış",
+      "unlockedAmount": "Kilidi Açılan Miktar",
+      "rewardedAmount": "Ödüllendirilen Miktar",
       "unlock": {
         "title": "Kilidi Aç",
-        "message": "Erken kilidini açmak istiyor musunuz?",
+        "message": "{{amount}} {{currency}} kilidini erken açmak istiyor musunuz?",
         "confirm": "Onayla",
         "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
-        "error": "Kilidi açarken bir sorun oluştu!"
+        "error": "Kilidi açma sırasında bir hata oluştu!"
       },
-      "pleaseUnlock": "Lütfen önce cüzdanınızın kilidini açın."
+      "pleaseUnlock": "Lütfen önce cüzdanınızı kilidini açın."
     },
     "Earned": {
-      "rewards": "Kazandığınız Ödüller",
+      "rewards": "Kazanılan Ödüller",
       "unlockEarly": "Erken Kilidi Aç",
-      "stakedBalance": "Stake Edilen Bakiye",
-      "earningRate": "Kazanç Oranı",
-      "unlocksIn": "Şu Kadar Süre Sonra Kilit Açılır",
+      "lockedBalance": "Kilitli Bakiye",
+      "earningRate": "Kazanç oranı",
+      "unlocksIn": "Kilidi Açılma Süresi",
       "apy": "APY",
       "weeks": "Haftalar"
     }

@@ -581,57 +581,64 @@
   },
   "qearn": {
     "stakeQubic": {
-      "title": "Qubicをステーク",
-      "subText": "コインを52週間ステークして$QUBICを獲得。",
+      "title": "Qubicをロック",
+      "subText": "コインを52週間ロックすることで$QUBICを獲得します。",
       "enterAmount": "金額を入力",
-      "stake": "ステーク",
+      "stake": "ロック",
       "availableBalance": "利用可能な残高",
-      "weeklySatking": "毎週のステーキングは以下の時間で終了",
+      "weeklySatking": "週次ロッキングポットが閉じるまで",
       "date": "日",
-      "hour": "時間",
+      "hour": "時",
       "minute": "分",
       "error": {
         "required": "金額は必須です",
         "min": "金額は1000万以上でなければなりません",
-        "numberOnly": "数字のみ使用可能です",
-        "exceedsBalance": "金額は利用可能な残高を超えてはいけません"
+        "numberOnly": "数字のみが許可されています",
+        "exceedsBalance": "金額は利用可能な残高を超えることはできません"
       },
       "confirmDialog": {
-        "confirmLockTitle": "ステーキングを確認",
-        "confirmLockMessage": "{{amount}} {{currency}}をステークするためにロックしますか？",
+        "confirmLockTitle": "ロックの確認",
+        "confirmLockMessage": "{{amount}} {{currency}}をロックしますか？",
         "confirm": "ロック",
         "cancel": "キャンセル",
-        "success": "取引が送信されました！確認には少し時間がかかります。",
+        "success": "トランザクションが送信されました！ 確認には時間がかかります。",
         "error": "ロック中に問題が発生しました！"
       }
     },
     "history": {
       "lockedEpoch": "ロックされたエポック",
       "lockedAmount": "ロックされた金額",
-      "lockedWeeks": "ロックされた週",
-      "totalLockedAmountInEpoch": "ロックされた合計金額",
-      "currentBonusAmountInEpoch": "現在のボーナス金額",
-      "earlyUnlockPercent": "早期ロック解除報酬",
-      "fullUnlockPercent": "完全ロック解除報酬",
+      "lockedWeeks": "ロックされた週数",
+      "totalLockedAmountInEpoch": "エポック内のロックされた合計金額",
+      "currentBonusAmountInEpoch": "エポック内の現在のボーナス金額",
+      "earlyUnlockPercent": "早期解除報酬",
+      "fullUnlockPercent": "全額解除報酬",
       "actions": "アクション",
-      "noDataMessage": "ステーキングデータが見つかりません",
+      "noDataMessage": "ロックデータが見つかりません",
+      "unlockedStatus": "アンロックステータス",
+      "lockedStatus": "ロックステータス",
+      "unlockStatus": "アンロックステータス",
+      "fullUnlocked": "完全にアンロック",
+      "earlyUnlocked": "早期アンロック",
+      "unlockedAmount": "アンロックされた金額",
+      "rewardedAmount": "報酬額",
       "unlock": {
-        "title": "ロック解除",
-        "message": "早期にロックを解除しますか？",
+        "title": "アンロック",
+        "message": "{{amount}} {{currency}}を早期にアンロックしますか？",
         "confirm": "確認",
-        "success": "取引が送信されました！確認には少し時間がかかります。",
-        "error": "ロック解除中に問題が発生しました！"
+        "success": "トランザクションが送信されました！ 確認には時間がかかります。",
+        "error": "アンロック中に問題が発生しました！"
       },
-      "pleaseUnlock": "まずウォレットをロック解除してください。"
+      "pleaseUnlock": "まずウォレットをアンロックしてください。"
     },
     "Earned": {
       "rewards": "獲得した報酬",
-      "unlockEarly": "早期にロック解除",
-      "stakedBalance": "ステークされた残高",
-      "earningRate": "獲得率",
-      "unlocksIn": "以下でロック解除",
-      "apy": "APY",
-      "weeks": "週"
+      "unlockEarly": "早期アンロック",
+      "lockedBalance": "ロックされた残高",
+      "earningRate": "稼働率",
+      "unlocksIn": "解除されるまでの時間",
+      "apy": "年間利回り",
+      "weeks": "週間"
     }
   }
 }
