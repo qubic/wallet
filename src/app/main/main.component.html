@@ -86,10 +86,10 @@
     <div *ngIf="isTable" class="mobileOnly seedList">
       <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
         <h3>
-          {{ seed.alias }}
+          {{ seed.alias }}<br>
           <span *ngIf="seed.lastUpdate" class="disable-area">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
           <span class="disable-area">
-            {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
+            {{ t("general.currency") }} / ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
           </span>
         </h3>
         <div class="flex flex-wrap disable-area">
