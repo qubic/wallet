@@ -62,10 +62,6 @@ export class StakingComponent implements OnInit {
         });
       }
     });
-    setInterval(() => {
-      this.seeds[0].balance += 100000;
-      console.log(this.seeds[0].balance)
-    }, 1000);
   }
 
   trackBySeed(index: number, seed: ISeed): string {
