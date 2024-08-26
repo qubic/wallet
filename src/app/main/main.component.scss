@@ -81,7 +81,8 @@ mat-card {
     .is-mobile {
         mat-card {
             font-size: 80%;
-            margin: 16px 0px 16px;
+            min-width: 100%
+            // margin: 16px 0px 16px 0px;
         }
     }
 }
