@@ -9,10 +9,10 @@
       </div>
       <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
-        {{ (currentPrice.price * 1000000000) | number:'1.0-0' }} {{ currentPrice.currency }} / b{{ t("general.currency")
+        ${{ (currentPrice.price * 1000000000) | number:'1.0-0' }} / b{{ t("general.currency")
         }}
         <div class="dashboard-amount-name">
-          ~ {{currentPrice.capitalization| number : "1.0-0"}} {{currentPrice.currency}} MC
+          ~ ${{currentPrice.capitalization| number : "1.0-0"}} MC
         </div>
         <!-- {{currentPrice.price}} {{currentPrice.currency}}/{{ t("general.currency") }} |-->
       </div>
