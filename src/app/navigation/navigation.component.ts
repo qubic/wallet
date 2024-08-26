@@ -33,7 +33,7 @@ export class NavigationComponent implements OnInit {
 
   mobileQuery!: MediaQueryList;
   title = 'qubic-wallet';
-  public version = 0.0;
+  public version = ""
   public higlightTick = false;
   private currentTick = 0;
 

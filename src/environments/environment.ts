@@ -1,5 +1,5 @@
 export const environment = {
-    version: 4.10,
+    version: '4.10',
     production: false,
     apiQliUrl: 'http://localhost:7003',     
     apiArchiverUrl: 'http://localhost:7004',
