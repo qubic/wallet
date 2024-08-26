@@ -51,7 +51,7 @@ export class QearnService {
   public endedStakeData: { [key: string]: IEndedStakeStatus[] } = {};
   public isLoading = false;
   public pendingStake: PendingStake | null = null;
-  public txSuccessSubject = new Subject<any>();
+  public txSuccessSubject = new Subject<PendingStake>();
   public selectedPublicId = new Subject<string>();
 
   constructor(private apiService: ApiService, private walletService: WalletService, private us: UpdaterService, private _snackBar: MatSnackBar, private transloco: TranslocoService) {}
@@ -283,7 +283,7 @@ export class QearnService {
         });
       }
     } else {
-      this.stakeData[publicId] = this.stakeData[publicId].filter((data) => data.lockedEpoch !== epoch);
+      this.stakeData[publicId] = this.stakeData[publicId]?.filter((data) => data.lockedEpoch !== epoch);
     }
   }
 
@@ -346,8 +346,8 @@ export class QearnService {
             panelClass: 'success',
           });
         }
+        this.txSuccessSubject.next(this.pendingStake);
         this.pendingStake = null;
-        this.txSuccessSubject.next(publicId);
       }
     });
   }
@@ -371,8 +371,8 @@ export class QearnService {
             panelClass: 'success',
           });
         }
+        this.txSuccessSubject.next(this.pendingStake);
         this.pendingStake = null;
-        this.txSuccessSubject.next(publicId);
       }
     });
   }

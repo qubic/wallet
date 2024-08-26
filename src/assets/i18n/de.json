@@ -624,6 +624,7 @@
       "earlyUnlocked": "Frühe Entsperrung",
       "unlockedAmount": "Entsperrter Betrag",
       "rewardedAmount": "Belohnter Betrag",
+      "note": "Entsperrstatus der aktuellen Epoche",
       "unlock": {
         "title": "Entsperren",
         "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",

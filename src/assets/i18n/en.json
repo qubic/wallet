@@ -622,6 +622,7 @@
       "earlyUnlocked": "Early Unlocked",
       "unlockedAmount": "Unlocked Amount",
       "rewardedAmount": "Rewarded Amount",
+      "note": "Unlocking Status of Current Epoch",
       "unlock": {
         "title": "Unlock",
         "message": "Do you want to unlock {{amount}} {{currency}} for early?",

@@ -53,11 +53,19 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         this.form.controls['sourceId'].setValue(publicId);
       }
     });
-    this.qearnService.txSuccessSubject.subscribe((publicId) => {
-      if (publicId) {
-        this.qearnComponent.selectHistoryTabAndAddress(publicId);
-        this.loadData(publicId);
-        this.cdf.detectChanges();
+    this.qearnService.txSuccessSubject.subscribe((d) => {
+      if (d?.publicId) {
+        this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
+        this.us.forceUpdateNetworkBalance(d.publicId, async () => {
+          await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
+
+          this.dataSource.data = [];
+          setTimeout(() => {
+            this.loadData(d.publicId);
+          }, 0);
+
+          this.cdf.detectChanges();
+        });
       }
     });
     this.setupSourceIdValueChange();
@@ -150,10 +158,6 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, element.lockedEpoch, tick);
 
       if (unlockResult) {
-        this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
-          duration: 3000,
-          panelClass: 'success',
-        });
         const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
         const initialLockedAmountOfThisEpoch = element.lockedAmount;
 

@@ -619,6 +619,7 @@
       "earlyUnlocked": "Déverrouillé en avance",
       "unlockedAmount": "Montant déverrouillé",
       "rewardedAmount": "Montant récompensé",
+      "note": "Statut de déverrouillage de l'époque actuelle",
       "unlock": {
         "title": "Déverrouiller",
         "message": "Voulez-vous déverrouiller {{amount}} {{currency}} en avance ?",

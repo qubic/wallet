@@ -52,12 +52,19 @@ export class StakingComponent implements OnInit {
     this.setupSourceIdValueChange();
     this.subscribeToTimeUpdates();
     this.loadSeeds();
-    this.qearnService.txSuccessSubject.subscribe((publicId) => {
-      if (publicId) {
-        this.qearnComponent.selectHistoryTabAndAddress(publicId);
+    this.qearnService.txSuccessSubject.subscribe((d) => {
+      if (d?.publicId) {
+        this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
         this.stakeForm.controls.amount.setValue('0');
-        this.us.forceUpdateNetworkBalance(publicId, () => {
+        this.us.forceUpdateNetworkBalance(d.publicId, () => {
           this.loadSeeds();
+
+          const currentValue = this.stakeForm.get('sourceId')?.value;
+          this.stakeForm.get('sourceId')?.setValue(null);
+          setTimeout(() => {
+            this.stakeForm.get('sourceId')?.setValue(currentValue!);
+          }, 0);
+
           this.cdf.detectChanges();
         });
       }
@@ -71,7 +78,7 @@ export class StakingComponent implements OnInit {
   private loadSeeds(): void {
     const seeds = this.walletService.getSeeds();
     if (Array.isArray(seeds)) {
-      this.seeds = seeds.map(seed => ({ ...seed }));
+      this.seeds = seeds.map((seed) => ({ ...seed }));
       console.log('Seeds loaded:', this.seeds);
     } else {
       console.error('walletService.getSeeds() did not return an array:', seeds);

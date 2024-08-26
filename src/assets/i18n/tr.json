@@ -622,6 +622,7 @@
       "earlyUnlocked": "Erken Kilidi Açılmış",
       "unlockedAmount": "Kilidi Açılan Miktar",
       "rewardedAmount": "Ödüllendirilen Miktar",
+      "note": "Mevcut Dönemin Kilit Açma Durumu",
       "unlock": {
         "title": "Kilidi Aç",
         "message": "{{amount}} {{currency}} kilidini erken açmak istiyor musunuz?",

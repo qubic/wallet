@@ -618,6 +618,7 @@
       "earlyUnlocked": "Vroegtijdig ontgrendeld",
       "unlockedAmount": "Ontgrendeld bedrag",
       "rewardedAmount": "Beloningsbedrag",
+      "note": "Ontgrendelingsstatus van de huidige epoch",
       "unlock": {
         "title": "Ontgrendelen",
         "message": "Wilt u {{amount}} {{currency}} vroegtijdig ontgrendelen?",

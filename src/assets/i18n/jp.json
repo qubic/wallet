@@ -622,6 +622,7 @@
       "earlyUnlocked": "早期アンロック",
       "unlockedAmount": "アンロックされた金額",
       "rewardedAmount": "報酬額",
+      "note": "現在のエポックの解除状況",
       "unlock": {
         "title": "アンロック",
         "message": "{{amount}} {{currency}}を早期にアンロックしますか？",

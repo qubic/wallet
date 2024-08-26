@@ -13,10 +13,14 @@
         </mat-form-field>
       </div>
     </form>
-
-    <mat-slide-toggle [checked]="showingEnded" (change)="toggleView()" class="text-right">
-      {{ showingEnded ? t('qearn.history.unlockedStatus') : t('qearn.history.lockedStatus') }}
-    </mat-slide-toggle>
+    <ng-container class="flex">
+      <mat-slide-toggle [checked]="showingEnded" (change)="toggleView()" class="text-right">
+        {{ showingEnded ? t('qearn.history.unlockedStatus') : t('qearn.history.lockedStatus') }}
+      </mat-slide-toggle>
+      <mat-label *ngIf="showingEnded">
+        {{ t('qearn.history.note') }}
+      </mat-label>
+    </ng-container>
 
     <div *ngIf="qearnService.isLoading" class="loading-container">
       <mat-spinner></mat-spinner>
@@ -43,12 +47,15 @@
 
           <ng-container matColumnDef="totalLockedAmountInEpoch">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.totalLockedAmountInEpoch') }}</th>
-            <td mat-cell *matCellDef="let element" class="text-right">{{ element.totalLockedAmountInEpoch | number: '1.0-0' }}</td>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.totalLockedAmountInEpoch | number:
+              '1.0-0' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="currentBonusAmountInEpoch">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.currentBonusAmountInEpoch') }}</th>
-            <td mat-cell *matCellDef="let element" class="text-right">{{ element.currentBonusAmountInEpoch | number: '1.0-0' }}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.currentBonusAmountInEpoch') }}
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.currentBonusAmountInEpoch | number:
+              '1.0-0' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="earlyUnlockPercent">
@@ -83,16 +90,19 @@
         <ng-container *ngIf="showingEnded">
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.unlockStatus') }}</th>
-            <td mat-cell *matCellDef="let element">{{ element.status ? t('qearn.history.fullUnlocked') : t('qearn.history.earlyUnlocked') }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.status ? t('qearn.history.fullUnlocked') :
+              t('qearn.history.earlyUnlocked') }}</td>
           </ng-container>
           <ng-container matColumnDef="unLockedAmount">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.unlockedAmount') }}</th>
-            <td mat-cell *matCellDef="let element" class="text-right">{{ element.unLockedAmount | number: '1.0-0' }}</td>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.unLockedAmount | number: '1.0-0' }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="rewardedAmount">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('qearn.history.rewardedAmount') }}</th>
-            <td mat-cell *matCellDef="let element" class="text-right">{{ element.rewardedAmount | number: '1.0-0' }}</td>
+            <td mat-cell *matCellDef="let element" class="text-right">{{ element.rewardedAmount | number: '1.0-0' }}
+            </td>
           </ng-container>
         </ng-container>
 

@@ -619,6 +619,7 @@
       "earlyUnlocked": "Desbloqueado anticipadamente",
       "unlockedAmount": "Cantidad desbloqueada",
       "rewardedAmount": "Cantidad recompensada",
+      "note": "Estado de desbloqueo de la época actual",
       "unlock": {
         "title": "Desbloquear",
         "message": "¿Deseas desbloquear {{amount}} {{currency}} anticipadamente?",

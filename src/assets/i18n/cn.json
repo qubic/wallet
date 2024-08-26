@@ -621,6 +621,7 @@
       "earlyUnlocked": "提前解锁",
       "unlockedAmount": "解锁金额",
       "rewardedAmount": "奖励金额",
+      "note": "当前时期的解锁状态",
       "unlock": {
         "title": "解锁",
         "message": "您要提前解锁 {{amount}} {{currency}} 吗？",
