@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
@@ -13,6 +13,7 @@ import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { QearnComponent } from '../qearn.component';
+import { ISeed } from 'src/app/model/seed';
 
 @Component({
   selector: 'app-staking',
@@ -24,9 +25,10 @@ export class StakingComponent implements OnInit {
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
-    amount: ['0'] // , [Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]],
+    amount: ['0'], // , [Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator]],
   });
-  public seeds = this.walletService.getSeeds();
+  public seeds: ISeed[] = [];
+  public selectedSeed: string = '';
   public isChecking = false;
 
   constructor(
@@ -41,24 +43,49 @@ export class StakingComponent implements OnInit {
     public qearnService: QearnService,
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService,
-    public qearnComponent: QearnComponent
+    public qearnComponent: QearnComponent,
+    private cdf: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.redirectIfWalletNotReady();
     this.setupSourceIdValueChange();
     this.subscribeToTimeUpdates();
+    this.loadSeeds();
     this.qearnService.txSuccessSubject.subscribe((publicId) => {
       if (publicId) {
-        console.log('publicId', publicId);
         this.qearnComponent.selectHistoryTabAndAddress(publicId);
-        this.us.loadCurrentBalance();
         this.stakeForm.controls.amount.setValue('0');
-        setTimeout(() => {
-          this.seeds = this.walletService.getSeeds();
-        }, 1000);
+        this.us.forceUpdateNetworkBalance(publicId, () => {
+          this.loadSeeds();
+          this.cdf.detectChanges();
+        });
       }
     });
+    setInterval(() => {
+      this.seeds[0].balance += 100000;
+      console.log(this.seeds[0].balance)
+    }, 1000);
+  }
+
+  trackBySeed(index: number, seed: ISeed): string {
+    return seed.publicId; // Unique identifier for each seed
+  }
+
+  private loadSeeds(): void {
+    const seeds = this.walletService.getSeeds();
+    if (Array.isArray(seeds)) {
+      this.seeds = seeds.map(seed => ({ ...seed }));
+      console.log('Seeds loaded:', this.seeds);
+    } else {
+      console.error('walletService.getSeeds() did not return an array:', seeds);
+      this.seeds = [];
+    }
+    // Optionally, reset the selected sourceId if it's no longer valid
+    const currentSourceId = this.stakeForm.controls.sourceId.value;
+    if (!this.seeds.find((seed) => seed.publicId === currentSourceId)) {
+      this.stakeForm.controls.sourceId.setValue('');
+    }
   }
 
   private redirectIfWalletNotReady(): void {
@@ -74,7 +101,6 @@ export class StakingComponent implements OnInit {
       }
     });
   }
-
 
   private subscribeToTimeUpdates(): void {
     this.timeService.getTimeToNewEpoch().subscribe((time) => {
@@ -143,9 +169,7 @@ export class StakingComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    // Handle form submission if necessary
-  }
+  onSubmit(): void {}
 
   private formatNumberWithCommas(value: string): string {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

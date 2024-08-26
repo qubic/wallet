@@ -302,8 +302,20 @@ export class QearnService {
       if (!this.endedStakeData[publicId]) {
         this.endedStakeData[publicId] = [];
       }
-      this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.fullUnlockedAmount ?? 0, rewardedAmount: endedStatus.fullRewardedAmount ?? 0, status: true });
-      this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.earlyUnlockedAmount ?? 0, rewardedAmount: endedStatus.earlyRewardedAmount ?? 0, status: false });
+      const fullUnlockIndex = this.endedStakeData[publicId].findIndex(data => data.status === true);
+      const earlyUnlockIndex = this.endedStakeData[publicId].findIndex(data => data.status === false);
+
+      if (fullUnlockIndex !== -1) {
+        this.endedStakeData[publicId][fullUnlockIndex] = { unLockedAmount: endedStatus.fullUnlockedAmount ?? 0, rewardedAmount: endedStatus.fullRewardedAmount ?? 0, status: true };
+      } else {
+        this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.fullUnlockedAmount ?? 0, rewardedAmount: endedStatus.fullRewardedAmount ?? 0, status: true });
+      }
+
+      if (earlyUnlockIndex !== -1) {
+        this.endedStakeData[publicId][earlyUnlockIndex] = { unLockedAmount: endedStatus.earlyUnlockedAmount ?? 0, rewardedAmount: endedStatus.earlyRewardedAmount ?? 0, status: false };
+      } else {
+        this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.earlyUnlockedAmount ?? 0, rewardedAmount: endedStatus.earlyRewardedAmount ?? 0, status: false });
+      }
       console.log(this.endedStakeData[publicId]);
     }
   }

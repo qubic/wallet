@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { WalletService } from '../../services/wallet.service';
@@ -37,7 +37,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     private us: UpdaterService,
     private router: Router,
     private fb: FormBuilder,
-    private qearnComponent: QearnComponent
+    private qearnComponent: QearnComponent,
+    private cdf: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       sourceId: [''],
@@ -52,7 +53,13 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         this.form.controls['sourceId'].setValue(publicId);
       }
     });
-
+    this.qearnService.txSuccessSubject.subscribe((publicId) => {
+      if (publicId) {
+        this.qearnComponent.selectHistoryTabAndAddress(publicId);
+        this.loadData(publicId);
+        this.cdf.detectChanges();
+      }
+    });
     this.setupSourceIdValueChange();
   }
 
