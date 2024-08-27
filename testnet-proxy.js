@@ -27,7 +27,7 @@ function createProxy(mainnetURL, testnetURL, port) {
         handleTickRequest(req, res, testnetURL);
       } else if (req.url.includes('/v1/status')) {
         handleStatusRequest(req, res, testnetURL);
-      } else if (req.url.includes('/broadcast-transaction') || req.url.includes('/querySmartContract')) {
+      } else if (req.url.includes('/v1/broadcast-transaction') || req.url.includes('/v1/querySmartContract')) {
         forwardRequest(req, res, testnetURL);
       } else {
         forwardRequest(req, res, targetURL);
