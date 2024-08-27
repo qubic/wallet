@@ -201,9 +201,12 @@
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon *ngIf="transaction.transactions[0].moneyFlew"
-                                style="color: yellowgreen;">done</mat-icon>
-                            <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red">clear</mat-icon>
+                            <span class="status-icon">
+                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew"
+                                    style="color: yellowgreen;" matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
+                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew"
+                                    style="color: red" matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
+                            </span>
                             &nbsp;
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"

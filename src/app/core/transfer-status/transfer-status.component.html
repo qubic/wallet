@@ -25,10 +25,7 @@
         </span>
         <span *ngIf="transaction.status == 'Failed'" class="loading-btn-wrapper"
             matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">
-            <button class="loading-btn loading-btn--fail">
-                <span class="loading-btn__text">
-                </span>
-            </button>
+            <mat-icon style="color: red">clear</mat-icon>
         </span>
         <span *ngIf="transaction.status == 'Unknown'" class="loading-btn-wrapper"
             matTooltip="{{ t('balanceComponent.transactions.status.unknown.tooltip') }}">
