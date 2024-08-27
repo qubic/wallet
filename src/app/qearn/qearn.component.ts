@@ -14,7 +14,7 @@ import { UpdaterService } from '../services/updater-service';
 export class QearnComponent implements OnInit {
   public epoch: number = 130;
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
-  constructor(private qearnService: QearnService, private walletService: WalletService, private apiArchiver: ApiArchiverService, private us: UpdaterService) {}
+  constructor(public qearnService: QearnService, private walletService: WalletService, private apiArchiver: ApiArchiverService, private us: UpdaterService) {}
 
   async ngOnInit() {
     // Update the current balance
@@ -23,14 +23,16 @@ export class QearnComponent implements OnInit {
     // Fetching Lock Info and Stake Data
     this.apiArchiver.getStatus().subscribe(async (res) => {
       this.epoch = res.lastProcessedTick.epoch;
+      // Fetching current epoch info
+      await this.qearnService.fetchLockInfo(this.epoch)
       const seeds = this.walletService.getSeeds();
       this.qearnService.setLoading(true);
       for (let i = 0; i < seeds.length; i++) {
         const pubKey = new PublicKey(seeds[i].publicId).getPackageData();
         const epochs = await this.qearnService.getUserLockStatus(pubKey, this.epoch);
         for (let j = 0; j < epochs.length; j++) {
-          this.qearnService.fetchLockInfo(epochs[j]);
-          this.qearnService.fetchStakeDataPerEpoch(seeds[i].publicId, epochs[j], this.epoch);
+          await this.qearnService.fetchLockInfo(epochs[j]);
+          await this.qearnService.fetchStakeDataPerEpoch(seeds[i].publicId, epochs[j], this.epoch);
         }
         await this.qearnService.fetchEndedStakeData(seeds[i].publicId);
       }

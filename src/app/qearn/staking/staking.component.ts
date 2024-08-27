@@ -63,7 +63,7 @@ export class StakingComponent implements OnInit {
           this.stakeForm.get('sourceId')?.setValue(null);
           setTimeout(() => {
             this.stakeForm.get('sourceId')?.setValue(currentValue!);
-          }, 0);
+          }, 100);
 
           this.cdf.detectChanges();
         });
@@ -79,12 +79,10 @@ export class StakingComponent implements OnInit {
     const seeds = this.walletService.getSeeds();
     if (Array.isArray(seeds)) {
       this.seeds = seeds.map((seed) => ({ ...seed }));
-      console.log('Seeds loaded:', this.seeds);
     } else {
       console.error('walletService.getSeeds() did not return an array:', seeds);
       this.seeds = [];
     }
-    // Optionally, reset the selected sourceId if it's no longer valid
     const currentSourceId = this.stakeForm.controls.sourceId.value;
     if (!this.seeds.find((seed) => seed.publicId === currentSourceId)) {
       this.stakeForm.controls.sourceId.setValue('');

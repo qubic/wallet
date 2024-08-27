@@ -25,7 +25,8 @@
           <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()"
             [disabled]="stakeForm.invalid || isChecking || qearnService.pendingStake">
 
-            <ng-container *ngIf="!qearnService.pendingStake || !(qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value)">
+            <ng-container
+              *ngIf="!qearnService.pendingStake || !(qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value)">
               {{ t('qearn.stakeQubic.stake') }}
             </ng-container>
 

@@ -237,7 +237,7 @@ export class QearnService {
     }
     const pubKey = new PublicKey(publicId).getPackageData();
     const lockAmount = await this.getUserLockInfo(pubKey, epoch);
-    console.log('lockAmount', lockAmount);
+
     if (lockAmount) {
       if (!this.stakeData[publicId]) {
         this.stakeData[publicId] = [];
@@ -316,7 +316,6 @@ export class QearnService {
       } else {
         this.endedStakeData[publicId].push({ unLockedAmount: endedStatus.earlyUnlockedAmount ?? 0, rewardedAmount: endedStatus.earlyRewardedAmount ?? 0, status: false });
       }
-      console.log(this.endedStakeData[publicId]);
     }
   }
 
@@ -332,7 +331,6 @@ export class QearnService {
     this.us.currentTick.subscribe(async (tick) => {
       console.log('tick', tick, 'targetTick', this.pendingStake?.targetTick);
       if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
-        console.log('FETCHING STAKEDATA', publicId, epoch, epoch);
         await this.fetchStakeDataPerEpoch(publicId, epoch, epoch, true);
         const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
         if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {
@@ -357,7 +355,6 @@ export class QearnService {
       console.log('tick', tick, 'targetTick', this.pendingStake?.targetTick);
       if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
         // Fetch the stake data and check if the transaction was successful
-        console.log('FETCHING STAKEDATA', publicId, historyComponent.lockedEpoch, currentEpoch);
         await this.fetchStakeDataPerEpoch(publicId, historyComponent.lockedEpoch, currentEpoch, true);
         const updatedLockedAmountOfThisEpoch = this.stakeData[publicId].find((data) => data.lockedEpoch === historyComponent.lockedEpoch)?.lockedAmount ?? 0;
         if (initialLockedAmount === updatedLockedAmountOfThisEpoch) {

@@ -54,16 +54,16 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       }
     });
     this.qearnService.txSuccessSubject.subscribe((d) => {
-      if (d?.publicId) {
+        if (d?.publicId) {
         this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
         this.us.forceUpdateNetworkBalance(d.publicId, async () => {
           await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
-
-          this.dataSource.data = [];
+          console.log("Current dataSource, ", this.dataSource.data);
+          this.form.get('sourceId')?.setValue(null)
           setTimeout(() => {
-            this.loadData(d.publicId);
-          }, 0);
-
+            this.form.get('sourceId')?.setValue(d.publicId);
+          }, 100);
+          console.log("After setTimeout, ", this.dataSource.data);
           this.cdf.detectChanges();
         });
       }
@@ -83,11 +83,10 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private loadData(sourceId: string): void {
     if (this.showingEnded) {
-      this.dataSource.data = this.qearnService.endedStakeData[sourceId] || [];
+      this.dataSource.data = [...(this.qearnService.endedStakeData[sourceId] || [])];
     } else {
-      this.dataSource.data = this.qearnService.stakeData[sourceId] || [];
+      this.dataSource.data = [...(this.qearnService.stakeData[sourceId] || [])];
     }
-    console.log(this.dataSource);
   }
 
   public getSeeds() {

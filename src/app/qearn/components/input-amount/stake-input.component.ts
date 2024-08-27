@@ -38,7 +38,6 @@ export class StakeInputComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes['maxAmount'] && changes['maxAmount'].currentValue !== changes['maxAmount'].previousValue) {
       this.validateAmount(null);
     }
