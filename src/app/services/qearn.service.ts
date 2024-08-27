@@ -65,7 +65,7 @@ export class QearnService {
 
   private async queryStakingData(inputType: number, inputSize: number, requestData: string) {
     return lastValueFrom(
-      this.apiService.queryStakingData({
+      this.apiService.querySmartContract({
         contractIndex: 6,
         inputType,
         inputSize,
@@ -92,7 +92,6 @@ export class QearnService {
     view.setUint32(0, epoch, true);
     const base64String = this.walletService.arrayBufferToBase64(buffer);
 
-    console.log(base64String)
     const res = await this.queryStakingData(1, 4, base64String);
     if (!res.responseData) {
       return { lockAmount: 0, bonusAmount: 0, currentLockedAmount: 0, currentBonusAmount: 0, yieldPercentage: 0 };

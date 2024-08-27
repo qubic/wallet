@@ -128,7 +128,7 @@ export class ApiService {
    * Functions for Staking Qubic(Qearn)
    */
   public querySmartContract(jsonData: QuerySmartContract) {
-    const localVarPath = "/querySmartContract";
+    const localVarPath = "/v1/querySmartContract";
     return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
@@ -142,7 +142,7 @@ export class ApiService {
   }
 
   public broadcastTx(tx: Uint8Array){
-    const localVarPath = `/broadcast-transaction`;
+    const localVarPath = `/v1/broadcast-transaction`;
     const binaryString = Array.from(tx)
       .map((byte) => String.fromCharCode(byte))
       .join('');
@@ -157,8 +157,7 @@ export class ApiService {
       },
     });
   };
-  
-  
+
   public async contractTransaction(seed: string, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
     try {
       const idPackage = await qHelper.createIdPackage(seed);
@@ -219,20 +218,6 @@ export class ApiService {
       console.error("Error signing transaction:", error);
       throw new Error("Failed to sign and broadcast transaction.");
     }
-  }
-
-  public queryStakingData(jsonData: any){
-    let localVarPath = `/querySmartContract`;
-    return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: jsonData,
-        responseType: 'json'
-      }
-    );
   }
 
   public getCurrentIpoBids(publicIds: string[]) {
