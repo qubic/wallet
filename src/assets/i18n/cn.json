@@ -218,7 +218,7 @@
     "title": "主页",
     "balance": "金库余额",
     "currency": "Qu",
-    "totalBalance": "总余额"
+    "totalBalance": "美元余额"
   },
   "unlockComponent": {
     "title": "解锁金库",
