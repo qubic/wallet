@@ -293,6 +293,14 @@ export class BalanceComponent implements OnInit {
     });
   }
 
+  repeatTransactionArchiver(transaction: TransactionArchiver) {
+    this.router.navigate(['payment'], {
+      state: {
+        template: transaction
+      }
+    });
+  }
+
 
   // getSeedName(publicId: string): string {
   //   var seed = this.walletService.getSeed(publicId);

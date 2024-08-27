@@ -202,10 +202,10 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <span class="status-icon">
-                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew"
-                                    style="color: yellowgreen;" matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
-                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew"
-                                    style="color: red" matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
+                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
+                                    matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
+                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
+                                    matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
                             </span>
                             &nbsp;
                             <span class="display-publicid disable-area">
@@ -221,6 +221,10 @@
                                 date:'HH:mm:ss' }}
                                 )
                             </span>
+                            <button
+                                *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
+                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                                (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
                             {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
