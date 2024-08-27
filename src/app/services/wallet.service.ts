@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { bytes32ToString } from 'qubic-ts-library/dist//converter/converter';
 import { IConfig, IEncryptedVaultFile, IVaultFile } from '../model/config';
 import { IDecodedSeed, ISeed } from '../model/seed';
@@ -7,6 +7,7 @@ import { ITx } from '../model/tx';
 import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
 import { OnReadOpts } from 'net';
+
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class WalletService {
   public configError = false;
   public erroredCOnfig: string = '';
   public shouldExportKey = true;
-  
+
 
   public isWalletReady = false;
 
@@ -91,7 +92,7 @@ export class WalletService {
   }
 
   private async loadConfigFromStorage() {
-    if(!this.persistence)
+    if (!this.persistence)
       return;
 
     const jsonString = localStorage.getItem(this.configName);
@@ -165,7 +166,7 @@ export class WalletService {
 
     // todo: load web bridges dynamically
 
-    
+
   }
 
   public async createNewKeys() {
@@ -284,7 +285,7 @@ export class WalletService {
     }
   }
 
-  
+
   /**
    * remove assets that are no longer updated
    * @param referenceTick the tick from which on we consider an asset as old
@@ -332,19 +333,31 @@ export class WalletService {
   }
 
   public addSeed(seed: IDecodedSeed): Promise<ISeed> {
-    return this.encrypt(seed.seed).then((encryptedSeed) => {
+    if (seed.isOnlyWatch) {
       const newSeed = <ISeed>{
-        encryptedSeed: btoa(
-          String.fromCharCode(...new Uint8Array(encryptedSeed))
-        ),
+        encryptedSeed: "",
         alias: seed.alias,
         publicId: seed.publicId,
         isOnlyWatch: seed.isOnlyWatch,
-      };
+      }
       this.runningConfiguration.seeds.push(newSeed);
       this.save();
-      return newSeed;
-    });
+      return (<any>of(newSeed).toPromise());
+    } else {
+      return this.encrypt(seed.seed).then((encryptedSeed) => {
+        const newSeed = <ISeed>{
+          encryptedSeed: btoa(
+            String.fromCharCode(...new Uint8Array(encryptedSeed))
+          ),
+          alias: seed.alias,
+          publicId: seed.publicId,
+          isOnlyWatch: seed.isOnlyWatch,
+        };
+        this.runningConfiguration.seeds.push(newSeed);
+        this.save();
+        return newSeed;
+      });
+    }
   }
 
   deleteSeed(publicId: string) {
@@ -379,7 +392,7 @@ export class WalletService {
   }
 
   private async saveConfig(lock: boolean) {
-    if(!this.persistence)
+    if (!this.persistence)
       return;
     if (lock) {
       // when locking we don't want that the public key is saved.

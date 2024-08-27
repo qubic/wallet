@@ -176,6 +176,7 @@
       },
       "error": {
         "text": "Bitte überprüfe das Formular.",
+        "publicIdAvailable": "Diese PublicId ist bereits in Ihren Konten vorhanden.",
         "close": "schließen"
       }
     },

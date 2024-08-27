@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
@@ -40,7 +40,6 @@ export class MainComponent implements AfterViewInit {
   isVaultExportDialog: boolean = false;
   currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
   public isMobile = false;
-  isBalanceHidden: boolean = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
 
@@ -125,10 +124,6 @@ export class MainComponent implements AfterViewInit {
 
   
   ngAfterViewInit(): void {
-    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
     this.setDataSource();
   }
 
@@ -155,26 +150,7 @@ export class MainComponent implements AfterViewInit {
       })
     }
   }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
-
-  balanceHidden(): void {
-    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
-    disableAreasElements.forEach((area: HTMLElement) => {
-      if (area.classList.contains('blurred')) {
-        area.classList.remove('blurred');
-        this.isBalanceHidden = false;
-      } else {
-        area.classList.add('blurred');
-        this.isBalanceHidden = true;
-      }
-      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
-    });
-  }
-
+ 
   setDataSource(): void {
     this.dataSource = new MatTableDataSource(this.walletService.getSeeds().map(m => {
       if (!this.walletService.getSettings().useBridge) {
@@ -306,7 +282,8 @@ export class MainComponent implements AfterViewInit {
   reveal(publicId: string) {
     const confirmDialo = this.dialog.open(RevealSeedDialog, {
       restoreFocus: false, data: {
-        publicId: publicId
+        publicId: publicId,
+        isOnlyWatch: this.walletService.getSeed(publicId)?.isOnlyWatch ?? false
       }
     });
   }

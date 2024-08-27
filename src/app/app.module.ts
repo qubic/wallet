@@ -87,6 +87,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { StakeInputComponent } from './qearn/components/input-amount/stake-input.component';
 import { UnlockInputDialogComponent } from './qearn/components/unlock-input-dialog/unlock-input-dialog.component';
+import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -135,6 +136,7 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     ImportVaultComponent,
     FileSelectorComponent,
     RewardTableComponent,
+    BalanceHiddenComponent
   ],
   imports: [
     BrowserModule,

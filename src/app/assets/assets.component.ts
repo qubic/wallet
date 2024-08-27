@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -18,19 +18,21 @@ import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
+
+
+
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss']
 })
 
-export class AssetsComponent implements OnInit, AfterViewInit {
 
+export class AssetsComponent implements OnInit {
   displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
   public currentTick = 0;
   public tickOverwrite = false;
-  public isBalanceHidden = false;
 
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
@@ -61,8 +63,7 @@ export class AssetsComponent implements OnInit, AfterViewInit {
       amount: new FormControl('', Validators.required),
       tick: new FormControl('', Validators.required),
       assetSelect: new FormControl('', Validators.required),
-    });
-
+    });  
 
     // subscribe to config changes to receive asset updates
     this.walletService.onConfig.subscribe(c => {
@@ -100,41 +101,25 @@ export class AssetsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
-    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
-  }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
-
-  balanceHidden(): void {
-    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
-    disableAreasElements.forEach((area: HTMLElement) => {
-      if (area.classList.contains('blurred')) {
-        area.classList.remove('blurred');
-        this.isBalanceHidden = false;
-      } else {
-        area.classList.add('blurred');
-        this.isBalanceHidden = true;
-      }
-      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
-    });
-  }
-
 
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
     localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
-    this.isTable = event.checked;    
+    this.isTable = event.checked;
     window.location.reload();
+  } 
+
+  displayPublicId(input: string): string {
+    if (input.length <= 10) {
+      return input;
+    }
+
+    const start = input.slice(0, 5);
+    const end = input.slice(-5);
+
+    return `${start}...${end}`;
   }
 
-  
   updateAmountValidator(): void {
     const assetSelectControl = this.sendForm.get('assetSelect');
     const amountControl = this.sendForm.get('amount');
@@ -153,7 +138,7 @@ export class AssetsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  
+
   refreshData(): void {
     this.loadAssets(true);
   }

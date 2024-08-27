@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -17,7 +17,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit, AfterViewInit {
+export class BalanceComponent implements OnInit {
 
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
@@ -25,7 +25,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   public numberLastEpoch = 0;
   public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
-  public isBalanceHidden = false;
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
@@ -86,19 +85,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    this.balanceHidden();
-  }
-
-
-  ngAfterViewInit() {
-    this.isBalanceHidden = localStorage.getItem("balance-hidden") == '1' ? true : false;
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
-  }
-
   //**  new Archiver Api */
   private getStatusArchiver() {
     this.apiArchiver.getStatus().subscribe(s => {
@@ -151,10 +137,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
         }
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
-    }
-    if (this.isBalanceHidden) {
-      this.balanceHidden();
-    }
+    }    
   }
 
 
@@ -211,21 +194,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  balanceHidden(): void {
-    const disableAreasElements = document.querySelectorAll('.disable-area') as NodeListOf<HTMLElement>;
-    disableAreasElements.forEach((area: HTMLElement) => {
-      if (area.classList.contains('blurred')) {
-        area.classList.remove('blurred');
-        this.isBalanceHidden = false;
-      } else {
-        area.classList.add('blurred');
-        this.isBalanceHidden = true;
-      }
-      localStorage.setItem("balance-hidden", this.isBalanceHidden ? '1' : '0');
-    });
-  }
-
-
   correctTheTransactionListByPublicId(): void {
     const validSeeds = this.getSeeds().map(seed => seed.publicId);
     this.transactions = this.transactions.filter(transaction => {
@@ -240,8 +208,7 @@ export class BalanceComponent implements OnInit, AfterViewInit {
 
 
   getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status == 'Pending' || f.status == 'Broadcasted' || f.status == 'Created');
-    // return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId));
+    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status != 'Success');
   }
 
 
@@ -317,6 +284,15 @@ export class BalanceComponent implements OnInit, AfterViewInit {
     return `${start}...${end}`;
   }
 
+  
+  repeat(transaction: Transaction) {
+    this.router.navigate(['payment'], {
+      state: {
+        template: transaction
+      }
+    });
+  }
+
 
   // getSeedName(publicId: string): string {
   //   var seed = this.walletService.getSeed(publicId);
@@ -325,16 +301,6 @@ export class BalanceComponent implements OnInit, AfterViewInit {
   //   else
   //     return '';
   // }
-
-
-  // repeat(transaction: Transaction) {
-  //   this.router.navigate(['payment'], {
-  //     state: {
-  //       template: transaction
-  //     }
-  //   });
-  // }
-
 
   // private getTransactionStatusLabel(status: string): string {
   //   switch (status) {

@@ -1,0 +1,4 @@
+<img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
+    (click)="balanceHidden()" title="Hide Balance" />
+<img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()"
+    title="Show Balance" />
