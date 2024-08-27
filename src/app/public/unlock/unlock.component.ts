@@ -108,9 +108,9 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
 
           //check only-watch-address
           if (decryptedSeed == '') {
-            if(seeds.filter(seed=> !seed.isOnlyWatch).length == 0){
+            if (seeds.filter(seed => !seed.isOnlyWatch).length == 0) {
               decryptedSeed = "only-watch"
-            }           
+            }
           }
 
           if (seeds && seeds.length > 0 && decryptedSeed == '') {
@@ -175,6 +175,7 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
     });
     confirmDialo.afterClosed().subscribe((result) => {
       if (result) {
+        this.walletService.clearConfig();
         this.router.navigate([route]);
       }
     });

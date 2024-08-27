@@ -109,6 +109,7 @@ export class UnLockComponent extends QubicDialogWrapper {
   }
 
   private async importAndUnlock() {
+    this.walletService.clearConfig();
     if (this.selectedFileIsVaultFile) {
       // one vault file
       const binaryFileData = await this.file?.arrayBuffer();
@@ -220,12 +221,12 @@ export class UnLockComponent extends QubicDialogWrapper {
             console.error(e);
           }
 
-         //check only-watch-address
-         if (decryptedSeed == '') {
-          if(seeds.filter(seed=> !seed.isOnlyWatch).length == 0){
-            decryptedSeed = "only-watch"
-          }           
-        }
+          //check only-watch-address
+          if (decryptedSeed == '') {
+            if (seeds.filter(seed => !seed.isOnlyWatch).length == 0) {
+              decryptedSeed = "only-watch"
+            }
+          }
 
           if (seeds && seeds.length > 0 && decryptedSeed == '') {
             this._snackBar.open(
