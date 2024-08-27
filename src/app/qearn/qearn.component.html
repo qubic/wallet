@@ -4,7 +4,7 @@
     <div class="epoch-info">
       <div>
         <span class="label">Current Locked Amount: </span>
-        <span class="value">{{ (qearnService?.epochInfo?.[epoch]?.lockAmount || 0) | number : '1.0-0' }}</span>
+        <span class="value">{{ (qearnService?.epochInfo?.[epoch]?.currentLockedAmount || 0) | number : '1.0-0' }}</span>
       </div>
       <div>
         <span class="label">APY: </span>
