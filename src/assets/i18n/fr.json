@@ -587,6 +587,9 @@
       "date": "j",
       "hour": "h",
       "minute": "min",
+      "sourceSeed": {
+        "label": "Adresse pour verrouiller QUBIC"
+      },
       "error": {
         "required": "Le montant est requis",
         "min": "Le montant doit être supérieur à 10M",
@@ -620,6 +623,9 @@
       "unlockedAmount": "Montant déverrouillé",
       "rewardedAmount": "Montant récompensé",
       "note": "Statut de déverrouillage de l'époque actuelle",
+      "sourceSeed": {
+        "label": "Adresse pour vérifier le statut du verrouillage"
+      },
       "unlock": {
         "title": "Déverrouiller",
         "message": "Voulez-vous déverrouiller {{amount}} {{currency}} en avance ?",

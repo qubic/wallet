@@ -21,8 +21,11 @@ export class StakeInputComponent implements OnChanges {
   }
 
   onInputChange(event: any) {
-    const value = event?.target?.value || '0';
-    event.target.value = this.formatNumberWithCommas(value.replace(/\D/g, ''));
+    const value = event?.target?.value || '';
+    const cleanedValue = value.replace(/\D/g, '');
+
+    // If the value is empty, reset to empty string, otherwise format it
+    event.target.value = cleanedValue ? this.formatNumberWithCommas(cleanedValue) : '';
     this.validateAmount(event);
   }
 

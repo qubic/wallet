@@ -589,6 +589,9 @@
       "date": "天",
       "hour": "小时",
       "minute": "分钟",
+      "sourceSeed": {
+        "label": "锁定 QUBIC 的地址"
+      },
       "error": {
         "required": "金额为必填项",
         "min": "金额必须大于 1000 万",
@@ -622,6 +625,9 @@
       "unlockedAmount": "解锁金额",
       "rewardedAmount": "奖励金额",
       "note": "当前时期的解锁状态",
+      "sourceSeed": {
+        "label": "检查锁定状态的地址"
+      },
       "unlock": {
         "title": "解锁",
         "message": "您要提前解锁 {{amount}} {{currency}} 吗？",

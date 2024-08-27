@@ -11,7 +11,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
-import { Router } from '@angular/router';
 import { QearnComponent } from '../qearn.component';
 import { UnlockInputDialogComponent } from '../components/unlock-input-dialog/unlock-input-dialog.component';
 
@@ -27,6 +26,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   public form: FormGroup;
   public showingEnded = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(
     private dialog: MatDialog,
     private transloco: TranslocoService,
@@ -35,68 +36,58 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService,
     private us: UpdaterService,
-    private router: Router,
     private fb: FormBuilder,
     private qearnComponent: QearnComponent,
     private cdf: ChangeDetectorRef
   ) {
-    this.form = this.fb.group({
-      sourceId: [''],
-    });
+    this.form = this.fb.group({ sourceId: [''] });
   }
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   ngOnInit() {
-    this.qearnService.selectedPublicId.subscribe((publicId) => {
-      if (publicId) {
-        this.form.controls['sourceId'].setValue(publicId);
-      }
-    });
-    this.qearnService.txSuccessSubject.subscribe((d) => {
-        if (d?.publicId) {
-        this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
-        this.us.forceUpdateNetworkBalance(d.publicId, async () => {
-          await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
-          console.log("Current dataSource, ", this.dataSource.data);
-          this.form.get('sourceId')?.setValue(null)
-          setTimeout(() => {
-            this.form.get('sourceId')?.setValue(d.publicId);
-          }, 100);
-          console.log("After setTimeout, ", this.dataSource.data);
-          this.cdf.detectChanges();
-        });
-      }
-    });
-    this.setupSourceIdValueChange();
+    this.setupSubscriptions();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  private setupSourceIdValueChange(): void {
-    this.form.controls['sourceId'].valueChanges.subscribe((s) => {
-      this.loadData(s);
+  private setupSubscriptions(): void {
+    this.qearnService.selectedPublicId.subscribe(publicId => {
+      if (publicId) this.form.get('sourceId')?.setValue(publicId);
     });
+
+    this.qearnService.txSuccessSubject.subscribe(this.handleTxSuccess.bind(this));
+
+    this.form.get('sourceId')?.valueChanges.subscribe(this.loadData.bind(this));
   }
 
-  private loadData(sourceId: string): void {
-    if (this.showingEnded) {
-      this.dataSource.data = [...(this.qearnService.endedStakeData[sourceId] || [])];
-    } else {
-      this.dataSource.data = [...(this.qearnService.stakeData[sourceId] || [])];
+  private async handleTxSuccess(d: any) {
+    if (d?.publicId) {
+      this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
+      await this.us.forceUpdateNetworkBalance(d.publicId, async () => {
+        await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
+        this.resetSourceId(d.publicId);
+        this.cdf.detectChanges();
+      });
     }
   }
 
-  public getSeeds() {
-    return this.walletService.getSeeds();
+  private resetSourceId(publicId: string): void {
+    this.form.get('sourceId')?.setValue(null);
+    setTimeout(() => this.form.get('sourceId')?.setValue(publicId), 100);
   }
+
+  private loadData(sourceId: string): void {
+    this.dataSource.data = this.showingEnded
+      ? [...(this.qearnService.endedStakeData[sourceId] || [])]
+      : [...(this.qearnService.stakeData[sourceId] || [])];
+  }
+
+  public getSeeds = () => this.walletService.getSeeds();
 
   public toggleView(): void {
     this.showingEnded = !this.showingEnded;
-    const sourceId = this.form.controls['sourceId'].value;
-    this.loadData(sourceId);
+    this.loadData(this.form.get('sourceId')?.value);
   }
 
   applyFilter(event: Event) {
@@ -106,24 +97,17 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   openEarlyUnlockModal(element: IStakeStatus): void {
     if (!this.walletService.privateKey) {
-      this._snackBar.open(this.transloco.translate('qearn.history.pleaseUnlock'), this.transloco.translate('general.close'), {
-        duration: 5000,
-        panelClass: 'error',
-      });
+      this.showSnackBar('qearn.history.pleaseUnlock', 'error');
       return;
     }
 
     const inputDialogRef = this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
-      data: {
-        maxUnlockAmount: element.lockedAmount,
-      },
+      data: { maxUnlockAmount: element.lockedAmount },
     });
 
-    inputDialogRef.afterClosed().subscribe((unlockAmount: number) => {
-      if (unlockAmount) {
-        this.openConfirmDialog(element, unlockAmount);
-      }
+    inputDialogRef.afterClosed().subscribe(unlockAmount => {
+      if (unlockAmount) this.openConfirmDialog(element, unlockAmount);
     });
   }
 
@@ -133,60 +117,50 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       data: {
         title: this.transloco.translate('qearn.history.unlock.title'),
         message: this.transloco.translate('qearn.history.unlock.message', {
-          amount: unlockAmount
-            .toString()
-            .replace(/\D/g, '')
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+          amount: this.formatAmount(unlockAmount),
         }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.handleUnlockAction(element, unlockAmount);
-      }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.handleUnlockAction(element, unlockAmount);
     });
   }
 
   private async handleUnlockAction(element: IStakeStatus, unlockAmount: number) {
     try {
-      const publicId = element.publicId;
+      const { publicId, lockedEpoch, lockedAmount } = element;
       const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
       const seed = await this.walletService.revealSeed(publicId);
-      const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, element.lockedEpoch, tick);
+      
+      const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, lockedEpoch, tick);
+      if (!unlockResult) return;
 
-      if (unlockResult) {
-        const initialBalance = this.walletService.getSeed(publicId)?.balance ?? 0;
-        const initialLockedAmountOfThisEpoch = element.lockedAmount;
+      const result = await this.qearnService.lockQubic(seed, lockedAmount, tick);
+      if (!result.txResult) return;
 
-        const seed = await this.walletService.revealSeed(publicId);
-        const result = await this.qearnService.lockQubic(seed, element.lockedAmount, tick);
-
-        if (result.txResult) {
-          const tickAddition = this.walletService.getSettings().tickAddition;
-          const newTick = tick + tickAddition;
-
-          this.qearnService.setPendingStake({
-            publicId,
-            amount: element.lockedAmount,
-            epoch: element.lockedEpoch,
-            targetTick: newTick,
-            type: 'UNLOCK',
-          });
-
-          this._snackBar.open(this.transloco.translate('qearn.history.unlock.success'), this.transloco.translate('general.close'), {
-            duration: 3000,
-            panelClass: 'success',
-          });
-          this.qearnService.monitorUnlockTransaction(publicId, initialLockedAmountOfThisEpoch, this.qearnComponent.epoch, this);
-        }
-      }
-    } catch (error) {
-      this._snackBar.open(this.transloco.translate('qearn.history.unlock.error'), this.transloco.translate('general.close'), {
-        duration: 3000,
-        panelClass: 'error',
+      const newTick = tick + this.walletService.getSettings().tickAddition;
+      this.qearnService.setPendingStake({
+        publicId, amount: lockedAmount, epoch: lockedEpoch, targetTick: newTick, type: 'UNLOCK',
       });
+
+      this.showSnackBar('qearn.history.unlock.success', 'success');
+      this.qearnService.monitorUnlockTransaction(publicId, lockedAmount, this.qearnComponent.epoch, this);
+    } catch (error) {
+      this.showSnackBar('qearn.history.unlock.error', 'error');
     }
+  }
+
+  private formatAmount(amount: number): string {
+    return amount.toString().replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  private showSnackBar(message: string, panelClass: string): void {
+    this._snackBar.open(
+      this.transloco.translate(message),
+      this.transloco.translate('general.close'),
+      { duration: 3000, panelClass }
+    );
   }
 }

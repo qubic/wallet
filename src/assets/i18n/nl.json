@@ -586,6 +586,9 @@
       "date": "d",
       "hour": "u",
       "minute": "min",
+      "sourceSeed": {
+        "label": "Adres om QUBIC te vergrendelen"
+      },
       "error": {
         "required": "Bedrag is vereist",
         "min": "Bedrag moet groter zijn dan 10M",
@@ -619,6 +622,9 @@
       "unlockedAmount": "Ontgrendeld bedrag",
       "rewardedAmount": "Beloningsbedrag",
       "note": "Ontgrendelingsstatus van de huidige epoch",
+      "sourceSeed": {
+        "label": "Adres om de vergrendelingsstatus te controleren"
+      },
       "unlock": {
         "title": "Ontgrendelen",
         "message": "Wilt u {{amount}} {{currency}} vroegtijdig ontgrendelen?",

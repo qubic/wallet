@@ -590,6 +590,9 @@
       "date": "d",
       "hour": "h",
       "minute": "min",
+      "sourceSeed": {
+        "label": "Address to lock QUBIC"
+      },
       "error": {
         "required": "Amount is required",
         "min": "Amount must be greater than 10M",
@@ -623,6 +626,9 @@
       "unlockedAmount": "Unlocked Amount",
       "rewardedAmount": "Rewarded Amount",
       "note": "Unlocking Status of Current Epoch",
+      "sourceSeed": {
+        "label": "Address to check lock status"
+      },
       "unlock": {
         "title": "Unlock",
         "message": "Do you want to unlock {{amount}} {{currency}} for early?",

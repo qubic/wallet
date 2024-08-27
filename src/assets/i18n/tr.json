@@ -590,6 +590,9 @@
       "date": "g",
       "hour": "sa",
       "minute": "dk",
+      "sourceSeed": {
+        "label": "QUBIC kilitlemek için adres"
+      },
       "error": {
         "required": "Miktar gerekli",
         "min": "Miktar 10M'dan fazla olmalıdır",
@@ -623,6 +626,9 @@
       "unlockedAmount": "Kilidi Açılan Miktar",
       "rewardedAmount": "Ödüllendirilen Miktar",
       "note": "Mevcut Dönemin Kilit Açma Durumu",
+      "sourceSeed": {
+        "label": "Kilitleme durumunu kontrol etmek için adres"
+      },
       "unlock": {
         "title": "Kilidi Aç",
         "message": "{{amount}} {{currency}} kilidini erken açmak istiyor musunuz?",

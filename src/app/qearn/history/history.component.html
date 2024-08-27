@@ -3,7 +3,7 @@
     <form [formGroup]="form">
       <div class="form-field">
         <mat-form-field appearance="fill" placeholder="Seed" class="full-width">
-          <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
+          <mat-label>{{ t('qearn.history.sourceSeed.label') }}</mat-label>
           <mat-select formControlName="sourceId" panelClass="full-width">
             <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
               class="custom-mat-option">

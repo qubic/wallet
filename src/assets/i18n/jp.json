@@ -590,6 +590,9 @@
       "date": "日",
       "hour": "時",
       "minute": "分",
+      "sourceSeed": {
+        "label": "QUBICをロックするアドレス"
+      },
       "error": {
         "required": "金額は必須です",
         "min": "金額は1000万以上でなければなりません",
@@ -623,6 +626,9 @@
       "unlockedAmount": "アンロックされた金額",
       "rewardedAmount": "報酬額",
       "note": "現在のエポックの解除状況",
+      "sourceSeed": {
+        "label": "ロック状態を確認するアドレス"
+      },
       "unlock": {
         "title": "アンロック",
         "message": "{{amount}} {{currency}}を早期にアンロックしますか？",

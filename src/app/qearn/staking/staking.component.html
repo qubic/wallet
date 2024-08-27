@@ -7,7 +7,7 @@
           <div class="subText">{{ t('qearn.stakeQubic.subText') }}</div>
           <div class="col">
             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
-              <mat-label>{{ t('paymentComponent.form.sourceSeed.label') }}</mat-label>
+              <mat-label>{{ t('qearn.stakeQubic.sourceSeed.label') }}</mat-label>
               <mat-select formControlName="sourceId" panelClass="full-width">
                 <mat-option *ngFor="let seed of seeds; let i = index" [value]="seed.publicId" class="custom-mat-option">
                   {{ seed.publicId }}<br />

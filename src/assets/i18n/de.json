@@ -592,6 +592,9 @@
       "date": "T",
       "hour": "Std.",
       "minute": "Min.",
+      "sourceSeed": {
+        "label": "Adresse zum Sperren von QUBIC"
+      },
       "error": {
         "required": "Betrag ist erforderlich",
         "min": "Betrag muss größer als 10M sein",
@@ -625,6 +628,9 @@
       "unlockedAmount": "Entsperrter Betrag",
       "rewardedAmount": "Belohnter Betrag",
       "note": "Entsperrstatus der aktuellen Epoche",
+      "sourceSeed": {
+        "label": "Adresse zum Überprüfen des Sperrstatus"
+      },
       "unlock": {
         "title": "Entsperren",
         "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",

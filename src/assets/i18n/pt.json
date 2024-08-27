@@ -586,6 +586,9 @@
       "date": "d",
       "hour": "h",
       "minute": "min",
+      "sourceSeed": {
+        "label": "Endereço para bloquear QUBIC"
+      },
       "error": {
         "required": "Valor é obrigatório",
         "min": "O valor deve ser maior que 10M",
@@ -619,6 +622,9 @@
       "unlockedAmount": "Quantidade desbloqueada",
       "rewardedAmount": "Quantidade recompensada",
       "note": "Status de desbloqueio da época atual",
+      "sourceSeed": {
+        "label": "Endereço para verificar o status do bloqueio"
+      },
       "unlock": {
         "title": "Desbloquear",
         "message": "Deseja desbloquear {{amount}} {{currency}} antecipadamente?",

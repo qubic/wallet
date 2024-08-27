@@ -12,7 +12,7 @@ import { UpdaterService } from '../services/updater-service';
   styleUrls: ['./qearn.component.scss'],
 })
 export class QearnComponent implements OnInit {
-  public epoch: number = 130;
+  public epoch: number = 0;
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   constructor(public qearnService: QearnService, private walletService: WalletService, private apiArchiver: ApiArchiverService, private us: UpdaterService) {}
 
@@ -27,14 +27,14 @@ export class QearnComponent implements OnInit {
       await this.qearnService.fetchLockInfo(this.epoch)
       const seeds = this.walletService.getSeeds();
       this.qearnService.setLoading(true);
-      for (let i = 0; i < seeds.length; i++) {
-        const pubKey = new PublicKey(seeds[i].publicId).getPackageData();
+      for (const seed of seeds) {
+        const pubKey = new PublicKey(seed.publicId).getPackageData();
         const epochs = await this.qearnService.getUserLockStatus(pubKey, this.epoch);
-        for (let j = 0; j < epochs.length; j++) {
-          await this.qearnService.fetchLockInfo(epochs[j]);
-          await this.qearnService.fetchStakeDataPerEpoch(seeds[i].publicId, epochs[j], this.epoch);
+        for (const epoch of epochs) {
+          await this.qearnService.fetchLockInfo(epoch);
+          await this.qearnService.fetchStakeDataPerEpoch(seed.publicId, epoch, this.epoch);
         }
-        await this.qearnService.fetchEndedStakeData(seeds[i].publicId);
+        await this.qearnService.fetchEndedStakeData(seed.publicId);
       }
       this.qearnService.setLoading(false);
     });
