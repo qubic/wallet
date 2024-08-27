@@ -11,6 +11,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
+import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 
 
 @Component({
@@ -69,9 +70,9 @@ export class SeedEditDialog extends QubicDialogWrapper {
     return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     // Is the Publicid already present in the accounts?
-    if (this.isNew) {
+    if (this.isNew) {     
       if (this.walletService.getSeeds().filter(s =>
         s.publicId === this.seedEditForm.controls.publicId.value ||
         s.publicId === this.seedEditFormPublicId.controls.publicId.value
@@ -105,13 +106,23 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.dialogRef.close();
     } else {
       this._snackBar.open(this.transloco.translate("seedEditComponent.form.error.text"), this.transloco.translate("seedEditComponent.form.error.close"), {
-        duration: 5000,
+        duration: 10000,
         panelClass: "error"
       });
     }
   }
 
   async saveOnlyPublicKey() {
+    const targetAddress = new PublicKey(this.seedEditFormPublicId.controls.publicId.value?.toString());
+    // verify target address
+    if (!(await targetAddress.verifyIdentity())) {
+      this._snackBar.open("INVALID ADDRESS", this.transloco.translate('general.close'), {
+        duration: 10000,
+        panelClass: "error"
+      });
+      return;
+    }
+
     if (this.seedEditFormPublicId.controls.alias.valid && this.seedEditFormPublicId.controls.publicId.valid) {
       if (!this.isNew) {
         this.walletService.updateSeedAlias(this.seed.publicId, this.seedEditForm.controls.alias.value!)
