@@ -167,14 +167,18 @@
         </span>
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button
-                    [disabled]="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch <= currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
+                <button  *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    mat-icon-button >
+                    <mat-icon class="large-icon"></mat-icon>
+                </button>
                 <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
-                <button [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
             </div>
