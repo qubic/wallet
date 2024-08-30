@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { BalanceResponse } from './api.model';
 
 
 import {
@@ -7,7 +8,7 @@ import {
   AuthResponseArchiver, StatusArchiver, BalanceResponseArchiver, ContractDtoArchiver,
   MarketInformationArchiver, TranscationsArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
   ProposalCreateResponseArchiver, ProposalDtoArchiver, QubicAssetArchiver, SubmitTransactionRequestArchiver,
-  SubmitTransactionResponseArchiver, TransactionArchiver
+  SubmitTransactionResponseArchiver, TransactionArchiver, CurrentBalanceHttpResponse
 } from './api.archiver.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
@@ -78,8 +79,6 @@ export class ApiArchiverService {
 
   public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
-    // alert(localVarPath);
-    // console.log('localVarPath: ', localVarPath);
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
@@ -91,6 +90,25 @@ export class ApiArchiverService {
   }
 
 
+
+  public getCurrentBalanceFromHttpService(identity: string): Observable<BalanceResponse> {
+    const localVarPath = `/v1/balances/${identity}`;
+    return this.httpClient.get<CurrentBalanceHttpResponse>(`${this.basePath}${localVarPath}`).pipe(
+      map(response => this.mapToBalanceResponse(response))
+    );
+  }
+
+  private mapToBalanceResponse(response: CurrentBalanceHttpResponse): BalanceResponse {
+    return {
+      publicId: response.id,
+      currentEstimatedAmount: parseFloat(response.balance),
+      isComputor: false,  // Annahme: Standardwert, da nicht vorhanden
+      epochBaseAmount: 0, // Standardwert, da nicht vorhanden
+      epochChanges: 0,    // Standardwert, da nicht vorhanden
+      baseDate: new Date(), // Du kannst hier eine andere Logik für das Datum verwenden
+      transactions: []    // Leeres Array, da Transaktionen nicht im neuen Endpunkt vorhanden sind
+    };
+  }
   
 
 

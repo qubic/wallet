@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
-import { TranscationsArchiver, StatusArchiver } from './api.archiver.model';
+import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction, } from './api.model';
+import { TranscationsArchiver, StatusArchiver,CurrentBalanceHttpResponse } from './api.archiver.model';
 import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of ,catchError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -77,29 +77,72 @@ export class UpdaterService {
   }
 
 
-  /**
-   * should load the current balances for the accounts
-   * @returns 
-   */
-  private getCurrentBalance(force = false) {
-    if (!force && (this.balanceLoading || !this.isActive))
-      return;
+  // /**
+  //  * should load the current balances for the accounts
+  //  * @returns 
+  //  */
+  // private getCurrentBalance(force = false) {
+  //   if (!force && (this.balanceLoading || !this.isActive))
+  //     return;
 
-    this.balanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
-        if (r) {
-          this.currentBalance.next(r);
-          this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
-        }
-        this.balanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.balanceLoading = false;
-      });
-    }
+  //   this.balanceLoading = true;
+  //   if (this.walletService.getSeeds().length > 0) {
+  //     // todo: Use Websocket!
+  //     this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
+  //       if (r) {
+  //         this.currentBalance.next(r);
+  //         this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
+  //       }
+  //       this.balanceLoading = false;
+  //     }, errorResponse => {
+  //       this.processError(errorResponse, false);
+  //       this.balanceLoading = false;
+  //     });
+  //   }
+  // }
+
+  /**
+ * should load the current balances for the accounts
+ * @returns 
+ */
+private getCurrentBalance(force = false) {
+  if (!force && (this.balanceLoading || !this.isActive)) return;
+
+  this.balanceLoading = true;
+  const seeds = this.walletService.getSeeds();
+  if (seeds.length > 0) {
+    // Erstellen Sie ein Array von Observables für jeden PublicId
+    const balanceRequests: Observable<any>[] = seeds.map(seed => 
+      this.apiArchiver.getCurrentBalanceFromHttpService(seed.publicId)
+        .pipe(
+          catchError(errorResponse => {
+            this.processError(errorResponse, false);
+            // Rückgabe eines leeren Arrays bei einem Fehler
+            return of([]);
+          })
+        )
+    );
+
+    // Führen Sie alle Requests parallel aus
+    forkJoin(balanceRequests).subscribe(results => {
+      // Ergebnisse verarbeiten
+      const allBalances = results.flat();
+      if (allBalances.length > 0) {
+        this.currentBalance.next(allBalances);
+        this.addTransactions(allBalances.flatMap((b) => b.transactions)
+          .filter(this.onlyUniqueTx)
+          .sort((a, b) => b.targetTick - a.targetTick)
+        );
+      }
+      this.balanceLoading = false;
+    }, errorResponse => {
+      this.processError(errorResponse, false);
+      this.balanceLoading = false;
+    });
+  } else {
+    this.balanceLoading = false;
   }
+}
 
   private onlyUniqueTx(value: Transaction, index: any, array: Transaction[]) {
     return array.findIndex((f: Transaction) => f.id === value.id) == index;

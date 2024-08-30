@@ -40,6 +40,19 @@ export interface ProcessedTickInterval {
 
 
 
+export interface CurrentBalanceHttpResponse {
+  id: string;
+  balance: string;
+  validForTick: number;
+  latestIncomingTransferTick: number;
+  latestOutgoingTransferTick: number;
+  incomingAmount:  string;
+  outgoingAmount:  string;
+  numberOfIncomingTransfers:  number;
+  numberOfOutgoingTransfers:  number;
+}
+
+
 
 //*** Transactions */
 
