@@ -46,7 +46,7 @@ export class ApiArchiverService {
       }
     ).pipe(
       map((response: StatusArchiver) => {
-        if (response) {          
+        if (response) {
           //console.log('Response from getStatus:', response);
           return response;
         } else {
@@ -77,14 +77,14 @@ export class ApiArchiverService {
 
 
 
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]> {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
     return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
     }).pipe(
       tap(response => {
-       //console.log('Response from getTransactions:', response);
+        //console.log('Response from getTransactions:', response);
       })
     );
   }
@@ -93,23 +93,21 @@ export class ApiArchiverService {
 
   public getCurrentBalanceFromHttpService(identity: string): Observable<BalanceResponse> {
     const localVarPath = `/v1/balances/${identity}`;
-    return this.httpClient.get<CurrentBalanceHttpResponse>(`${this.basePath}${localVarPath}`).pipe(
-      map(response => this.mapToBalanceResponse(response))
-    );
+    return this.httpClient.get<CurrentBalanceHttpResponse>(`${this.basePath}${localVarPath}`).pipe(map(response => this.mapToBalanceResponse(response)));
   }
 
   private mapToBalanceResponse(response: CurrentBalanceHttpResponse): BalanceResponse {
     return {
       publicId: response.id,
       currentEstimatedAmount: parseFloat(response.balance),
-      isComputor: false,  // Annahme: Standardwert, da nicht vorhanden
-      epochBaseAmount: 0, // Standardwert, da nicht vorhanden
-      epochChanges: 0,    // Standardwert, da nicht vorhanden
-      baseDate: new Date(), // Du kannst hier eine andere Logik für das Datum verwenden
-      transactions: []    // Leeres Array, da Transaktionen nicht im neuen Endpunkt vorhanden sind
+      isComputor: false, // Assumption: default value, since not present
+      epochBaseAmount: 0, // Default value, since not present
+      epochChanges: 0, // Default value, as not present
+      baseDate: new Date(), // You can use a different logic for the date here
+      transactions: [] // Empty array, as transactions are not present in the new endpoint
     };
   }
-  
+
 
 
   //Todo 
