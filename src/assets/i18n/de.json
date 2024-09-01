@@ -222,7 +222,7 @@
     "title": "Dashboard",
     "balance": "Wallet Guthaben",
     "currency": "Qu",
-    "totalBalance": "Ihr Gesamtguthaben"
+    "totalBalance": "Guthaben in USD"
   },
   "unlockComponent": {
     "title": "Wallet öffnen",

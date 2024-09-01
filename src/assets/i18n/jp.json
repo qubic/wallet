@@ -219,7 +219,7 @@
     "title": "ダッシュボード",
     "balance": "ヴォールトの残高",
     "currency": "Qu",
-    "totalBalance": "あなたの総残高"
+    "totalBalance": "USD残高"
   },
   "unlockComponent": {
     "title": "ヴォールトのロック解除",

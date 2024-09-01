@@ -9,10 +9,10 @@
       </div>
       <div class="flex-grow"></div>
       <div style="margin-left: auto; padding-top:14px;" class="text-right">
-        {{ (currentPrice.price * 1000000000) | number:'1.0-0' }} {{ currentPrice.currency }} / b{{ t("general.currency")
+        ${{ (currentPrice.price * 1000000000) | number:'1.0-0' }} / b{{ t("general.currency")
         }}
         <div class="dashboard-amount-name">
-          ~ {{currentPrice.capitalization| number : "1.0-0"}} {{currentPrice.currency}} MC
+          ~ ${{currentPrice.capitalization| number : "1.0-0"}} MC
         </div>
         <!-- {{currentPrice.price}} {{currentPrice.currency}}/{{ t("general.currency") }} |-->
       </div>
@@ -83,32 +83,40 @@
     </div>
 
     <!-- phone version-->
-    <div *ngIf="isTable" class="mobileOnly seedList">
-      <div class="mobileSeedItem" *ngFor="let seed of dataSource.filteredData">
-        <h3>
-          {{ seed.alias }}
-          <span *ngIf="seed.lastUpdate" class="disable-area">{{getBalance(seed.publicId) | number : "1.0-0"}}</span>
-          <span class="disable-area">
-            {{ t("general.currency") }} = ${{currentPrice.price * getBalance(seed.publicId) | number : "1.2-2"}}
-          </span>
-        </h3>
-        <div class="flex flex-wrap disable-area">
-          <div *ngIf="getEpochChanges(seed.publicId) != 0" [class]="{
-            epochChanges: true,
-            isPositiv: getEpochChanges(seed.publicId) > 0,
-            isNegativ: getEpochChanges(seed.publicId) < 0
-          }">
-            {{ getEpochChanges(seed.publicId) | number : "1.0-0" }}
-            <mat-icon class="up">arrow_upward</mat-icon>
-            <mat-icon class="down">arrow_downward</mat-icon>
-          </div>
-        </div>
-        <div class="flex flex-wrap">
-          <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: seed"></ng-container>
-        </div>
-        <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="seed.publicId">
-          {{ seed.publicId }}
-        </div>
+    <div *ngIf="isTable" class="mobileOnly">
+      <div class="card-list flex flex-wrap">
+        <mat-card *ngFor="let address of dataSource.filteredData; let i = index">
+          <mat-card-content>
+            <br>
+            <div class="dashboard-wallet-name">
+              {{ address.alias }}
+            </div>
+            <br>
+            <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
+              epochChanges: true,
+              isPositiv: getEpochChanges(address.publicId) > 0,
+              isNegativ: getEpochChanges(address.publicId) < 0,
+              cardEpochChanges: true
+              }">
+              <span class="disable-area">
+                {{ getEpochChanges(address.publicId) | number : "1.0-0" }}
+                <mat-icon class="up">arrow_upward</mat-icon>
+                <mat-icon class="down">arrow_downward</mat-icon>
+                <mat-icon class="straight">arrow_forward</mat-icon>
+              </span>
+            </div>
+            <div class="dashboard-balance-name disable-area">
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="!address.lastUpdate">?</span>
+            </div>
+            <div class="dashboard-amount-name disable-area">
+              ${{currentPrice.price * getBalance(address.publicId) | number : "1.0-2"}}
+            </div>
+            <div class="text-center">
+              <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
 
@@ -183,7 +191,7 @@
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">
-          {{ t("seedOverviewComponent.table.noData", { q: input.value }) }}
+          <div class="no-data">{{ t("seedOverviewComponent.table.noData", { q: input.value }) }}</div>
         </td>
       </tr>
     </table>

@@ -167,19 +167,23 @@
         </span>
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button
-                    [disabled]="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch <= currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
-                {{currentSelectedEpoch}} <span class="label-epoch">epoch</span>
-                <button [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button  *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    mat-icon-button >
+                    <mat-icon class="large-icon"></mat-icon>
+                </button>
+                <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
+                <button *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
             </div>
             <div *ngIf="isShowAllTransactions" class="ticks">
-                Ticks {{initialProcessedTick}} - {{lastProcessedTick}}
+                Ticks {{initialProcessedTick | number: '1.0-0'}} - {{lastProcessedTick | number: '1.0-0'}}
             </div>
             <br>
             <mat-form-field appearance="fill" class="full-width">
@@ -201,9 +205,12 @@
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <mat-icon *ngIf="transaction.transactions[0].moneyFlew"
-                                style="color: yellowgreen;">done</mat-icon>
-                            <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red">clear</mat-icon>
+                            <span class="status-icon">
+                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
+                                    matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
+                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
+                                    matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
+                            </span>
                             &nbsp;
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
@@ -218,6 +225,10 @@
                                 date:'HH:mm:ss' }}
                                 )
                             </span>
+                            <button
+                                *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
+                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                                (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
                             {{ transaction.transactions[0].transaction.amount | number: '1.0-0'

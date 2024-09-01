@@ -219,7 +219,7 @@
     "title": "Dashboard",
     "balance": "Wallet balance",
     "currency": "Qu",
-    "totalBalance": "Your Total Balance"
+    "totalBalance": "Saldo in USD"
   },
   "unlockComponent": {
     "title": "Wallet vrijgeven",

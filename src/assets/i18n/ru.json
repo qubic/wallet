@@ -219,7 +219,7 @@
     "title": "Панель инструментов",
     "balance": "Балланс кошелька",
     "currency": "Qu",
-    "totalBalance": "Общий баланс"
+    "totalBalance": "Баланс в долларах США"
   },
   "unlockComponent": {
     "title": "Разблокировать кошелек",

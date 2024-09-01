@@ -219,7 +219,7 @@
     "title": "Tableau de bord",
     "balance": "Balance du Wallet",
     "currency": "Qu",
-    "totalBalance": "Votre solde total"
+    "totalBalance": "Solde en USD"
   },
   "unlockComponent": {
     "title": "Déverrouiller le Wallet",

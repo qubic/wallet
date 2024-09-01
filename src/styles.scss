@@ -461,6 +461,7 @@ h2 {
 .status-buttons {
   // Config
   $circle-size: 40px;
+  padding: 8px 0px 6px 6px;
 
   // Unfortunatly we need a wrapper element containing the fixed width for centering the button within the animtion (you could also apply the width as an inline style).
   .loading-btn-wrapper {

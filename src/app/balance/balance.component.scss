@@ -158,10 +158,11 @@ mat-card {
 }
 
 .epoch {
-    font-size: 2.5em;
+    font-size: 2.0em;
 
     .label-epoch {
-        font-size: 0.7em;
+        font-size: 1.0em;
+        padding-left: 18px;
     }
 
     mat-icon {
@@ -177,4 +178,9 @@ mat-card {
 .ticks {
     font-size: 1.2em;
     color: grey;
+}
+
+.status-icon{
+    padding-left: 6px;
+    padding-right: 2px;
 }

@@ -219,7 +219,7 @@
     "title": "Gösterge Paneli",
     "balance": "Bakiye",
     "currency": "Qu",
-    "totalBalance": "Toplam Bakiye"
+    "totalBalance": "USD cinsinden bakiye"
   },
   "unlockComponent": {
     "title": "Kasa Kilidini Aç",
