@@ -3,31 +3,31 @@
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
             <!-- Week-From Column -->
             <ng-container matColumnDef="weekFrom">
-                <th mat-header-cell *matHeaderCellDef> Week From </th>
+                <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.weekFrom') }} </th>
                 <td mat-cell *matCellDef="let element"> {{element.weekFrom}} </td>
             </ng-container>
 
             <!-- Week-To Column -->
             <ng-container matColumnDef="weekTo">
-                <th mat-header-cell *matHeaderCellDef> Week To </th>
+                <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.weekTo') }} </th>
                 <td mat-cell *matCellDef="let element"> {{element.weekTo}} </td>
             </ng-container>
 
             <!-- Early Unlock % Column -->
             <ng-container matColumnDef="earlyUnlock">
-                <th mat-header-cell *matHeaderCellDef> Early Unlock % </th>
+                <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.earlyUnlock') }} </th>
                 <td mat-cell *matCellDef="let element"> {{element.earlyUnlock}} </td>
             </ng-container>
 
             <!-- Burn % Column -->
             <ng-container matColumnDef="burn">
-                <th mat-header-cell *matHeaderCellDef> Burn % </th>
+                <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.burn') }} </th>
                 <td mat-cell *matCellDef="let element"> {{element.burn}} </td>
             </ng-container>
 
             <!-- Boost % Column -->
             <ng-container matColumnDef="boost">
-                <th mat-header-cell *matHeaderCellDef> Boost % </th>
+                <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.boost') }} </th>
                 <td mat-cell *matCellDef="let element"> {{element.boost}} </td>
             </ng-container>
 

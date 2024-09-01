@@ -635,7 +635,7 @@
       },
       "pleaseUnlock": "Por favor, desbloqueie sua carteira primeiro."
     },
-    "Earned": {
+    "earned": {
       "rewards": "Recompensas ganhas",
       "unlockEarly": "Desbloqueio antecipado",
       "lockedBalance": "Saldo bloqueado",
@@ -643,6 +643,23 @@
       "unlocksIn": "Desbloqueia em",
       "apy": "APY",
       "weeks": "Semanas"
+    },
+    "rewardTable": {
+      "weekFrom": "Semana de",
+      "weekTo": "Semana até",
+      "earlyUnlock": "Desbloqueio antecipado",
+      "burn": "Queimar",
+      "boost": "Aumentar",
+      "total": "Total"
+    },
+    "main": {
+      "currentLockedAmount": "Quantidade bloqueada atual",
+      "apy": "APY",
+      "lock": "Bloquear",
+      "lockHistory": "Histórico de bloqueio",
+      "rewardTable": "Tabela de recompensas",
+      "txSuccess": "Transação bem-sucedida!",
+      "txFailed": "Falha na transação!"
     }
   }
 }

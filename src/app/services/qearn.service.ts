@@ -285,13 +285,17 @@ export class QearnService {
         const updatedLockedAmount = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
         
         const success = initialLockedAmount !== updatedLockedAmount;
-        const message = success ? 'Transaction Succeeded!' : 'Transaction Failed';
+        const messageKey = success ? 'qearn.main.txSuccess' : 'qearn.main.txFailed';
         const panelClass = success ? 'success' : 'error';
 
-        this._snackBar.open(message, this.transloco.translate('general.close'), {
-          duration: 0,
-          panelClass,
-        });
+        this._snackBar.open(
+          this.transloco.translate(messageKey),
+          this.transloco.translate('general.close'),
+          {
+            duration: 0,
+            panelClass,
+          }
+        );
 
         this.txSuccessSubject.next(this.pendingStake);
         this.pendingStake = null;

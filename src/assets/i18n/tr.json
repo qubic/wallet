@@ -647,6 +647,23 @@
       "unlocksIn": "Kilidi Açılma Süresi",
       "apy": "APY",
       "weeks": "Haftalar"
+    },
+    "rewardTable": {
+      "weekFrom": "Hafta",
+      "weekTo": "Hafta",
+      "earlyUnlock": "Erken Kilidi Aç",
+      "burn": "Yakma",
+      "boost": "Artırma",
+      "total": "Toplam"
+    },
+    "main": {
+      "currentLockedAmount": "Mevcut Kilidi Açılmış Miktar",
+      "apy": "APY",
+      "lock": "Kilitle",
+      "lockHistory": "Kilitleme Geçmişi",
+      "rewardTable": "Ödül Tablosu",
+      "txSuccess": "İşlem Başarılı!",
+      "txFailed": "İşlem Başarısız!"
     }
   }
 }

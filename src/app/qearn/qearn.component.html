@@ -3,19 +3,18 @@
     <h1>{{ t('general.navigation.qearn') }}</h1>
     <div class="epoch-info">
       <div>
-        <span class="label">Current Locked Amount: </span>
+        <span class="label">{{ t('qearn.main.currentLockedAmount') }}: </span>
         <span class="value">{{ (qearnService?.epochInfo?.[epoch]?.currentLockedAmount || 0) | number : '1.0-0' }}</span>
       </div>
       <div>
-        <span class="label">APY: </span>
-        <span class="value">{{ ((qearnService?.epochInfo?.[epoch]?.yieldPercentage || 0) / 100000).toFixed(2)
-          }} %</span>
+        <span class="label">{{ t('qearn.main.apy') }}: </span>
+        <span class="value">{{ ((qearnService?.epochInfo?.[epoch]?.yieldPercentage || 0) / 100000).toFixed(2) }} %</span>
       </div>
     </div>
     <mat-tab-group #tabGroup mat-stretch-tabs="false" mat-align-tabs="start">
-      <mat-tab label="Lock"> <app-staking></app-staking></mat-tab>
-      <mat-tab label="Lock History"> <app-history></app-history> </mat-tab>
-      <mat-tab label="Reward Table"> <app-reward-table></app-reward-table> </mat-tab>
+      <mat-tab label="{{ t('qearn.main.lock') }}"> <app-staking></app-staking></mat-tab>
+      <mat-tab label="{{ t('qearn.main.lockHistory') }}"> <app-history></app-history> </mat-tab>
+      <mat-tab label="{{ t('qearn.main.rewardTable') }}"> <app-reward-table></app-reward-table> </mat-tab>
     </mat-tab-group>
   </div>
 </ng-container>

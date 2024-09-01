@@ -644,6 +644,23 @@
       "unlocksIn": "Déverrouillage dans",
       "apy": "APY",
       "weeks": "Semaines"
+    },
+    "rewardTable": {
+      "weekFrom": "Semaine de",
+      "weekTo": "Semaine à",
+      "earlyUnlock": "Déverrouillage anticipé",
+      "burn": "Brûler",
+      "boost": "Augmenter",
+      "total": "Total"
+    },
+    "main":{
+      "currentLockedAmount": "Montant verrouillé actuel",
+      "apy": "APY",
+      "lock": "Verrouiller",
+      "lockHistory": "Historique des verrouillages",
+      "rewardTable": "Tableau des récompenses",
+      "txSuccess": "Transaction réussie!",
+      "txFailed": "Échec de la transaction!"
     }
   }
 }

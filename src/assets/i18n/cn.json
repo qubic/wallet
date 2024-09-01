@@ -638,7 +638,7 @@
       },
       "pleaseUnlock": "请先解锁你的钱包。"
     },
-    "Earned": {
+    "earned": {
       "rewards": "赚取的奖励",
       "unlockEarly": "提前解锁",
       "lockedBalance": "锁定余额",
@@ -646,6 +646,23 @@
       "unlocksIn": "解锁时间",
       "apy": "年收益率",
       "weeks": "周"
+    },
+    "rewardTable": {
+      "weekFrom": "周从",
+      "weekTo": "周到",
+      "earlyUnlock": "提前解锁",
+      "burn": "燃烧",
+      "boost": "提升",
+      "total": "总计"
+    },
+    "main": {
+      "currentLockedAmount": "当前锁定金额",
+      "apy": "APY",
+      "lock": "锁定",
+      "lockHistory": "锁定历史",
+      "rewardTable": "奖励表",
+      "txSuccess": "交易成功！",
+      "txFailed": "交易失败！"
     }
   }
 }

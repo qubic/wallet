@@ -641,7 +641,7 @@
       },
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Brieftasche."
     },
-    "Earned": {
+    "earned": {
       "rewards": "Verdiente Belohnungen",
       "unlockEarly": "Frühe Entsperrung",
       "lockedBalance": "Gesperrtes Guthaben",
@@ -649,6 +649,23 @@
       "unlocksIn": "Entsperrt in",
       "apy": "APY",
       "weeks": "Wochen"
+    },
+    "rewardTable": {
+      "weekFrom": "Woche von",
+      "weekTo": "Woche bis",
+      "earlyUnlock": "Frühe Entsperrung",
+      "burn": "Verbrannt",
+      "boost": "Anheben",
+      "total": "Gesamt"
+    },
+    "main": {
+      "currentLockedAmount": "Aktuell gesperrter Betrag",
+      "apy": "APY",
+      "lock": "Sperren",
+      "lockHistory": "Sperrhistorie",
+      "rewardTable": "Belohnungstabelle",
+      "txSuccess": "Transaktion erfolgreich!",
+      "txFailed": "Transaktion fehlgeschlagen!"
     }
   }
 }

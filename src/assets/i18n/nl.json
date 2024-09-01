@@ -635,7 +635,7 @@
       },
       "pleaseUnlock": "Ontgrendel eerst uw portemonnee."
     },
-    "Earned": {
+    "earned": {
       "rewards": "Verdiende beloningen",
       "unlockEarly": "Vroegtijdig ontgrendelen",
       "lockedBalance": "Vergrendeld saldo",
@@ -643,6 +643,23 @@
       "unlocksIn": "Ontgrendelt in",
       "apy": "APY",
       "weeks": "Weken"
+    },
+    "rewardTable": {
+      "weekFrom": "Week From",
+      "weekTo": "Week To",
+      "earlyUnlock": "Early Unlock",
+      "burn": "Burn",
+      "boost": "Boost",
+      "total": "Total"
+    },
+    "main": {
+      "currentLockedAmount": "Huidig vergrendeld bedrag",
+      "apy": "APY",
+      "lock": "Vergrendelen",
+      "lockHistory": "Vergrendelingsgeschiedenis",
+      "rewardTable": "Beloningstabel",
+      "txSuccess": "Transactie geslaagd!",
+      "txFailed": "Transactie mislukt!"
     }
   }
 }

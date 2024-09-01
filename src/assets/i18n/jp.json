@@ -639,7 +639,7 @@
       },
       "pleaseUnlock": "まずウォレットをアンロックしてください。"
     },
-    "Earned": {
+    "earned": {
       "rewards": "獲得した報酬",
       "unlockEarly": "早期アンロック",
       "lockedBalance": "ロックされた残高",
@@ -647,6 +647,23 @@
       "unlocksIn": "解除されるまでの時間",
       "apy": "年間利回り",
       "weeks": "週間"
+    },
+    "rewardTable": {
+      "weekFrom": "週間から",
+      "weekTo": "週間まで",
+      "earlyUnlock": "早期解除",
+      "burn": "燃焼",
+      "boost": "増加",
+      "total": "合計"
+    },
+    "main": {
+      "currentLockedAmount": "現在ロックされた金額",
+      "apy": "APY",
+      "lock": "ロック",
+      "lockHistory": "ロック履歴",
+      "rewardTable": "報酬表",
+      "txSuccess": "取引が成功しました！",
+      "txFailed": "取引に失敗しました！"
     }
   }
 }

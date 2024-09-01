@@ -639,7 +639,7 @@
       },
       "pleaseUnlock": "Please unlock your wallet first."
     },
-    "Earned": {
+    "earned": {
       "rewards": "Earned Rewards",
       "unlockEarly": "Unlock Early",
       "lockedBalance": "Locked Balance",
@@ -647,6 +647,23 @@
       "unlocksIn": "Unlocks In",
       "apy": "APY",
       "weeks": "Weeks"
+    },
+    "rewardTable": {
+      "weekFrom": "Week From",
+      "weekTo": "Week To",
+      "earlyUnlock": "Early Unlock",
+      "burn": "Burn",
+      "boost": "Boost",
+      "total": "Total"
+    },
+    "main": {
+      "currentLockedAmount": "Current Locked Amount",
+      "apy": "APY",
+      "lock": "Lock",
+      "lockHistory": "Lock History",
+      "rewardTable": "Reward Table",
+      "txSuccess": "Transaction Succeeded!",
+      "txFailed": "Transaction Failed!"
     }
   }
 }

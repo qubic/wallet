@@ -76,7 +76,7 @@
               <ng-container
                 *ngIf="!qearnService.pendingStake || (qearnService.pendingStake && (qearnService.pendingStake.publicId !== form.controls['sourceId'].value || qearnService.pendingStake.epoch !== element.lockedEpoch))">
                 <div mat-raised-button class="unlock" color="primary" (click)="openEarlyUnlockModal(element)">
-                  {{ t('qearn.Earned.unlockEarly') }}
+                  {{ t('qearn.earned.unlockEarly') }}
                 </div>
               </ng-container>
               <ng-container
