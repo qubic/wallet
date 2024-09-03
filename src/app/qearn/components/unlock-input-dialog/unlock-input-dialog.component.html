@@ -1,0 +1,12 @@
+<ng-container *transloco="let t">
+    <h2 mat-dialog-title>{{ t('qearn.history.unlock.title') }}</h2>
+    <mat-dialog-content>
+        <form [formGroup]="unlockForm">
+            <app-stake-input [formGroup]="unlockForm" [maxAmount]="data.maxUnlockAmount"></app-stake-input>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="onCancel()">{{ t('general.buttons.close') }}</button>
+        <button mat-button (click)="onConfirm()" [disabled]="unlockForm.invalid">{{ t('confirmDialog.buttons.confirm') }}</button>
+    </mat-dialog-actions>
+</ng-container>

@@ -1,5 +1,5 @@
 import { NgModule, isDevMode } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +14,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaymentComponent } from './payment/payment.component';
@@ -27,8 +27,8 @@ import { ExportConfigDialog } from './lock/export-config/export-config.component
 import { UnLockComponent } from './lock/unlock/unlock.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SeedEditDialog } from './main/edit-seed/seed-edit.component';
-import { MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort'
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { ConfigErrorComponent } from './lock/config-error/config-error.component';
 import { NotifysComponent } from './notifys/notifys.component';
 import { ConfirmDialog } from './core/confirm-dialog/confirm-dialog.component';
@@ -47,27 +47,27 @@ import { QrReceiveDialog } from './main/qr-receive/qr-receive.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { LanguageChooserComponent } from './core/language-chooser/language-chooser.component';
 import { UpdaterService } from './services/updater-service';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { VotingComponent } from './voting/voting.component';
 import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
 import { VotingCreateComponent } from './voting/create/voting-create.component';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { VotingStatusComponent } from './voting/voting-status/voting-status.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { TransferStatusComponent } from './core/transfer-status/transfer-status.component';
 import { SettingsGeneralComponent } from './settings/general/general.component';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { QubicService } from './services/qubic.service';
 import { DecimalPipe } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
 import { AssetsDialog } from './main/assets/assets.component';
-import {MatMenuModule} from "@angular/material/menu";
+import { MatMenuModule } from '@angular/material/menu';
 import { AssetsComponent } from './assets/assets.component';
 import { TransactionService } from './services/transaction.service';
 import { EnvironmentService } from './services/env.service';
@@ -78,15 +78,20 @@ import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { QearnComponent } from './qearn/qearn.component';
+import { RewardTableComponent } from './qearn/reward-table/reward-table.component';
+import { StakingComponent } from './qearn/staking/staking.component';
+import { HistoryComponent } from './qearn/history/history.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { StakeInputComponent } from './qearn/components/input-amount/stake-input.component';
+import { UnlockInputDialogComponent } from './qearn/components/unlock-input-dialog/unlock-input-dialog.component';
 import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.component';
 
 
 /** Http interceptor providers in outside-in order */
-export const httpInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-];
+export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }];
 
 @NgModule({
   declarations: [
@@ -94,6 +99,11 @@ export const httpInterceptorProviders = [
     MainComponent,
     NavigationComponent,
     PaymentComponent,
+    QearnComponent,
+    StakingComponent,
+    StakeInputComponent,
+    UnlockInputDialogComponent,
+    HistoryComponent,
     LockComponent,
     LockConfirmDialog,
     UnLockComponent,
@@ -125,6 +135,7 @@ export const httpInterceptorProviders = [
     PublicUnLockComponent,
     ImportVaultComponent,
     FileSelectorComponent,
+    RewardTableComponent,
     BalanceHiddenComponent
   ],
   imports: [
@@ -146,6 +157,7 @@ export const httpInterceptorProviders = [
     MatDialogModule,
     MatSnackBarModule,
     MatTableModule,
+    MatPaginatorModule,
     MatSortModule,
     ClipboardModule,
     MatTooltipModule,
@@ -162,7 +174,7 @@ export const httpInterceptorProviders = [
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
     MatSliderModule,
     MatExpansionModule,
@@ -170,24 +182,35 @@ export const httpInterceptorProviders = [
   ],
 
   providers: [
-      VisibilityService,
-      TokenService,
-      {
-        provide: WalletService,
-        useFactory: () => new WalletService(),
-        deps: []
-      },
-      AuthInterceptor,
-      ApiService,
-      ApiArchiverService,
-      UpdaterService,
-      QubicService,
-      DecimalPipe,
-      EnvironmentService,
-      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
-      httpInterceptorProviders,
-      TransactionService
+    VisibilityService,
+    TokenService,
+    {
+      provide: WalletService,
+      useFactory: () => new WalletService(),
+      deps: [],
+    },
+    AuthInterceptor,
+    ApiService,
+    ApiArchiverService,
+    UpdaterService,
+    QubicService,
+    DecimalPipe,
+    EnvironmentService,
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
+    httpInterceptorProviders,
+    TransactionService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+    this.matIconRegistry.addSvgIcon(
+      'reward_icon',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/rewards.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'qearn_icon',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/toll.svg')
+    );
+  }
+}

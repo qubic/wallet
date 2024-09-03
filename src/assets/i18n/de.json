@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Zahlung",
       "balance": "Buchungen",
+      "qearn": "Qearn",
       "settings": "Einstellungen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -31,7 +32,7 @@
       "balanceReceived": "Netzwerk meldete {{balance}} QUBIC für {{publicId}}.",
       "timeoutTryAgain": "Wir sind auf ein Timeout gestoßen. Bitte versuchen Sie es erneut."
     }
-  },  
+  },
   "languageIconComponent": {
     "title": "Sprache auswählen"
   },
@@ -41,7 +42,7 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warnung</b></span>: Das Erstellen einer benutzerdefinierten Startphrase ist nur für Experten gedacht. <span class='danger'>Hacker haben in der Vergangenheit benutzerdefinierte Samen ausgenutzt.</span> Um maximale Sicherheit zu gewährleisten, verwenden Sie einen <b>zufällig generierten Seed-Phrase</b>, die von dieser Wallet bereitgestellt wird.<br><br><b><i>Sind Sie sich dessen bewusst?</ i></b>",
     "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet.",
-    "button" : "Eigenen Seed verwenden"
+    "button": "Eigenen Seed verwenden"
   },
   "payment": {
     "keyRequestReason": "Transaktionen werden mit dem Konto-Passwort abgesichert. Alle Konto-Passwörter sind verschlüsselt in einer Datei auf deinem Gerät, die wir Tresor nennen. Daher musst du deinen Tresor vorher mit deiner Kombination - dem Tresor-Passwort - entriegeln."
@@ -53,6 +54,8 @@
       "confirm": "Ja, ich bestätige."
     },
     "confirmationText": "Sind sie sicher?"
+  },
+  "switchExportDialog": {
   },  
   "maxNumberOfAddressesDialog": {
     "title": "Wichtiger Hinweis",
@@ -128,7 +131,7 @@
       }
     },
     "noAssets": "Keine Vermögenswerte verfügbar"
-  },  
+  },
   "qrReceiveComponent": {
     "title": "Zahlung empfangen",
     "downloadLink": "Download",
@@ -140,7 +143,7 @@
     "title.edit": "Konto bearbeiten",
     "newSeedName": "Konto-Name",
     "seedWarning": "<b>WICHTIG!<br> Diese 55 Zeichen sind Ihr privater Qubic-Schlüssel (Seed)!<br>Speichern und bewahren Sie diesen Seed an einem sicheren Ort auf.<br>Wenn Sie dies nicht tun, können Sie Ihr Geld verlieren. Halten Sie Ihren Seed im Backup!<br><br>Weitere Informationen zu diesem Thema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
-    
+
     "form": {
       "alias": {
         "placeholder": "Wähle einen beliebigen Namen für dein Konto, sodass du das Konto besser zuordnen kannst.",
@@ -170,7 +173,7 @@
           "max": "Der 60-Zeichen öffentliche Schlüssel muss genau aus 60 Großbuchstaben bestehen",
           "regex": "Darf nur A-Z enthalten"
         }
-      },      
+      },
       "error": {
         "text": "Bitte überprüfe das Formular.",
         "publicIdAvailable": "Diese PublicId ist bereits in Ihren Konten vorhanden.",
@@ -279,14 +282,14 @@
     }
   },
   "paymentComponent": {
-    "title": "Sende Qubic",   
+    "title": "Sende Qubic",
     "messages": {
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet",
       "storedForPropagation": "Ihre Transaktion wurde zur Verbreitung im Tick {{tick}} gespeichert",
       "failedToSend": "Ihre Transaktion konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
       "failedToDecrypt": "Wir konnten Ihren Seed nicht entschlüsseln. Haben Sie den richtigen privaten Schlüssel verwendet?",
       "failedValidation": "Es traten Validierungsfehler auf. Bitte überprüfen Sie das Formular."
-    },    
+    },
     "form": {
       "sourceSeed": {
         "label": "Konto von dem QUBIC gesendet werden",
@@ -433,9 +436,9 @@
         "option.error.min": "Die Option muss mindestens 2 Zeichen lang sein",
         "option.error.max": "Die Option darf höchstens 50 Zeichen lang sein",
         "computorIp.label": "Computer IP-Adresse",
-        "computorIp.placeholder": "Computor IP-Adresse",
-        "computorIp.error.required": "Computor IP-Adresse ist erforderlich"
-      },      
+        "computorIp.placeholder": "Computer IP-Adresse",
+        "computorIp.error.required": "Computer IP-Adresse ist erforderlich"
+      },
       "proposalStep.label": "Erstellen",
       "publishStep.label": "Veröffentlichen",
       "finishStep.label": "Abschluss",
@@ -448,7 +451,7 @@
       "pending": "Abstimmung ist offen",
       "draft": "Entwurf",
       "unknown": "Unbekannter Status"
-    }    
+    }
   },
   "ipoComponent": {
     "messages": {
@@ -492,7 +495,7 @@
         }
       }
     }
-  },  
+  },
   "okDialog": {
     "title": "Hinweis",
     "button": "Ja, ich bestätige.",
@@ -577,6 +580,92 @@
     "buttons": {
       "cancel": "Abbrechen",
       "reset": "Zurücksetzen"
-    }    
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Qubic sperren",
+      "subText": "Verdienen Sie $QUBIC, indem Sie Ihre Münzen für 52 Wochen sperren.",
+      "enterAmount": "Betrag eingeben",
+      "stake": "Sperren",
+      "availableBalance": "Verfügbares Guthaben",
+      "weeklySatking": "Wöchentlicher Sperrtopf schließt in",
+      "date": "T",
+      "hour": "Std.",
+      "minute": "Min.",
+      "sourceSeed": {
+        "label": "Adresse zum Sperren von QUBIC"
+      },
+      "error": {
+        "required": "Betrag ist erforderlich",
+        "min": "Betrag muss größer als 10M sein",
+        "numberOnly": "Nur Zahlen sind erlaubt",
+        "exceedsBalance": "Betrag darf das verfügbare Guthaben nicht überschreiten"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Sperrung bestätigen",
+        "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für die Sperrung sperren?",
+        "confirm": "Sperren",
+        "cancel": "Abbrechen",
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Sperrung ist etwas schief gelaufen!"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Gesperrte Epoche",
+      "lockedAmount": "Gesperrter Betrag",
+      "lockedWeeks": "Gesperrte Wochen",
+      "totalLockedAmountInEpoch": "Gesamtgesperrter Betrag",
+      "currentBonusAmountInEpoch": "Aktueller Bonusbetrag",
+      "earlyUnlockPercent": "Frühe Entsperrbelohnung",
+      "fullUnlockPercent": "Volle Entsperrbelohnung",
+      "actions": "Aktionen",
+      "noDataMessage": "Keine Sperrdaten gefunden",
+      "unlockedStatus": "Entsperrstatus",
+      "lockedStatus": "Sperrstatus",
+      "unlockStatus": "Entsperrstatus",
+      "fullUnlocked": "Vollständig entsperrt",
+      "earlyUnlocked": "Frühe Entsperrung",
+      "unlockedAmount": "Entsperrter Betrag",
+      "rewardedAmount": "Belohnter Betrag",
+      "note": "Entsperrstatus der aktuellen Epoche",
+      "sourceSeed": {
+        "label": "Adresse zum Überprüfen des Sperrstatus"
+      },
+      "unlock": {
+        "title": "Entsperren",
+        "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",
+        "confirm": "Bestätigen",
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Entsperrung ist etwas schief gelaufen!"
+      },
+      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Brieftasche."
+    },
+    "earned": {
+      "rewards": "Verdiente Belohnungen",
+      "unlockEarly": "Frühe Entsperrung",
+      "lockedBalance": "Gesperrtes Guthaben",
+      "earningRate": "Verdienstquote",
+      "unlocksIn": "Entsperrt in",
+      "apy": "APY",
+      "weeks": "Wochen"
+    },
+    "rewardTable": {
+      "weekFrom": "Woche von",
+      "weekTo": "Woche bis",
+      "earlyUnlock": "Frühe Entsperrung",
+      "burn": "Verbrannt",
+      "boost": "Anheben",
+      "total": "Gesamt"
+    },
+    "main": {
+      "currentLockedAmount": "Aktuell gesperrter Betrag",
+      "apy": "APY",
+      "lock": "Sperren",
+      "lockHistory": "Sperrhistorie",
+      "rewardTable": "Belohnungstabelle",
+      "txSuccess": "Transaktion erfolgreich!",
+      "txFailed": "Transaktion fehlgeschlagen!"
+    }
   }
 }
