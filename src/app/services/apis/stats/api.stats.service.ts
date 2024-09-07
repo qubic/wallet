@@ -28,7 +28,7 @@ export class ApiStatsService {
         ).pipe(
             map((response: LatestStatsResponse) => {
                 if (response) {
-                    //console.log('Response from getStatus:', response);
+                    //console.log('Response from getLatestStats:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
@@ -48,7 +48,7 @@ export class ApiStatsService {
         ).pipe(
             map((response: RichListRespone) => {
                 if (response) {
-                    //console.log('Response from getStatus:', response);
+                    //console.log('Response from getRichList:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
