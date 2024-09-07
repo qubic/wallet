@@ -303,7 +303,7 @@
         }
       },
       "amount": {
-        "placeholder": "Amount in Qubic Unis (QUBIC)",
+        "placeholder": "Amount in Qubic Units (QUBIC)",
         "max.tooltip": "Set to maximum available amount on this Seed",
         "error": {
           "required": "Amount is required",
