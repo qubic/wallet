@@ -1,7 +1,7 @@
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 // /assets/{identity}/issued
-export interface IssuedAssetsResponse {
+export interface AssetsIssuedResponse {
     issuedAssets: {
         data: {
             issuerIdentity: string;
@@ -19,7 +19,7 @@ export interface IssuedAssetsResponse {
 
 
 // /assets/{identity}/owned
-export interface OwnedAssetsResponse {
+export interface AssetsOwnedResponse {
     ownedAssets: {
         data: {
             ownerIdentity: string;
@@ -45,7 +45,7 @@ export interface OwnedAssetsResponse {
 
 
 // /assets/{identity}/possessed
-export interface PossessedAssetsResponse {
+export interface AssetsPossessedResponse {
     possessedAssets: {
         data: {
             possessorIdentity: string;
