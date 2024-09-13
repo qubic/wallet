@@ -20,7 +20,7 @@ export class ApiStatsService {
 
 
     public getApprovedTransactions(tickNumber: number) {
-        let localVarPath = `/ticks/{tickNumber}/approved-transactions`;
+        let localVarPath = `/ticks/${tickNumber}/approved-transactions`;
         return this.httpClient.request<ApprovedTransactionsResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -59,8 +59,8 @@ export class ApiStatsService {
     }
 
 
-    public getTxStatus() {
-        let localVarPath = `/tx-status/{txId}`;
+    public getTxStatus(txId: string) {
+        let localVarPath = `/tx-status/${txId}`;
         return this.httpClient.request<TxStatusResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),

@@ -253,7 +253,7 @@ export interface TickQuorumDataResponse {
 
 
 // /v2/ticks/{tickNumber}/store-hash
-export interface StoreHashResponse {
+export interface StoreHashV2Response {
   hexDigest: string;
 }
 
@@ -297,7 +297,7 @@ export interface TransactionV2Response {
 
 
 // /v2/transactions/{txId}/sendmany
-export interface TransactionV2SendmanyResponse {
+export interface TransactionSendmanyResponse {
   transaction: {
     sourceId: string;
     tickNumber: number;

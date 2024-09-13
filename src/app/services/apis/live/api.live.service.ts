@@ -30,7 +30,7 @@ export class ApiLiveService {
 
 
     public getAssetsIssued(identity: string) {
-        let localVarPath = `/assets/{identity}/issued`;
+        let localVarPath = `/assets/${identity}/issued`;
         return this.httpClient.request<AssetsIssuedResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -50,7 +50,7 @@ export class ApiLiveService {
 
 
     public getAssetsOwned(identity: string) {
-        let localVarPath = `/assets/{identity}/owned`;
+        let localVarPath = `/assets/${identity}/owned`;
         return this.httpClient.request<AssetsOwnedResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -70,7 +70,7 @@ export class ApiLiveService {
 
 
     public getAssetsPossessed(identity: string) {
-        let localVarPath = `/assets/{identity}/possessed`;
+        let localVarPath = `/assets/${identity}/possessed`;
         return this.httpClient.request<AssetsPossessedResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -91,7 +91,7 @@ export class ApiLiveService {
 
 
     public getBalance(id: string) {
-        let localVarPath = `/balances/{id}`;
+        let localVarPath = `/balances/${id}`;
         return this.httpClient.request<BalanceResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
