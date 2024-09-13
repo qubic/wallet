@@ -21,7 +21,7 @@ import {
     StoreHashV2Response,
     TickTransactionsResponse,
     TransactionV2Response,
-    TransactionSendmanyResponse,
+    TransactionSendmanyResponse
  } from './api.archive.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -32,9 +32,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
     providedIn: 'root'
 })
 
-https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Archive%20Tree
+/// https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Archive%20Tree
 
-export class ApiStatsService {
+export class ApiArchiveService {
     private basePath = environment.apiArchiverUrl;
 
     constructor(protected httpClient: HttpClient) {
