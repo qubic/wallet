@@ -10,8 +10,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
     providedIn: 'root'
 })
 
+// https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20Stats%20API
+
 export class ApiStatsService {
-    public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     private basePath = environment.apiArchiverUrl;
 
     constructor(protected httpClient: HttpClient) {

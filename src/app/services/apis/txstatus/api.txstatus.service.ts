@@ -10,15 +10,16 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
     providedIn: 'root'
 })
 
+// https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20TX%20Status%20Tree
+
 export class ApiStatsService {
-    public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     private basePath = environment.apiArchiverUrl;
 
     constructor(protected httpClient: HttpClient) {
     }
 
 
-    public getApprovedTransactions(tickNumber: number): Observable<ApprovedTransactionsResponse> {
+    public getApprovedTransactions(tickNumber: number) {
         let localVarPath = `/ticks/{tickNumber}/approved-transactions`;
         return this.httpClient.request<ApprovedTransactionsResponse>('get', `${this.basePath}${localVarPath}`,
             {

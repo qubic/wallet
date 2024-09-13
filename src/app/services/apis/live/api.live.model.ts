@@ -114,11 +114,15 @@ export interface BroadcastTransactionResponse {
 
 
 // /querySmartContract
-export interface QuerySmartContractResponse {
+export interface QuerySmartContractRequest {
     contractIndex: number;
     inputType: number;
     inputSize: number;
     requestData: string;
+  }
+
+  export interface QuerySmartContractResponse {
+    responseData: string;
   }
   
 
