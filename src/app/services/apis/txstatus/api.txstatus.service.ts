@@ -12,8 +12,8 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20TX%20Status%20Tree
 
-export class ApiStatsService {
-    private basePath = environment.apiArchiverUrl;
+export class ApiTxStatusService {
+    private basePath = environment.apiUrl;
 
     constructor(protected httpClient: HttpClient) {
     }

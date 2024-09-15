@@ -28,7 +28,7 @@ export class ApiArchiverService {
   public currentIpoContracts: BehaviorSubject<ContractDtoArchiver[]> = new BehaviorSubject<ContractDtoArchiver[]>([]);
   public currentPeerList: BehaviorSubject<PeerDtoArchiver[]> = new BehaviorSubject<PeerDtoArchiver[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private basePath = environment.apiArchiverUrl;
+  private basePath = environment.apiUrl;
   private authenticationActive = false;
 
   constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {

@@ -40,6 +40,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { ApiService } from './services/api.service';
 import { ApiArchiverService } from './services/api.archiver.service';
+import { ApiArchiveService } from './services/apis/archive/api.archive.service';
+import { ApiLiveService} from './services/apis/live/api.live.service';
+import { ApiStatsService } from './services/apis/stats/api.stats.service';
+import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -180,6 +184,10 @@ export const httpInterceptorProviders = [
       AuthInterceptor,
       ApiService,
       ApiArchiverService,
+      ApiArchiveService,
+      ApiLiveService,
+      ApiStatsService,
+      ApiTxStatusService,
       UpdaterService,
       QubicService,
       DecimalPipe,

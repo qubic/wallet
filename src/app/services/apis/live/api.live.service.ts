@@ -23,7 +23,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiArchiverUrl;
+    private basePath = environment.apiUrl;
 
     constructor(protected httpClient: HttpClient) {
     }
