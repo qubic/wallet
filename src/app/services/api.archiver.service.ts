@@ -3,7 +3,7 @@ import { tap } from 'rxjs/operators';
 
 
 import {
-  LatestTickResponseArchiver, StatusArchiver, TranscationsArchiver
+  LatestTickResponseArchiver, StatusArchiver, TransactionsArchiver
 } from './api.archiver.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
@@ -67,11 +67,11 @@ export class ApiArchiverService {
   }
 
 
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TransactionsArchiver[]>  {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
-    return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
+    return this.httpClient.request<TransactionsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
     }).pipe(

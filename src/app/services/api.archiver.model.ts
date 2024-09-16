@@ -44,7 +44,7 @@ export interface ProcessedTickInterval {
 //*** Transactions */
 
 
-export interface TranscationsArchiver {
+export interface TransactionsArchiver {
   transactions: TransactionRecord[];
 }
 
