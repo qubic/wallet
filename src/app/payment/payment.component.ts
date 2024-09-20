@@ -226,7 +226,7 @@ export class PaymentComponent implements OnInit {
     this.changeDetectorRef?.detectChanges();
   }
   getSeeds(isDestination = false) {
-    return this.walletService.getSeeds().filter(f => !isDestination || f.publicId != this.transferForm.controls.sourceId.value)
+    return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.transferForm.controls.sourceId.value))
   }
 
   loadKey() {
