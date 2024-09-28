@@ -1,7 +1,7 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectorRef, Component, Inject, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { WalletService } from 'src/app/services/wallet.service';
+import { WalletService, Seed } from 'src/app/services/wallet.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IDecodedSeed, ISeed } from 'src/app/model/seed';
 import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
@@ -19,15 +19,24 @@ import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 export class RevealSeedDialog extends QubicDialogWrapper {
   public s = '';
   public addressAlias = '';
+  public categorizedSeeds: { strongSeeds: { publicKey: string, log: string }[], weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[], badSeeds: { publicKey: string, log: string, pattern: string }[] } = {
+    strongSeeds: [],
+    weakSeeds: [],
+    badSeeds: []
+  };
+
   constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, chgd: ChangeDetectorRef, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar) {
     super(renderer, themeService);
+    
     this.walletService.revealSeed(data.publicId).then(s => {
       this.s = s;
+      const seeds: Seed[] = [
+        { seed: s, publicKey: data.publicId },
+      ];
+      this.categorizedSeeds = this.walletService.categorizeSeeds(seeds);
       chgd.detectChanges();
     });
 
     this.addressAlias = this.walletService.getSeed(data.publicId)?.alias ?? '';
   }
-
-
 }
