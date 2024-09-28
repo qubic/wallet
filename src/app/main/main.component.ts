@@ -4,7 +4,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { ISeed } from '../model/seed';
-import { WalletService } from '../services/wallet.service';
+import { Seed, WalletService } from '../services/wallet.service';
 import { SeedEditDialog } from './edit-seed/seed-edit.component';
 import { RevealSeedDialog } from './reveal-seed/reveal-seed.component';
 import { Router } from '@angular/router';
@@ -43,12 +43,24 @@ export class MainComponent implements AfterViewInit {
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
 
+  public categorizedSeeds: {
+    strongSeeds: { publicKey: string, log: string }[],
+    weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[],
+    badSeeds: { publicKey: string, log: string, pattern: string }[]
+  } = {
+      strongSeeds: [],
+      weakSeeds: [],
+      badSeeds: []
+    };
+
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
 
   @ViewChild(MatSort)
   sort!: MatSort;
+
+
 
   constructor(
     public walletService: WalletService,
@@ -117,12 +129,12 @@ export class MainComponent implements AfterViewInit {
       } else {
         this.openVaultExportDialog();
       }
-    }else{
+    } else {
       this.textQubicLiShutdown = "";
     }
   }
 
-  
+
   ngAfterViewInit(): void {
     this.setDataSource();
   }
@@ -150,9 +162,10 @@ export class MainComponent implements AfterViewInit {
       })
     }
   }
- 
+
   setDataSource(): void {
     this.dataSource = new MatTableDataSource(this.walletService.getSeeds().map(m => {
+
       if (!this.walletService.getSettings().useBridge) {
         if (!m.balanceTick || m.balanceTick === 0) {
           m.balance = this.getDeprecatedBalance(m.publicId);
@@ -163,7 +176,14 @@ export class MainComponent implements AfterViewInit {
       return m;
     }));
     this.dataSource.sort = this.sort;
+
+    if (this.walletService.privateKey) {
+      this.dataSource.data.forEach(element => {
+        this.checkQualitySeed(element.publicId);
+      });
+    }
   }
+
 
   toggleTableView(event: MatSlideToggleChange) {
     this.isTable = !this.isTable;
@@ -209,7 +229,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   addSeed() {
-    if(this.walletService.getSeeds().length >= this.maxNumberOfAddresses){
+    if (this.walletService.getSeeds().length >= this.maxNumberOfAddresses) {
       const dialogRef = this.dialog.open(OkDialog, {
         data: {
           title: this.transloco.translate("maxNumberOfAddressesDialog.title"),
@@ -355,7 +375,60 @@ export class MainComponent implements AfterViewInit {
     }
   }
 
+
   hasPendingTransaction(publicId: string) {
     return this.transactions.find(t => (t.sourceId == publicId || t.destId == publicId) && t.isPending);
   }
+
+
+  /**
+  * This function checks the quality of a seed based on its publicId by revealing it, categorizing it, 
+  * and then adding it to the appropriate category: strong, weak, or bad.
+  */
+  checkQualitySeed(publicId: string): void {
+    this.walletService.revealSeed(publicId).then(seed => {
+      const seeds: Seed[] = [
+        { seed: seed, publicKey: publicId },
+      ];
+
+      // Perform categorization and store the result in the component
+      const categorizedResult = this.walletService.categorizeSeeds(seeds);
+
+      // Find the corresponding seed in the result and add it
+      this.categorizedSeeds.strongSeeds.push(...categorizedResult.strongSeeds.map(strongSeed => ({
+        publicKey: publicId,
+        log: 'Strong seed' // You can add more logs here if necessary
+      })));
+
+      this.categorizedSeeds.weakSeeds.push(...categorizedResult.weakSeeds.map(weakSeed => ({
+        publicKey: publicId,
+        log: 'Weak seed',
+        details: weakSeed.details // Details about weak sequences and positions
+      })));
+
+      this.categorizedSeeds.badSeeds.push(...categorizedResult.badSeeds.map(badSeed => ({
+        publicKey: publicId,
+        log: `Bad seed: pattern: ${badSeed.pattern}`,
+        pattern: badSeed.pattern
+      })));
+    });
+  }
+
+  /**
+   * Helper function to get the category of a seed by publicId.
+   * Can return 'strong', 'weak', or 'bad' seeds.
+   */
+  getSeedQualityCategory(publicId: string, category: 'strong' | 'weak' | 'bad') {
+    switch (category) {
+      case 'strong':
+        return this.categorizedSeeds.strongSeeds.filter(seed => seed.publicKey === publicId);
+      case 'weak':
+        return this.categorizedSeeds.weakSeeds.filter(seed => seed.publicKey === publicId);
+      case 'bad':
+        return this.categorizedSeeds.badSeeds.filter(seed => seed.publicKey === publicId);
+      default:
+        return [];
+    }
+  }
 }
+

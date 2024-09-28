@@ -8,6 +8,12 @@ import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
 import { OnReadOpts } from 'net';
 
+export interface Seed {
+  seed: string;
+  publicKey: string;
+  log?: string;
+  details?: any[]; // Add this if you're using 'details' in your template
+}
 
 @Injectable({
   providedIn: 'root',
@@ -852,5 +858,98 @@ export class WalletService {
       buffView[i] = str.charCodeAt(i);
     }
     return buff;
+  }
+
+
+  // Validations for seed quality
+
+  /**
+   * This function checks if a seed is "bad" by detecting repeating patterns in the seed string.
+   * If a repeating pattern is found, it returns an object indicating the seed is bad along with the pattern.
+   */
+  isBadSeed(seed: string): { isBad: boolean; pattern?: string } {
+    const seedLength = seed.length;
+
+    for (let patternLength = 1; patternLength <= seedLength / 2; patternLength++) {
+      const pattern = seed.slice(0, patternLength);
+      let repeatedPattern = '';
+
+      while (repeatedPattern.length < seedLength) {
+        repeatedPattern += pattern;
+      }
+
+      if (repeatedPattern.slice(0, seedLength) === seed) {
+        return { isBad: true, pattern };
+      }
+    }
+    return { isBad: false };
+  }
+
+
+  /**
+  * This function checks if a seed is "weak" by identifying repeated sequences of characters.
+  * It returns an object indicating if the seed is weak and provides details about the repeated sequences and their positions.
+  */
+  isWeakSeed(seed: string): { isWeak: boolean; details: { sequence: string, indices: number[] }[] } {
+    const sequenceCount: { [key: string]: { count: number, indices: number[] } } = {};
+    const details: { sequence: string, indices: number[] }[] = [];
+
+    const minSequenceLength = 3;  // Minimum sequence length to consider
+    const maxSequenceLength = Math.floor(seed.length / 2);
+
+    for (let seqLength = minSequenceLength; seqLength <= maxSequenceLength; seqLength++) {
+      for (let i = 0; i <= seed.length - seqLength; i++) {
+        const sequence = seed.slice(i, i + seqLength);
+
+        if (sequenceCount[sequence]) {
+          sequenceCount[sequence].count++;
+          sequenceCount[sequence].indices.push(i);
+        } else {
+          sequenceCount[sequence] = { count: 1, indices: [i] };
+        }
+      }
+    }
+
+    const weakSequences = Object.entries(sequenceCount).filter(([_, value]) => value.count > 1);
+    const isWeak = weakSequences.length >= 1; // Check if there are repeated sequences
+
+    weakSequences.forEach(([sequence, value]) => {
+      details.push({ sequence, indices: value.indices });
+    });
+
+    return {
+      isWeak,
+      details
+    };
+  }
+
+
+  /**
+  * This function categorizes a list of seeds into three categories: strong, weak, or bad.
+  * It uses `isBadSeed` and `isWeakSeed` functions to classify the seeds and logs the results.
+  * Returns categorized seeds with relevant logs and details.
+  */
+  categorizeSeeds(seeds: Seed[]): { strongSeeds: { publicKey: string, log: string }[], weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[], badSeeds: { publicKey: string, log: string, pattern: string }[] } {
+    const strongSeeds: { publicKey: string, log: string }[] = [];
+    const weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[] = [];
+    const badSeeds: { publicKey: string, log: string, pattern: string }[] = [];
+
+    seeds.forEach(seedObj => {
+      const { seed, publicKey } = seedObj;
+      const { isBad, pattern } = this.isBadSeed(seed);
+      if (isBad && pattern) {
+        badSeeds.push({ publicKey, log: seed, pattern });
+        console.log(`Bad seed: ${seed}, Repeating pattern: ${pattern}`);
+      } else {
+        const { isWeak, details } = this.isWeakSeed(seed);
+        if (isWeak) {
+          weakSeeds.push({ publicKey, log: seed, details });
+          console.log(`Weak seed: ${seed}, Repeated sequences:`, details);
+        } else {
+          strongSeeds.push({ publicKey, log: seed });
+        }
+      }
+    });
+    return { strongSeeds, weakSeeds, badSeeds };
   }
 }
