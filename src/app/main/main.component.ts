@@ -45,10 +45,12 @@ export class MainComponent implements AfterViewInit {
 
   public categorizedSeeds: {
     strongSeeds: { publicKey: string, log: string }[],
+    okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[] }[],
     weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[],
     badSeeds: { publicKey: string, log: string, pattern: string }[]
   } = {
       strongSeeds: [],
+      okaySeeds: [],
       weakSeeds: [],
       badSeeds: []
     };
@@ -181,6 +183,8 @@ export class MainComponent implements AfterViewInit {
       this.dataSource.data.forEach(element => {
         this.checkQualitySeed(element.publicId);
       });
+    }else{
+      this.resetCategorizedSeeds();
     }
   }
 
@@ -400,6 +404,12 @@ export class MainComponent implements AfterViewInit {
         log: 'Strong seed' // You can add more logs here if necessary
       })));
 
+      this.categorizedSeeds.okaySeeds.push(...categorizedResult.okaySeeds.map(okaySeed => ({
+        publicKey: publicId,
+        log: 'okay seed',
+        detailsOkay: okaySeed.detailsOkay // Details about weak sequences and positions
+      })));
+
       this.categorizedSeeds.weakSeeds.push(...categorizedResult.weakSeeds.map(weakSeed => ({
         publicKey: publicId,
         log: 'Weak seed',
@@ -418,10 +428,12 @@ export class MainComponent implements AfterViewInit {
    * Helper function to get the category of a seed by publicId.
    * Can return 'strong', 'weak', or 'bad' seeds.
    */
-  getSeedQualityCategory(publicId: string, category: 'strong' | 'weak' | 'bad') {
+  getSeedQualityCategory(publicId: string, category: 'strong' | 'okay' | 'weak' | 'bad') {
     switch (category) {
       case 'strong':
         return this.categorizedSeeds.strongSeeds.filter(seed => seed.publicKey === publicId);
+      case 'okay':
+        return this.categorizedSeeds.okaySeeds.filter(seed => seed.publicKey === publicId);
       case 'weak':
         return this.categorizedSeeds.weakSeeds.filter(seed => seed.publicKey === publicId);
       case 'bad':
@@ -429,6 +441,15 @@ export class MainComponent implements AfterViewInit {
       default:
         return [];
     }
+  }
+
+  public resetCategorizedSeeds(): void {
+    this.categorizedSeeds = {
+      strongSeeds: [],
+      okaySeeds: [],
+      weakSeeds: [],
+      badSeeds: []
+    };
   }
 }
 

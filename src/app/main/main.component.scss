@@ -120,9 +120,19 @@ tr {
     padding-left: 10px;
 }
 
+.yellow-dot{
+    background-color: yellowgreen;
+    vertical-align: baseline;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    color: black;
+}
 
-.orange-dot {
+.orange-dot{
     background-color: orange;
+    vertical-align: baseline;
     border-radius: 50%;
     width: 10px;
     height: 10px;
@@ -131,7 +141,8 @@ tr {
 }
 
 .red-dot {
-    background-color: red;
+    background-color: red;    
+    vertical-align: baseline;
     border-radius: 50%;
     width: 10px;
     height: 10px;

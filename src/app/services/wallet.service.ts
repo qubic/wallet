@@ -911,7 +911,7 @@ export class WalletService {
     }
 
     const weakSequences = Object.entries(sequenceCount).filter(([_, value]) => value.count > 1);
-    const isWeak = weakSequences.length >= 1; // Check if there are repeated sequences
+    const isWeak = weakSequences.length >= 2; // Check if there are repeated sequences
 
     weakSequences.forEach(([sequence, value]) => {
       details.push({ sequence, indices: value.indices });
@@ -925,31 +925,181 @@ export class WalletService {
 
 
   /**
+  * This function checks if a seed is "okay" by identifying repeated sequences of characters.
+  * It returns an object indicating if the seed is okay and provides details about the repeated 3 sequences and their positions.
+  */
+  isOkaySeed(seed: string): { isOkay: boolean; detailsOkay: { sequence: string, indices: number[] }[] } {
+    const sequenceCount: { [key: string]: { count: number, indices: number[] } } = {};
+    const detailsOkay: { sequence: string, indices: number[] }[] = [];
+
+    const minSequenceLength = 3;  // Minimum sequence length to consider
+    const maxSequenceLength = Math.floor(seed.length / 2);
+
+    for (let seqLength = minSequenceLength; seqLength <= maxSequenceLength; seqLength++) {
+      for (let i = 0; i <= seed.length - seqLength; i++) {
+        const sequence = seed.slice(i, i + seqLength);
+
+        if (sequenceCount[sequence]) {
+          sequenceCount[sequence].count++;
+          sequenceCount[sequence].indices.push(i);
+        } else {
+          sequenceCount[sequence] = { count: 1, indices: [i] };
+        }
+      }
+    }
+
+    const weakSequences = Object.entries(sequenceCount).filter(([_, value]) => value.count > 1);
+    const isOkay = weakSequences.length >= 1; // Check if there are repeated sequences
+
+    weakSequences.forEach(([sequence, value]) => {
+      detailsOkay.push({ sequence, indices: value.indices });
+    });
+
+    return {
+      isOkay,
+      detailsOkay
+    };
+  }
+
+
+  // // Version TrusInCode
+  // calculateEntropy(repeatedSequence: string): number {
+  //   const n = repeatedSequence.length;
+  //   if (n === 0) {
+  //     throw new Error("The repeated sequence cannot be empty.");
+  //   }
+
+  //   // Calculate entropy using log2(n^26)
+  //   const entropy = Math.log2(Math.pow(n, 26));
+
+  //   console.log("Entropy of the sequence " + repeatedSequence + ": " + entropy);
+  //   return entropy;
+  // }
+
+  
+  // // Version TrusInCode
+//   calculateEntropy(repeatedSequence: string): number {
+//     const n = repeatedSequence.length;
+//     if (n === 0) {
+//         throw new Error("The repeated sequence cannot be empty.");
+//     }
+
+//     // Frequency dictionary to count character occurrences
+//     const frequency: { [key: string]: number } = {};
+//     for (const char of repeatedSequence) {
+//         frequency[char] = (frequency[char] || 0) + 1;
+//     }
+
+//     // Calculate entropy
+//     let entropy = 0;
+//     for (const count of Object.values(frequency)) {
+//         const probability = count / n;
+//         entropy -= probability * Math.log2(probability);
+//     }
+
+//     console.log("Entropy of the sequence " + repeatedSequence + ": " + entropy);
+//     return entropy;
+// }
+
+
+//   isRandomSeed(seed: string): boolean {
+//     const entropy = this.calculateEntropy(seed);
+//     const entropyThreshold = 4; 
+//     return entropy >= entropyThreshold;
+//   }
+
+
+  // // Version Andy
+  // isRandomSeed(seed: string): boolean {
+  //   const seedLength = 55;
+
+  //   // Check if the seed length is 55 characters and contains only lowercase letters
+  //   if (seed.length !== seedLength || !/^[a-z]+$/.test(seed)) {
+  //     return false;
+  //   }
+
+  //   // Count the frequency of each letter
+  //   const letterFrequency: { [key: string]: number } = {};
+  //   for (let char of seed) {
+  //     if (letterFrequency[char]) {
+  //       letterFrequency[char]++;
+  //     } else {
+  //       letterFrequency[char] = 1;
+  //     }
+  //   }
+
+  //   // Check for regular patterns (e.g., repeated substrings)
+  //   const maxPatternLength = Math.floor(seed.length / 2); // Max length of a pattern to analyze
+  //   for (let patternLength = 1; patternLength <= maxPatternLength; patternLength++) {
+  //     const pattern = seed.substring(0, patternLength);
+
+  //     // Check if the pattern repeats throughout the string
+  //     const repeatedPattern = pattern.repeat(Math.ceil(seed.length / patternLength)).substring(0, seed.length);
+  //     if (repeatedPattern === seed) {
+  //       //console.log(`Found repeated pattern: ${pattern}`);
+  //       return false; // If a repeated pattern is found, the seed is not random
+  //     }
+  //   }
+
+  //   // Check frequency distribution and randomness
+  //   const frequencies = Object.values(letterFrequency);
+  //   const mean = frequencies.reduce((acc, curr) => acc + curr, 0) / frequencies.length;
+
+  //   const variance = frequencies.reduce((acc, curr) => acc + Math.pow(curr - mean, 2), 0) / frequencies.length;
+  //   const stdDev = Math.sqrt(variance);
+
+  //   // console.log("Average frequency:", mean);
+  //   console.log("Standard deviation:", stdDev);
+
+  //   // Heuristic threshold for randomness: if the standard deviation is too high,
+  //   // the seed may not be random
+  //   const threshold = 1.73; // This threshold can be adjusted
+  //   return stdDev < threshold;
+  // }
+
+
+  /**
   * This function categorizes a list of seeds into three categories: strong, weak, or bad.
   * It uses `isBadSeed` and `isWeakSeed` functions to classify the seeds and logs the results.
   * Returns categorized seeds with relevant logs and details.
   */
-  categorizeSeeds(seeds: Seed[]): { strongSeeds: { publicKey: string, log: string }[], weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[], badSeeds: { publicKey: string, log: string, pattern: string }[] } {
-    const strongSeeds: { publicKey: string, log: string }[] = [];
-    const weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[] = [];
-    const badSeeds: { publicKey: string, log: string, pattern: string }[] = [];
+  categorizeSeeds(seeds: Seed[]): {
+    strongSeeds: { publicKey: string, log: string, isRandomSeed: boolean }[],
+    okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[],
+    weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[],
+    badSeeds: { publicKey: string, log: string, pattern: string, isRandomSeed: boolean }[]
+  } {
+    const strongSeeds: { publicKey: string, log: string, isRandomSeed: boolean }[] = [];
+    const okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[] = [];
+    const weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[] = [];
+    const badSeeds: { publicKey: string, log: string, pattern: string, isRandomSeed: boolean }[] = [];
 
     seeds.forEach(seedObj => {
+      const isRandomSeed = this.isRandomSeed(seedObj.seed);
+
       const { seed, publicKey } = seedObj;
       const { isBad, pattern } = this.isBadSeed(seed);
       if (isBad && pattern) {
-        badSeeds.push({ publicKey, log: seed, pattern });
-        console.log(`Bad seed: ${seed}, Repeating pattern: ${pattern}`);
+        badSeeds.push({ publicKey, log: seed, pattern, isRandomSeed });
+        // console.log(`Bad seed: ${seed}, Repeating pattern: ${pattern}`);
       } else {
         const { isWeak, details } = this.isWeakSeed(seed);
+        const { isOkay, detailsOkay } = this.isOkaySeed(seed);
+
         if (isWeak) {
-          weakSeeds.push({ publicKey, log: seed, details });
-          console.log(`Weak seed: ${seed}, Repeated sequences:`, details);
+          weakSeeds.push({ publicKey, log: seed, details, isRandomSeed });
+          // console.log(`Weak seed: ${seed}, Repeated sequences:`, details);
         } else {
-          strongSeeds.push({ publicKey, log: seed });
+
+          if (isOkay) {
+            okaySeeds.push({ publicKey, log: seed, detailsOkay, isRandomSeed });
+            // console.log(`Okay seed: ${seed}, Repeated sequences:`, details);
+          } else {
+            strongSeeds.push({ publicKey, log: seed, isRandomSeed });
+          }
         }
       }
     });
-    return { strongSeeds, weakSeeds, badSeeds };
+    return { strongSeeds, okaySeeds, weakSeeds, badSeeds };
   }
 }

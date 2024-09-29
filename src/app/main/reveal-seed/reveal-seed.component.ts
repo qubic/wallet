@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
+import { count } from 'rxjs';
 
 
 @Component({
@@ -19,15 +20,21 @@ import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 export class RevealSeedDialog extends QubicDialogWrapper {
   public s = '';
   public addressAlias = '';
-  public categorizedSeeds: { strongSeeds: { publicKey: string, log: string }[], weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[], badSeeds: { publicKey: string, log: string, pattern: string }[] } = {
-    strongSeeds: [],
-    weakSeeds: [],
-    badSeeds: []
-  };
+  public categorizedSeeds: {
+    strongSeeds: { publicKey: string, log: string, isRandomSeed: boolean }[],
+    okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[],
+    weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[], isRandomSeed: boolean }[],
+    badSeeds: { publicKey: string, log: string, pattern: string, isRandomSeed: boolean }[]
+  } = {
+      strongSeeds: [],
+      okaySeeds: [],
+      weakSeeds: [],
+      badSeeds: []
+    };
 
   constructor(renderer: Renderer2, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, chgd: ChangeDetectorRef, private walletService: WalletService, dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar) {
     super(renderer, themeService);
-    
+
     this.walletService.revealSeed(data.publicId).then(s => {
       this.s = s;
       const seeds: Seed[] = [
@@ -39,4 +46,37 @@ export class RevealSeedDialog extends QubicDialogWrapper {
 
     this.addressAlias = this.walletService.getSeed(data.publicId)?.alias ?? '';
   }
+
+  isRandomSeed(publicId: string) {
+    if (this.categorizedSeeds.strongSeeds.some(seed => seed.publicKey === publicId)) {
+      return true;
+    }
+
+    const okaySeed = this.categorizedSeeds.okaySeeds.find(seed => seed.publicKey === publicId);
+    if (okaySeed) {
+      let i = 0;
+      okaySeed.detailsOkay.forEach(detail => {
+        i+= detail.indices.length;
+      });
+      return i < 5;
+    }
+
+    const weakSeed = this.categorizedSeeds.weakSeeds.find(seed => seed.publicKey === publicId);
+    if (weakSeed) {
+      let i = 0;
+      weakSeed.details.forEach(detail => {
+        i+= detail.indices.length;
+      });
+      return i < 5;
+    }
+
+    const badSeed = this.categorizedSeeds.badSeeds.find(seed => seed.publicKey === publicId);
+    if (badSeed) {
+      return false
+    }
+
+    return false;
+  }
+
+  //return this.walletService.isRandomSeed(seed);
 }

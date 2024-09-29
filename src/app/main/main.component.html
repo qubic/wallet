@@ -220,6 +220,7 @@
     </a>
     <br *ngIf="walletService.privateKey && !isTable">
     <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link" [ngClass]="{ 
+      'yellow-dot': getSeedQualityCategory(publicId, 'okay').length > 0,
       'orange-dot': getSeedQualityCategory(publicId, 'weak').length > 0,
       'red-dot': getSeedQualityCategory(publicId, 'bad').length > 0
     }" [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
