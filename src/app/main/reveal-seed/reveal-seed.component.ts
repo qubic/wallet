@@ -9,7 +9,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
-import { count } from 'rxjs';
 
 
 @Component({

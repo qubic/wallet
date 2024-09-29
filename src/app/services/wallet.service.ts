@@ -1009,53 +1009,53 @@ export class WalletService {
 //   }
 
 
-  // // Version Andy
-  // isRandomSeed(seed: string): boolean {
-  //   const seedLength = 55;
+  // Version Andy
+  isRandomSeed(seed: string): boolean {
+    const seedLength = 55;
 
-  //   // Check if the seed length is 55 characters and contains only lowercase letters
-  //   if (seed.length !== seedLength || !/^[a-z]+$/.test(seed)) {
-  //     return false;
-  //   }
+    // Check if the seed length is 55 characters and contains only lowercase letters
+    if (seed.length !== seedLength || !/^[a-z]+$/.test(seed)) {
+      return false;
+    }
 
-  //   // Count the frequency of each letter
-  //   const letterFrequency: { [key: string]: number } = {};
-  //   for (let char of seed) {
-  //     if (letterFrequency[char]) {
-  //       letterFrequency[char]++;
-  //     } else {
-  //       letterFrequency[char] = 1;
-  //     }
-  //   }
+    // Count the frequency of each letter
+    const letterFrequency: { [key: string]: number } = {};
+    for (let char of seed) {
+      if (letterFrequency[char]) {
+        letterFrequency[char]++;
+      } else {
+        letterFrequency[char] = 1;
+      }
+    }
 
-  //   // Check for regular patterns (e.g., repeated substrings)
-  //   const maxPatternLength = Math.floor(seed.length / 2); // Max length of a pattern to analyze
-  //   for (let patternLength = 1; patternLength <= maxPatternLength; patternLength++) {
-  //     const pattern = seed.substring(0, patternLength);
+    // Check for regular patterns (e.g., repeated substrings)
+    const maxPatternLength = Math.floor(seed.length / 2); // Max length of a pattern to analyze
+    for (let patternLength = 1; patternLength <= maxPatternLength; patternLength++) {
+      const pattern = seed.substring(0, patternLength);
 
-  //     // Check if the pattern repeats throughout the string
-  //     const repeatedPattern = pattern.repeat(Math.ceil(seed.length / patternLength)).substring(0, seed.length);
-  //     if (repeatedPattern === seed) {
-  //       //console.log(`Found repeated pattern: ${pattern}`);
-  //       return false; // If a repeated pattern is found, the seed is not random
-  //     }
-  //   }
+      // Check if the pattern repeats throughout the string
+      const repeatedPattern = pattern.repeat(Math.ceil(seed.length / patternLength)).substring(0, seed.length);
+      if (repeatedPattern === seed) {
+        //console.log(`Found repeated pattern: ${pattern}`);
+        return false; // If a repeated pattern is found, the seed is not random
+      }
+    }
 
-  //   // Check frequency distribution and randomness
-  //   const frequencies = Object.values(letterFrequency);
-  //   const mean = frequencies.reduce((acc, curr) => acc + curr, 0) / frequencies.length;
+    // Check frequency distribution and randomness
+    const frequencies = Object.values(letterFrequency);
+    const mean = frequencies.reduce((acc, curr) => acc + curr, 0) / frequencies.length;
 
-  //   const variance = frequencies.reduce((acc, curr) => acc + Math.pow(curr - mean, 2), 0) / frequencies.length;
-  //   const stdDev = Math.sqrt(variance);
+    const variance = frequencies.reduce((acc, curr) => acc + Math.pow(curr - mean, 2), 0) / frequencies.length;
+    const stdDev = Math.sqrt(variance);
 
-  //   // console.log("Average frequency:", mean);
-  //   console.log("Standard deviation:", stdDev);
+    // console.log("Average frequency:", mean);
+    console.log("Standard deviation:", stdDev);
 
-  //   // Heuristic threshold for randomness: if the standard deviation is too high,
-  //   // the seed may not be random
-  //   const threshold = 1.73; // This threshold can be adjusted
-  //   return stdDev < threshold;
-  // }
+    // Heuristic threshold for randomness: if the standard deviation is too high,
+    // the seed may not be random
+    const threshold = 1.73; // This threshold can be adjusted
+    return stdDev < threshold;
+  }
 
 
   /**
