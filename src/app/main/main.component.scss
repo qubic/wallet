@@ -81,8 +81,7 @@ mat-card {
     .is-mobile {
         mat-card {
             font-size: 80%;
-            min-width: 100%
-            // margin: 16px 0px 16px 0px;
+            min-width: 100% // margin: 16px 0px 16px 0px;
         }
     }
 }
@@ -117,6 +116,36 @@ tr {
     cursor: pointer;
 }
 
-.no-data{
+.no-data {
     padding-left: 10px;
+}
+
+.yellow-dot{
+    background-color: yellowgreen;
+    vertical-align: baseline;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    color: black;
+}
+
+.orange-dot{
+    background-color: orange;
+    vertical-align: baseline;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    color: black;
+}
+
+.red-dot {
+    background-color: red;    
+    vertical-align: baseline;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    color: black;
 }

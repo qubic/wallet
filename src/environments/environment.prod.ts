@@ -1,8 +1,8 @@
 export const environment = {
-    version: '4.10',
+    version: '4.13',
     production: true,
     apiQliUrl: 'https://api.qubic.li',
-    apiArchiverUrl: 'https://rpc.qubic.org',
+    apiUrl: 'https://rpc.qubic.org',
     explorer:'https://explorer.qubic.org/network/address/',
     assetsFees: 1000000
   };

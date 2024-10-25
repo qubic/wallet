@@ -3,11 +3,7 @@ import { tap } from 'rxjs/operators';
 
 
 import {
-  LatestTickResponseArchiver,
-  AuthResponseArchiver, StatusArchiver, BalanceResponseArchiver, ContractDtoArchiver,
-  MarketInformationArchiver, TranscationsArchiver, PeerDtoArchiver, ProposalCreateRequestArchiver,
-  ProposalCreateResponseArchiver, ProposalDtoArchiver, QubicAssetArchiver, SubmitTransactionRequestArchiver,
-  SubmitTransactionResponseArchiver, TransactionArchiver
+  LatestTickResponseArchiver, StatusArchiver, TransactionsArchiver
 } from './api.archiver.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
@@ -22,17 +18,12 @@ import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiArchiverService {
 
-  public currentProposals: BehaviorSubject<ProposalDtoArchiver[]> = new BehaviorSubject<ProposalDtoArchiver[]>([]);
-  public currentIpoContracts: BehaviorSubject<ContractDtoArchiver[]> = new BehaviorSubject<ContractDtoArchiver[]>([]);
-  public currentPeerList: BehaviorSubject<PeerDtoArchiver[]> = new BehaviorSubject<PeerDtoArchiver[]>([]);
+export class ApiArchiverService {
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private basePath = environment.apiArchiverUrl;
-  private authenticationActive = false;
+  private basePath = environment.apiUrl;
 
   constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
-
   }
 
 
@@ -55,6 +46,7 @@ export class ApiArchiverService {
     );
   }
 
+
   public getCurrentTick(): Observable<number> {
     let localVarPath = `/v1/latestTick`;
     return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
@@ -75,12 +67,11 @@ export class ApiArchiverService {
   }
 
 
-
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TranscationsArchiver[]>  {
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TransactionsArchiver[]>  {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
-    return this.httpClient.request<TranscationsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
+    return this.httpClient.request<TransactionsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
     }).pipe(
@@ -89,82 +80,6 @@ export class ApiArchiverService {
       })
     );
   }
-
-
-  
-
-
-  //Todo 
-  //old endpoints from qli-Api
-
-
-  public getCurrentBalance(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentBalance`;
-    return this.httpClient.request<BalanceResponseArchiver[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
-
-
-  public getOwnedAssets(publicIds: string[]) {
-    let localVarPath = `/Wallet/Assets`;
-    return this.httpClient.request<QubicAssetArchiver[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getCurrentPrice() {
-    let localVarPath = `/Public/MarketInformation`;
-    return this.httpClient.request<MarketInformationArchiver>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getCurrentIpoBids(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentIpoBids`;
-    return this.httpClient.request<TransactionArchiver[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public submitTransaction(submitTransaction: SubmitTransactionRequestArchiver) {
-    let localVarPath = `/Public/SubmitTransaction`;
-    return this.httpClient.request<SubmitTransactionResponseArchiver>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: submitTransaction,
-        responseType: 'json'
-      })
-  }
-
 
 
   public getProtocol() {
@@ -179,81 +94,6 @@ export class ApiArchiverService {
       }
     ).pipe(map((p) => {
       this.currentProtocol.next(p);
-      return p;
-    }));
-  }
-
-  public getProposals() {
-    let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentProposals.next(p);
-      return p;
-    }));
-  }
-
-  public getIpoContracts() {
-    let localVarPath = `/Wallet/IpoContracts`;
-    return this.httpClient.request<ContractDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentIpoContracts.next(p);
-      return p;
-    }));
-  }
-
-  public submitProposalCreateRequest(proposal: ProposalCreateRequestArchiver) {
-    let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalCreateResponseArchiver>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: proposal,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public submitProposalPublished(proposalId: string) {
-    let localVarPath = `/Voting/Proposal/` + proposalId + "/publish";
-    return this.httpClient.request<ProposalCreateResponseArchiver>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getPeerList() {
-    let localVarPath = `/Public/Peers`;
-    return this.httpClient.request<PeerDtoArchiver[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentPeerList.next(p);
       return p;
     }));
   }

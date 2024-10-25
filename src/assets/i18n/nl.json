@@ -303,7 +303,7 @@
         }
       },
       "amount": {
-        "placeholder": "Bedrag in Qubic Unis (QUBIC)",
+        "placeholder": "Bedrag in Qubic Units (QUBIC)",
         "max.tooltip": "Stel in op het maximaal beschikbare bedrag op deze seed",
         "error": {
           "required": "Bedrag is vereist",

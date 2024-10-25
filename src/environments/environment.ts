@@ -1,8 +1,8 @@
 export const environment = {
-    version: '4.10',
+    version: '4.13',
     production: false,
     apiQliUrl: 'http://localhost:7003',     
-    apiArchiverUrl: 'http://localhost:7004',
+    apiUrl: 'http://localhost:7004',
     explorer:'https://explorer.qubic.org/network/address/',
     assetsFees: 1000000
 };

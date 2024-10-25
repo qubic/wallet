@@ -11,6 +11,76 @@
         {{ s }}
       </div>
     </div>
+    <br>
+
+    <div *ngIf="isRandomSeed(data.publicId) && !data.isOnlyWatch">
+      <div class="text-center">
+        <h1 class="green-dot">it is a random seed</h1>
+      </div>
+    </div>
+    <div *ngIf="!isRandomSeed(data.publicId) && !data.isOnlyWatch">
+      <div class="text-center">
+        <h1 class="red-dot">it is not a random seed</h1>
+      </div>
+    </div>
+
+    <div *ngIf="categorizedSeeds.strongSeeds.length > 0 && !data.isOnlyWatch">
+      <div class="text-center">
+        <h2 class="green-dot">level 1 - strong seed <mat-icon class="green-dot">
+            fiber_manual_record
+          </mat-icon></h2>
+      </div>
+    </div>
+
+    <div *ngIf="categorizedSeeds.okaySeeds.length > 0 && !data.isOnlyWatch">
+      <div class="text-center">
+        <h2 class="yellow-dot">level 2 - repeating string <mat-icon class="yellow-dot">
+            fiber_manual_record
+          </mat-icon></h2>
+      </div>
+      <ul *ngFor="let seed of categorizedSeeds.okaySeeds">
+        <li *ngFor="let detail of seed.detailsOkay">
+          Repeated sequence: <span class="yellow-dot">{{ detail.sequence }}</span><br>
+          Positions: {{ detail.indices.join(', ') }}
+          <hr>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="categorizedSeeds.weakSeeds.length > 0 && !data.isOnlyWatch">
+      <div class="text-center">
+        <h2 class="orange-dot">level 3 - repeating string <mat-icon class="orange-dot">
+            fiber_manual_record
+          </mat-icon></h2>
+      </div>
+      <ul *ngFor="let seed of categorizedSeeds.weakSeeds">
+        <li *ngFor="let detail of seed.details">
+          Repeated sequence: <span class="orange-dot">{{ detail.sequence }}</span><br>
+          Positions: {{ detail.indices.join(', ') }}
+          <hr>
+        </li>
+      </ul>
+    </div>
+    
+    <div *ngIf="categorizedSeeds.badSeeds.length > 0 && !data.isOnlyWatch">
+      <div class="text-center">
+        <h2 class="red-dot">level 4 - bad seed <mat-icon class="red-dot">
+            fiber_manual_record
+          </mat-icon></h2>
+      </div>
+      <ul>
+        <li *ngFor="let seed of categorizedSeeds.badSeeds">
+          Repeating pattern: <span class="orange-dot">{{ seed.pattern }}</span>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!data.isOnlyWatch" class="explanation">     
+      <strong>Explanation quality seed</strong><br>
+      <mat-icon class="green-dot">fiber_manual_record</mat-icon>level 1 = no repetition of at least 3 characters<br>
+      <mat-icon class="yellow-dot">fiber_manual_record</mat-icon>level 2 = at least 3 characters found 2 times<br>
+      <mat-icon class="orange-dot">fiber_manual_record</mat-icon>level 3 = at least 3 characters found 3 times<br>
+      <mat-icon class="red-dot">fiber_manual_record</mat-icon>level 4 = Repetition of a specific character sequence
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>

@@ -19,8 +19,6 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
 
-
-
 @Component({
   selector: 'app-assets',
   templateUrl: './assets.component.html',
@@ -63,11 +61,11 @@ export class AssetsComponent implements OnInit {
       amount: new FormControl('', Validators.required),
       tick: new FormControl('', Validators.required),
       assetSelect: new FormControl('', Validators.required),
-    });  
+    });
 
     // subscribe to config changes to receive asset updates
     this.walletService.onConfig.subscribe(c => {
-      this.assets = this.walletService.getSeeds().flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+      this.assets = this.walletService.getSeeds().filter(p=>!p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
     });
 
     // const amountControl = this.sendForm.get('amount');
@@ -107,7 +105,7 @@ export class AssetsComponent implements OnInit {
     localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
     window.location.reload();
-  } 
+  }
 
   displayPublicId(input: string): string {
     if (input.length <= 10) {

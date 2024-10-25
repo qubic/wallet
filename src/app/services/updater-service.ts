@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
-import { TranscationsArchiver, StatusArchiver } from './api.archiver.model';
+import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
@@ -27,7 +27,7 @@ export class UpdaterService {
   private transactionArchiverLoading = false;
   private isActive = true;
   private lastAssetsLoaded: Date | undefined;
-  public transactionsArray: BehaviorSubject<TranscationsArchiver[]> = new BehaviorSubject<TranscationsArchiver[]>([]); // TranscationsArchiver[] = [];
+  public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
   constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService) {
@@ -209,7 +209,7 @@ export class UpdaterService {
 
 
     if (this.walletService.getSeeds().length > 0) {
-      const observables: Observable<TranscationsArchiver[]>[] = publicIds.map(publicId =>
+      const observables: Observable<TransactionsArchiver[]>[] = publicIds.map(publicId =>
         this.apiArchiver.getTransactions(publicId, initialTick, this.currentTick.value)
       );
 
