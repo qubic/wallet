@@ -2,25 +2,25 @@
     <mat-form-field class="amount-input" [formGroup]="formGroup">
         <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
         <input matInput #input formControlName="amount" (input)="onInputChange($event)" />
-        <mat-error *ngIf="formGroup.controls['amount'].hasError('required')">
+        <mat-error *ngIf="amountControl.hasError('required')">
             {{ t('qearn.stakeQubic.error.required') }}
         </mat-error>
         <mat-error
-            *ngIf="formGroup.controls['amount'].hasError('min') && !formGroup.controls['amount'].hasError('required')">
+            *ngIf="amountControl.hasError('min') && !amountControl.hasError('required')">
             {{ t('qearn.stakeQubic.error.min') }}
         </mat-error>
         <mat-error *ngIf="
-        formGroup.controls['amount'].hasError('pattern') &&
-        !formGroup.controls['amount'].hasError('required') &&
-        !formGroup.controls['amount'].hasError('min')
+        amountControl.hasError('pattern') &&
+        !amountControl.hasError('required') &&
+        !amountControl.hasError('min')
       ">
             {{ t('qearn.stakeQubic.error.numberOnly') }}
         </mat-error>
         <mat-error *ngIf="
-        formGroup.controls['amount'].hasError('exceedsBalance') &&
-        !formGroup.controls['amount'].hasError('required') &&
-        !formGroup.controls['amount'].hasError('min') &&
-        !formGroup.controls['amount'].hasError('pattern')
+        amountControl.hasError('exceedsBalance') &&
+        !amountControl.hasError('required') &&
+        !amountControl.hasError('min') &&
+        !amountControl.hasError('pattern')
       ">
             {{ t('qearn.stakeQubic.error.exceedsBalance') }}
         </mat-error>

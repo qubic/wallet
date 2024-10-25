@@ -10,6 +10,10 @@ export class StakeInputComponent implements OnChanges {
   @Input() formGroup!: FormGroup;
   @Input() maxAmount: number = 0;
 
+  get amountControl(): AbstractControl {
+    return this.formGroup.get('amount')!;
+  }
+
   private trimmedMinValidator(control: AbstractControl) {
     const trimmedValue = Number(control.value.replace(/\D/g, ''));
     return trimmedValue > 10000000 ? null : { min: true };
