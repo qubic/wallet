@@ -13,6 +13,9 @@ import { UpdaterService } from '../services/updater-service';
 })
 export class QearnComponent implements OnInit {
   public epoch: number = 0;
+  public currentLockedAmount = 0;
+  public yieldPercentage = 0.00;
+
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   constructor(public qearnService: QearnService, private walletService: WalletService, private apiArchiver: ApiArchiverService, private us: UpdaterService) {}
 
@@ -23,6 +26,10 @@ export class QearnComponent implements OnInit {
     // Fetching Lock Info and Stake Data
     this.apiArchiver.getStatus().subscribe(async (res) => {
       this.epoch = res.lastProcessedTick.epoch;
+      const epochInfo = this.qearnService?.epochInfo?.[this.epoch];
+      this.currentLockedAmount = epochInfo?.currentLockedAmount || 0;
+      this.yieldPercentage = (epochInfo?.yieldPercentage || 0) / 100000;
+
       // Fetching current epoch info
       await this.qearnService.fetchLockInfo(this.epoch)
       const seeds = this.walletService.getSeeds();
