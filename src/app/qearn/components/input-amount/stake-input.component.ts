@@ -14,39 +14,22 @@ export class StakeInputComponent implements OnChanges {
     return this.formGroup.get('amount')!;
   }
 
-  private trimmedMinValidator(control: AbstractControl) {
-    const trimmedValue = Number(control.value.replace(/\D/g, ''));
-    return trimmedValue > 10000000 ? null : { min: true };
-  }
-
-  private trimmedMaxValidator(control: AbstractControl) {
-    const trimmedValue = Number(control.value.replace(/\D/g, ''));
-    return trimmedValue > this.maxAmount ? { exceedsBalance: true } : null;
-  }
-
   onInputChange(event: any) {
     const value = event?.target?.value || '';
-    const cleanedValue = value.replace(/\D/g, '');
+    const numericalValue = Number(value.replace(/\D/g, ''));
 
-    // If the value is empty, reset to empty string, otherwise format it
-    event.target.value = cleanedValue ? this.formatNumberWithCommas(cleanedValue) : '';
-    this.validateAmount(event);
+    this.amountControl.setValue(numericalValue, { emitEvent: false });
+    this.validateAmount(this.maxAmount);
   }
 
-  validateAmount(event: any): void {
-    const value = event?.target?.value || '0';
-    const amount = Number(value.replace(/\D/g, ''));
-    this.formGroup.controls['amount'].setValidators([Validators.required, Validators.pattern(/^[0-9, ]*$/), this.trimmedMinValidator.bind(this), this.trimmedMaxValidator.bind(this)]);
-    this.formGroup.controls['amount'].updateValueAndValidity();
-  }
-
-  formatNumberWithCommas(value: string): string {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  validateAmount(maxAmount: number): void {
+    this.amountControl.setValidators([Validators.required, Validators.min(10000000), Validators.max(maxAmount)]);
+    this.amountControl.updateValueAndValidity();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['maxAmount'] && changes['maxAmount'].currentValue !== changes['maxAmount'].previousValue) {
-      this.validateAmount(null);
+      this.validateAmount(this.maxAmount);
     }
   }
 }

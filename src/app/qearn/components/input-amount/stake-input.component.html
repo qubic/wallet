@@ -1,7 +1,7 @@
 <ng-container *transloco="let t">
     <mat-form-field class="amount-input" [formGroup]="formGroup">
         <mat-label>{{ t('qearn.stakeQubic.enterAmount') }}</mat-label>
-        <input matInput #input formControlName="amount" (input)="onInputChange($event)" />
+        <input matInput #numberInput formControlName="amount" [value]="amountControl.value | number: '1.0-0'" (input)="onInputChange($event)" />
         <mat-error *ngIf="amountControl.hasError('required')">
             {{ t('qearn.stakeQubic.error.required') }}
         </mat-error>
@@ -17,7 +17,7 @@
             {{ t('qearn.stakeQubic.error.numberOnly') }}
         </mat-error>
         <mat-error *ngIf="
-        amountControl.hasError('exceedsBalance') &&
+        amountControl.hasError('max') &&
         !amountControl.hasError('required') &&
         !amountControl.hasError('min') &&
         !amountControl.hasError('pattern')
