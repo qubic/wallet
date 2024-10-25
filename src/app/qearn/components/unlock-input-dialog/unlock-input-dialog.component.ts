@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-unlock-input-dialog',
@@ -16,8 +16,12 @@ export class UnlockInputDialogComponent {
     private fb: FormBuilder
   ) {
     this.unlockForm = this.fb.group({
-      amount: ['']
+      amount: ['', Validators.required]
     });
+  }
+
+  get amountControl(): AbstractControl {
+    return this.unlockForm.get('amount')!;
   }
 
   onCancel(): void {
@@ -26,7 +30,7 @@ export class UnlockInputDialogComponent {
 
   onConfirm(): void {
     if (this.unlockForm.valid) {
-      const unlockAmount = Number(this.unlockForm.controls['amount'].value.replace(/\D/g, ''));
+      const unlockAmount = Number(this.amountControl.value.replace(/\D/g, ''));
       this.dialogRef.close(unlockAmount);
     }
   }
