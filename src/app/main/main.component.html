@@ -219,11 +219,7 @@
       <mat-icon>explore</mat-icon>
     </a>
     <br *ngIf="walletService.privateKey && !isTable">
-    <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link" [ngClass]="{ 
-      'yellow-dot': getSeedQualityCategory(publicId, 'okay').length > 0,
-      'orange-dot': getSeedQualityCategory(publicId, 'weak').length > 0,
-      'red-dot': getSeedQualityCategory(publicId, 'bad').length > 0
-    }" [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
+    <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
       <mat-icon>visibility</mat-icon>
     </button>
     <button mat-icon-button class="icon-color-link" *ngIf="walletService.privateKey"
