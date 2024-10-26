@@ -40,7 +40,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   public selectedFileIsVaultFile = false;
   private walletService: WalletService;
 
-  public fieldSeedDisabled = true;
+  public ownSeedModeDeactivated = true;
 
   createVaultForm = this.fb.group({
     name: [null, [Validators.required, Validators.minLength(3)]],
@@ -113,8 +113,14 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   }
 
   public randomizeSeed() {
-    this.fieldSeedDisabled = true;
+    this.ownSeedModeDeactivated = true;
     this.createAddressForm.controls.seed.setValue(this.seedGen());
+  }
+
+  public insertSeed() {
+    navigator.clipboard.readText().then(clipText => {
+      this.createAddressForm.controls.seed.setValue(clipText);
+    });    
   }
 
   public resetSeed() {
@@ -126,7 +132,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
     });
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        this.fieldSeedDisabled = false;
+        this.ownSeedModeDeactivated = false;
         this.createAddressForm.controls.seed.setValue("");
         const seedValue = this.createAddressForm.controls.seed.value || "";
         this.generatePublicId(seedValue);

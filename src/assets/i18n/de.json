@@ -553,7 +553,8 @@
       "publicId": "Öffentlichen Id",
       "radomizeSeed": "Zufälliger Seed",
       "addressPlaceholder": "Wählen Sie einen Kontonamen",
-      "button": "Adresse erstellen"
+      "button": "Adresse erstellen",
+      "buttonInsertSeedViaClipboard": "Seed nur über die Zwischenablage einfügbar"
     },
     "downloadVault": {
       "stepTitle": "Erste Tresor-Datei herunterladen",

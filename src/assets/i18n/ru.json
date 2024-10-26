@@ -551,7 +551,8 @@
       "publicId": "Публичный ID",
       "radomizeSeed": "Случайный сид",
       "addressPlaceholder": "Введите имя вашего аккаунта",
-      "button": "Создать ID"
+      "button": "Создать ID",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Создать начальный Vault",

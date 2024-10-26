@@ -550,7 +550,8 @@
       "publicId": "Id Público",
       "radomizeSeed": "Generar un seed aleatorio",
       "addressPlaceholder": "Asigna un nombre para identificar esta dirección",
-      "button": "Crear Dirección"
+      "button": "Crear Dirección",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Descargar el archivo de bóveda inicial",

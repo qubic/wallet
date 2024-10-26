@@ -553,7 +553,8 @@
       "publicId": "Genel Kimlik",
       "radomizeSeed": "Rastgele Cüzdan Kimliği",
       "addressPlaceholder": "Hesap Adı",
-      "button": "Adres Oluştur"
+      "button": "Adres Oluştur",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Kişisel Kasanızı İndirin",

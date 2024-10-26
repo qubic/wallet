@@ -550,7 +550,8 @@
       "publicId": "Identifiant Public",
       "radomizeSeed": "Randomiser la Seed",
       "addressPlaceholder": "Choisissez un nom de compte",
-      "button": "Créer l'adresse"
+      "button": "Créer l'adresse",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Téléchargez le Vault initial",

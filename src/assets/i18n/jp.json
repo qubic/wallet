@@ -553,7 +553,8 @@
       "publicId": "公開ID",
       "radomizeSeed": "シードをランダム化",
       "addressPlaceholder": "アカウント名を選択",
-      "button": "アドレスを作成"
+      "button": "アドレスを作成",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "初期ヴォールトをダウンロード",

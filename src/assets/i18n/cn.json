@@ -552,7 +552,8 @@
       "publicId": "地址 ID",
       "radomizeSeed": "随机种子",
       "addressPlaceholder": "选择账户名",
-      "button": "创建地址"
+      "button": "创建地址",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "下载初始金库",

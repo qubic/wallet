@@ -553,7 +553,8 @@
       "publicId": "Public Id",
       "radomizeSeed": "Randomize Seed",
       "addressPlaceholder": "Choose an Account Name",
-      "button": "Create Address"
+      "button": "Create Address",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Download initial Vault",
