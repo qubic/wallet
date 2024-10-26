@@ -154,7 +154,7 @@
       "seed": {
         "placeholder": "55-Zeichen Seed - privater Qubic Schlüssel",
         "error": {
-          "required": "Ein Konto-Passwort wird benötigt.",
+          "required": "Es ist ein 55-Zeichen-Seed erforderlich.",
           "min": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
           "max": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
           "regex": "Der Seed darf nur folgende Zeichen enthalten: a-z"
