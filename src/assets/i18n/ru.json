@@ -31,7 +31,7 @@
       "balanceReceived": "Ответ сети {{balance}} QUBIC для {{publicId}}.",
       "timeoutTryAgain": "Таймаут. Попробуйте еще раз."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -41,7 +41,9 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Внимание!</b></span>: Создание кастомного сида только для экспертов. <span class='danger'>В прошлом хакеры уже взламывали кастомные сиды.</span> Что бы обезопасить себя максимально, <b>используйте рандомно-генерируемый сид</b> предлагаемый кошельком Qubic.<br><br><b><i>Вы осознаете риски?</i></b>",
     "hint": "Кастомный сид имеет большой риск взлома. Используйте рандомно-генерируемый сид.",
-    "button": "Используйте свой сид."
+    "button": "Используйте свой сид.",
+    "buttonInsertSeedViaClipboard": "Seed можно вставить только через буфер обмена"
+
   },
   "payment": {
     "keyRequestReason": "Поскольку транзакции подписываются цифровым ключом, вам необходимо сначала загрузить свой ключ."
@@ -53,12 +55,12 @@
       "confirm": "Подтвердить"
     },
     "confirmationText": "Вы уверены?"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -551,8 +553,7 @@
       "publicId": "Публичный ID",
       "radomizeSeed": "Случайный сид",
       "addressPlaceholder": "Введите имя вашего аккаунта",
-      "button": "Создать ID",
-      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
+      "button": "Создать ID"
     },
     "downloadVault": {
       "stepTitle": "Создать начальный Vault",

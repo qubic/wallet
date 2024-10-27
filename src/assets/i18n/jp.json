@@ -31,7 +31,7 @@
       "balanceReceived": "ネットワークから {{balance}} QUBICが {{publicId}}に報告されました。",
       "timeoutTryAgain": "タイムアウトしました。もう一度試してください。"
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -41,7 +41,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>警告</b></span>：カスタムシードフレーズの作成は専門家向けです。<span class='danger'>過去にはハッカーがカスタムシードを悪用したことがあります。</span>最大限のセキュリティを確保するために、このウォレットによって提供される<b>ランダムに生成されたシードフレーズを使用してください。</b><br><br><b><i>これを理解していますか？</i></b>",
     "hint": "カスタムメイドのシードは盗難のリスクがあります。最高のセキュリティのためにウォレットのランダムシードを使用してください。",
-    "button": "自分のシードを使用する"
+    "button": "自分のシードを使用する",
+    "buttonInsertSeedViaClipboard": "シードはクリップボード経由でのみ挿入できます"
   },
   "payment": {
     "keyRequestReason": "トランザクションはあなたのキーでデジタル署名されるため、最初にキーを読み込む必要があります。"
@@ -53,12 +54,12 @@
       "confirm": "はい、確認します"
     },
     "confirmationText": "よろしいですか？"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -553,8 +554,7 @@
       "publicId": "公開ID",
       "radomizeSeed": "シードをランダム化",
       "addressPlaceholder": "アカウント名を選択",
-      "button": "アドレスを作成",
-      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
+      "button": "アドレスを作成"
     },
     "downloadVault": {
       "stepTitle": "初期ヴォールトをダウンロード",

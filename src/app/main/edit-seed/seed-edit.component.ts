@@ -173,6 +173,12 @@ export class SeedEditDialog extends QubicDialogWrapper {
     this.seedEditForm.controls.seed.setValue(this.seedGen());
   }
 
+  public insertSeed() {
+    navigator.clipboard.readText().then(clipText => {
+      this.seedEditForm.controls.seed.setValue(clipText);
+    });    
+  }
+
   public resetSeed() {
     const confirmDialog = this.matDialog.open(ConfirmDialog, {
       restoreFocus: false,

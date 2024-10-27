@@ -41,7 +41,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Advertencia</b></span>: Crear una frase semilla personalizada es solo para expertos. <span class='danger'>Los hackers han explotado frases semilla personalizadas en el pasado.</span> Para garantizar la máxima seguridad, <b>utilice una frase semilla generada aleatoriamente</b> proporcionada por esta billetera.<br><br><b><i>¿Estás al tanto de esto?</i></b>",
     "hint": "Las semillas hechas a medida corren el riesgo de ser robadas. Utiliza la semilla aleatoria proporcionada por la billetera para obtener la máxima seguridad.",
-    "button": "Utiliza tu propia frase semilla"
+    "button": "Utiliza tu propia frase semilla"  ,
+    "buttonInsertSeedViaClipboard": "La seed solo se puede insertar a través del portapapeles"
   },
   "payment": {
     "keyRequestReason": "Como las transacciones son firmadas digitalmente con tu clave, debes cargarla previamente."
@@ -550,8 +551,7 @@
       "publicId": "Id Público",
       "radomizeSeed": "Generar un seed aleatorio",
       "addressPlaceholder": "Asigna un nombre para identificar esta dirección",
-      "button": "Crear Dirección",
-      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
+      "button": "Crear Dirección"
     },
     "downloadVault": {
       "stepTitle": "Descargar el archivo de bóveda inicial",

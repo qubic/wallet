@@ -33,7 +33,7 @@
           <mat-form-field class="full-width">
             <mat-label>{{ seedEditForm.controls['seed'].value?.length }} / {{
               t("seedEditComponent.form.seed.placeholder") }}</mat-label>
-            <input matInput formControlName="seed" type="text" required [readonly]="ownSeedModeDeactivated" />
+            <input matInput formControlName="seed" type="text" required [readonly]="true" />
           </mat-form-field>
         </div>
         <mat-error
@@ -53,6 +53,11 @@
           {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
         </mat-error>
       </form>
+      <div *ngIf="!ownSeedModeDeactivated" class="flex full-width button-container" >
+        <button mat-raised-button color="warn" (click)="insertSeed()">
+          {{ t('ownSeedWarningDialog.buttonInsertSeedViaClipboard') }}
+        </button>         
+      </div>
       <div class="flex full-width button-container">
         <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew"
           [disabled]="!ownSeedModeDeactivated" color="warn" (click)="resetSeed()">

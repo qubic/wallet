@@ -41,7 +41,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>警告</b></span>: 强烈不建议使用自定义种子，<span class='danger'>自定义种子有被黑客盗窃的风险！</span><br>为了确保最大程度的安全性， <b>请使用钱包提供的随机生成种子。</b><br><br><b><i>您仍然要使用自定义种子吗？</i></b>",
     "hint": "自定义种子有被盗窃的风险，请使用钱包的随机种子以获得最佳安全性。",
-    "button": "自定义种子"
+    "button": "自定义种子",
+    "buttonInsertSeedViaClipboard": "只能通过剪贴板插入种子"
   },
   "payment": {
     "keyRequestReason": "由于交易是使用您的密钥进行数字签名的，因此您需要首先加载密钥。"
@@ -53,12 +54,12 @@
       "confirm": "是的，我确定"
     },
     "confirmationText": "您确定吗？"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -552,8 +553,7 @@
       "publicId": "地址 ID",
       "radomizeSeed": "随机种子",
       "addressPlaceholder": "选择账户名",
-      "button": "创建地址",
-      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
+      "button": "创建地址"
     },
     "downloadVault": {
       "stepTitle": "下载初始金库",

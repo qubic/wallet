@@ -31,7 +31,7 @@
       "balanceReceived": "Netzwerk meldete {{balance}} QUBIC für {{publicId}}.",
       "timeoutTryAgain": "Wir sind auf ein Timeout gestoßen. Bitte versuchen Sie es erneut."
     }
-  },  
+  },
   "languageIconComponent": {
     "title": "Sprache auswählen"
   },
@@ -41,7 +41,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warnung</b></span>: Das Erstellen einer benutzerdefinierten Startphrase ist nur für Experten gedacht. <span class='danger'>Hacker haben in der Vergangenheit benutzerdefinierte Samen ausgenutzt.</span> Um maximale Sicherheit zu gewährleisten, verwenden Sie einen <b>zufällig generierten Seed-Phrase</b>, die von dieser Wallet bereitgestellt wird.<br><br><b><i>Sind Sie sich dessen bewusst?</ i></b>",
     "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet.",
-    "button" : "Eigenen Seed verwenden"
+    "button": "Eigenen Seed verwenden",
+    "buttonInsertSeedViaClipboard": "Seed nur über die Zwischenablage einfügbar"
   },
   "payment": {
     "keyRequestReason": "Transaktionen werden mit dem Konto-Passwort abgesichert. Alle Konto-Passwörter sind verschlüsselt in einer Datei auf deinem Gerät, die wir Tresor nennen. Daher musst du deinen Tresor vorher mit deiner Kombination - dem Tresor-Passwort - entriegeln."
@@ -53,13 +54,13 @@
       "confirm": "Ja, ich bestätige."
     },
     "confirmationText": "Sind sie sicher?"
-  },  
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Wichtiger Hinweis",
     "button": "Okay",
     "message": "<div>Sie habe die maximale Anzahl von 15 Adressen in Ihrer Wallet erreicht.</div>"
-   },
-   "switchExportDialog": {
+  },
+  "switchExportDialog": {
     "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
     "buttons": {
       "cancel": "Abbrechen",
@@ -128,7 +129,7 @@
       }
     },
     "noAssets": "Keine Vermögenswerte verfügbar"
-  },  
+  },
   "qrReceiveComponent": {
     "title": "Zahlung empfangen",
     "downloadLink": "Download",
@@ -140,7 +141,6 @@
     "title.edit": "Konto bearbeiten",
     "newSeedName": "Konto-Name",
     "seedWarning": "<b>WICHTIG!<br> Diese 55 Zeichen sind Ihr privater Qubic-Schlüssel (Seed)!<br>Speichern und bewahren Sie diesen Seed an einem sicheren Ort auf.<br>Wenn Sie dies nicht tun, können Sie Ihr Geld verlieren. Halten Sie Ihren Seed im Backup!<br><br>Weitere Informationen zu diesem Thema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
-    
     "form": {
       "alias": {
         "placeholder": "Wähle einen beliebigen Namen für dein Konto, sodass du das Konto besser zuordnen kannst.",
@@ -170,7 +170,7 @@
           "max": "Der 60-Zeichen öffentliche Schlüssel muss genau aus 60 Großbuchstaben bestehen",
           "regex": "Darf nur A-Z enthalten"
         }
-      },      
+      },
       "error": {
         "text": "Bitte überprüfe das Formular.",
         "publicIdAvailable": "Diese PublicId ist bereits in Ihren Konten vorhanden.",
@@ -279,14 +279,14 @@
     }
   },
   "paymentComponent": {
-    "title": "Sende Qubic",   
+    "title": "Sende Qubic",
     "messages": {
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet",
       "storedForPropagation": "Ihre Transaktion wurde zur Verbreitung im Tick {{tick}} gespeichert",
       "failedToSend": "Ihre Transaktion konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.",
       "failedToDecrypt": "Wir konnten Ihren Seed nicht entschlüsseln. Haben Sie den richtigen privaten Schlüssel verwendet?",
       "failedValidation": "Es traten Validierungsfehler auf. Bitte überprüfen Sie das Formular."
-    },    
+    },
     "form": {
       "sourceSeed": {
         "label": "Konto von dem QUBIC gesendet werden",
@@ -435,7 +435,7 @@
         "computorIp.label": "Computer IP-Adresse",
         "computorIp.placeholder": "Computor IP-Adresse",
         "computorIp.error.required": "Computor IP-Adresse ist erforderlich"
-      },      
+      },
       "proposalStep.label": "Erstellen",
       "publishStep.label": "Veröffentlichen",
       "finishStep.label": "Abschluss",
@@ -448,7 +448,7 @@
       "pending": "Abstimmung ist offen",
       "draft": "Entwurf",
       "unknown": "Unbekannter Status"
-    }    
+    }
   },
   "ipoComponent": {
     "messages": {
@@ -492,7 +492,7 @@
         }
       }
     }
-  },  
+  },
   "okDialog": {
     "title": "Hinweis",
     "button": "Ja, ich bestätige.",
@@ -553,8 +553,7 @@
       "publicId": "Öffentlichen Id",
       "radomizeSeed": "Zufälliger Seed",
       "addressPlaceholder": "Wählen Sie einen Kontonamen",
-      "button": "Adresse erstellen",
-      "buttonInsertSeedViaClipboard": "Seed nur über die Zwischenablage einfügbar"
+      "button": "Adresse erstellen"
     },
     "downloadVault": {
       "stepTitle": "Erste Tresor-Datei herunterladen",
@@ -578,6 +577,6 @@
     "buttons": {
       "cancel": "Abbrechen",
       "reset": "Zurücksetzen"
-    }    
+    }
   }
 }

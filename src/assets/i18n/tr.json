@@ -31,7 +31,7 @@
       "balanceReceived": "Ağ, {{publicId}} için {{balance}} QUBIC bildirdi.",
       "timeoutTryAgain": "Zaman aşımı yaşanıyor. Lütfen tekrar deneyin."
     }
-  },    
+  },
   "languageIconComponent": {
     "title": "Select language"
   },
@@ -41,7 +41,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Uyarı</b></span>: Özel cüzdan kimliği yaratmak sadece uzmanlar içindir. <span class='danger'>Hackerlar geçmişte özel oluşturulan cüzdan kimliklerini ele geçirdiler.</span> En yüksek güvenlik için, <b>bu cüzdan tarafından sağlanan</b>  rastgele oluşturulmuş cüzdan kiliği ile adres oluşturun.<br><br><b><i>Bunun farkında mısın?</i></b>",
     "hint": "Özel yapılmış cüzdan kimlikleri çalınma tehlikesi taşımaktadır. Güvenliğiniz için cüzdanın size verdiği rastgele oluşturulmuş cüzdan kimliğini kullanın.",
-    "button": "Kendi özel cüzdan kimliğini kullan"
+    "button": "Kendi özel cüzdan kimliğini kullan",
+    "buttonInsertSeedViaClipboard": "Seed yalnızca panoya yapıştırılarak eklenebilir"
   },
   "payment": {
     "keyRequestReason": "İşlemler anahtarınızla dijital olarak imzalandığından, önce anahtarınızı yüklemeniz gerekir."
@@ -53,12 +54,12 @@
       "confirm": "Evet, Onaylıyorum"
     },
     "confirmationText": "Emin misiniz?"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -349,7 +350,7 @@
       "status.dismissed.tooltip": "Reddedildi",
       "status.unknown.tooltip": "Bilinmiyor",
       "status.confirmed.tooltip": "Aşamalı",
-      "filter.seed.label": "Cüzdana göre filtrele",      
+      "filter.seed.label": "Cüzdana göre filtrele",
       "exportButton": "Dışa Aktar"
     },
     "repeatTransaction": "İşlemi Tekrarla"
@@ -541,7 +542,7 @@
       "message": "Bu adım, cüzdan için özel/genel anahtar çifti oluşturacaktır. Bir ad seçin ve Qubic\r\n        Cüzdanınızı oluşturmak için \"Kasa Oluştur\"u seçin.",
       "stepTitle": "Kasa Oluştur",
       "vaultName": "Ad",
-      "button": "Kasa Oluştur",      
+      "button": "Kasa Oluştur",
       "placeholder": "Tresorunuz için bir isim seçin"
     },
     "createAddress": {
