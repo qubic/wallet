@@ -1,5 +1,5 @@
 <ng-container *transloco="let t">
-  <form [formGroup]="stakeForm" novalidate (ngSubmit)="onSubmit()" class="content_container gap-4">
+  <form [formGroup]="stakeForm" novalidate (ngSubmit)="confirmLock()" class="content_container gap-4">
     <mat-card class="general-card">
       <mat-card-content>
         <div class="example-stake">
@@ -22,16 +22,16 @@
           </div>
           <app-stake-input [formGroup]="stakeForm" [maxAmount]="maxAmount"></app-stake-input>
 
-          <button color="primary" mat-raised-button class="full-width button" (click)="confirmLock()"
-            [disabled]="stakeForm.invalid || isChecking || qearnService.pendingStake">
+          <button type="submit" color="primary" mat-raised-button class="full-width button"
+            [disabled]="stakeForm.invalid || isChecking || isStakePending">
 
             <ng-container
-              *ngIf="!qearnService.pendingStake || !(qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value)">
+              *ngIf="!(isStakePending)">
               {{ t('qearn.stakeQubic.stake') }}
             </ng-container>
 
             <ng-container
-              *ngIf="qearnService.pendingStake && qearnService.pendingStake.type === 'LOCK' && qearnService.pendingStake.publicId === stakeForm.controls['sourceId'].value">
+              *ngIf="isStakePending">
               <mat-spinner [diameter]="20"></mat-spinner>
             </ng-container>
 

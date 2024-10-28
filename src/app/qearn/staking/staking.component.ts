@@ -25,10 +25,16 @@ export class StakingComponent implements OnInit {
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
   public stakeForm = this.fb.group({
     sourceId: ['', Validators.required],
-    amount: ['0'],
+    amount: [0],
   });
   public seeds: ISeed[] = [];
   public isChecking = false;
+
+  get isStakePending(): boolean | null {
+    const pendingStake = this.qearnService.pendingStake;
+    const selectedSourceId = this.stakeForm.controls['sourceId'].value;
+    return pendingStake && pendingStake.type === 'LOCK' && pendingStake.publicId === selectedSourceId;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -86,7 +92,7 @@ export class StakingComponent implements OnInit {
     this.qearnService.txSuccessSubject.subscribe((d) => {
       if (d?.publicId) {
         this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
-        this.stakeForm.get('amount')?.setValue('0');
+        this.stakeForm.get('amount')?.setValue(0);
         this.us.forceUpdateNetworkBalance(d.publicId, () => {
           this.loadSeeds();
           this.resetSourceId();
@@ -120,13 +126,13 @@ export class StakingComponent implements OnInit {
     }
   }
 
-  private async showConfirmDialog(amount: string, currency: string): Promise<boolean> {
+  private async showConfirmDialog(amount: number, currency: string): Promise<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockTitle'),
         message: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirmLockMessage', {
-          amount: this.formatNumberWithCommas(amount.replace(/\D/g, '') || '0'),
+          amount: this.formatNumberWithCommas(amount.toString() || '0'),
           currency,
         }),
         confirm: this.transloco.translate('qearn.stakeQubic.confirmDialog.confirm'),
@@ -136,7 +142,7 @@ export class StakingComponent implements OnInit {
     return await dialogRef.afterClosed().toPromise();
   }
 
-  private async processLock(publicId: string, amountToStake: string): Promise<void> {
+  private async processLock(publicId: string, amountToStake: number): Promise<void> {
     try {
       const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
       const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
@@ -144,7 +150,7 @@ export class StakingComponent implements OnInit {
       const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
 
       const seed = await this.walletService.revealSeed(publicId);
-      const result = await this.qearnService.lockQubic(seed, Number(amountToStake.replace(/\D/g, '')), tick);
+      const result = await this.qearnService.lockQubic(seed, amountToStake, tick);
 
       if (result.txResult) {
         this.handleSuccessfulLock(publicId, amountToStake, epoch, tick);
@@ -154,13 +160,13 @@ export class StakingComponent implements OnInit {
     }
   }
 
-  private handleSuccessfulLock(publicId: string, amountToStake: string, epoch: number, tick: number): void {
+  private handleSuccessfulLock(publicId: string, amountToStake: number, epoch: number, tick: number): void {
     const tickAddition = this.walletService.getSettings().tickAddition;
     const newTick = tick + tickAddition;
 
     this.qearnService.setPendingStake({
       publicId,
-      amount: Number(amountToStake.replace(/\D/g, '')),
+      amount: amountToStake,
       epoch,
       targetTick: newTick,
       type: 'LOCK',
