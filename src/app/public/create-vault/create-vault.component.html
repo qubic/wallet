@@ -36,7 +36,7 @@
                 55 {{ t('createVaultComponent.createAddress.seed') }} </mat-label>
               <input type="text" matInput formControlName="seed"
                 placeholder="{{ t('createVaultComponent.createAddress.seedPlaceholder') }}" required
-                [readonly]="fieldSeedDisabled" />
+                [readonly]="true" />
             </mat-form-field>
           </div>
           <mat-error *ngIf="createAddressForm.controls['seed'].hasError('required')">
@@ -52,8 +52,13 @@
             {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
           </mat-error>
         </form>
+        <div *ngIf="!ownSeedModeDeactivated" class="flex full-width button-container" >
+          <button mat-raised-button color="warn" (click)="insertSeed()">
+            {{ t('ownSeedWarningDialog.buttonInsertSeedViaClipboard') }}
+          </button>         
+        </div>
         <div class="flex full-width button-container">
-          <button [disabled]="!fieldSeedDisabled" mat-raised-button color="warn" (click)="resetSeed()">
+          <button [disabled]="!ownSeedModeDeactivated" mat-raised-button color="warn" (click)="resetSeed()">
             {{ t('ownSeedWarningDialog.button') }}
           </button>
           <button mat-raised-button color="accent" (click)="randomizeSeed()">
@@ -66,7 +71,7 @@
           generatedPublicId
           }}
         </div>
-        <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
+        <div *ngIf="!ownSeedModeDeactivated" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
         </div>
         <div class="flex full-width button-container">
           <button mat-raised-button color="primary" (click)="createAddress()"

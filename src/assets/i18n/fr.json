@@ -42,7 +42,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Attention</b></span>: La création d'une phrase de récupération personnalisée est réservée aux experts. <span class='danger'>Des pirates informatiques ont exploité des phrases de récupération personnalisées par le passé.</span> Pour garantir une sécurité maximale, <b>utilisez une phrase de récupération générée de manière aléatoire</b> fournie par cette portefeuille.<br><br><b><i>Êtes-vous au courant de cela ?</i></b>",
     "hint": "Les phrases de récupération personnalisées sont exposées au risque de vol. Utilisez la phrase de récupération aléatoire de la portefeuille pour une sécurité optimale.",
-    "button": "Utilisez votre propre phrase de récupération."
+    "button": "Utilisez votre propre phrase de récupération.",
+    "buttonInsertSeedViaClipboard": "La seed ne peut être insérée que via le presse-papiers"
   },
   "payment": {
     "keyRequestReason": "Les transactions étant signées numériquement avec votre clé, vous devez la charger au préalable."
@@ -54,12 +55,12 @@
       "confirm": "Oui, je confirme"
     },
     "confirmationText": "Êtes-vous sûr ?"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -336,7 +337,7 @@
     },
     "transactions": {
       "title": "Open transactions",
-      "titleLastEpochs": "The last {{lastEpochsText}} epochs",     
+      "titleLastEpochs": "The last {{lastEpochsText}} epochs",
       "titleAllEpochs": "By Epochs",
       "verificationAlert": "Les données de l'aperçu n'ont pas pu être vérifiées",
       "noTransactions": "Aucune transaction trouvée",

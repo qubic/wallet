@@ -42,7 +42,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warning</b></span>: Creating a custom seed phrase is for experts only. <span class='danger'>Hackers have exploited custom seeds in the past.</span> To ensure maximum security, <b>use a randomly generated seed phrase</b> provided by this wallet.<br><br><b><i>Are you aware of this?</i></b>",
     "hint": "Custom made seeds are at risk of theft. Use wallet's random seed for best security.",
-    "button": "Use your own seed"
+    "button": "Use your own seed",
+    "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
   },
   "payment": {
     "keyRequestReason": "As transactions are digitally signed with your key you need to load your key first."
@@ -54,12 +55,12 @@
       "confirm": "Yes, I confirm"
     },
     "confirmationText": "Are you sure?"
-  },  
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {

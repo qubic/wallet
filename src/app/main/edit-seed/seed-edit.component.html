@@ -33,7 +33,7 @@
           <mat-form-field class="full-width">
             <mat-label>{{ seedEditForm.controls['seed'].value?.length }} / {{
               t("seedEditComponent.form.seed.placeholder") }}</mat-label>
-            <input matInput formControlName="seed" type="text" required [readonly]="fieldSeedDisabled" />
+            <input matInput formControlName="seed" type="text" required [readonly]="true" />
           </mat-form-field>
         </div>
         <mat-error
@@ -53,9 +53,14 @@
           {{ t("seedEditComponent.form.seed.error.regex", {regex: "a-zA-Z0-9_-"})}}
         </mat-error>
       </form>
+      <div *ngIf="!ownSeedModeDeactivated" class="flex full-width button-container" >
+        <button mat-raised-button color="warn" (click)="insertSeed()">
+          {{ t('ownSeedWarningDialog.buttonInsertSeedViaClipboard') }}
+        </button>         
+      </div>
       <div class="flex full-width button-container">
         <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew"
-          [disabled]="!fieldSeedDisabled" color="warn" (click)="resetSeed()">
+          [disabled]="!ownSeedModeDeactivated" color="warn" (click)="resetSeed()">
           {{ t('ownSeedWarningDialog.button') }}
         </button>
         <button mat-raised-button *ngIf="!seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="accent"
@@ -70,7 +75,7 @@
           {{ t("seedEditComponent.privateKeyWarning")}}
         </div>
       </div>
-      <div *ngIf="!fieldSeedDisabled" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
+      <div *ngIf="!ownSeedModeDeactivated" class="danger text-center own-seed-hint"> {{ t("ownSeedWarningDialog.hint")}}
       </div>
     </div>
     <div *ngIf="!getPublicId()">

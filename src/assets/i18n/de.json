@@ -42,7 +42,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Warnung</b></span>: Das Erstellen einer benutzerdefinierten Startphrase ist nur für Experten gedacht. <span class='danger'>Hacker haben in der Vergangenheit benutzerdefinierte Samen ausgenutzt.</span> Um maximale Sicherheit zu gewährleisten, verwenden Sie einen <b>zufällig generierten Seed-Phrase</b>, die von dieser Wallet bereitgestellt wird.<br><br><b><i>Sind Sie sich dessen bewusst?</ i></b>",
     "hint": "Bei individuell angefertigtem Seed besteht die Gefahr des Diebstahls. Für die beste Sicherheit verwenden Sie den Seed Zufallsgenerator der Wallet.",
-    "button": "Eigenen Seed verwenden"
+    "button": "Eigenen Seed verwenden",
+    "buttonInsertSeedViaClipboard": "Seed nur über die Zwischenablage einfügbar"
   },
   "payment": {
     "keyRequestReason": "Transaktionen werden mit dem Konto-Passwort abgesichert. Alle Konto-Passwörter sind verschlüsselt in einer Datei auf deinem Gerät, die wir Tresor nennen. Daher musst du deinen Tresor vorher mit deiner Kombination - dem Tresor-Passwort - entriegeln."
@@ -55,14 +56,12 @@
     },
     "confirmationText": "Sind sie sicher?"
   },
-  "switchExportDialog": {
-  },  
   "maxNumberOfAddressesDialog": {
     "title": "Wichtiger Hinweis",
     "button": "Okay",
     "message": "<div>Sie habe die maximale Anzahl von 15 Adressen in Ihrer Wallet erreicht.</div>"
-   },
-   "switchExportDialog": {
+  },
+  "switchExportDialog": {
     "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
     "buttons": {
       "cancel": "Abbrechen",
@@ -143,7 +142,6 @@
     "title.edit": "Konto bearbeiten",
     "newSeedName": "Konto-Name",
     "seedWarning": "<b>WICHTIG!<br> Diese 55 Zeichen sind Ihr privater Qubic-Schlüssel (Seed)!<br>Speichern und bewahren Sie diesen Seed an einem sicheren Ort auf.<br>Wenn Sie dies nicht tun, können Sie Ihr Geld verlieren. Halten Sie Ihren Seed im Backup!<br><br>Weitere Informationen zu diesem Thema:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
-
     "form": {
       "alias": {
         "placeholder": "Wähle einen beliebigen Namen für dein Konto, sodass du das Konto besser zuordnen kannst.",
@@ -157,7 +155,7 @@
       "seed": {
         "placeholder": "55-Zeichen Seed - privater Qubic Schlüssel",
         "error": {
-          "required": "Ein Konto-Passwort wird benötigt.",
+          "required": "Es ist ein 55-Zeichen-Seed erforderlich.",
           "min": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
           "max": "Der Seed muss aus exakt 55 kleinen Buchstaben bestehen.",
           "regex": "Der Seed darf nur folgende Zeichen enthalten: a-z"
@@ -436,8 +434,8 @@
         "option.error.min": "Die Option muss mindestens 2 Zeichen lang sein",
         "option.error.max": "Die Option darf höchstens 50 Zeichen lang sein",
         "computorIp.label": "Computer IP-Adresse",
-        "computorIp.placeholder": "Computer IP-Adresse",
-        "computorIp.error.required": "Computer IP-Adresse ist erforderlich"
+        "computorIp.placeholder": "Computor IP-Adresse",
+        "computorIp.error.required": "Computor IP-Adresse ist erforderlich"
       },
       "proposalStep.label": "Erstellen",
       "publishStep.label": "Veröffentlichen",

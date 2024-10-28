@@ -42,7 +42,8 @@
   "ownSeedWarningDialog": {
     "message": "<span class='danger'><b>Uyarı</b></span>: Özel cüzdan kimliği yaratmak sadece uzmanlar içindir. <span class='danger'>Hackerlar geçmişte özel oluşturulan cüzdan kimliklerini ele geçirdiler.</span> En yüksek güvenlik için, <b>bu cüzdan tarafından sağlanan</b>  rastgele oluşturulmuş cüzdan kiliği ile adres oluşturun.<br><br><b><i>Bunun farkında mısın?</i></b>",
     "hint": "Özel yapılmış cüzdan kimlikleri çalınma tehlikesi taşımaktadır. Güvenliğiniz için cüzdanın size verdiği rastgele oluşturulmuş cüzdan kimliğini kullanın.",
-    "button": "Kendi özel cüzdan kimliğini kullan"
+    "button": "Kendi özel cüzdan kimliğini kullan",
+    "buttonInsertSeedViaClipboard": "Seed yalnızca panoya yapıştırılarak eklenebilir"
   },
   "payment": {
     "keyRequestReason": "İşlemler anahtarınızla dijital olarak imzalandığından, önce anahtarınızı yüklemeniz gerekir."
@@ -54,12 +55,12 @@
       "confirm": "Evet, Onaylıyorum"
     },
     "confirmationText": "Emin misiniz?"
-  }, 
+  },
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
     "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
-   },
+  },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
     "buttons": {
@@ -554,7 +555,8 @@
       "publicId": "Genel Kimlik",
       "radomizeSeed": "Rastgele Cüzdan Kimliği",
       "addressPlaceholder": "Hesap Adı",
-      "button": "Adres Oluştur"
+      "button": "Adres Oluştur",
+      "buttonInsertSeedViaClipboard": "Seed can only be inserted via the clipboard"
     },
     "downloadVault": {
       "stepTitle": "Kişisel Kasanızı İndirin",

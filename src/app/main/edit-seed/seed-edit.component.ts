@@ -34,7 +34,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
 
   isNew = true;
   seed: IDecodedSeed = (<IDecodedSeed>{});
-  public fieldSeedDisabled = true;
+  public ownSeedModeDeactivated = true;
 
   constructor(renderer: Renderer2, private matDialog: MatDialog, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, public walletService: WalletService, private dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
     super(renderer, themeService);
@@ -161,16 +161,22 @@ export class SeedEditDialog extends QubicDialogWrapper {
   toggleWatchOnlyAddress(): void {
     if (this.seedEditForm.controls.isWatchOnlyAddress.value) {
       this.seedEditForm.controls.seed.setValue("");
-      this.fieldSeedDisabled = true;
+      this.ownSeedModeDeactivated = true;
     } else {
-      this.fieldSeedDisabled = false;
+      this.ownSeedModeDeactivated = false;
       this.randomizeSeed();
     }
   }
 
   randomizeSeed(): void {
-    this.fieldSeedDisabled = true;
+    this.ownSeedModeDeactivated = true;
     this.seedEditForm.controls.seed.setValue(this.seedGen());
+  }
+
+  public insertSeed() {
+    navigator.clipboard.readText().then(clipText => {
+      this.seedEditForm.controls.seed.setValue(clipText);
+    });    
   }
 
   public resetSeed() {
@@ -182,7 +188,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
     });
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        this.fieldSeedDisabled = false;
+        this.ownSeedModeDeactivated = false;
         this.seedEditForm.controls.seed.setValue("");
         const seedValue = this.seedEditForm.controls.seed.value || "";
         this.generateIds(seedValue);
