@@ -23,11 +23,11 @@ function createProxy(mainnetURL, testnetURL, port) {
 
       if (req.url.includes('/Wallet/NetworkBalances')) {
         handleBalanceRequest(req, res, testnetURL);
-      } else if (req.url.includes('/v1/latestTick')) {
+      } else if (req.url.includes('/latestTick')) {
         handleTickRequest(req, res, testnetURL);
-      } else if (req.url.includes('/v1/status')) {
+      } else if (req.url.includes('/status')) {
         handleStatusRequest(req, res, testnetURL);
-      } else if (req.url.includes('/v1/broadcast-transaction') || req.url.includes('/v1/querySmartContract')) {
+      } else if (req.url.includes('/broadcast-transaction') || req.url.includes('/querySmartContract')) {
         forwardRequest(req, res, testnetURL);
       } else {
         forwardRequest(req, res, targetURL);
@@ -177,8 +177,8 @@ function forwardRequest(req, res, targetURL) {
 }
 
 const apiURL = 'https://api.qubic.li';
-const apiArchiverURL = 'https://testapi.qubic.org';
-const testnetURL = 'http://116.202.157.215:8000';
+const apiArchiverURL = 'https://rpc-staging.qubic.org';
+const testnetURL = 'http://135.181.127.252:8000';
 
 // Create a proxy that routes requests based on the URL
 createProxy(apiURL, testnetURL, 7003);
