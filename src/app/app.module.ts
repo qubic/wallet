@@ -210,15 +210,4 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
-    this.matIconRegistry.addSvgIcon(
-      'reward_icon',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/rewards.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
-      'qearn_icon',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/toll.svg')
-    );
-  }
-}
+export class AppModule { }
