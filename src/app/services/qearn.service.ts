@@ -66,7 +66,7 @@ export class QearnService {
   private async queryStakingData(inputType: number, inputSize: number, requestData: string) {
     return lastValueFrom(
       this.apiService.querySmartContract({
-        contractIndex: 6,
+        contractIndex: 9,
         inputType,
         inputSize,
         requestData,
@@ -80,11 +80,11 @@ export class QearnService {
   }
 
   public async lockQubic(seed: string, amount: number, tick: number) {
-    return this.apiService.contractTransaction(seed, 1, 0, amount, {}, tick);
+    return this.apiService.contractTransaction(seed, 9, 1, 0, amount, {}, tick);
   }
 
   public async unLockQubic(seed: string, amount: number, epoch: number, tick: number) {
-    return this.apiService.contractTransaction(seed, 2, 12, 0, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
+    return this.apiService.contractTransaction(seed, 9, 2, 12, 0, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
   }
 
   public async getLockInfoPerEpoch(epoch: number): Promise<LockInfoPerEpoch> {

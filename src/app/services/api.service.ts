@@ -128,7 +128,7 @@ export class ApiService {
    * Functions for Staking Qubic(Qearn)
    */
   public querySmartContract(jsonData: QuerySmartContract) {
-    const localVarPath = "/v1/querySmartContract";
+    const localVarPath = "/querySmartContract";
     return this.httpClient.request<any>('post', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
@@ -142,7 +142,7 @@ export class ApiService {
   }
 
   public broadcastTx(tx: Uint8Array){
-    const localVarPath = `/v1/broadcast-transaction`;
+    const localVarPath = `/broadcast-transaction`;
     const binaryString = Array.from(tx)
       .map((byte) => String.fromCharCode(byte))
       .join('');
@@ -158,7 +158,7 @@ export class ApiService {
     });
   };
 
-  public async contractTransaction(seed: string, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
+  public async contractTransaction(seed: string, constractIndex:number, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
     try {
       const idPackage = await qHelper.createIdPackage(seed);
       const qCrypto = await Crypto;
@@ -170,7 +170,7 @@ export class ApiService {
       const sourcePublicKey = idPackage.publicKey;
       const tx = new Uint8Array(qearnTxSize).fill(0);
       const txView = new DataView(tx.buffer);
-      const contractIndex = 6;
+      const contractIndex = constractIndex; // Qearn contract address
       let offset = 0;
       let i = 0;
       for (i = 0; i < PUBLIC_KEY_LENGTH; i++) {
