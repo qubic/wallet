@@ -30,7 +30,7 @@ export class UnlockInputDialogComponent {
 
   onConfirm(): void {
     if (this.unlockForm.valid) {
-      const unlockAmount = Number(this.amountControl.value.replace(/\D/g, ''));
+      const unlockAmount = Number(this.amountControl.value);
       this.dialogRef.close(unlockAmount);
     }
   }
