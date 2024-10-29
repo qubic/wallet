@@ -1,0 +1,50 @@
+<ng-container *transloco="let t">
+  <form [formGroup]="stakeForm" novalidate (ngSubmit)="confirmLock()" class="content_container gap-4">
+    <mat-card class="general-card">
+      <mat-card-content>
+        <div class="example-stake">
+          <mat-label class="label-container">{{ t('qearn.stakeQubic.title') }}</mat-label>
+          <div class="subText">{{ t('qearn.stakeQubic.subText') }}</div>
+          <div class="col">
+            <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
+              <mat-label>{{ t('qearn.stakeQubic.sourceSeed.label') }}</mat-label>
+              <mat-select formControlName="sourceId" panelClass="full-width">
+                <mat-option *ngFor="let seed of seeds; let i = index" [value]="seed.publicId" class="custom-mat-option">
+                  {{ seed.publicId }}<br />
+                  {{ seed.alias }} - {{ seed.balance | number : '1.0-0' }}
+                  {{ t('general.currency') }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="stakeForm.controls['sourceId'].hasError('required')">
+                {{ t('paymentComponent.form.sourceSeed.error.required') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <app-stake-input [formGroup]="stakeForm" [maxAmount]="maxAmount"></app-stake-input>
+
+          <button type="submit" color="primary" mat-raised-button class="full-width button"
+            [disabled]="stakeForm.invalid || isChecking || isStakePending">
+
+            <ng-container
+              *ngIf="!(isStakePending)">
+              {{ t('qearn.stakeQubic.stake') }}
+            </ng-container>
+
+            <ng-container
+              *ngIf="isStakePending">
+              <mat-spinner [diameter]="20"></mat-spinner>
+            </ng-container>
+
+          </button>
+
+          <div class="stake-col">
+            <span class="stake-bottom">{{ t('qearn.stakeQubic.weeklySatking') }}</span>
+            <span class="stake-bottom stake-bottom-value">{{ remainingTime.days }} {{ t('qearn.stakeQubic.date') }} {{
+              remainingTime.hours }} {{ t('qearn.stakeQubic.hour') }}
+              {{ remainingTime.minutes }} {{ t('qearn.stakeQubic.minute') }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</ng-container>

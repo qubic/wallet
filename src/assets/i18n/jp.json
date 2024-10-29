@@ -7,6 +7,7 @@
       "home": "ダッシュボード",
       "payment": "支払い",
       "balance": "取引履歴",
+      "qearn": "Qearn",
       "settings": "設定",
       "voting": "投票",
       "ipo": "IPO",
@@ -578,6 +579,92 @@
     "buttons": {
       "cancel": "キャンセル",
       "reset": "リセット"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Qubicをロック",
+      "subText": "コインを52週間ロックすることで$QUBICを獲得します。",
+      "enterAmount": "金額を入力",
+      "stake": "ロック",
+      "availableBalance": "利用可能な残高",
+      "weeklySatking": "週次ロッキングポットが閉じるまで",
+      "date": "日",
+      "hour": "時",
+      "minute": "分",
+      "sourceSeed": {
+        "label": "QUBICをロックするアドレス"
+      },
+      "error": {
+        "required": "金額は必須です",
+        "min": "金額は1000万以上でなければなりません",
+        "numberOnly": "数字のみが許可されています",
+        "exceedsBalance": "金額は利用可能な残高を超えることはできません"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "ロックの確認",
+        "confirmLockMessage": "{{amount}} {{currency}}をロックしますか？",
+        "confirm": "ロック",
+        "cancel": "キャンセル",
+        "success": "トランザクションが送信されました！ 確認には時間がかかります。",
+        "error": "ロック中に問題が発生しました！"
+      }
+    },
+    "history": {
+      "lockedEpoch": "ロックされたエポック",
+      "lockedAmount": "ロックされた金額",
+      "lockedWeeks": "ロックされた週数",
+      "totalLockedAmountInEpoch": "エポック内のロックされた合計金額",
+      "currentBonusAmountInEpoch": "エポック内の現在のボーナス金額",
+      "earlyUnlockPercent": "早期解除報酬",
+      "fullUnlockPercent": "全額解除報酬",
+      "actions": "アクション",
+      "noDataMessage": "ロックデータが見つかりません",
+      "unlockedStatus": "アンロックステータス",
+      "lockedStatus": "ロックステータス",
+      "unlockStatus": "アンロックステータス",
+      "fullUnlocked": "完全にアンロック",
+      "earlyUnlocked": "早期アンロック",
+      "unlockedAmount": "アンロックされた金額",
+      "rewardedAmount": "報酬額",
+      "note": "現在のエポックの解除状況",
+      "sourceSeed": {
+        "label": "ロック状態を確認するアドレス"
+      },
+      "unlock": {
+        "title": "アンロック",
+        "message": "{{amount}} {{currency}}を早期にアンロックしますか？",
+        "confirm": "確認",
+        "success": "トランザクションが送信されました！ 確認には時間がかかります。",
+        "error": "アンロック中に問題が発生しました！"
+      },
+      "pleaseUnlock": "まずウォレットをアンロックしてください。"
+    },
+    "earned": {
+      "rewards": "獲得した報酬",
+      "unlockEarly": "早期アンロック",
+      "lockedBalance": "ロックされた残高",
+      "earningRate": "稼働率",
+      "unlocksIn": "解除されるまでの時間",
+      "apy": "年間利回り",
+      "weeks": "週間"
+    },
+    "rewardTable": {
+      "weekFrom": "週間から",
+      "weekTo": "週間まで",
+      "earlyUnlock": "早期解除",
+      "burn": "燃焼",
+      "boost": "増加",
+      "total": "合計"
+    },
+    "main": {
+      "currentLockedAmount": "現在ロックされた金額",
+      "apy": "APY",
+      "lock": "ロック",
+      "lockHistory": "ロック履歴",
+      "rewardTable": "報酬表",
+      "txSuccess": "取引が成功しました！",
+      "txFailed": "取引に失敗しました！"
     }
   }
 }

@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Zahlung",
       "balance": "Buchungen",
+      "qearn": "Qearn",
       "settings": "Einstellungen",
       "voting": "Voting",
       "ipo": "IPO",
@@ -577,6 +578,92 @@
     "buttons": {
       "cancel": "Abbrechen",
       "reset": "Zurücksetzen"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Qubic sperren",
+      "subText": "Verdienen Sie $QUBIC, indem Sie Ihre Münzen für 52 Wochen sperren.",
+      "enterAmount": "Betrag eingeben",
+      "stake": "Sperren",
+      "availableBalance": "Verfügbares Guthaben",
+      "weeklySatking": "Wöchentlicher Sperrtopf schließt in",
+      "date": "T",
+      "hour": "Std.",
+      "minute": "Min.",
+      "sourceSeed": {
+        "label": "Adresse zum Sperren von QUBIC"
+      },
+      "error": {
+        "required": "Betrag ist erforderlich",
+        "min": "Betrag muss größer als 10M sein",
+        "numberOnly": "Nur Zahlen sind erlaubt",
+        "exceedsBalance": "Betrag darf das verfügbare Guthaben nicht überschreiten"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Sperrung bestätigen",
+        "confirmLockMessage": "Möchten Sie {{amount}} {{currency}} für die Sperrung sperren?",
+        "confirm": "Sperren",
+        "cancel": "Abbrechen",
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Sperrung ist etwas schief gelaufen!"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Gesperrte Epoche",
+      "lockedAmount": "Gesperrter Betrag",
+      "lockedWeeks": "Gesperrte Wochen",
+      "totalLockedAmountInEpoch": "Gesamtgesperrter Betrag",
+      "currentBonusAmountInEpoch": "Aktueller Bonusbetrag",
+      "earlyUnlockPercent": "Frühe Entsperrbelohnung",
+      "fullUnlockPercent": "Volle Entsperrbelohnung",
+      "actions": "Aktionen",
+      "noDataMessage": "Keine Sperrdaten gefunden",
+      "unlockedStatus": "Entsperrstatus",
+      "lockedStatus": "Sperrstatus",
+      "unlockStatus": "Entsperrstatus",
+      "fullUnlocked": "Vollständig entsperrt",
+      "earlyUnlocked": "Frühe Entsperrung",
+      "unlockedAmount": "Entsperrter Betrag",
+      "rewardedAmount": "Belohnter Betrag",
+      "note": "Entsperrstatus der aktuellen Epoche",
+      "sourceSeed": {
+        "label": "Adresse zum Überprüfen des Sperrstatus"
+      },
+      "unlock": {
+        "title": "Entsperren",
+        "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",
+        "confirm": "Bestätigen",
+        "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
+        "error": "Bei der Entsperrung ist etwas schief gelaufen!"
+      },
+      "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Brieftasche."
+    },
+    "earned": {
+      "rewards": "Verdiente Belohnungen",
+      "unlockEarly": "Frühe Entsperrung",
+      "lockedBalance": "Gesperrtes Guthaben",
+      "earningRate": "Verdienstquote",
+      "unlocksIn": "Entsperrt in",
+      "apy": "APY",
+      "weeks": "Wochen"
+    },
+    "rewardTable": {
+      "weekFrom": "Woche von",
+      "weekTo": "Woche bis",
+      "earlyUnlock": "Frühe Entsperrung",
+      "burn": "Verbrannt",
+      "boost": "Anheben",
+      "total": "Gesamt"
+    },
+    "main": {
+      "currentLockedAmount": "Aktuell gesperrter Betrag",
+      "apy": "APY",
+      "lock": "Sperren",
+      "lockHistory": "Sperrhistorie",
+      "rewardTable": "Belohnungstabelle",
+      "txSuccess": "Transaktion erfolgreich!",
+      "txFailed": "Transaktion fehlgeschlagen!"
     }
   }
 }
