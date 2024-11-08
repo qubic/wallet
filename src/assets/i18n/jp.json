@@ -133,7 +133,7 @@
   "qrReceiveComponent": {
     "title": "支払いを受け取る",
     "downloadLink": "ダウンロード",
-    "hint": "このQRコードをスキャン／送信して、{{publicId}} のための支払いを受け取ってください。",
+    "hint": "このQRコードをスキャン／送信して、のための支払いを受け取ってください。",
     "buttons.close": "閉じる"
   },
   "seedEditComponent": {

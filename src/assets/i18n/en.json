@@ -133,7 +133,7 @@
   "qrReceiveComponent": {
     "title": "Receive payment",
     "downloadLink": "Download",
-    "hint": "Scan/Send this QR Code to receive a payment for {{publicId}}.",
+    "hint": "Scan/Send this QR Code to receive a payment for",
     "buttons.close": "Close"
   },
   "seedEditComponent": {

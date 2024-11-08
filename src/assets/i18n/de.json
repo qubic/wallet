@@ -133,7 +133,7 @@
   "qrReceiveComponent": {
     "title": "Zahlung empfangen",
     "downloadLink": "Download",
-    "hint": "Scanne/Sende den obigen QR Code, um eine Zahlung auf Qubic Konto-ID {{publicId}} zu empfangen.",
+    "hint": "Scanne den QR Code, um eine Zahlung auf Qubic Konto-ID zu empfangen.",
     "buttons.close": "Schließen"
   },
   "seedEditComponent": {

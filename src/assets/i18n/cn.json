@@ -133,7 +133,7 @@
   "qrReceiveComponent": {
     "title": "接收付款",
     "downloadLink": "下载",
-    "hint": "扫描/发送此二维码以接收付款{{publicId}}.",
+    "hint": "扫描/发送此二维码以接收付款.",
     "buttons.close": "关闭"
   },
   "seedEditComponent": {
