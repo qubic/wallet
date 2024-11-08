@@ -27,7 +27,7 @@
           </mat-slide-toggle>
         </div>
         <div class="flex" class="danger" *ngIf="isNew && !seedEditForm.controls['isWatchOnlyAddress'].value">
-          <div [innerHTML]="t('seedEditComponent.seedWarning')"></div>
+          <div [innerHTML]="t('seedEditComponent.seedWarning')"></div><br>
         </div>
         <div class="seedInput" *ngIf="isNew && !seedEditForm.controls['isWatchOnlyAddress'].value">
           <mat-form-field class="full-width">
