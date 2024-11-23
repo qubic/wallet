@@ -37,7 +37,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "https://cdn.jsdelivr.net/npm/@walletconnect/core@latest/dist/index.umd.js",
+              "https://cdn.jsdelivr.net/npm/@reown/walletkit@latest/dist/index.umd.js"
+            ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"
           },

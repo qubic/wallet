@@ -27,8 +27,8 @@ import { ExportConfigDialog } from './lock/export-config/export-config.component
 import { UnLockComponent } from './lock/unlock/unlock.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SeedEditDialog } from './main/edit-seed/seed-edit.component';
-import { MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort'
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort'
 import { ConfigErrorComponent } from './lock/config-error/config-error.component';
 import { NotifysComponent } from './notifys/notifys.component';
 import { ConfirmDialog } from './core/confirm-dialog/confirm-dialog.component';
@@ -41,7 +41,7 @@ import { AuthInterceptor } from './services/auth-interceptor';
 import { ApiService } from './services/api.service';
 import { ApiArchiverService } from './services/api.archiver.service';
 import { ApiArchiveService } from './services/apis/archive/api.archive.service';
-import { ApiLiveService} from './services/apis/live/api.live.service';
+import { ApiLiveService } from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { SettingsComponent } from './settings/settings.component';
@@ -51,27 +51,27 @@ import { QrReceiveDialog } from './main/qr-receive/qr-receive.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { LanguageChooserComponent } from './core/language-chooser/language-chooser.component';
 import { UpdaterService } from './services/updater-service';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { VotingComponent } from './voting/voting.component';
 import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
 import { VotingCreateComponent } from './voting/create/voting-create.component';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { VotingStatusComponent } from './voting/voting-status/voting-status.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { TransferStatusComponent } from './core/transfer-status/transfer-status.component';
 import { SettingsGeneralComponent } from './settings/general/general.component';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { QubicService } from './services/qubic.service';
 import { DecimalPipe } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
 import { AssetsDialog } from './main/assets/assets.component';
-import {MatMenuModule} from "@angular/material/menu";
+import { MatMenuModule } from "@angular/material/menu";
 import { AssetsComponent } from './assets/assets.component';
 import { TransactionService } from './services/transaction.service';
 import { EnvironmentService } from './services/env.service';
@@ -82,9 +82,10 @@ import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { FileSelectorComponent } from './common/file-selector/file-selector.component';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.component';
+import { WalletConnectService } from './services/wallet-connect.service';
 
 
 /** Http interceptor providers in outside-in order */
@@ -174,27 +175,28 @@ export const httpInterceptorProviders = [
   ],
 
   providers: [
-      VisibilityService,
-      TokenService,
-      {
-        provide: WalletService,
-        useFactory: () => new WalletService(),
-        deps: []
-      },
-      AuthInterceptor,
-      ApiService,
-      ApiArchiverService,
-      ApiArchiveService,
-      ApiLiveService,
-      ApiStatsService,
-      ApiTxStatusService,
-      UpdaterService,
-      QubicService,
-      DecimalPipe,
-      EnvironmentService,
-      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
-      httpInterceptorProviders,
-      TransactionService
+    VisibilityService,
+    TokenService,
+    {
+      provide: WalletService,
+      useFactory: () => new WalletService(),
+      deps: []
+    },
+    AuthInterceptor,
+    ApiService,
+    ApiArchiverService,
+    ApiArchiveService,
+    ApiLiveService,
+    ApiStatsService,
+    ApiTxStatusService,
+    UpdaterService,
+    QubicService,
+    DecimalPipe,
+    EnvironmentService,
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
+    httpInterceptorProviders,
+    TransactionService,
+    WalletConnectService
   ],
   bootstrap: [AppComponent]
 })
