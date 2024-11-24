@@ -61,7 +61,8 @@
                                     {{ t("paymentComponent.form.receiver.error.length") }}
                                 </mat-error>
                                 <span>
-                                    <mat-hint align="start">{{ transferForm.controls['destinationId'].value?.length}}/{{ t("paymentComponent.form.receiver.hint") }}</mat-hint>
+                                    <mat-hint align="start">{{ transferForm.controls['destinationId'].value?.length}}/{{
+                                        t("paymentComponent.form.receiver.hint") }}</mat-hint>
                                 </span>
                             </mat-form-field>
 
@@ -122,8 +123,16 @@
                             </mat-form-field>
                         </div>
                     </div>
+                    <div *ngIf="isWalletConnected" class="row">
+                        <div class="col">
+                            <p>{{ t("paymentComponent.walletConnected") }}: {{ walletAddress }}</p>
+                        </div>
+                    </div>
                 </mat-card-content>
-                <mat-card-actions class="padding">                    
+                <mat-card-actions class="padding">
+                    <button *ngIf="!isWalletConnected" mat-raised-button color="accent" (click)="connectWallet()">
+                        {{ t("paymentComponent.buttons.connectWallet") }}
+                    </button>
                     <button mat-raised-button type="button" (click)="init()">{{
                         t("paymentComponent.buttons.reset") }}</button>
                     <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"

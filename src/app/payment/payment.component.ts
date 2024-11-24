@@ -19,6 +19,7 @@ import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
 import { QubicPackageType } from 'qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { WalletConnectService } from '../services/wallet-connect.service';
 
 
 @Component({
@@ -27,12 +28,13 @@ import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent implements OnInit {
-
-
   private selectedDestinationId: any;
   public maxAmount: number = 0;
   public currentTick = 0;
   public isBroadcasting = false;
+
+  public isWalletConnected = false;
+  public walletAddress: string | null = null;
 
   @ViewChild('selectedDestinationId', {
     static: false
@@ -60,7 +62,8 @@ export class PaymentComponent implements OnInit {
     private t: TranslocoService,
     private transactionService: TransactionService,
     private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
-    private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog) {
+    private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
+    private walletConnectService: WalletConnectService) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
       this.txTemplate = state['template'];
@@ -128,6 +131,24 @@ export class PaymentComponent implements OnInit {
     this.us.forceUpdateCurrentTick();
   }
 
+  async connectWallet() {
+    try {
+      alert(this.walletConnectService);
+      const walletConnection = await this.walletConnectService.connectWallet(); 
+      alert('connectWallet');
+      if (walletConnection) {
+        this.walletAddress = walletConnection.address;
+        this.isWalletConnected = true;
+        this._snackBar.open('Connection to Wallet Connect successful.', 'Close', { duration: 5000, panelClass: 'success' });
+      }else{
+        this._snackBar.open('No connection to Wallet Connect', 'Close', { duration: 5000, panelClass: 'error' });
+      }
+    } catch (error) {
+      this._snackBar.open('Error connecting wallet', 'Close', { duration: 5000, panelClass: 'error' });
+    }
+  }
+  
+
   async onSubmit() {
     if (!this.walletService.privateKey) {
       this._snackBar.open(this.t.translate('paymentComponent.messages.pleaseUnlock'), this.t.translate('general.close'), {
@@ -136,9 +157,9 @@ export class PaymentComponent implements OnInit {
       });
     }
     if (this.transferForm.valid) {
-      
+
       let destinationId = this.selectedAccountId ? this.transferForm.controls.selectedDestinationId.value : this.transferForm.controls.destinationId.value;
-      
+
       if (destinationId === null) {
         this._snackBar.open("INVALID RECEIVER ADDRESSS IS NULL", this.t.translate('general.close'), {
           duration: 10000,
@@ -146,19 +167,19 @@ export class PaymentComponent implements OnInit {
         });
         return;
       }
-      
+
       const targetAddress = new PublicKey(destinationId);
-      
+
       // verify target address
       if (!(await targetAddress.verifyIdentity())) {
         this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
           duration: 10000,
           panelClass: "error"
         });
-        
+
         return;
       }
-      
+
       this.isBroadcasting = true;
       this.walletService.revealSeed((<any>this.transferForm.controls.sourceId.value)).then(s => {
         of(this.transferForm.controls.tick.value!).pipe(

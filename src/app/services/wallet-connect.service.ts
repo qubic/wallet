@@ -10,7 +10,6 @@ export class WalletConnectService {
   private projectId = environment.walletConnectProjectId;
   private url = environment.walletConnectURL;
   private walletInstance: any;
-
   private core: any;
 
   constructor() {
