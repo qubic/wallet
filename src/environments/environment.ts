@@ -5,5 +5,6 @@ export const environment = {
     apiUrl: 'http://localhost:7004',
     explorer:'https://explorer.qubic.org/network/address/',
     assetsFees: 1000000,
-    projektId: '31e92046c23e8e4ff8e39c00587a5489'
+    walletConnectProjectId: '31e92046c23e8e4ff8e39c00587a5489',
+    walletConnectURL: 'https://dev.wallet.qubic.org'
 };
