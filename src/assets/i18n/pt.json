@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Pagamento",
       "balance": "Saldo",
+      "qearn": "Qearn",
       "settings": "Configurações",
       "voting": "Votação",
       "ipo": "IPO",
@@ -574,6 +575,92 @@
     "buttons": {
       "cancel": "Cancel",
       "reset": "Reset"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Bloquear Qubic",
+      "subText": "Ganhe $QUBIC bloqueando suas moedas por 52 semanas.",
+      "enterAmount": "Insira o valor",
+      "stake": "Bloquear",
+      "availableBalance": "Saldo disponível",
+      "weeklySatking": "O pote de bloqueio semanal fecha em",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "sourceSeed": {
+        "label": "Endereço para bloquear QUBIC"
+      },
+      "error": {
+        "required": "Valor é obrigatório",
+        "min": "O valor deve ser maior que 10M",
+        "numberOnly": "Apenas números são permitidos",
+        "exceedsBalance": "O valor não pode exceder o saldo disponível"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Confirmar bloqueio",
+        "confirmLockMessage": "Deseja bloquear {{amount}} {{currency}} para bloqueio?",
+        "confirm": "Bloquear",
+        "cancel": "Cancelar",
+        "success": "Transação enviada! Pode levar algum tempo para ser confirmada.",
+        "error": "Algo deu errado durante o bloqueio!"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Época bloqueada",
+      "lockedAmount": "Quantidade bloqueada",
+      "lockedWeeks": "Semanas bloqueadas",
+      "totalLockedAmountInEpoch": "Quantidade total bloqueada",
+      "currentBonusAmountInEpoch": "Quantidade de bônus atual",
+      "earlyUnlockPercent": "Recompensa de desbloqueio antecipado",
+      "fullUnlockPercent": "Recompensa de desbloqueio total",
+      "actions": "Ações",
+      "noDataMessage": "Nenhum dado de bloqueio encontrado",
+      "unlockedStatus": "Status desbloqueado",
+      "lockedStatus": "Status bloqueado",
+      "unlockStatus": "Status de desbloqueio",
+      "fullUnlocked": "Totalmente desbloqueado",
+      "earlyUnlocked": "Desbloqueado antecipadamente",
+      "unlockedAmount": "Quantidade desbloqueada",
+      "rewardedAmount": "Quantidade recompensada",
+      "note": "Status de desbloqueio da época atual",
+      "sourceSeed": {
+        "label": "Endereço para verificar o status do bloqueio"
+      },
+      "unlock": {
+        "title": "Desbloquear",
+        "message": "Deseja desbloquear {{amount}} {{currency}} antecipadamente?",
+        "confirm": "Confirmar",
+        "success": "Transação enviada! Pode levar algum tempo para ser confirmada.",
+        "error": "Algo deu errado durante o desbloqueio!"
+      },
+      "pleaseUnlock": "Por favor, desbloqueie sua carteira primeiro."
+    },
+    "earned": {
+      "rewards": "Recompensas ganhas",
+      "unlockEarly": "Desbloqueio antecipado",
+      "lockedBalance": "Saldo bloqueado",
+      "earningRate": "Taxa de ganhos",
+      "unlocksIn": "Desbloqueia em",
+      "apy": "APY",
+      "weeks": "Semanas"
+    },
+    "rewardTable": {
+      "weekFrom": "Semana de",
+      "weekTo": "Semana até",
+      "earlyUnlock": "Desbloqueio antecipado",
+      "burn": "Queimar",
+      "boost": "Aumentar",
+      "total": "Total"
+    },
+    "main": {
+      "currentLockedAmount": "Quantidade bloqueada atual",
+      "apy": "APY",
+      "lock": "Bloquear",
+      "lockHistory": "Histórico de bloqueio",
+      "rewardTable": "Tabela de recompensas",
+      "txSuccess": "Transação bem-sucedida!",
+      "txFailed": "Falha na transação!"
     }
   }
 }

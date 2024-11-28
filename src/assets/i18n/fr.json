@@ -7,6 +7,7 @@
       "home": "Accueil",
       "payment": "Paiement",
       "balance": "Solde",
+      "qearn": "Qearn",
       "settings": "Paramètres",
       "voting": "Vote",
       "ipo": "IPO",
@@ -575,6 +576,92 @@
     "buttons": {
       "cancel": "Annuler",
       "reset": "Réinitialiser"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Verrouiller Qubic",
+      "subText": "Gagnez $QUBIC en verrouillant vos pièces pendant 52 semaines.",
+      "enterAmount": "Entrez le montant",
+      "stake": "Verrouiller",
+      "availableBalance": "Solde disponible",
+      "weeklySatking": "Le pot de verrouillage hebdomadaire se ferme dans",
+      "date": "j",
+      "hour": "h",
+      "minute": "min",
+      "sourceSeed": {
+        "label": "Adresse pour verrouiller QUBIC"
+      },
+      "error": {
+        "required": "Le montant est requis",
+        "min": "Le montant doit être supérieur à 10M",
+        "numberOnly": "Seuls les chiffres sont autorisés",
+        "exceedsBalance": "Le montant ne peut pas dépasser le solde disponible"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Confirmer le verrouillage",
+        "confirmLockMessage": "Voulez-vous verrouiller {{amount}} {{currency}} pour le verrouillage ?",
+        "confirm": "Verrouiller",
+        "cancel": "Annuler",
+        "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
+        "error": "Quelque chose s'est mal passé lors du verrouillage !"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Époque verrouillée",
+      "lockedAmount": "Montant verrouillé",
+      "lockedWeeks": "Semaines verrouillées",
+      "totalLockedAmountInEpoch": "Montant total verrouillé",
+      "currentBonusAmountInEpoch": "Montant du bonus actuel",
+      "earlyUnlockPercent": "Récompense de déverrouillage anticipé",
+      "fullUnlockPercent": "Récompense de déverrouillage complet",
+      "actions": "Actions",
+      "noDataMessage": "Aucune donnée de verrouillage trouvée",
+      "unlockedStatus": "Statut déverrouillé",
+      "lockedStatus": "Statut verrouillé",
+      "unlockStatus": "Statut de déverrouillage",
+      "fullUnlocked": "Complètement déverrouillé",
+      "earlyUnlocked": "Déverrouillé en avance",
+      "unlockedAmount": "Montant déverrouillé",
+      "rewardedAmount": "Montant récompensé",
+      "note": "Statut de déverrouillage de l'époque actuelle",
+      "sourceSeed": {
+        "label": "Adresse pour vérifier le statut du verrouillage"
+      },
+      "unlock": {
+        "title": "Déverrouiller",
+        "message": "Voulez-vous déverrouiller {{amount}} {{currency}} en avance ?",
+        "confirm": "Confirmer",
+        "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
+        "error": "Quelque chose s'est mal passé lors du déverrouillage !"
+      },
+      "pleaseUnlock": "Veuillez d'abord déverrouiller votre portefeuille."
+    },
+    "Earned": {
+      "rewards": "Récompenses gagnées",
+      "unlockEarly": "Déverrouiller en avance",
+      "lockedBalance": "Solde verrouillé",
+      "earningRate": "Taux de gain",
+      "unlocksIn": "Déverrouillage dans",
+      "apy": "APY",
+      "weeks": "Semaines"
+    },
+    "rewardTable": {
+      "weekFrom": "Semaine de",
+      "weekTo": "Semaine à",
+      "earlyUnlock": "Déverrouillage anticipé",
+      "burn": "Brûler",
+      "boost": "Augmenter",
+      "total": "Total"
+    },
+    "main":{
+      "currentLockedAmount": "Montant verrouillé actuel",
+      "apy": "APY",
+      "lock": "Verrouiller",
+      "lockHistory": "Historique des verrouillages",
+      "rewardTable": "Tableau des récompenses",
+      "txSuccess": "Transaction réussie!",
+      "txFailed": "Échec de la transaction!"
     }
   }
 }

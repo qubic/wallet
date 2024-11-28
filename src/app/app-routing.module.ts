@@ -16,6 +16,7 @@ import { CreateVaultComponent } from './public/create-vault/create-vault.compone
 import { walletReadyGuard } from './guards/wallet-ready.guard';
 import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
+import { QearnComponent } from './qearn/qearn.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
   {
     path     : 'balance',
     component: BalanceComponent
+  },
+  {
+    path     : 'qearn',
+    component: QearnComponent
   },
   {
     path     : 'voting',

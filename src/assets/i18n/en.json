@@ -7,6 +7,7 @@
       "home": "Dashboard",
       "payment": "Payment",
       "balance": "Transactions",
+      "qearn": "Qearn",
       "settings": "Settings",
       "voting": "Voting",
       "ipo": "IPO",
@@ -578,6 +579,92 @@
     "buttons": {
       "cancel": "Cancel",
       "reset": "Reset"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Lock Qubic",
+      "subText": "Earn $QUBIC by locking your coins for 52 weeks.",
+      "enterAmount": "Enter amount",
+      "stake": "Lock",
+      "availableBalance": "Available Balance",
+      "weeklySatking": "Weekly Locking Pot Closes In",
+      "date": "d",
+      "hour": "h",
+      "minute": "min",
+      "sourceSeed": {
+        "label": "Address to lock QUBIC"
+      },
+      "error": {
+        "required": "Amount is required",
+        "min": "Amount must be greater than 10M",
+        "numberOnly": "Only numbers are allowed",
+        "exceedsBalance": "Amount cannot exceed available balance"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Confirm Locking",
+        "confirmLockMessage": "Do you want to lock {{amount}} {{currency}} for locking?",
+        "confirm": "Lock",
+        "cancel": "Cancel",
+        "success": "Transaction Sent! It will take some time to be confirmed.",
+        "error": "Something went wrong during lock!"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Locked Epoch",
+      "lockedAmount": "Locked Amount",
+      "lockedWeeks": "Locked Weeks",
+      "totalLockedAmountInEpoch": "Total Locked Amount",
+      "currentBonusAmountInEpoch": "Current Bonus Amount",
+      "earlyUnlockPercent": "Early Locking Reward",
+      "fullUnlockPercent": "Full Unlocking Reward",
+      "actions": "Actions",
+      "noDataMessage": "No locking data found",
+      "unlockedStatus": "Unlocked Status",
+      "lockedStatus": "Locked Status",
+      "unlockStatus": "Unlock Status",
+      "fullUnlocked": "Full Unlocked",
+      "earlyUnlocked": "Early Unlocked",
+      "unlockedAmount": "Unlocked Amount",
+      "rewardedAmount": "Rewarded Amount",
+      "note": "Unlocking Status of Current Epoch",
+      "sourceSeed": {
+        "label": "Address to check lock status"
+      },
+      "unlock": {
+        "title": "Unlock",
+        "message": "Do you want to unlock {{amount}} {{currency}} for early?",
+        "confirm": "Confirm",
+        "success": "Transaction Sent! It will take some time to be confirmed.",
+        "error": "Something went wrong during unlock!"
+      },
+      "pleaseUnlock": "Please unlock your wallet first."
+    },
+    "earned": {
+      "rewards": "Earned Rewards",
+      "unlockEarly": "Unlock Early",
+      "lockedBalance": "Locked Balance",
+      "earningRate": "Earning rate",
+      "unlocksIn": "Unlocks In",
+      "apy": "APY",
+      "weeks": "Weeks"
+    },
+    "rewardTable": {
+      "weekFrom": "Week From",
+      "weekTo": "Week To",
+      "earlyUnlock": "Early Unlock",
+      "burn": "Burn",
+      "boost": "Boost",
+      "total": "Total"
+    },
+    "main": {
+      "currentLockedAmount": "Current Locked Amount",
+      "apy": "APY",
+      "lock": "Lock",
+      "lockHistory": "Lock History",
+      "rewardTable": "Reward Table",
+      "txSuccess": "Transaction Succeeded!",
+      "txFailed": "Transaction Failed!"
     }
   }
 }

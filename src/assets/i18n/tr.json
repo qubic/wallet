@@ -7,6 +7,7 @@
       "home": "Ana Menü",
       "payment": "Hesap Hareketleri",
       "balance": "Bakiye",
+      "qearn": "Qearn",
       "settings": "Ayarlar",
       "voting": "Oylama",
       "ipo": "IPO",
@@ -579,6 +580,92 @@
     "buttons": {
       "cancel": "İptal",
       "reset": "Sıfırla"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Qubic Kilitle",
+      "subText": "Paralarınızı 52 hafta kilitleyerek $QUBIC kazanın.",
+      "enterAmount": "Miktarı girin",
+      "stake": "Kilitle",
+      "availableBalance": "Mevcut Bakiye",
+      "weeklySatking": "Haftalık Kilitleme Havuzu Kapanışına",
+      "date": "g",
+      "hour": "sa",
+      "minute": "dk",
+      "sourceSeed": {
+        "label": "QUBIC kilitlemek için adres"
+      },
+      "error": {
+        "required": "Miktar gerekli",
+        "min": "Miktar 10M'dan fazla olmalıdır",
+        "numberOnly": "Sadece sayılar girilebilir",
+        "exceedsBalance": "Miktar mevcut bakiyeyi aşamaz"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Kilitlemeyi Onayla",
+        "confirmLockMessage": "{{amount}} {{currency}} kilitlemek istiyor musunuz?",
+        "confirm": "Kilitle",
+        "cancel": "İptal",
+        "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
+        "error": "Kilitleme sırasında bir hata oluştu!"
+      }
+    },
+    "history": {
+      "lockedEpoch": "Kilitli Dönem",
+      "lockedAmount": "Kilitli Miktar",
+      "lockedWeeks": "Kilitli Haftalar",
+      "totalLockedAmountInEpoch": "Dönem İçindeki Toplam Kilitli Miktar",
+      "currentBonusAmountInEpoch": "Dönemdeki Güncel Bonus Miktarı",
+      "earlyUnlockPercent": "Erken Kilitleme Ödülü",
+      "fullUnlockPercent": "Tam Kilitleme Ödülü",
+      "actions": "İşlemler",
+      "noDataMessage": "Kilitleme verisi bulunamadı",
+      "unlockedStatus": "Kilidi Açılmış Durum",
+      "lockedStatus": "Kilitli Durum",
+      "unlockStatus": "Kilidi Açma Durumu",
+      "fullUnlocked": "Tamamen Kilidi Açılmış",
+      "earlyUnlocked": "Erken Kilidi Açılmış",
+      "unlockedAmount": "Kilidi Açılan Miktar",
+      "rewardedAmount": "Ödüllendirilen Miktar",
+      "note": "Mevcut Dönemin Kilit Açma Durumu",
+      "sourceSeed": {
+        "label": "Kilitleme durumunu kontrol etmek için adres"
+      },
+      "unlock": {
+        "title": "Kilidi Aç",
+        "message": "{{amount}} {{currency}} kilidini erken açmak istiyor musunuz?",
+        "confirm": "Onayla",
+        "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
+        "error": "Kilidi açma sırasında bir hata oluştu!"
+      },
+      "pleaseUnlock": "Lütfen önce cüzdanınızı kilidini açın."
+    },
+    "Earned": {
+      "rewards": "Kazanılan Ödüller",
+      "unlockEarly": "Erken Kilidi Aç",
+      "lockedBalance": "Kilitli Bakiye",
+      "earningRate": "Kazanç oranı",
+      "unlocksIn": "Kilidi Açılma Süresi",
+      "apy": "APY",
+      "weeks": "Haftalar"
+    },
+    "rewardTable": {
+      "weekFrom": "Hafta",
+      "weekTo": "Hafta",
+      "earlyUnlock": "Erken Kilidi Aç",
+      "burn": "Yakma",
+      "boost": "Artırma",
+      "total": "Toplam"
+    },
+    "main": {
+      "currentLockedAmount": "Mevcut Kilidi Açılmış Miktar",
+      "apy": "APY",
+      "lock": "Kilitle",
+      "lockHistory": "Kilitleme Geçmişi",
+      "rewardTable": "Ödül Tablosu",
+      "txSuccess": "İşlem Başarılı!",
+      "txFailed": "İşlem Başarısız!"
     }
   }
 }

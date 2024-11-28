@@ -7,6 +7,7 @@
       "home": "主页",
       "payment": "支付",
       "balance": "交易",
+      "qearn": "Qearn",
       "settings": "设置",
       "voting": "投票",
       "ipo": "IPO",
@@ -577,6 +578,92 @@
     "buttons": {
       "cancel": "取消",
       "reset": "重置"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "锁定 Qubic",
+      "subText": "通过锁定你的硬币 52 周来赚取 $QUBIC。",
+      "enterAmount": "输入金额",
+      "stake": "锁定",
+      "availableBalance": "可用余额",
+      "weeklySatking": "每周锁定池将在以下时间关闭",
+      "date": "天",
+      "hour": "小时",
+      "minute": "分钟",
+      "sourceSeed": {
+        "label": "锁定 QUBIC 的地址"
+      },
+      "error": {
+        "required": "金额为必填项",
+        "min": "金额必须大于 1000 万",
+        "numberOnly": "只允许输入数字",
+        "exceedsBalance": "金额不能超过可用余额"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "确认锁定",
+        "confirmLockMessage": "您要锁定 {{amount}} {{currency}} 吗？",
+        "confirm": "锁定",
+        "cancel": "取消",
+        "success": "交易已发送！确认需要一些时间。",
+        "error": "锁定过程中出现问题！"
+      }
+    },
+    "history": {
+      "lockedEpoch": "锁定时期",
+      "lockedAmount": "锁定金额",
+      "lockedWeeks": "锁定周数",
+      "totalLockedAmountInEpoch": "总锁定金额",
+      "currentBonusAmountInEpoch": "当前奖金金额",
+      "earlyUnlockPercent": "提前解锁奖励",
+      "fullUnlockPercent": "完全解锁奖励",
+      "actions": "操作",
+      "noDataMessage": "未找到锁定数据",
+      "unlockedStatus": "解锁状态",
+      "lockedStatus": "锁定状态",
+      "unlockStatus": "解锁状态",
+      "fullUnlocked": "完全解锁",
+      "earlyUnlocked": "提前解锁",
+      "unlockedAmount": "解锁金额",
+      "rewardedAmount": "奖励金额",
+      "note": "当前时期的解锁状态",
+      "sourceSeed": {
+        "label": "检查锁定状态的地址"
+      },
+      "unlock": {
+        "title": "解锁",
+        "message": "您要提前解锁 {{amount}} {{currency}} 吗？",
+        "confirm": "确认",
+        "success": "交易已发送！确认需要一些时间。",
+        "error": "解锁过程中出现问题！"
+      },
+      "pleaseUnlock": "请先解锁你的钱包。"
+    },
+    "earned": {
+      "rewards": "赚取的奖励",
+      "unlockEarly": "提前解锁",
+      "lockedBalance": "锁定余额",
+      "earningRate": "收益率",
+      "unlocksIn": "解锁时间",
+      "apy": "年收益率",
+      "weeks": "周"
+    },
+    "rewardTable": {
+      "weekFrom": "周从",
+      "weekTo": "周到",
+      "earlyUnlock": "提前解锁",
+      "burn": "燃烧",
+      "boost": "提升",
+      "total": "总计"
+    },
+    "main": {
+      "currentLockedAmount": "当前锁定金额",
+      "apy": "APY",
+      "lock": "锁定",
+      "lockHistory": "锁定历史",
+      "rewardTable": "奖励表",
+      "txSuccess": "交易成功！",
+      "txFailed": "交易失败！"
     }
   }
 }
