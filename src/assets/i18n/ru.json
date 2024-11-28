@@ -135,7 +135,7 @@
   "qrReceiveComponent": {
     "title": "Получить платеж",
     "downloadLink": "Загрузить",
-    "hint": "Отсканируйте/отправьте этот QR-код, для получения оплаты на {{publicId}}",
+    "hint": "Отсканируйте/отправьте этот QR-код, для получения оплаты на",
     "buttons.close": "Закрыть"
   },
   "seedEditComponent": {

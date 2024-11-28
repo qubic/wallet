@@ -134,7 +134,7 @@
   "qrReceiveComponent": {
     "title": "Ödeme Al",
     "downloadLink": "İndir",
-    "hint": "{{publicId}}'ye ödeme almak için bu QR Kodunu tarayın/gönderin",
+    "hint": "'ye ödeme almak için bu QR Kodunu tarayın/gönderin",
     "buttons.close": "Kapat"
   },
   "seedEditComponent": {

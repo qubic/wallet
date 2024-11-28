@@ -134,7 +134,7 @@
   "qrReceiveComponent": {
     "title": "Betaling ontvangen",
     "downloadLink": "Download",
-    "hint": "Scan/verzend deze QR-code om een betaling te ontvangen voor {{publicId}}.",
+    "hint": "Scan/verzend deze QR-code om een betaling te ontvangen voor",
     "buttons.close": "Sluiten"
   },
   "seedEditComponent": {

@@ -49,7 +49,7 @@ export class PaymentComponent implements OnInit {
   private txTemplate: Transaction | undefined;
 
   transferForm = this.fb.group({
-    sourceId: [''],
+    sourceId: ['',[Validators.required]],
     destinationId: ["", this.destinationValidators],
     selectedDestinationId: [""],
     amount: [0, [Validators.required, Validators.min(1)]],

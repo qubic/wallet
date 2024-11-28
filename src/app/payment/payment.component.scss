@@ -26,6 +26,21 @@
     margin-bottom: 15px;
 }
 
+@media screen and (max-width: 1199px) {
+    .col-is-mobile {
+        flex: 1;
+        margin-bottom: 15px;
+    }
+  }
+  
+  @media screen and (min-width: 1200px) {
+    .col-is-mobile {
+        flex: 1;
+        margin-right: 20px; 
+        margin-bottom: 15px;
+    }
+  }
+
 .col:last-child {
     margin-right: 0;
 }
@@ -33,7 +48,7 @@
 .padding button {
     margin: 10px;
 }
+
 .tickOverwrite {
     color: $mainColor
 }
-

@@ -27,7 +27,7 @@
           <mat-icon>add_circle</mat-icon>
           {{ t("seedOverviewComponent.addSeedButton") }}
         </button>&nbsp;
-        <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
+        <mat-slide-toggle *ngIf="!isMobile" (change)="toggleTableView($event)" [checked]="isTable">{{
           t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
       </div>
       <div style="margin-left: auto;" class="text-right">
@@ -219,7 +219,8 @@
       <mat-icon>explore</mat-icon>
     </a>
     <br *ngIf="walletService.privateKey && !isTable">
-    <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
+    <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link"
+      [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
       <mat-icon>visibility</mat-icon>
     </button>
     <button mat-icon-button class="icon-color-link" *ngIf="walletService.privateKey"
