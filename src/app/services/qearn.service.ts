@@ -7,6 +7,7 @@ import { REWARD_DATA } from '../qearn/reward-table/table-data';
 import { UpdaterService } from './updater-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
+import { ApiLiveService } from './apis/live/api.live.service';
 
 interface LockInfoPerEpoch {
   lockAmount: number;
@@ -56,7 +57,7 @@ export class QearnService {
   public selectedPublicId = new Subject<string>();
 
   constructor(
-    private apiService: ApiService,
+    private apiLiveService: ApiLiveService,
     private walletService: WalletService,
     private us: UpdaterService,
     private _snackBar: MatSnackBar,
@@ -65,7 +66,7 @@ export class QearnService {
 
   private async queryStakingData(inputType: number, inputSize: number, requestData: string) {
     return lastValueFrom(
-      this.apiService.querySmartContract({
+      this.apiLiveService.submitQuerySmartContract({
         contractIndex: 9,
         inputType,
         inputSize,
@@ -80,11 +81,11 @@ export class QearnService {
   }
 
   public async lockQubic(seed: string, amount: number, tick: number) {
-    return this.apiService.contractTransaction(seed, 9, 1, 0, amount, {}, tick);
+    return this.apiLiveService.submitQearnTransaction(seed, 9, 1, 0, amount, {}, tick);
   }
 
   public async unLockQubic(seed: string, amount: number, epoch: number, tick: number) {
-    return this.apiService.contractTransaction(seed, 9, 2, 12, 0, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
+    return this.apiLiveService.submitQearnTransaction(seed, 9, 2, 12, 0, { UnlockAmount: amount, LockedEpoch: epoch }, tick);
   }
 
   public async getLockInfoPerEpoch(epoch: number): Promise<LockInfoPerEpoch> {
@@ -174,6 +175,7 @@ export class QearnService {
 
   public async fetchLockInfo(epoch: number) {
     this.epochInfo[epoch] = await this.getLockInfoPerEpoch(epoch);
+    console.log(this.epochInfo[epoch]);
   }
 
   public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
