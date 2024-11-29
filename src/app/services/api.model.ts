@@ -151,10 +151,3 @@ export interface QubicAsset {
   reportingNodes: string[]; // New field to report source node
   issuerIdentity: string;
 }
-
-export interface QuerySmartContract {
-  contractIndex: number, 
-  inputType: number,
-  inputSize: number,
-  requestData: string,
-}

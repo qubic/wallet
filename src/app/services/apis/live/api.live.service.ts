@@ -13,8 +13,17 @@ import {
 } from './api.live.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { map, Observable, of } from 'rxjs';
+import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { WalletService } from '../../wallet.service';
+import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from 'qubic-ts-library/dist/crypto'
+import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
+import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
+import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
+import { DynamicPayload } from 'qubic-ts-library/dist/qubic-types/DynamicPayload';
+import { QubicDefinitions } from 'qubic-ts-library/dist/QubicDefinitions';
+
+const qHelper = new QubicHelper();
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +34,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class ApiLiveService {
     private basePath = environment.apiUrl;
 
-    constructor(protected httpClient: HttpClient) {
+    constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
 
 
@@ -131,7 +140,7 @@ export class ApiLiveService {
 
 
     public submitBroadcastTransaction(encodedTransaction: string) {
-        let localVarPath = `/broadcast-transaction`;
+        let localVarPath = `/v1/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -155,7 +164,7 @@ export class ApiLiveService {
 
 
     public submitQuerySmartContract(querySmartContract: QuerySmartContractRequest) {
-        let localVarPath = `/querySmartContract`;
+        let localVarPath = `/v1/querySmartContract`;
         return this.httpClient.request<QuerySmartContractResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -197,4 +206,38 @@ export class ApiLiveService {
         );
     }
 
+    public async submitQearnTransaction(seed: string, contractIndex:number, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
+        try {
+          const idPackage = await qHelper.createIdPackage(seed);
+
+          const destinationPublicKey = new Uint8Array(QubicDefinitions.PUBLIC_KEY_LENGTH);
+          destinationPublicKey.fill(0);
+          destinationPublicKey[0] = contractIndex;
+
+          const payloadPkg = payload.UnlockAmount && payload.LockedEpoch ? new QubicPackageBuilder(inputSize)
+            .add(payload.UnlockAmount)
+            .addRaw(payload.LockedEpoch) : new QubicPackageBuilder(0);
+
+          const dynamicPayload = new DynamicPayload(inputSize);
+          dynamicPayload.setPayload(payloadPkg.getData());
+
+          const tx = new QubicTransaction().setSourcePublicKey(idPackage.publicId)
+          .setDestinationPublicKey(await qHelper.getIdentity(destinationPublicKey))
+          .setAmount(amount)
+          .setTick(tick + this.walletService.getSettings().tickAddition)
+          .setInputType(inputType)
+          .setInputSize(inputSize)
+          if(dynamicPayload.getPackageSize() > 0) {
+              tx.setPayload(dynamicPayload);
+            }
+            const res = await tx.build(seed);
+            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(res)));
+            return {
+                txResult,
+          };
+        } catch (error) {
+          console.error("Error signing transaction:", error);
+          throw new Error("Failed to sign and broadcast transaction.");
+        }
+    }
 }
