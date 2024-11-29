@@ -147,7 +147,7 @@ export class ApiLiveService {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: encodedTransaction,
+                body: { encodedTransaction },
                 responseType: 'json'
             }
         ).pipe(
