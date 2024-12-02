@@ -177,7 +177,7 @@ export class ApiLiveService {
         ).pipe(
             map((response: QuerySmartContractResponse) => {
                 if (response) {
-                    //console.log('Response from submitQuerySmartContract:', response);
+                    // console.log('Response from submitQuerySmartContract:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
@@ -214,12 +214,16 @@ export class ApiLiveService {
           destinationPublicKey.fill(0);
           destinationPublicKey[0] = contractIndex;
 
-          const payloadPkg = payload.UnlockAmount && payload.LockedEpoch ? new QubicPackageBuilder(inputSize)
-            .add(payload.UnlockAmount)
-            .addRaw(payload.LockedEpoch) : new QubicPackageBuilder(0);
-
           const dynamicPayload = new DynamicPayload(inputSize);
-          dynamicPayload.setPayload(payloadPkg.getData());
+          if (payload.UnlockAmount && payload.LockedEpoch) {
+            const combinedPayload = new Uint8Array(12);
+            const view = new DataView(combinedPayload.buffer);
+            
+            view.setBigUint64(0, BigInt(payload.UnlockAmount), true);
+            view.setUint32(8, payload.LockedEpoch, true);
+            
+            dynamicPayload.setPayload(combinedPayload);
+          }
 
           const tx = new QubicTransaction().setSourcePublicKey(idPackage.publicId)
           .setDestinationPublicKey(await qHelper.getIdentity(destinationPublicKey))
