@@ -146,7 +146,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       });
 
       this.showSnackBar('qearn.history.unlock.success', 'success');
-      this.qearnService.monitorUnlockTransaction(publicId, lockedAmount, this.qearnComponent.epoch, this);
+      this.qearnService.monitorUnlockTransaction(publicId, lockedAmount, this.qearnComponent.epoch, lockedEpoch);
     } catch (error) {
       this.showSnackBar('qearn.history.unlock.error', 'error');
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import { lastValueFrom, Subject } from 'rxjs';
+import { filter, lastValueFrom, Subject, take } from 'rxjs';
 import { WalletService } from './wallet.service';
 import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
 import { REWARD_DATA } from '../qearn/reward-table/table-data';
@@ -281,27 +281,29 @@ export class QearnService {
   }
 
   private async monitorTransaction(publicId: string, initialLockedAmount: number, epoch: number, currentEpoch: number, type: 'stake' | 'unlock'): Promise<void> {
-    this.us.currentTick.subscribe(async (tick) => {
-      if (this.pendingStake !== null && tick > this.pendingStake.targetTick) {
-        await this.fetchStakeDataPerEpoch(publicId, epoch, currentEpoch, true);
-        const updatedLockedAmount = this.stakeData[publicId].find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
-        
-        const success = initialLockedAmount !== updatedLockedAmount;
-        const messageKey = success ? 'qearn.main.txSuccess' : 'qearn.main.txFailed';
-        const panelClass = success ? 'success' : 'error';
+    this.us.currentTick.pipe(
+      filter(tick => this.pendingStake !== null && tick > this.pendingStake.targetTick),
+      take(1)
+    ).subscribe(async () => {
+      await this.fetchStakeDataPerEpoch(publicId, epoch, currentEpoch, true);
+      
+      const updatedLockedAmount = this.stakeData[publicId]?.find(
+        data => data.lockedEpoch === epoch
+      )?.lockedAmount ?? 0;
 
-        this._snackBar.open(
-          this.transloco.translate(messageKey),
-          this.transloco.translate('general.close'),
-          {
-            duration: 0,
-            panelClass,
-          }
-        );
+      const success = initialLockedAmount !== updatedLockedAmount;
+      
+      this._snackBar.open(
+        this.transloco.translate(success ? 'qearn.main.txSuccess' : 'qearn.main.txFailed'),
+        this.transloco.translate('general.close'),
+        {
+          duration: 0,
+          panelClass: success ? 'success' : 'error'
+        }
+      );
 
-        this.txSuccessSubject.next(this.pendingStake);
-        this.pendingStake = null;
-      }
+      this.txSuccessSubject.next(this.pendingStake!);
+      this.pendingStake = null;
     });
   }
 
@@ -309,7 +311,7 @@ export class QearnService {
     this.monitorTransaction(publicId, initialLockedAmount, epoch, epoch, 'stake');
   }
 
-  public monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, historyComponent: any): void {
-    this.monitorTransaction(publicId, initialLockedAmount, historyComponent.lockedEpoch, currentEpoch, 'unlock');
+  public monitorUnlockTransaction(publicId: string, initialLockedAmount: number, currentEpoch: number, lockedEpoch: number): void {
+    this.monitorTransaction(publicId, initialLockedAmount, lockedEpoch, currentEpoch, 'unlock');
   }
 }

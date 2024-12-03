@@ -584,7 +584,7 @@
   "qearn": {
     "stakeQubic": {
       "title": "Lock Qubic",
-      "subText": "Earn $QUBIC by locking your coins for 52 weeks.",
+      "subText": "Earn $QUBIC by locking your coins for upto 52 weeks.",
       "enterAmount": "Enter amount",
       "stake": "Lock",
       "availableBalance": "Available Balance",
