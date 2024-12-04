@@ -109,7 +109,7 @@
     "form": {
       "info": "Formular - Vermögenswerte senden",
       "fees": "Feste Sendegebühren: 1.000.000 Qubic",
-      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (1M Qubic) beträgt:",
+      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (100 Qubic) beträgt:",
       "select": "Vermögenswert auswählen",
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",

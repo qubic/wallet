@@ -109,7 +109,7 @@
     "form": {
       "info": "資産を送信",
       "fees": "送信手数料: 1,000,000 Qubic",
-      "balance": "送信手数料(1M Qubic)を差し引いた後の残高:",
+      "balance": "送信手数料(100 Qubic)を差し引いた後の残高:",
       "select": "資産を選択",
       "select.error": "資産の選択が必要です",
       "placeholder": "受信者のアドレスID",
