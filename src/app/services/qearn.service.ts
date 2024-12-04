@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import { filter, lastValueFrom, Subject, take } from 'rxjs';
+import { filter, lastValueFrom, Subject, take, BehaviorSubject } from 'rxjs';
 import { WalletService } from './wallet.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { REWARD_DATA } from '../qearn/reward-table/table-data';
@@ -48,6 +48,8 @@ interface PendingStake {
   providedIn: 'root',
 })
 export class QearnService {
+  private epochInfoSubject = new BehaviorSubject<{ [key: number]: LockInfoPerEpoch }>({});
+  public epochInfo$ = this.epochInfoSubject.asObservable();
   public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
   public stakeData: { [key: string]: IStakeStatus[] } = {};
   public endedStakeData: { [key: string]: IEndedStakeStatus[] } = {};
@@ -175,6 +177,8 @@ export class QearnService {
 
   public async fetchLockInfo(epoch: number) {
     this.epochInfo[epoch] = await this.getLockInfoPerEpoch(epoch);
+    this.epochInfo = { ...this.epochInfo };
+    this.epochInfoSubject.next(this.epochInfo);
     console.log(this.epochInfo[epoch]);
   }
 
