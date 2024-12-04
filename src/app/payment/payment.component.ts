@@ -4,7 +4,7 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
-import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -12,13 +12,13 @@ import { UpdaterService } from '../services/updater-service';
 import { CurrentTickResponse, Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
 import { concatMap, of } from 'rxjs';
-import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { RequestResponseHeader } from 'qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
-import { QubicConnector } from 'qubic-ts-library/dist/QubicConnector';
-import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
-import { QubicPackageType } from 'qubic-ts-library/dist/qubic-communication/QubicPackageType';
+import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
+import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
+import { QubicConnector } from '@qubic-lib/qubic-ts-library/dist/QubicConnector';
+import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
+import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
-import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 
 
 @Component({

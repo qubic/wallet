@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { filter, lastValueFrom, Subject, take } from 'rxjs';
 import { WalletService } from './wallet.service';
-import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { REWARD_DATA } from '../qearn/reward-table/table-data';
 import { UpdaterService } from './updater-service';
 import { MatSnackBar } from '@angular/material/snack-bar';

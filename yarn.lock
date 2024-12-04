@@ -2822,6 +2822,14 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
+"@qubic-lib/qubic-ts-library@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@qubic-lib/qubic-ts-library/-/qubic-ts-library-0.1.5.tgz#57a8b0598a90c13e2b2fc87a8da4afba55b7b139"
+  integrity sha512-NK4LqlGRSHh9PH1MblmFEFPY9c7fMuHy678cuuPEXCAyoUlOpGAJdrsknJWTNXs8nJ4wSMQY8Xwlbi4kjRcMTQ==
+  dependencies:
+    bignumber.js "^9.1.2"
+    net "^1.0.2"
+
 "@schematics/angular@16.2.12":
   version "16.2.12"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-16.2.12.tgz#13e00e7390903cfc00eb8d5c2e74986262aff6ec"
@@ -8109,14 +8117,6 @@ qs@~6.5.2:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
   integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
-
-qubic-ts-library@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/qubic-ts-library/-/qubic-ts-library-0.1.4.tgz#3b82cbb5e0ec5be4b5bab98be867971ada261eb2"
-  integrity sha512-+lt8JNfXcIGwTsqcnlx/EIPKU/JnO3MXLSB0tR4vmAJ2lmp3LUloiWH4ZKTpGL0Nb26DRMaj8dNtxgTw+q7ffw==
-  dependencies:
-    bignumber.js "^9.1.2"
-    net "^1.0.2"
 
 querystringify@^2.1.1:
   version "2.2.0"

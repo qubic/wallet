@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { WalletService } from '../../services/wallet.service';
-import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../services/api.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';

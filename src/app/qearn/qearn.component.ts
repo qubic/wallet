@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { QearnService } from '../services/qearn.service';
-import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { MatTabGroup } from '@angular/material/tabs';
 import { UpdaterService } from '../services/updater-service';
 import { Subject, takeUntil } from 'rxjs';

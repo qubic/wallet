@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 
 export interface ComputorSelected {

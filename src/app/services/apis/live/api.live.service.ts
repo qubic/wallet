@@ -16,12 +16,12 @@ import { environment } from '../../../../environments/environment';
 import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { WalletService } from '../../wallet.service';
-import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from 'qubic-ts-library/dist/crypto'
-import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
-import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
-import { DynamicPayload } from 'qubic-ts-library/dist/qubic-types/DynamicPayload';
-import { QubicDefinitions } from 'qubic-ts-library/dist/QubicDefinitions';
+import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from '@qubic-lib/qubic-ts-library/dist/crypto'
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
+import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
+import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
+import { DynamicPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/DynamicPayload';
+import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 
 const qHelper = new QubicHelper();
 

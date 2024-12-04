@@ -13,10 +13,10 @@ import { BalanceResponse, NetworkBalance, Transaction, MarketInformation } from 
 import { MatSort } from '@angular/material/sort';
 import { UpdaterService } from '../services/updater-service';
 import { QubicService } from '../services/qubic.service';
-import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { QubicEntityResponse } from 'qubic-ts-library/dist/qubic-communication/QubicEntityResponse';
+import { QubicEntityResponse } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicEntityResponse';
 import { DecimalPipe } from '@angular/common';
 import { AssetsDialog } from './assets/assets.component';
 import { ExportConfigDialog } from '../lock/export-config/export-config.component';

@@ -9,7 +9,7 @@ import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
 import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { TokenService } from './token.service';
-import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { WalletService } from './wallet.service';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { bytes32ToString } from 'qubic-ts-library/dist//converter/converter';
+import { bytes32ToString } from '@qubic-lib/qubic-ts-library/dist//converter/converter';
 import { IConfig, IEncryptedVaultFile, IVaultFile } from '../model/config';
 import { IDecodedSeed, ISeed } from '../model/seed';
 import { ITx } from '../model/tx';

@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 
 @Component({
   selector: 'app-voting-create',

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { QubicConnector } from 'qubic-ts-library/dist/QubicConnector';
-import { QubicPackageBuilder } from 'qubic-ts-library/dist/QubicPackageBuilder';
-import { QubicPackageType } from 'qubic-ts-library/dist/qubic-communication/QubicPackageType';
-import { RequestResponseHeader } from 'qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
+import { QubicConnector } from '@qubic-lib/qubic-ts-library/dist/QubicConnector';
+import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
+import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
+import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
 import { ApiService } from './api.service';
 import { UpdaterService } from './updater-service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
-import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
+import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { lastValueFrom } from 'rxjs';
 
 

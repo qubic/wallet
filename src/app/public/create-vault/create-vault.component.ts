@@ -16,7 +16,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { MatStepper } from '@angular/material/stepper';
-import { QubicHelper } from 'qubic-ts-library/dist/qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
 
