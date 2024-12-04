@@ -110,7 +110,7 @@
     "form": {
       "info": "发送资产",
       "fees": "固定发送费用: 1,000,000 Qubic",
-      "balance": "扣除转账费用（1M Qubic）后，您的余额将为:",
+      "balance": "扣除转账费用（100 Qubic）后，您的余额将为:",
       "select": "选择资产",
       "select.error": "需要选择资产",
       "placeholder": "接收方地址 ID",

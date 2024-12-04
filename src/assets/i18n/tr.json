@@ -110,7 +110,7 @@
     "form": {
       "info": "Varlık Gönder",
       "fees": "Sabit gönderim ücreti: 1.000.000 Qubic",
-      "balance": "Transfer ücretleri (1M Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
+      "balance": "Transfer ücretleri (100 Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
       "select": "Varlık Seç",
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
