@@ -108,7 +108,7 @@
     },
     "form": {
       "info": "Formular - Vermögenswerte senden",
-      "fees": "Feste Sendegebühren: 1.000.000 Qubic",
+      "fees": "Feste Sendegebühren: 100 Qubic",
       "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (100 Qubic) beträgt:",
       "select": "Vermögenswert auswählen",
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
@@ -125,7 +125,7 @@
       "buttons": {
         "send": "Senden",
         "cancel": "Abbrechen",
-        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt 1.000.000 Qubic"
+        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt 100 Qubic"
       }
     },
     "noAssets": "Keine Vermögenswerte verfügbar"

@@ -108,7 +108,7 @@
     },
     "form": {
       "info": "Envoyer Assets",
-      "fees": "Frais d'envoi fixes : 1 000 000 Qubic",
+      "fees": "Frais d'envoi fixes : 100 Qubic",
       "balance": "Votre solde après déduction des frais de transfert (1 million de Qubics) sera de:",
       "select": "Sélectionner l'Actif",
       "select.error": "La sélection de l'actif est requise",
@@ -125,7 +125,7 @@
       "buttons": {
         "send": "Envoyer Assets",
         "cancel": "Annuler",
-        "error.balance": "Balance insuffisante, vous devez avoir un minimum de 1,000,000 Qubic"
+        "error.balance": "Balance insuffisante, vous devez avoir un minimum de 100 Qubic"
       }
     },
     "noAssets": "Aucun actif disponible"

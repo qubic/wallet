@@ -108,7 +108,7 @@
     },
     "form": {
       "info": "Varlık Gönder",
-      "fees": "Sabit gönderim ücreti: 1.000.000 Qubic",
+      "fees": "Sabit gönderim ücreti: 100 Qubic",
       "balance": "Transfer ücretleri (100 Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
       "select": "Varlık Seç",
       "select.error": "Varlık seçimi gereklidir",
@@ -125,7 +125,7 @@
       "buttons": {
         "send": "Gönder",
         "cancel": "İptal",
-        "error.balance": "Yetersiz bakiye, minimum bakiye 1.000.000 Qubic olmalıdır"
+        "error.balance": "Yetersiz bakiye, minimum bakiye 100 Qubic olmalıdır"
       }
     },
     "noAssets": "Kullanılabilir Varlık Bulunamadı"
