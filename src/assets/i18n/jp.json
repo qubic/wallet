@@ -109,7 +109,7 @@
     },
     "form": {
       "info": "資産を送信",
-      "fees": "送信手数料: 1,000,000 Qubic",
+      "fees": "送信手数料: 100 Qubic",
       "balance": "送信手数料(100 Qubic)を差し引いた後の残高:",
       "select": "資産を選択",
       "select.error": "資産の選択が必要です",
@@ -126,7 +126,7 @@
       "buttons": {
         "send": "送信",
         "cancel": "キャンセル",
-        "error.balance": "残高不足、最低残高は1,000,000 Qubic必要です"
+        "error.balance": "残高不足、最低残高は100 Qubic必要です"
       }
     },
     "noAssets": "利用可能な資産がありません"

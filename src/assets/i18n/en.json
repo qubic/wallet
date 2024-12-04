@@ -109,7 +109,7 @@
     },
     "form": {
       "info": "Send Assets",
-      "fees": "Fixed sending fees: 1,000,000 Qubic",
+      "fees": "Fixed sending fees: 100 Qubic",
       "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
@@ -126,7 +126,7 @@
       "buttons": {
         "send": "Send",
         "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 1,000,000 Qubic"
+        "error.balance": "Insufficient balance, minimum balance is 100 Qubic"
       }
     },
     "noAssets": "No assets available"

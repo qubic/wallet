@@ -109,7 +109,7 @@
     },
     "form": {
       "info": "Envío de Assets",
-      "fees": "Costo fijo del envío: 1,000,000 Qubic",
+      "fees": "Costo fijo del envío: 100 Qubic",
       "balance": "Tu balance, luego de aplicar los costos de la transferencia (1M QUBIC), será:",
       "select": "Seleccione un Asset",
       "select.error": "Debe seleccionar un Asset",
@@ -126,7 +126,7 @@
       "buttons": {
         "send": "Enviar",
         "cancel": "Cancelar",
-        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de 1,000,000 QUBIC"
+        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de 100 QUBIC"
       }
     },
     "noAssets": "No hay activos disponibles"
