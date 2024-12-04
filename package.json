@@ -43,7 +43,7 @@
     "ngx-device-detector": "^6.0.2",
     "ngx-file-drop": "^16.0.0",
     "qrcode": "^1.5.3",
-    "qubic-ts-library": "^0.1.5",
+    "@qubic-lib/qubic-ts-library": "^0.1.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "0.13.0"

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { QubicTransaction } from 'qubic-ts-library/dist/qubic-types/QubicTransaction';
+import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
 import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';

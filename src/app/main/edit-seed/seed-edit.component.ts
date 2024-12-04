@@ -4,14 +4,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IDecodedSeed, ISeed } from 'src/app/model/seed';
-import { QubicHelper } from 'qubic-ts-library/dist//qubicHelper';
+import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
-import { PublicKey } from 'qubic-ts-library/dist/qubic-types/PublicKey';
+import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 
 
 @Component({
