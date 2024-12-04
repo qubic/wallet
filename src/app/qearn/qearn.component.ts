@@ -32,9 +32,11 @@ export class QearnComponent implements OnInit, OnDestroy {
       .subscribe(async (res) => {
         try {
           this.epoch = res.lastProcessedTick.epoch;
-          const epochInfo = this.qearnService?.epochInfo?.[this.epoch];
-          this.currentLockedAmount = epochInfo?.currentLockedAmount || 0;
-          this.yieldPercentage = (epochInfo?.yieldPercentage || 0) / 100000;
+          this.qearnService.epochInfo$.pipe(takeUntil(this.unsubscribe$)).subscribe(epochInfos => {
+            const epochInfo = epochInfos[this.epoch];
+            this.currentLockedAmount = epochInfo?.currentLockedAmount || 0;
+            this.yieldPercentage = (epochInfo?.yieldPercentage || 0) / 100000;
+          });
 
           // Fetching current epoch info
           await this.qearnService.fetchLockInfo(this.epoch);
