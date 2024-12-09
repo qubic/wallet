@@ -45,6 +45,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.setupSubscriptions();
+    this.autoSelectFirstId();
   }
 
   ngAfterViewInit() {
@@ -162,5 +163,12 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       this.transloco.translate('general.close'),
       { duration: 3000, panelClass }
     );
+  }
+
+  private autoSelectFirstId(): void {
+    const seeds = this.walletService.getSeeds();
+    if (seeds && seeds.length >= 1) {
+      this.form.get('sourceId')?.setValue(seeds[0].publicId);
+    }
   }
 }

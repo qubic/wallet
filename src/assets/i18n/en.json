@@ -616,7 +616,7 @@
       "lockedWeeks": "Locked Weeks",
       "totalLockedAmountInEpoch": "Total Locked Amount",
       "currentBonusAmountInEpoch": "Current Bonus Amount",
-      "earlyUnlockPercent": "Early Locking Reward",
+      "earlyUnlockPercent": "Early Unlocking Reward",
       "fullUnlockPercent": "Full Unlocking Reward",
       "actions": "Actions",
       "noDataMessage": "No locking data found",
