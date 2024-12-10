@@ -16,19 +16,19 @@
             <!-- Early Unlock % Column -->
             <ng-container matColumnDef="earlyUnlock">
                 <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.earlyUnlock') }} </th>
-                <td mat-cell *matCellDef="let element"> {{element.earlyUnlock}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.earlyUnlock}}% </td>
             </ng-container>
 
             <!-- Burn % Column -->
             <ng-container matColumnDef="burn">
                 <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.burn') }} </th>
-                <td mat-cell *matCellDef="let element"> {{element.burn}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.burn}}%</td>
             </ng-container>
 
             <!-- Boost % Column -->
             <ng-container matColumnDef="boost">
                 <th mat-header-cell *matHeaderCellDef> {{ t('qearn.rewardTable.boost') }} </th>
-                <td mat-cell *matCellDef="let element"> {{element.boost}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.boost}}% </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
