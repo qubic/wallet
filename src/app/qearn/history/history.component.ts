@@ -138,9 +138,6 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, lockedEpoch, tick);
       if (!unlockResult) return;
 
-      const result = await this.qearnService.lockQubic(seed, lockedAmount, tick);
-      if (!result.txResult) return;
-
       const newTick = tick + this.walletService.getSettings().tickAddition;
       this.qearnService.setPendingStake({
         publicId, amount: lockedAmount, epoch: lockedEpoch, targetTick: newTick, type: 'UNLOCK',
