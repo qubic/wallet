@@ -102,6 +102,13 @@ export class HistoryComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    const { publicId, lockedEpoch } = element;
+    const seed = this.walletService.getSeed(publicId)!;
+    if(seed.balance < 1 && lockedEpoch !== this.qearnComponent.epoch) {
+      this.showSnackBar('qearn.history.unlock.insufficientMinTxAmount', 'error');
+      return;
+    }
+
     const inputDialogRef = this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
       data: { maxUnlockAmount: element.lockedAmount },

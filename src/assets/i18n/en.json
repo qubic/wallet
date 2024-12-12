@@ -608,7 +608,9 @@
         "cancel": "Cancel",
         "success": "Transaction Sent! It will take some time to be confirmed.",
         "error": "Something went wrong during lock!"
-      }
+      },
+      "fullAmountWarningTitle": "Warning: Locking Full Amount",
+      "fullAmountWarningMessage": "If you lock the full amount of this address, you won't be able to unlock Qubic. To unlock Qubic, the address must hold at least 1 Qubic. Are you sure you want to proceed?"
     },
     "history": {
       "lockedEpoch": "Locked Epoch",
@@ -636,7 +638,8 @@
         "message": "Do you want to unlock {{amount}} {{currency}} for early?",
         "confirm": "Confirm",
         "success": "Transaction Sent! It will take some time to be confirmed.",
-        "error": "Something went wrong during unlock!"
+        "error": "Something went wrong during unlock!",
+        "insufficientMinTxAmount": "Address must hold at least 1 Qubic to perform transactions"
       },
       "pleaseUnlock": "Please unlock your wallet first."
     },

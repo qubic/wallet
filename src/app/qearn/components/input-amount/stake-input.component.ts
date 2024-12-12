@@ -23,7 +23,13 @@ export class StakeInputComponent implements OnChanges {
   }
 
   validateAmount(maxAmount: number): void {
-    this.amountControl.setValidators([Validators.required, Validators.min(10000000), Validators.max(maxAmount)]);
+    const minRequiredBalance = 1;
+    this.amountControl.setValidators([
+      Validators.required,
+      Validators.min(10000000),
+      Validators.max(maxAmount),
+      Validators.min(minRequiredBalance)
+    ]);
     this.amountControl.updateValueAndValidity();
   }
 

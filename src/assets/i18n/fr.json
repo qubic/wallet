@@ -605,7 +605,9 @@
         "cancel": "Annuler",
         "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
         "error": "Quelque chose s'est mal passé lors du verrouillage !"
-      }
+      },
+      "fullAmountWarningTitle": "Attention : Verrouillage du montant total",
+      "fullAmountWarningMessage": "Si vous verrouillez le montant total de cette adresse, vous ne pourrez pas déverrouiller Qubic. Pour déverrouiller Qubic, l'adresse doit contenir au moins 1 Qubic. Êtes-vous sûr de vouloir continuer ?"
     },
     "history": {
       "lockedEpoch": "Époque verrouillée",
@@ -633,7 +635,8 @@
         "message": "Voulez-vous déverrouiller {{amount}} {{currency}} en avance ?",
         "confirm": "Confirmer",
         "success": "Transaction envoyée ! Cela prendra un certain temps pour être confirmé.",
-        "error": "Quelque chose s'est mal passé lors du déverrouillage !"
+        "error": "Quelque chose s'est mal passé lors du déverrouillage !",
+        "insufficientMinTxAmount": "L'adresse doit contenir au moins 1 Qubic pour effectuer des transactions"
       },
       "pleaseUnlock": "Veuillez d'abord déverrouiller votre portefeuille."
     },

@@ -609,7 +609,9 @@
         "cancel": "İptal",
         "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
         "error": "Kilitleme sırasında bir hata oluştu!"
-      }
+      },
+      "fullAmountWarningTitle": "Uyarı: Tüm Miktarı Kilitleme",
+      "fullAmountWarningMessage": "Bu adresin tüm miktarını kilitlerseniz, Qubic'in kilidini açamazsınız. Qubic'in kilidini açmak için, adres en az 1 Qubic tutmalıdır. Devam etmek istediğinizden emin misiniz?"
     },
     "history": {
       "lockedEpoch": "Kilitli Dönem",
@@ -637,7 +639,8 @@
         "message": "{{amount}} {{currency}} kilidini erken açmak istiyor musunuz?",
         "confirm": "Onayla",
         "success": "İşlem gönderildi! Onaylanması biraz zaman alacak.",
-        "error": "Kilidi açma sırasında bir hata oluştu!"
+        "error": "Kilidi açma sırasında bir hata oluştu!",
+        "insufficientMinTxAmount": "İşlemleri gerçekleştirmek için adres en az 1 Qubic tutmalıdır"
       },
       "pleaseUnlock": "Lütfen önce cüzdanınızı kilidini açın."
     },
