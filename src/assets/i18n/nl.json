@@ -604,7 +604,9 @@
         "cancel": "Annuleren",
         "success": "Transactie verzonden! Het duurt even voordat het is bevestigd.",
         "error": "Er is iets misgegaan tijdens het vergrendelen!"
-      }
+      },
+      "fullAmountWarningTitle": "Waarschuwing: Volledig bedrag vergrendelen",
+      "fullAmountWarningMessage": "Als u het volledige bedrag van dit adres vergrendelt, kunt u Qubic niet ontgrendelen. Om Qubic te ontgrendelen, moet het adres minimaal 1 Qubic bevatten. Weet u zeker dat u wilt doorgaan?"
     },
     "history": {
       "lockedEpoch": "Vergrendelde periode",
@@ -632,7 +634,8 @@
         "message": "Wilt u {{amount}} {{currency}} vroegtijdig ontgrendelen?",
         "confirm": "Bevestigen",
         "success": "Transactie verzonden! Het duurt even voordat het is bevestigd.",
-        "error": "Er is iets misgegaan tijdens het ontgrendelen!"
+        "error": "Er is iets misgegaan tijdens het ontgrendelen!",
+        "insufficientMinTxAmount": "Het adres moet minimaal 1 Qubic bevatten om transacties uit te voeren"
       },
       "pleaseUnlock": "Ontgrendel eerst uw portemonnee."
     },

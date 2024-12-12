@@ -110,6 +110,20 @@ export class StakingComponent implements OnInit {
     }, 100);
   }
 
+  private async showFullAmountWarningDialog(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        title: this.transloco.translate('qearn.stakeQubic.fullAmountWarningTitle'),
+        message: this.transloco.translate('qearn.stakeQubic.fullAmountWarningMessage'),
+        confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
+        cancel: this.transloco.translate('confirmDialog.buttons.cancel')
+      },
+    });
+
+    return await dialogRef.afterClosed().toPromise();
+  }
+
   async confirmLock(): Promise<void> {
     if (!this.walletService.privateKey) {
       this.showSnackBar('paymentComponent.messages.pleaseUnlock', 'error');
@@ -118,8 +132,14 @@ export class StakingComponent implements OnInit {
 
     const publicId = this.stakeForm.get('sourceId')?.value!;
     const amountToStake = this.stakeForm.get('amount')?.value;
-    const currency = this.transloco.translate('general.currency');
+    const maxAmount = this.maxAmount;
 
+    if (amountToStake === maxAmount) {
+      const confirmFullAmount = await this.showFullAmountWarningDialog();
+      if (!confirmFullAmount) return; // Exit if user does not confirm
+    }
+
+    const currency = this.transloco.translate('general.currency');
     const result = await this.showConfirmDialog(amountToStake!, currency);
     if (result) {
       await this.processLock(publicId, amountToStake!);
@@ -177,7 +197,7 @@ export class StakingComponent implements OnInit {
   }
 
   private showSnackBar(message: string, panelClass: string): void {
-    this._snackBar.open(this.transloco.translate(message), this.transloco.translate('general.close'), { duration: 5000, panelClass });
+    this._snackBar.open(this.transloco.translate(message), this.transloco.translate('general.close'), { duration: 5000, panelClass: panelClass });
   }
 
   private formatNumberWithCommas(value: string): string {

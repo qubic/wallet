@@ -608,7 +608,9 @@
         "cancel": "キャンセル",
         "success": "トランザクションが送信されました！ 確認には時間がかかります。",
         "error": "ロック中に問題が発生しました！"
-      }
+      },
+      "fullAmountWarningTitle": "警告：全額をロック",
+      "fullAmountWarningMessage": "このアドレスの全額をロックすると、Qubicのロックを解除できなくなります。Qubicのロックを解除するには、アドレスに少なくとも1 Qubicを保持している必要があります。続行しますか？"
     },
     "history": {
       "lockedEpoch": "ロックされたエポック",
@@ -636,7 +638,8 @@
         "message": "{{amount}} {{currency}}を早期にアンロックしますか？",
         "confirm": "確認",
         "success": "トランザクションが送信されました！ 確認には時間がかかります。",
-        "error": "アンロック中に問題が発生しました！"
+        "error": "アンロック中に問題が発生しました！",
+        "insufficientMinTxAmount": "トランザクションを実行するには、アドレスに少なくとも1 Qubicが必要です"
       },
       "pleaseUnlock": "まずウォレットをアンロックしてください。"
     },

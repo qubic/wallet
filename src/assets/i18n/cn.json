@@ -607,7 +607,9 @@
         "cancel": "取消",
         "success": "交易已发送！确认需要一些时间。",
         "error": "锁定过程中出现问题！"
-      }
+      },
+      "fullAmountWarningTitle": "警告：锁定全部金额",
+      "fullAmountWarningMessage": "如果您锁定此地址的全部金额，您将无法解锁 Qubic。要解锁 Qubic，地址必须至少持有 1 个 Qubic。您确定要继续吗？"
     },
     "history": {
       "lockedEpoch": "锁定时期",
@@ -635,7 +637,8 @@
         "message": "您要提前解锁 {{amount}} {{currency}} 吗？",
         "confirm": "确认",
         "success": "交易已发送！确认需要一些时间。",
-        "error": "解锁过程中出现问题！"
+        "error": "解锁过程中出现问题！",
+        "insufficientMinTxAmount": "地址必须持有至少 1 个 Qubic 才能执行交易"
       },
       "pleaseUnlock": "请先解锁你的钱包。"
     },

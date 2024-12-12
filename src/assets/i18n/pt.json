@@ -604,7 +604,9 @@
         "cancel": "Cancelar",
         "success": "Transação enviada! Pode levar algum tempo para ser confirmada.",
         "error": "Algo deu errado durante o bloqueio!"
-      }
+      },
+      "fullAmountWarningTitle": "Aviso: Bloqueando valor total",
+      "fullAmountWarningMessage": "Se você bloquear o valor total deste endereço, não poderá desbloquear Qubic. Para desbloquear Qubic, o endereço deve manter pelo menos 1 Qubic. Tem certeza que deseja continuar?"
     },
     "history": {
       "lockedEpoch": "Época bloqueada",
@@ -632,7 +634,8 @@
         "message": "Deseja desbloquear {{amount}} {{currency}} antecipadamente?",
         "confirm": "Confirmar",
         "success": "Transação enviada! Pode levar algum tempo para ser confirmada.",
-        "error": "Algo deu errado durante o desbloqueio!"
+        "error": "Algo deu errado durante o desbloqueio!",
+        "insufficientMinTxAmount": "O endereço deve manter pelo menos 1 Qubic para realizar transações"
       },
       "pleaseUnlock": "Por favor, desbloqueie sua carteira primeiro."
     },

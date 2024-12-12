@@ -607,7 +607,9 @@
         "cancel": "Abbrechen",
         "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
         "error": "Bei der Sperrung ist etwas schief gelaufen!"
-      }
+      },
+      "fullAmountWarningTitle": "Warnung: Vollständiger Betrag wird gesperrt",
+      "fullAmountWarningMessage": "Wenn Sie den gesamten Betrag dieser Adresse sperren, können Sie Qubic nicht entsperren. Zum Entsperren von Qubic muss die Adresse mindestens 1 Qubic enthalten. Möchten Sie fortfahren?"
     },
     "history": {
       "lockedEpoch": "Gesperrte Epoche",
@@ -635,7 +637,8 @@
         "message": "Möchten Sie {{amount}} {{currency}} vorzeitig entsperren?",
         "confirm": "Bestätigen",
         "success": "Transaktion gesendet! Es dauert eine Weile, bis sie bestätigt wird.",
-        "error": "Bei der Entsperrung ist etwas schief gelaufen!"
+        "error": "Bei der Entsperrung ist etwas schief gelaufen!",
+        "insufficientMinTxAmount": "Die Adresse muss mindestens 1 Qubic enthalten, um Transaktionen durchzuführen"
       },
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Brieftasche."
     },
