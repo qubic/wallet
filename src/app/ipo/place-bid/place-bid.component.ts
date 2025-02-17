@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
+import { lastValueFrom } from 'rxjs';
 
 export interface ComputorSelected {
   name: string;
@@ -45,12 +46,13 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     tick: [0, [Validators.required]],
   });
 
-  constructor(private router: Router, 
-    private activatedRoute: ActivatedRoute, 
+  constructor(private router: Router,
+    private activatedRoute: ActivatedRoute,
     private transloco: TranslocoService, private api: ApiService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
     , private route: ActivatedRoute
     , private fb: FormBuilder
     , private dialog: MatDialog
+    , private apiService: ApiService
   ) {
     this.activatedRoute.params.subscribe(state => {
       if (state && state['contractId']) {
@@ -61,13 +63,15 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
   ngOnInit(): void {
-   this.init();
+    this.init();
   }
+
   init(): void {
     this.sub = this.us.currentBalance.subscribe(s => {
       this.balances = s;
@@ -87,7 +91,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     });
   }
 
- 
   hasSeeds() {
     return this.walletService.getSeeds().length > 0;
   }
@@ -111,6 +114,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   getSeeds() {
     return this.walletService.getSeeds();
   }
+
   repeat(transaction: Transaction) {
     this.router.navigate(['payment'], {
       state: {
@@ -119,7 +123,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     });
   }
 
-
   setComputor(comp: ComputorSelected, ev: any) {
     comp.completed = ev;
   }
@@ -127,6 +130,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   loadKey() {
     const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
   }
+
   getMaxAmount(publicId: string) {
     this.us.currentBalance.subscribe(s => {
       if (s && s.length > 0 && s.find(f => f.publicId == publicId)) {
@@ -141,7 +145,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     this.ipoForm.controls.price.setValue(this.maxAmount + addAmount);
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     if (!this.walletService.privateKey) {
       this._snackBar.open(this.transloco.translate('ipoComponent.messages.unlock'), this.transloco.translate('general.close'), {
         duration: 5000,
@@ -152,12 +156,19 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     // todo: create service: same is used in payment component.
 
     if (this.ipoForm.valid && this.ipoContract) {
+
+      let targetTick = this.ipoForm.controls.tick.value ?? 0;
+      if (!this.tickOverwrite || targetTick == 0) {
+        const currentTick = await lastValueFrom(this.apiService.getCurrentTick());
+        targetTick = currentTick.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
+      }
+
       this.walletService.revealSeed((<any>this.ipoForm.controls.sourceId.value)).then(s => {
-        new QubicHelper().createIpo(s, this.ipoContract?.index!, this.ipoForm.controls.price.value!, this.ipoForm.controls.quantity.value!, this.ipoForm.controls.tick.value!).then(tx => {
+        new QubicHelper().createIpo(s, this.ipoContract?.index!, this.ipoForm.controls.price.value!, this.ipoForm.controls.quantity.value!, targetTick!).then(tx => {
           // hack to get uintarray to array for sending to api
           this.api.submitTransaction({ SignedTransaction: this.walletService.arrayBufferToBase64(tx) }).subscribe(r => {
             if (r && r.id) {
-              this._snackBar.open(this.transloco.translate('ipoComponent.messages.unlock', { id: r.id}), this.transloco.translate('general.close'), {
+              this._snackBar.open(this.transloco.translate('ipoComponent.messages.unlock', { id: r.id }), this.transloco.translate('general.close'), {
                 duration: 3000,
               });
               // this.init();
@@ -185,7 +196,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   getTotalAmount(): number {
-    if(this.ipoForm.controls['price'].value && this.ipoForm.controls['quantity'].value && this.ipoForm.controls['quantity'].value > 0 && this.ipoForm.controls['price'].value > 0)
+    if (this.ipoForm.controls['price'].value && this.ipoForm.controls['quantity'].value && this.ipoForm.controls['quantity'].value > 0 && this.ipoForm.controls['price'].value > 0)
       return this.ipoForm.controls['price'].value * this.ipoForm.controls['quantity'].value;
     else
       return 0;
