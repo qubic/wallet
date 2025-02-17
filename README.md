@@ -14,6 +14,9 @@ yarn run start-api-proxy
 
 # start the app
 yarn run start
+
+# Create an application for production
+ng build
 ```
 
 ## License
