@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-balance',
@@ -39,6 +40,7 @@ export class BalanceComponent implements OnInit {
   public currentSelectedEpoch = 0;
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
+  public isLoading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 10;
@@ -50,13 +52,14 @@ export class BalanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.getStatusArchiver();
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
 
     this.seedFilterFormControl.valueChanges.subscribe(value => {
-      this.clearPaginator();
+      this.isLoading = true;
       this.getAllTransactionByPublicId(value);
     });
 
@@ -101,27 +104,37 @@ export class BalanceComponent implements OnInit {
       }
     }, errorResponse => {
       console.log('errorResponse:', errorResponse);
+      this.isLoading = false; // Set isLoading to false in case of error
     });
   }
 
   private clearPaginator() {
-    // this.pagedTransactions =[];
-    // this.transactionsRecord =[];
+    // this.transactionsRecord = [];
+    // this.pagedTransactions = [];
     this.pageSize = 10;
     this.currentPage = 0;
-    this.paginator.firstPage();
   }
 
   SegmentedControlAction(): void {
+    this.isLoading = true; // Set isLoading to true at the beginning
+    this.clearPaginator();
     const element = this.selectedElement.value;
     if (element === 'element1') {
       this.isShowAllTransactions = false;
       this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.currentTickArchiver.value
+      this.lastProcessedTick = this.currentTickArchiver.value;
+      this.toggleShowAllTransactionsView();
+      this.isLoading = false; // Set isLoading to false after the operation
     } else if (element === 'element2') {
+      if (!this.seedFilterFormControl.value) {
+        const seeds = this.getSeedsWithOnlyWatch();
+        if (seeds.length > 0) {
+          this.seedFilterFormControl.setValue(seeds[0].publicId);
+        }
+      }
       this.isShowAllTransactions = true;
+      this.getStatusArchiver();
     }
-    this.toggleShowAllTransactionsView();
   }
 
 
@@ -138,10 +151,6 @@ export class BalanceComponent implements OnInit {
 
 
   toggleShowAllTransactionsView() {
-
-    this.clearPaginator();
-    this.updateTransactionsRecord();
-
     if (!this.isShowAllTransactions) {
       this.seedFilterFormControl.setValue(null);
     } else {
@@ -153,6 +162,7 @@ export class BalanceComponent implements OnInit {
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
+    this.updateTransactionsRecord();
   }
 
 
@@ -186,7 +196,7 @@ export class BalanceComponent implements OnInit {
         this.sortTransactions();
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
-    });
+    });    
   }
 
 
@@ -200,6 +210,8 @@ export class BalanceComponent implements OnInit {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedTransactions = this.transactionsRecord.slice(startIndex, endIndex);
+    
+    this.isLoading = false; // Set isLoading to false in case of error
   }
 
   private updateTransactionsRecord(): void {
@@ -212,7 +224,9 @@ export class BalanceComponent implements OnInit {
       });
       this.sortTransactions();
       this.updatePagedTransactions(); // Ensure the paged transactions are updated
+      this.isLoading = false;
     }
+    this.isLoading = false;
   }
 
 
@@ -329,36 +343,5 @@ export class BalanceComponent implements OnInit {
       }
     });
   }
-
-
-  // getSeedName(publicId: string): string {
-  //   var seed = this.walletService.getSeed(publicId);
-  //   if (seed !== undefined)
-  //     return '- ' + seed.alias;
-  //   else
-  //     return '';
-  // }
-
-  // private getTransactionStatusLabel(status: string): string {
-  //   switch (status) {
-  //     case 'Pending':
-  //     case 'Broadcasted':
-  //       return 'Pending';
-  //     case 'Confirmed':
-  //     case 'Staged':
-  //       return 'Confirmed';
-  //     case 'Success':
-  //       return 'Executed';
-  //     case 'Failed':
-  //       return 'Dismissed';
-  //     case 'Unknown':
-  //       return 'Unknown';
-  //     case 'Created':
-  //       return 'Created';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
 
 }

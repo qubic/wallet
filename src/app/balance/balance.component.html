@@ -195,144 +195,149 @@
                 </mat-select>
             </mat-form-field>
         </span>
-        <div>
-            <div *ngIf="transactionsRecord.length <= 0">
+        <div *ngIf="isLoading" class="loading-spinner">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <div *ngIf="!isLoading">
+            <div *ngIf="pagedTransactions.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
             </div>
-            <mat-accordion *ngFor="let transaction of pagedTransactions">
-                <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="status-icon">
-                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
-                                    matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
-                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
-                                    matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
-                            </span>
-                            &nbsp;
-                            <span class="display-publicid disable-area">
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
-                                    target="_blank">
-                                    {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
-                                </a>
-                            </span>
-                            <span class="desktopOnly secondary ">
-                                &nbsp; (
-                                {{ transaction.transactions[0].timestamp | date}} {{
-                                transaction.transactions[0].timestamp |
-                                date:'HH:mm:ss' }}
-                                )
-                            </span>
-                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
-                                matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
-                                (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
-                        </mat-panel-title>
-                        <mat-panel-description class="disable-area">
-                            {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
-                            }}&nbsp;{{
-                            t("general.currency") }}
-                            <span class="send-receive-indicator">
-                                <mat-icon class="send"
-                                    matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
-                                    *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && !isOwnId(transaction.transactions[0].transaction.destId)">arrow_downward</mat-icon>
-                                <mat-icon class="receive"
-                                    matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
-                                    *ngIf="isOwnId(transaction.transactions[0].transaction.destId) && !isOwnId(transaction.transactions[0].transaction.sourceId)">arrow_upward</mat-icon>
-                                <mat-icon class="receive"
-                                    matTooltip="{{ t('balanceComponent.transactions.exchange.tooltip') }}"
-                                    *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isOwnId(transaction.transactions[0].transaction.destId)">swap_vert</mat-icon>
-                            </span>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <div class="transaction-list-compact">
-                        <mat-card class="responsive-card">
-                            <mat-card-content>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Amount</span>
+            <span *ngIf="pagedTransactions.length > 0">
+                <mat-accordion *ngFor="let transaction of pagedTransactions">
+                    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <span class="status-icon">
+                                    <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
+                                        matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
+                                    <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
+                                        matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
+                                </span>
+                                &nbsp;
+                                <span class="display-publicid disable-area">
+                                    <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                        target="_blank">
+                                        {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                                    </a>
+                                </span>
+                                <span class="desktopOnly secondary ">
+                                    &nbsp; (
+                                    {{ transaction.transactions[0].timestamp | date}} {{
+                                    transaction.transactions[0].timestamp |
+                                    date:'HH:mm:ss' }}
+                                    )
+                                </span>
+                                <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
+                                    mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                                    (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
+                            </mat-panel-title>
+                            <mat-panel-description class="disable-area">
+                                {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
+                                }}&nbsp;{{
+                                t("general.currency") }}
+                                <span class="send-receive-indicator">
+                                    <mat-icon class="send"
+                                        matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && !isOwnId(transaction.transactions[0].transaction.destId)">arrow_downward</mat-icon>
+                                    <mat-icon class="receive"
+                                        matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.transactions[0].transaction.destId) && !isOwnId(transaction.transactions[0].transaction.sourceId)">arrow_upward</mat-icon>
+                                    <mat-icon class="receive"
+                                        matTooltip="{{ t('balanceComponent.transactions.exchange.tooltip') }}"
+                                        *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isOwnId(transaction.transactions[0].transaction.destId)">swap_vert</mat-icon>
+                                </span>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="transaction-list-compact">
+                            <mat-card class="responsive-card">
+                                <mat-card-content>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Amount</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value value"> {{ transaction.transactions[0].transaction.amount
+                                                |
+                                                number:
+                                                '1.0-0'
+                                                }}&nbsp;{{
+                                                t("general.currency") }}</span>
+                                        </div>
                                     </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value value"> {{ transaction.transactions[0].transaction.amount |
-                                            number:
-                                            '1.0-0'
-                                            }}&nbsp;{{
-                                            t("general.currency") }}</span>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Tx</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> <a
+                                                    *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
+                                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
+                                                    target="_blank">{{transaction.transactions[0].transaction.txId}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.transactions[0].transaction.txId">content_copy</mat-icon>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Tx</span>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Source</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                                    target="_blank">
+                                                    {{transaction.transactions[0].transaction.sourceId}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.transactions[0].transaction.sourceId">content_copy</mat-icon></span>
+                                        </div>
                                     </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value"> <a
-                                                *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
-                                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
-                                                target="_blank">{{transaction.transactions[0].transaction.txId}}
-                                            </a>
-                                            <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.txId">content_copy</mat-icon>
-                                        </span>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Destination</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                                    target="_blank">
+                                                    {{transaction.transactions[0].transaction.destId}}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Source</span>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Tick</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> <a
+                                                    [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                                    target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
-                                                target="_blank">
-                                                {{transaction.transactions[0].transaction.sourceId}}
-                                            </a>
-                                            <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.sourceId">content_copy</mat-icon></span>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">Type</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> {{ transaction.transactions[0].transaction.inputType
+                                                }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Destination</span>
-                                    </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
-                                                target="_blank">
-                                                {{transaction.transactions[0].transaction.destId}}
-                                            </a>
-                                            <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Tick</span>
-                                    </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
-                                                target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Type</span>
-                                    </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value"> {{ transaction.transactions[0].transaction.inputType
-                                            }}</span>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </span>
             <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="transactionsRecord.length" [pageSize]="10"
                 [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" aria-label="Select page">
             </mat-paginator>
