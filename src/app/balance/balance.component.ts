@@ -9,10 +9,8 @@ import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArc
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-balance',
@@ -46,7 +44,14 @@ export class BalanceComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
+  constructor(private router: Router,
+    private transloco: TranslocoService,
+    private api: ApiService,
+    private apiArchiver: ApiArchiverService,
+    private walletService: WalletService,
+    private _snackBar: MatSnackBar,
+    private us: UpdaterService,
+  ) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
@@ -67,6 +72,9 @@ export class BalanceComponent implements OnInit {
       this.us.currentTick.subscribe(s => {
         this.currentTick = s;
       });
+
+
+      this.us.loadCurrentBalance(true);
 
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
@@ -196,7 +204,7 @@ export class BalanceComponent implements OnInit {
         this.sortTransactions();
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
-    });    
+    });
   }
 
 
@@ -210,7 +218,7 @@ export class BalanceComponent implements OnInit {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedTransactions = this.transactionsRecord.slice(startIndex, endIndex);
-    
+
     this.isLoading = false; // Set isLoading to false in case of error
   }
 
