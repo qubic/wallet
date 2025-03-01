@@ -3,19 +3,11 @@
         <h1>{{ t("general.navigation.balance") }}</h1>
         <div class="flex flex-wrap card-list">
             <div>
-                <span *ngIf="!isShowAllTransactions">
-                    <button [disabled]="transactionsRecord.length <= 0" color="primary" mat-raised-button
-                        (click)="exportTransactionsToCsv()">
-                        <mat-icon>file_download</mat-icon>
-                        {{ t("balanceComponent.transactions.exportButton") }}
-                    </button>
-                </span>
-                <span *ngIf="isShowAllTransactions">
-                    <button color="primary" mat-raised-button (click)="exportTransactionsToCsv()">
-                        <mat-icon>file_download</mat-icon>
-                        {{ t("balanceComponent.transactions.exportButton") }}
-                    </button>
-                </span>
+                <button [disabled]="transactionsRecord.length <= 0" color="primary" mat-raised-button
+                    (click)="exportTransactionsToCsv()">
+                    <mat-icon>file_download</mat-icon>
+                    {{ t("balanceComponent.transactions.exportButton") }}
+                </button>
             </div>
             <div style="margin-left: auto; padding-top:14px;" class="text-right">
                 <div class="eye">
@@ -33,6 +25,9 @@
                     }}</mat-button-toggle>
             </mat-button-toggle-group>
         </div>
+        <!-- ********************* -->
+        <!-- transactions that are not yet in the network -->
+        <!-- ********************* -->
         <span *ngIf="!isShowAllTransactions">
             <div *ngIf="getTransactions().length > 0">
                 <div *ngIf="accountBalances.length <= 0 && hasSeeds()">
@@ -43,7 +38,7 @@
                         {{ t("general.loading") }}
                     </div>
                 </div>
-                <mat-accordion *ngFor="let transaction of getTransactions()">
+                <mat-accordion *ngFor="let transaction of transactions">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -165,19 +160,22 @@
                 <hr>
             </div>
         </span>
+        <!-- **************** -->
+        <!-- by epoch -->
+        <!-- **************** -->
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch" mat-icon-button
+                    (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
-                <button  *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    mat-icon-button >
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button>
                     <mat-icon class="large-icon"></mat-icon>
                 </button>
                 <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
-                <button *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                <button
+                    *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
                     mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
@@ -201,7 +199,7 @@
             <div *ngIf="transactionsRecord.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
             </div>
-            <mat-accordion *ngFor="let transaction of transactionsRecord">
+            <mat-accordion *ngFor="let transaction of pagedTransactions">
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -225,9 +223,8 @@
                                 date:'HH:mm:ss' }}
                                 )
                             </span>
-                            <button
-                                *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
-                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
+                                matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
@@ -335,6 +332,10 @@
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
+
+            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="transactionsRecord.length" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" aria-label="Select page">
+            </mat-paginator>
         </div>
         <div *ngIf="!hasSeeds()">
             <button [routerLink]="['/']" mat-raised-button>

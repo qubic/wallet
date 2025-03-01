@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -11,6 +11,7 @@ import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-balance',
@@ -18,7 +19,6 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   styleUrls: ['./balance.component.scss'],
 })
 export class BalanceComponent implements OnInit {
-
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
@@ -31,6 +31,7 @@ export class BalanceComponent implements OnInit {
   public transactionsArchiverSubscribe: TransactionsArchiver[] = [];
   public transactionsArchiver: TransactionsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
+  public pagedTransactions: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
   selectedElement = new FormControl('element1');
 
@@ -38,6 +39,10 @@ export class BalanceComponent implements OnInit {
   public currentSelectedEpoch = 0;
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  pageSize = 10;
+  currentPage = 0;
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
@@ -51,6 +56,7 @@ export class BalanceComponent implements OnInit {
     }
 
     this.seedFilterFormControl.valueChanges.subscribe(value => {
+      this.clearPaginator();
       this.getAllTransactionByPublicId(value);
     });
 
@@ -90,7 +96,7 @@ export class BalanceComponent implements OnInit {
     this.apiArchiver.getStatus().subscribe(s => {
       if (s) {
         this.status = s;
-        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length-1].epoch;
+        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
         this.GetTransactionsByTick(this.currentSelectedEpoch);
       }
     }, errorResponse => {
@@ -98,6 +104,13 @@ export class BalanceComponent implements OnInit {
     });
   }
 
+  private clearPaginator() {
+    // this.pagedTransactions =[];
+    // this.transactionsRecord =[];
+    this.pageSize = 10;
+    this.currentPage = 0;
+    this.paginator.firstPage();
+  }
 
   SegmentedControlAction(): void {
     const element = this.selectedElement.value;
@@ -114,7 +127,7 @@ export class BalanceComponent implements OnInit {
 
   GetTransactionsByTick(epoch: number): void {
     this.status.processedTickIntervalsPerEpoch
-      .filter(t=> t.epoch === epoch)
+      .filter(t => t.epoch === epoch)
       .forEach(e => {
         this.initialProcessedTick = e.intervals[0].initialProcessedTick;
         this.lastProcessedTick = e.intervals[0].lastProcessedTick;
@@ -125,6 +138,8 @@ export class BalanceComponent implements OnInit {
 
 
   toggleShowAllTransactionsView() {
+
+    this.clearPaginator();
     this.updateTransactionsRecord();
 
     if (!this.isShowAllTransactions) {
@@ -137,7 +152,7 @@ export class BalanceComponent implements OnInit {
         }
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
-    }    
+    }
   }
 
 
@@ -169,10 +184,23 @@ export class BalanceComponent implements OnInit {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
         }
         this.sortTransactions();
+        this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
     });
   }
 
+
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePagedTransactions();
+  }
+
+  updatePagedTransactions() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedTransactions = this.transactionsRecord.slice(startIndex, endIndex);
+  }
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
@@ -183,6 +211,7 @@ export class BalanceComponent implements OnInit {
         }
       });
       this.sortTransactions();
+      this.updatePagedTransactions(); // Ensure the paged transactions are updated
     }
   }
 
@@ -284,7 +313,7 @@ export class BalanceComponent implements OnInit {
     return `${start}...${end}`;
   }
 
-  
+
   repeat(transaction: Transaction) {
     this.router.navigate(['payment'], {
       state: {
