@@ -72,7 +72,7 @@
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
-              ${{currentPrice.price * getBalance(address.publicId) | number : "1.0-2"}}
+              ${{currentPrice.price * getBalance(address.publicId) | number : "1.2-2"}}
             </div>
             <div class="text-center">
               <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
@@ -106,7 +106,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.2-2"}}</span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -171,7 +171,7 @@
           {{ t("dashboard.totalBalance") }}
         </th>
         <td mat-cell *matCellDef="let element">
-          <div *ngIf="getBalance(element.publicId) > 0"
+          <div 
             class="dashboard-amount-name disable-area alignRight disable-area">
             ${{currentPrice.price * getBalance(element.publicId) | number : "1.2-2"}}
           </div>
