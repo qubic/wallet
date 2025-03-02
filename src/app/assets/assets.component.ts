@@ -17,6 +17,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class AssetsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
+    private decimalPipe: DecimalPipe,
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -277,7 +279,7 @@ export class AssetsComponent implements OnInit {
     const publishResult = await this.transactionService.publishTransaction(tx);
 
     if (publishResult && publishResult.success) {
-      this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: tx.tick }), this.t.translate('general.close'), {
+      this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick:  this.decimalPipe.transform(tx.tick, '1.0-0')  }), this.t.translate('general.close'), {
         duration: 0,
       });
       this.showSendForm = false;
