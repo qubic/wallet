@@ -183,7 +183,7 @@ export class MainComponent implements AfterViewInit {
       this.dataSource.data.forEach(element => {
         this.checkQualitySeed(element.publicId);
       });
-    }else{
+    } else {
       this.resetCategorizedSeeds();
     }
   }
@@ -246,7 +246,12 @@ export class MainComponent implements AfterViewInit {
 
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-    } else {
+      dialogRef.afterClosed().subscribe(result => {
+        if (this.walletService.privateKey) {
+          this.addSeed(); // Aktion erneut ausführen
+        }
+      });
+    }  else {
       const dialogRef = this.dialog.open(SeedEditDialog, {
         restoreFocus: false, data: {
           seed: null
@@ -268,16 +273,25 @@ export class MainComponent implements AfterViewInit {
   }
 
   edit(publicId: string) {
-    const confirmDialog = this.dialog.open(SeedEditDialog, {
-      restoreFocus: false, data: {
-        publicId: publicId
-      }
-    });
-    confirmDialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.openExportDialog();
-      }
-    })
+    if (!this.walletService.privateKey) {
+      const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+      dialogRef.afterClosed().subscribe(result => {
+        if (this.walletService.privateKey) {
+          this.edit(publicId); // Aktion erneut ausführen
+        }
+      });
+    } else {
+      const confirmDialog = this.dialog.open(SeedEditDialog, {
+        restoreFocus: false, data: {
+          publicId: publicId
+        }
+      });
+      confirmDialog.afterClosed().subscribe(result => {
+        if (result) {
+          this.openExportDialog();
+        }
+      });
+    }
   }
 
   openExportDialog(disableClose = true) {
@@ -303,7 +317,15 @@ export class MainComponent implements AfterViewInit {
     return !this.walletService.getSeed(publicId)?.isOnlyWatch;
   }
 
-  reveal(publicId: string) {
+reveal(publicId: string) {
+  if (!this.walletService.privateKey) {
+    const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.walletService.privateKey) {
+        this.reveal(publicId); // Aktion erneut ausführen
+      }
+    });
+  } else {
     const confirmDialo = this.dialog.open(RevealSeedDialog, {
       restoreFocus: false, data: {
         publicId: publicId,
@@ -311,6 +333,7 @@ export class MainComponent implements AfterViewInit {
       }
     });
   }
+}
 
 
   openAssetsPage() {
@@ -328,14 +351,23 @@ export class MainComponent implements AfterViewInit {
 
 
   delete(publicId: string) {
-    const confirmDialo = this.dialog.open(ConfirmDialog, { restoreFocus: false });
-    confirmDialo.afterClosed().subscribe(result => {
-      if (result) {
-        this.walletService.deleteSeed(publicId);
-        this.refreshData();
-        this.openExportDialog();
-      }
-    })
+    if (!this.walletService.privateKey) {
+      const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+      dialogRef.afterClosed().subscribe(result => {
+        if (this.walletService.privateKey) {
+          this.delete(publicId); // Aktion erneut ausführen
+        }
+      });
+    } else {
+      const confirmDialo = this.dialog.open(ConfirmDialog, { restoreFocus: false });
+      confirmDialo.afterClosed().subscribe(result => {
+        if (result) {
+          this.walletService.deleteSeed(publicId);
+          this.refreshData();
+          this.openExportDialog();
+        }
+      });
+    }
   }
 
   refreshBalance(publicId: string) {
