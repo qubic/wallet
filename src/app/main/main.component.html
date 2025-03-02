@@ -219,15 +219,15 @@
       <mat-icon>explore</mat-icon>
     </a>
     <br *ngIf="walletService.privateKey && !isTable">
-    <button *ngIf="walletService.privateKey" mat-icon-button class="icon-color-link"
+    <button mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.revealSeed')" (click)="reveal(publicId)">
       <mat-icon>visibility</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" *ngIf="walletService.privateKey"
+    <button mat-icon-button class="icon-color-link" 
       [title]="t('seedOverviewComponent.table.actions.editSeed')" (click)="edit(publicId)">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" *ngIf="walletService.privateKey"
+    <button mat-icon-button class="icon-color-link" 
       [title]="t('seedOverviewComponent.table.actions.deleteSeed')" (click)="delete(publicId)">
       <mat-icon>delete</mat-icon>
     </button>
