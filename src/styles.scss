@@ -385,6 +385,20 @@ a:active {
   color: $dark-link;
 }
 
+simple-snack-bar {
+  background-color: $dark-bg-lighter-5 !important;
+ word-wrap: break-word; // Ermöglicht den Zeilenumbruch für lange Texte
+ white-space: pre-wrap; // Zeilenumbruch für lange Texte
+
+ .mdc-button__label {
+   color: $light-text;
+ }
+
+ .mat-mdc-button-persistent-ripple {
+   border: 1px solid $mainColor;
+ }
+}
+
 .darkTheme {
   div.copy,
   a:link,
@@ -401,6 +415,19 @@ a:active {
     background-color: $dark-background !important;
   }
 
+  simple-snack-bar {
+    background-color: $light-bg-lighter-5 !important;
+    word-wrap: break-word; 
+    white-space: pre-wrap; 
+  
+    .mdc-button__label {
+      color: $dark-text;
+    }
+  
+    .mat-mdc-button-persistent-ripple {
+      border: 1px solid $mainColor;
+    }
+  }
 }
 
 .mat-drawer {
@@ -1156,3 +1183,6 @@ mat-hint{
   color: red; 
   vertical-align: middle;
 }
+
+
+

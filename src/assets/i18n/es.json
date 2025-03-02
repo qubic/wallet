@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "Copiar",
     "error": "Error",
-    "close": "cerrar",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "cargando...",
