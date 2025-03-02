@@ -60,6 +60,11 @@
                                     *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
+                                <button mat-icon-button class="icon-color-link" 
+                                    [title]="t('seedOverviewComponent.table.actions.deleteSeed')"
+                                    (click)="delete(transaction)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                             </mat-panel-title>
                             <mat-panel-description class="disable-area">
                                 {{ transaction.amount | number: '1.0-0'

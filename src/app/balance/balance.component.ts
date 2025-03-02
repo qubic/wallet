@@ -11,6 +11,8 @@ import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-balance',
@@ -44,13 +46,15 @@ export class BalanceComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private transloco: TranslocoService,
     private api: ApiService,
     private apiArchiver: ApiArchiverService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private us: UpdaterService,
+    private us: UpdaterService,    
+    public dialog: MatDialog,
   ) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
@@ -342,6 +346,15 @@ export class BalanceComponent implements OnInit {
         template: transaction
       }
     });
+  }
+
+  delete(transaction: Transaction) {
+    const confirmDialo = this.dialog.open(ConfirmDialog, { restoreFocus: false });
+    confirmDialo.afterClosed().subscribe(result => {
+      if (result) {
+        this.us.removeTransaction(transaction);
+      }
+    })
   }
 
   repeatTransactionArchiver(transaction: TransactionArchiver) {

@@ -300,7 +300,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   hasIsOnlyWatch(publicId: string): boolean {
-    return !this.walletService.getSeed(publicId)?.isOnlyWatch ?? false;
+    return !this.walletService.getSeed(publicId)?.isOnlyWatch;
   }
 
   reveal(publicId: string) {
