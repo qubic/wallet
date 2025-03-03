@@ -349,7 +349,7 @@
       "status.dismissed.tooltip": "Rejeitada",
       "status.unknown.tooltip": "Desconhecida",
       "status.confirmed.tooltip": "Registrada",
-      "filter.seed.label": "Filtrar por Seed",
+      "filter.seed.label": "Filtrar por Endereço",
       "exportButton": "Exportar transações"
     },
     "repeatTransaction": "Repetir a transação"

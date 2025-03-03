@@ -351,7 +351,7 @@
       "status.dismissed.tooltip": "已解雇",
       "status.unknown.tooltip": "未知",
       "status.confirmed.tooltip": "已暂存",
-      "filter.seed.label": "按地址过滤",
+      "filter.seed.label": "按地址筛选",
       "exportButton": "导出交易"
     },
     "repeatTransaction": "重复交易"
