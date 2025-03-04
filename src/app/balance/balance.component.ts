@@ -5,7 +5,7 @@ import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
+import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver, Pagination } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -31,6 +31,7 @@ export class BalanceComponent implements OnInit {
 
   public transactionsArchiverSubscribe: TransactionsArchiver[] = [];
   public transactionsArchiver: TransactionsArchiver[] = [];
+  public transactionsNextArchiver: TransactionsArchiver[] = [];
   public transactionsRecord: TransactionRecord[] = [];
   public pagedTransactions: TransactionRecord[] = [];
   readonly panelOpenState = signal(false);
@@ -42,9 +43,12 @@ export class BalanceComponent implements OnInit {
   public lastProcessedTick: number = 0;
   public isLoading: boolean = false;
 
+  public pagination: Pagination[] = [];
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  pageSize = 10;
+  pageSize = 100;
   currentPage = 0;
+  
 
   constructor(
     private router: Router,
@@ -53,7 +57,7 @@ export class BalanceComponent implements OnInit {
     private apiArchiver: ApiArchiverService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private us: UpdaterService,    
+    private us: UpdaterService,
     public dialog: MatDialog,
   ) {
     this.getCurrentTickArchiver();
@@ -77,9 +81,9 @@ export class BalanceComponent implements OnInit {
         this.currentTick = s;
       });
 
-
+      
       this.us.loadCurrentBalance(true);
-
+      
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
       this.us.internalTransactions.subscribe(txs => {
@@ -102,6 +106,7 @@ export class BalanceComponent implements OnInit {
           panelClass: "error"
         });
       });
+      this.selectedElement.setValue('element1');
     }
   }
 
@@ -123,7 +128,7 @@ export class BalanceComponent implements OnInit {
   private clearPaginator() {
     // this.transactionsRecord = [];
     // this.pagedTransactions = [];
-    this.pageSize = 10;
+    this.pageSize = 100;
     this.currentPage = 0;
   }
 
@@ -194,7 +199,8 @@ export class BalanceComponent implements OnInit {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(r => {
+    this.pagination = [];
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick, 1).subscribe(r => {
       if (r) {
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
@@ -204,8 +210,9 @@ export class BalanceComponent implements OnInit {
 
         if (this.transactionsRecord.length <= 0) {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+          this.pagination.push(this.transactionsArchiver[0].pagination);
         }
-        this.sortTransactions();
+        //this.sortTransactions();
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
     });
@@ -213,49 +220,86 @@ export class BalanceComponent implements OnInit {
 
 
   onPageChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.updatePagedTransactions();
+    if (this.transactionsRecord.length < (event.pageIndex * event.pageSize) + 1) {
+      this.isLoading = true;
+      this.transactionsNextArchiver = [];
+  
+      this.apiArchiver.getTransactions(
+        this.seedFilterFormControl.value,
+        this.initialProcessedTick,
+        this.lastProcessedTick,
+        this.pagination[0].nextPage
+      ).subscribe(r => {
+        if (r) {
+          if (Array.isArray(r)) {
+            this.transactionsNextArchiver.push(...r);
+          } else {
+            this.transactionsNextArchiver.push(r);
+          }
+          this.transactionsRecord.push(...this.transactionsNextArchiver[0].transactions);
+          this.pagination = [];
+          this.pagination.push(this.transactionsNextArchiver[0].pagination);
+        }
+  
+        this.isLoading = false;
+  
+        // Aktualisierung nach Abschluss der API-Anfrage
+        this.pageSize = event.pageSize;
+        this.currentPage = event.pageIndex;
+        
+        // Paginator zur Aktualisierung zwingen
+        // this.paginator._intl.changes.next();
+        // this.paginator._intl.changes.next();
+        this.paginator.nextPage();
+        this.updatePagedTransactions();
+      });
+    } else {
+      // Falls keine neuen Daten geladen werden müssen, sofort aktualisieren
+      this.pageSize = event.pageSize;
+      this.currentPage = event.pageIndex;
+      this.updatePagedTransactions();
+    }
   }
+  
+  
 
   updatePagedTransactions() {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedTransactions = this.transactionsRecord.slice(startIndex, endIndex);
-
     this.isLoading = false; // Set isLoading to false in case of error
   }
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
-        this.transactionsRecord = [];
-        this.transactionsArchiverSubscribe.forEach(archiver => {
-            if (archiver.transactions && archiver.transactions.length > 0) {
-                this.transactionsRecord.push(...archiver.transactions);
-            }
-        });
+      this.transactionsRecord = [];
+      this.transactionsArchiverSubscribe.forEach(archiver => {
+        if (archiver.transactions && archiver.transactions.length > 0) {
+          this.transactionsRecord.push(...archiver.transactions);
+        }
+      });
 
-        // Filter to keep only unique transactions based on txId
-        const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
-            index === self.findIndex((t) => (
-                t.transactions[0].transaction.txId === transactionRecord.transactions[0].transaction.txId
-            ))
-        );
+      // Filter to keep only unique transactions based on txId
+      const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
+        index === self.findIndex((t) => (
+          t.transactions[0].transaction.txId === transactionRecord.transactions[0].transaction.txId
+        ))
+      );
 
-        this.transactionsRecord = uniqueTransactions;
-        this.sortTransactions();
-        this.updatePagedTransactions(); // Ensure the paged transactions are updated
-        this.isLoading = false;
+      this.transactionsRecord = uniqueTransactions;
+      //this.sortTransactions();
+      this.updatePagedTransactions(); // Ensure the paged transactions are updated
+      this.isLoading = false;
     }
     this.isLoading = false;
-}
-
-
-  sortTransactions(): void {
-    if (this.isOrderByDesc) {
-      this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
-    }
   }
+
+
+  // sortTransactions(): void {
+  //   if (this.isOrderByDesc) {
+  //     this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
+  //   }
+  // }
 
 
   correctTheTransactionListByPublicId(): void {
@@ -332,7 +376,7 @@ export class BalanceComponent implements OnInit {
     anchor.href = url;
     anchor.download = filename;
     anchor.click();
-    this.sortTransactions();
+    //this.sortTransactions();
     window.URL.revokeObjectURL(url);
   }
 

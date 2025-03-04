@@ -67,10 +67,11 @@ export class ApiArchiverService {
   }
 
 
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TransactionsArchiver[]>  {
-    const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}`;
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number, pageNumber: number = 1): Observable<TransactionsArchiver[] >  {
+    const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}&page=${pageNumber}`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
+    this.basePath = "https://api.qubic.org";
     return this.httpClient.request<TransactionsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'

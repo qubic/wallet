@@ -46,6 +46,7 @@ export interface ProcessedTickInterval {
 
 export interface TransactionsArchiver {
   transactions: TransactionRecord[];
+  pagination: Pagination;
 }
 
 export interface TransactionDetails {
@@ -70,6 +71,15 @@ export interface TransactionRecord {
   tickNumber: number;
   identity: string;
   transactions: Transaction[];
+}
+
+export interface Pagination {
+  totalRecords: number;
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  nextPage: number;
+  previousPage: number;
 }
 
 export interface TransactionArchiver {

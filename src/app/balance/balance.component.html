@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="text-center">
-            <mat-button-toggle-group [formControl]="selectedElement" aria-label="Segmented Control"
+            <mat-button-toggle-group  [disabled]="isLoading" [formControl]="selectedElement" aria-label="Segmented Control"
                 (change)="SegmentedControlAction()">
                 <mat-button-toggle value="element1">{{ t("balanceComponent.transactions.titleLastEpochs", {
                     lastEpochsText:
@@ -343,8 +343,8 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </span>
-            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="transactionsRecord.length" [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)" aria-label="Select page">
+            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords" [pageSize]="pageSize"
+                [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="onPageChange($event)"  aria-label="Select page">
             </mat-paginator>
         </div>
         <div *ngIf="!hasSeeds()">
