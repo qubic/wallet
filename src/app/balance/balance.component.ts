@@ -199,7 +199,6 @@ export class BalanceComponent implements OnInit {
     }
 
     this.isLoading = true;
-
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
     this.pagination = [];
@@ -211,14 +210,13 @@ export class BalanceComponent implements OnInit {
           this.transactionsArchiver.push(r);
         }
 
-        if (this.transactionsRecord.length <= 0) {
-          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
-          this.pagination.push(this.transactionsArchiver[0].pagination);
-        }
-        if(!this.isShowAllTransactions) {
+        this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+        this.pagination.push(this.transactionsArchiver[0].pagination);
+
+        if (!this.isShowAllTransactions) {
           this.sortTransactions();
         }
-        this.isLoading = false;
+        this.clearPaginator();
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
     });
@@ -269,7 +267,7 @@ export class BalanceComponent implements OnInit {
       this.topScroll.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
-  
+
 
   updatePagedTransactions() {
     const startIndex = this.currentPage * this.pageSize;
@@ -296,7 +294,7 @@ export class BalanceComponent implements OnInit {
       );
 
       this.transactionsRecord = uniqueTransactions;
-      if(!this.isShowAllTransactions) {
+      if (!this.isShowAllTransactions) {
         this.sortTransactions();
       }
       this.updatePagedTransactions(); // Ensure the paged transactions are updated
