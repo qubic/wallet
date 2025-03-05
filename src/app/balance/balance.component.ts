@@ -215,7 +215,9 @@ export class BalanceComponent implements OnInit {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
           this.pagination.push(this.transactionsArchiver[0].pagination);
         }
-        //this.sortTransactions();
+        if(!this.isShowAllTransactions) {
+          this.sortTransactions();
+        }
         this.isLoading = false;
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
@@ -261,7 +263,7 @@ export class BalanceComponent implements OnInit {
     this.gotoTop();
   }
 
-  
+
   gotoTop() {
     if (this.topScroll) {
       this.topScroll.nativeElement.scrollIntoView({ behavior: 'smooth' });
@@ -294,7 +296,9 @@ export class BalanceComponent implements OnInit {
       );
 
       this.transactionsRecord = uniqueTransactions;
-      //this.sortTransactions();
+      if(!this.isShowAllTransactions) {
+        this.sortTransactions();
+      }
       this.updatePagedTransactions(); // Ensure the paged transactions are updated
       this.isLoading = false;
     }
@@ -302,11 +306,11 @@ export class BalanceComponent implements OnInit {
   }
 
 
-  // sortTransactions(): void {
-  //   if (this.isOrderByDesc) {
-  //     this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
-  //   }
-  // }
+  sortTransactions(): void {
+    if (this.isOrderByDesc) {
+      this.transactionsRecord.sort((a, b) => b.tickNumber - a.tickNumber);
+    }
+  }
 
 
   correctTheTransactionListByPublicId(): void {
@@ -383,7 +387,7 @@ export class BalanceComponent implements OnInit {
     anchor.href = url;
     anchor.download = filename;
     anchor.click();
-    //this.sortTransactions();
+    this.sortTransactions();
     window.URL.revokeObjectURL(url);
   }
 
