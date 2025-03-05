@@ -45,7 +45,7 @@
               }}
             </div>
             <div class="dashboard-amount-name disable-area">
-              {{ t("assetsComponent.table.tick") }} {{ currentTick }}
+              {{ t("assetsComponent.table.tick" )  | number: '1.0-0' }} {{ currentTick | number: '1.0-0' }}
             </div>
             <div class="text-center">
               <ng-container
