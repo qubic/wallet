@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -45,10 +45,11 @@ export class BalanceComponent implements OnInit {
 
   public pagination: Pagination[] = [];
 
+  @ViewChild('topScrollAnchor') topScroll: ElementRef | undefined;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  pageSize = 100;
+  pageSize = 50;
   currentPage = 0;
-  
+
 
   constructor(
     private router: Router,
@@ -81,9 +82,8 @@ export class BalanceComponent implements OnInit {
         this.currentTick = s;
       });
 
-      
       this.us.loadCurrentBalance(true);
-      
+
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
       this.us.internalTransactions.subscribe(txs => {
@@ -128,9 +128,10 @@ export class BalanceComponent implements OnInit {
   private clearPaginator() {
     // this.transactionsRecord = [];
     // this.pagedTransactions = [];
-    this.pageSize = 100;
+    this.pageSize = 50;
     this.currentPage = 0;
   }
+
 
   SegmentedControlAction(): void {
     this.isLoading = true; // Set isLoading to true at the beginning
@@ -197,6 +198,8 @@ export class BalanceComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
     this.pagination = [];
@@ -213,6 +216,7 @@ export class BalanceComponent implements OnInit {
           this.pagination.push(this.transactionsArchiver[0].pagination);
         }
         //this.sortTransactions();
+        this.isLoading = false;
         this.updatePagedTransactions(); // Ensure the paged transactions are updated
       }
     });
@@ -220,10 +224,10 @@ export class BalanceComponent implements OnInit {
 
 
   onPageChange(event: PageEvent) {
-    if (this.transactionsRecord.length < (event.pageIndex * event.pageSize) + 1) {
+    if (this.transactionsRecord.length - 50 < (event.pageIndex * event.pageSize) + 1) {
       this.isLoading = true;
       this.transactionsNextArchiver = [];
-  
+
       this.apiArchiver.getTransactions(
         this.seedFilterFormControl.value,
         this.initialProcessedTick,
@@ -240,27 +244,29 @@ export class BalanceComponent implements OnInit {
           this.pagination = [];
           this.pagination.push(this.transactionsNextArchiver[0].pagination);
         }
-  
         this.isLoading = false;
-  
-        // Aktualisierung nach Abschluss der API-Anfrage
-        this.pageSize = event.pageSize;
-        this.currentPage = event.pageIndex;
-        
-        // Paginator zur Aktualisierung zwingen
-        // this.paginator._intl.changes.next();
-        // this.paginator._intl.changes.next();
-        this.paginator.nextPage();
+
         this.updatePagedTransactions();
       });
+
+      this.pageSize = event.pageSize;
+      this.currentPage = event.pageIndex;
+      this.updatePagedTransactions();
     } else {
       // Falls keine neuen Daten geladen werden müssen, sofort aktualisieren
       this.pageSize = event.pageSize;
       this.currentPage = event.pageIndex;
       this.updatePagedTransactions();
     }
+    this.gotoTop();
   }
+
   
+  gotoTop() {
+    if (this.topScroll) {
+      this.topScroll.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
   
 
   updatePagedTransactions() {
@@ -269,6 +275,7 @@ export class BalanceComponent implements OnInit {
     this.pagedTransactions = this.transactionsRecord.slice(startIndex, endIndex);
     this.isLoading = false; // Set isLoading to false in case of error
   }
+
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {

@@ -71,7 +71,6 @@ export class ApiArchiverService {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}&page=${pageNumber}`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
-    this.basePath = "https://api.qubic.org";
     return this.httpClient.request<TransactionsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
       context: new HttpContext(),
       responseType: 'json'
