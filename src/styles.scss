@@ -138,18 +138,17 @@ body {
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$light-primary-text};
 }
+
 $mat-primary: (
   main: #1bdef5,
   lighter: #1b64f5,
   darker: #171744,
   200: #272660,
   // For slide toggle,
-  contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  contrast: (main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-primary: mat.define-palette($mat-primary, main, lighter, darker);
 
@@ -163,17 +162,15 @@ body {
 }
 
 $mat-accent: (
-  main: #1adef51a,    
-  lighter: lighten(#1adef51a, 20%), 
-  darker: darken(#1adef51a, 20%),   
+  main: #1adef51a,
+  lighter: lighten(#1adef51a, 20%),
+  darker: darken(#1adef51a, 20%),
   200: $light-link,
   // For slide toggle,
-  contrast:
-    (
-      main: #ffffff,
-      lighter:  #ffffff,
-      darker: #ffffff,
-    ),
+  contrast: (main: #ffffff,
+    lighter: #ffffff,
+    darker: #ffffff,
+  ),
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
 
@@ -185,18 +182,17 @@ body {
   --text-warn-lighter-color: #{$dark-primary-text};
   --text-warn-darker-color: #{$light-primary-text};
 }
+
 $mat-warn: (
   main: #ff0000,
   lighter: #ffb3b3,
   darker: #ff0000,
   200: #ff0000,
   // For slide toggle,
-  contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  contrast: (main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-warn: mat.define-palette($mat-warn, main, lighter, darker);
 
@@ -227,18 +223,23 @@ $altTheme: (
   .dashboard-wallet-name {
     color: $light-text;
   }
+
   .dashboard-balance-name {
     color: $light-link;
   }
+
   .dashboard-amount-name {
     color: $light-accent-text;
   }
+
   .dashboard-currency-name {
     color: $light-accent-text;
   }
+
   .isPositiv {
     color: $light-positiv-color;
   }
+
   .isNegativ {
     color: $light-negativ-color;
   }
@@ -309,6 +310,7 @@ body {
   padding: 0;
   font-family: "Space Grotesk";
 }
+
 table,
 div,
 span,
@@ -387,19 +389,16 @@ a:active {
 
 simple-snack-bar {
   background-color: $dark-bg-lighter-5 !important;
- word-wrap: break-word; // Ermöglicht den Zeilenumbruch für lange Texte
- white-space: pre-wrap; // Zeilenumbruch für lange Texte
+  word-wrap: break-word; // Ermöglicht den Zeilenumbruch für lange Texte
+  white-space: pre-wrap; // Zeilenumbruch für lange Texte
 
- .mdc-button__label {
-   color: $light-text;
- }
-
- .mat-mdc-button-persistent-ripple {
-   border: 1px solid $mainColor;
- }
+  .mdc-button__label {
+    color: $light-text;
+  }
 }
 
 .darkTheme {
+
   div.copy,
   a:link,
   a:visited,
@@ -417,15 +416,11 @@ simple-snack-bar {
 
   simple-snack-bar {
     background-color: $light-bg-lighter-5 !important;
-    word-wrap: break-word; 
-    white-space: pre-wrap; 
-  
+    word-wrap: break-word;
+    white-space: pre-wrap;
+
     .mdc-button__label {
       color: $dark-text;
-    }
-  
-    .mat-mdc-button-persistent-ripple {
-      border: 1px solid $mainColor;
     }
   }
 }
@@ -433,6 +428,7 @@ simple-snack-bar {
 .mat-drawer {
   width: 250px;
 }
+
 .toolbar {
   padding: 0 !important;
 }
@@ -570,6 +566,7 @@ h2 {
 
     // Success state - show check icon
     &--success {
+
       // Different background color (also on hover)
       &,
       &:hover {
@@ -601,6 +598,7 @@ h2 {
 
     // Success state - show check icon
     &--confirmed {
+
       // Different background color (also on hover)
       &,
       &:hover {
@@ -631,6 +629,7 @@ h2 {
     }
 
     &--unknown {
+
       // Different background color (also on hover)
       &,
       &:hover {
@@ -661,6 +660,7 @@ h2 {
 
     // Fail state - show cross icon
     &--fail {
+
       // Different background color (also on hover)
       &,
       &:hover {
@@ -681,20 +681,16 @@ h2 {
         width: 65%;
 
         // Using background gradient is the only solution creating a cross with a single element
-        background: linear-gradient(
-            to bottom,
+        background: linear-gradient(to bottom,
             transparent 44%,
             #fff 44%,
             #fff 56%,
-            transparent 56%
-          ),
-          linear-gradient(
-            to right,
+            transparent 56%),
+          linear-gradient(to right,
             transparent 44%,
             #fff 44%,
             #fff 56%,
-            transparent 56%
-          );
+            transparent 56%);
 
         transform: translate(-50%, -50%) rotate(-45deg);
 
@@ -752,18 +748,16 @@ h2 {
     margin-bottom: 12px;
 
     .loading-btn-wrapper {
-      background: repeating-linear-gradient(
-        45deg,
-        #fff,
-        #fff 10px,
-        #f0f0f0 10px,
-        #f0f0f0 20px
-      );
+      background: repeating-linear-gradient(45deg,
+          #fff,
+          #fff 10px,
+          #f0f0f0 10px,
+          #f0f0f0 20px);
     }
   }
 
   .loading-btn-wrapper {
-    & + & {
+    &+& {
       margin-left: 8px;
     }
   }
@@ -813,9 +807,11 @@ h2 {
   0% {
     color: none;
   }
+
   50% {
     font-weight: bold;
   }
+
   100% {
     color: none;
   }
@@ -828,33 +824,41 @@ h2 {
   text-align: right !important;
   justify-content: right;
 }
+
 .flex-center,
 .flex-halign-center {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .flex-valign-center {
   display: flex;
   align-items: center;
 }
+
 .flex-halign-right {
   justify-content: right;
 }
+
 .flex-halign-left {
   justify-content: left;
 }
+
 .word-break {
   word-break: break-all;
 }
+
 .toolbar {
   background-color: #ffffff;
 }
+
 hr {
   border: none;
   height: 1px;
   /* Set the hr color */
-  color: gray; /* old IE */
+  color: gray;
+  /* old IE */
   background-color: gray;
 }
 
@@ -869,6 +873,7 @@ hr {
 .window-drag {
   -webkit-app-region: drag;
 }
+
 .window-no-drag {
   -webkit-app-region: no-drag;
 }
@@ -876,23 +881,29 @@ hr {
 .windowBorder .container {
   border: 1px solid gray;
 }
+
 .flex {
   display: flex;
 }
+
 .flex-wrap {
   flex-wrap: wrap;
 }
+
 @keyframes blink {
   0% {
     color: red;
   }
+
   50% {
     color: inherit;
   }
+
   100% {
     color: red;
   }
 }
+
 .danger {
   animation: blink 1s infinite;
 }
@@ -901,7 +912,7 @@ hr {
 
 
 .custom-mat-option {
-  padding: 8px; 
+  padding: 8px;
 }
 
 .custom-mat-option:nth-child(even) {
@@ -970,6 +981,7 @@ hr {
 
 .title {
   text-align: center;
+
   .wallet-icon {
     height: 100px;
   }
@@ -996,8 +1008,9 @@ hr {
   border-radius: 12px !important;
 }
 
-mat-hint{
-  padding-top: 5px;;
+mat-hint {
+  padding-top: 5px;
+  ;
   font-size: 1em;
   color: grey;
 }
@@ -1010,11 +1023,13 @@ mat-hint{
   font-size: 1.0em;
   // color:$light-text;
 }
+
 .dashboard-balance-name {
-  font-size:  2.2em;
+  font-size: 2.2em;
   // font-size:  35px;
   color: $dark-text;
 }
+
 .dashboard-amount-name {
   font-size: 1.0em;
   color: $dark-primary-text;
@@ -1040,52 +1055,64 @@ mat-hint{
 }
 
 .back-none {
-   background: none;
+  background: none;
 }
+
 .col-1 {
   flex: 0 0 8.333333%;
   max-width: 8.333333%;
 }
+
 .col-2 {
   flex: 0 0 16.666667%;
   max-width: 16.666667%;
 }
+
 .col-3 {
   flex: 0 0 25%;
   max-width: 25%;
 }
+
 .col-4 {
   flex: 0 0 33.333333%;
   max-width: 33.333333%;
 }
+
 .col-5 {
   flex: 0 0 41.666667%;
   max-width: 41.666667%;
 }
+
 .col-6 {
   flex: 0 0 50%;
   max-width: 50%;
 }
+
 .col-7 {
   flex: 0 0 58.333333%;
   max-width: 58.333333%;
 }
+
 .col-8 {
   flex: 0 0 66.666667%;
   max-width: 66.666667%;
 }
+
 .col-9 {
   flex: 0 0 75%;
   max-width: 75%;
 }
+
 .col-10 {
   flex: 0 0 83.333333%;
   max-width: 83.333333%;
 }
+
 .col-11 {
   flex: 0 0 91.666667%;
   max-width: 91.666667%;
 }
+
 .col-12 {
   flex: 0 0 100%;
   max-width: 100%;
@@ -1097,46 +1124,57 @@ mat-hint{
     flex: 0 0 8.333333%;
     max-width: 8.333333%;
   }
+
   .col-sm-2 {
     flex: 0 0 16.666667%;
     max-width: 16.666667%;
   }
+
   .col-sm-3 {
     flex: 0 0 25%;
     max-width: 25%;
   }
+
   .col-sm-4 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+
   .col-sm-5 {
     flex: 0 0 41.666667%;
     max-width: 41.666667%;
   }
+
   .col-sm-6 {
     flex: 0 0 50%;
     max-width: 50%;
   }
+
   .col-sm-7 {
     flex: 0 0 58.333333%;
     max-width: 58.333333%;
   }
+
   .col-sm-8 {
     flex: 0 0 66.666667%;
     max-width: 66.666667%;
   }
+
   .col-sm-9 {
     flex: 0 0 75%;
     max-width: 75%;
   }
+
   .col-sm-10 {
     flex: 0 0 83.333333%;
     max-width: 83.333333%;
   }
+
   .col-sm-11 {
     flex: 0 0 91.666667%;
     max-width: 91.666667%;
   }
+
   .col-sm-12 {
     flex: 0 0 100%;
     max-width: 100%;
@@ -1152,25 +1190,27 @@ mat-hint{
   row-gap: 2px;
 }
 
-.buttons-vertical{
+.buttons-vertical {
   flex-direction: column;
   align-items: center;
+
   button {
-      padding-left: 48px;
-      padding-right: 48px;
+    padding-left: 48px;
+    padding-right: 48px;
   }
 }
+
 .mt-4 {
   margin-top: 24px !important;
 }
 
 .yellow-dot {
-  color: yellowgreen; 
+  color: yellowgreen;
   vertical-align: middle;
 }
 
 .green-dot {
-  color: green; 
+  color: green;
   vertical-align: middle;
 }
 
@@ -1180,9 +1220,6 @@ mat-hint{
 }
 
 .red-dot {
-  color: red; 
+  color: red;
   vertical-align: middle;
 }
-
-
-
