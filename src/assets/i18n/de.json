@@ -338,7 +338,7 @@
     "transactions": {
       "title": "Offene Buchungen",
       "titleLastEpochs": "Die letzten {{lastEpochsText}} Epochen",
-      "titleAllEpochs": "Nach Epochen",
+      "titleAllEpochs": "Nach Adressen",
       "verificationAlert": "Vorschaudaten konnten nicht verifiziert werden",
       "noTransactions": "Keine Buchungen gefunden",
       "send.tooltip": "Ausgehende Überweisung",
