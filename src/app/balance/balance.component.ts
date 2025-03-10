@@ -228,27 +228,28 @@ export class BalanceComponent implements OnInit {
       this.isLoading = true;
       this.transactionsNextArchiver = [];
 
-      this.apiArchiver.getTransactions(
-        this.seedFilterFormControl.value,
-        this.initialProcessedTick,
-        this.lastProcessedTick,
-        this.pagination[0].nextPage
-      ).subscribe(r => {
-        if (r) {
-          if (Array.isArray(r)) {
-            this.transactionsNextArchiver.push(...r);
-          } else {
-            this.transactionsNextArchiver.push(r);
+      if (this.pagination[0].nextPage >= 1) {
+        this.apiArchiver.getTransactions(
+          this.seedFilterFormControl.value,
+          this.initialProcessedTick,
+          this.lastProcessedTick,
+          this.pagination[0].nextPage
+        ).subscribe(r => {
+          if (r) {
+            if (Array.isArray(r)) {
+              this.transactionsNextArchiver.push(...r);
+            } else {
+              this.transactionsNextArchiver.push(r);
+            }
+            this.transactionsRecord.push(...this.transactionsNextArchiver[0].transactions);
+            this.pagination = [];
+            this.pagination.push(this.transactionsNextArchiver[0].pagination);
           }
-          this.transactionsRecord.push(...this.transactionsNextArchiver[0].transactions);
-          this.pagination = [];
-          this.pagination.push(this.transactionsNextArchiver[0].pagination);
-        }
-        this.isLoading = false;
+          this.isLoading = false;
 
-        this.updatePagedTransactions();
-      });
-
+          this.updatePagedTransactions();
+        });
+      }
       this.pageSize = event.pageSize;
       this.currentPage = event.pageIndex;
       this.updatePagedTransactions();
@@ -279,11 +280,22 @@ export class BalanceComponent implements OnInit {
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
+      this.pagination = [];
       this.transactionsRecord = [];
+
       this.transactionsArchiverSubscribe.forEach(archiver => {
         if (archiver.transactions && archiver.transactions.length > 0) {
           this.transactionsRecord.push(...archiver.transactions);
         }
+      });
+
+      this.pagination.push({
+        totalRecords: this.transactionsRecord.length,
+        currentPage: 1,
+        totalPages: 1,
+        pageSize: this.transactionsRecord.length,
+        nextPage: 0,
+        previousPage: 0
       });
 
       // Filter to keep only unique transactions based on txId
