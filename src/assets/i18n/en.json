@@ -339,7 +339,7 @@
     "transactions": {
       "title": "Open transactions",
       "titleLastEpochs": "The last {{lastEpochsText}} epochs",
-      "titleAllEpochs": "By Epochs",
+      "titleAllEpochs": "By Address",
       "verificationAlert": "Preview data could not be verified",
       "noTransactions": "No Transactions found",
       "send.tooltip": "Outgoing Transfer",
