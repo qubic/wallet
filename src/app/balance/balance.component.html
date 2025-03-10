@@ -42,7 +42,7 @@
                 <mat-accordion *ngFor="let transaction of transactions">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="monospace">
                                 <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
@@ -52,10 +52,8 @@
                                     </a>
                                 </span>
                                 <span class="desktopOnly secondary ">
-                                    &nbsp; (
-                                    {{ transaction.created | date}}
-                                    {{ transaction.created | date:'HH:mm:ss' }} UTC
-                                    )
+                                    &nbsp; ({{ transaction.created | date: 'yyyy-MM-dd' }} 
+                                    {{ transaction.created | date:'HH:mm:ss' }} UTC)
                                 </span>
                                 <button
                                     *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
@@ -212,7 +210,7 @@
                 <mat-accordion *ngFor="let transaction of pagedTransactions">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="monospace">
                                 <span class="status-icon">
                                     <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
                                         matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
@@ -227,11 +225,9 @@
                                     </a>
                                 </span>
                                 <span class="desktopOnly secondary ">
-                                    &nbsp; (
-                                    {{ transaction.transactions[0].timestamp | date}} {{
+                                    &nbsp; ({{ transaction.transactions[0].timestamp |  date: 'yyyy-MM-dd'}} {{
                                     transaction.transactions[0].timestamp |
-                                    date:'HH:mm:ss' }}
-                                    )
+                                    date:'HH:mm:ss' }})
                                 </span>
                                 <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"

@@ -224,6 +224,6 @@ export class NavigationComponent implements OnInit {
   }
 
   openPrivacyPolicy() {
-    window.open('https://qubic.org/Privacy-policy', '_blank');
+    window.open('https://qubic.org/privacy-policy', '_blank');
   }
 }

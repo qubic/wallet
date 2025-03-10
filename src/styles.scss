@@ -313,7 +313,6 @@ body {
 
 table,
 div,
-span,
 button,
 th,
 td,
@@ -371,6 +370,14 @@ mat-snack-bar-container.error .mdc-snackbar__surface {
 }
 
 div.copy {
+  cursor: pointer;
+  color: $dark-text;
+  font-family: "Space Mono";
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.monospace {
   cursor: pointer;
   color: $dark-text;
   font-family: "Space Mono";
