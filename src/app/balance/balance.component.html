@@ -39,7 +39,7 @@
                         {{ t("general.loading") }}
                     </div>
                 </div>
-                <mat-accordion *ngFor="let transaction of transactions">
+                <mat-accordion *ngFor="let transaction of getTransactions()">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
                             <mat-panel-title class="monospace">
