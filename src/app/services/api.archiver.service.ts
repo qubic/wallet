@@ -68,7 +68,7 @@ export class ApiArchiverService {
 
 
   public getTransactions(publicId: string, startTick: number = 0, lastTick: number, pageNumber: number = 1): Observable<TransactionsArchiver[] >  {
-    const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}&page=${pageNumber}`;
+    const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}&page=${pageNumber}&desc=true`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
     return this.httpClient.request<TransactionsArchiver[]>('get', `${this.basePath}${localVarPath}`, {
