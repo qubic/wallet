@@ -404,6 +404,10 @@ simple-snack-bar {
   }
 }
 
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: transparent !important;
+}
+
 .darkTheme {
 
   div.copy,
