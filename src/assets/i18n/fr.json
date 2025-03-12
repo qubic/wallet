@@ -351,7 +351,9 @@
       "status.unknown.tooltip": "Inconnu",
       "status.confirmed.tooltip": "Enregistré",
       "filter.seed.label": "Filtrer par Adresse",
-      "exportButton": "Exporter les transactions"
+      "exportButton": "Exporter les transactions",
+      "afterEpochs": "Filtrer par époques"
+
     },
     "repeatTransaction": "Répéter la transaction"
   },

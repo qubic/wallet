@@ -352,7 +352,8 @@
       "status.unknown.tooltip": "Bilinmiyor",
       "status.confirmed.tooltip": "Aşamalı",
       "filter.seed.label": "Adrese Göre Filtrele",
-      "exportButton": "Dışa Aktar"
+      "exportButton": "Dışa Aktar",
+      "afterEpochs": "Dönemlere göre filtrele"
     },
     "repeatTransaction": "İşlemi Tekrarla"
   },

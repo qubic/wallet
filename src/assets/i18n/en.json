@@ -352,7 +352,8 @@
       "status.unknown.tooltip": "Unknown",
       "status.confirmed.tooltip": "Staged",
       "filter.seed.label": "Filter by Address",
-      "exportButton": "Export Transactions"
+      "exportButton": "Export Transactions",
+      "afterEpochs": "Filter by epochs"
     },
     "repeatTransaction": "Repeat Transaction"
   },

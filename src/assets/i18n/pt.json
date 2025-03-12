@@ -350,7 +350,8 @@
       "status.unknown.tooltip": "Desconhecida",
       "status.confirmed.tooltip": "Registrada",
       "filter.seed.label": "Filtrar por Endereço",
-      "exportButton": "Exportar transações"
+      "exportButton": "Exportar transações",
+      "afterEpochs": "Filtrar por épocas"
     },
     "repeatTransaction": "Repetir a transação"
   },

@@ -353,7 +353,8 @@
       "status.unknown.tooltip": "Неизвестно",
       "status.confirmed.tooltip": "Непонятно",
       "filter.seed.label": "Фильтровать по адресу",
-      "exportButton": "Экспорт транзакций"
+      "exportButton": "Экспорт транзакций",
+      "afterEpochs": "Фильтровать по эпохам"
     },
     "repeatTransaction": "Повторить транзакцию"
   },

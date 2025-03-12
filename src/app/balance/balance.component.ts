@@ -13,6 +13,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-balance',
@@ -44,6 +45,7 @@ export class BalanceComponent implements OnInit {
   public isLoading: boolean = false;
 
   public pagination: Pagination[] = [];
+  isShowAfterEpochs: boolean = false;
 
   @ViewChild('topScrollAnchor') topScroll: ElementRef | undefined;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -128,7 +130,7 @@ export class BalanceComponent implements OnInit {
   private clearPaginator() {
     // this.transactionsRecord = [];
     // this.pagedTransactions = [];
-    this.pageSize = 50;
+    this.pageSize = 100;
     this.currentPage = 0;
   }
 
@@ -160,7 +162,11 @@ export class BalanceComponent implements OnInit {
     this.status.processedTickIntervalsPerEpoch
       .filter(t => t.epoch === epoch)
       .forEach(e => {
-        this.initialProcessedTick = e.intervals[0].initialProcessedTick;
+        if (this.isShowAfterEpochs) {
+          this.initialProcessedTick = e.intervals[0].initialProcessedTick;
+        } else {
+          this.initialProcessedTick = 1;
+        }
         this.lastProcessedTick = e.intervals[0].lastProcessedTick;
         this.currentSelectedEpoch = e.epoch;
       });
@@ -224,7 +230,7 @@ export class BalanceComponent implements OnInit {
 
 
   onPageChange(event: PageEvent) {
-    if (this.transactionsRecord.length - 50 < (event.pageIndex * event.pageSize) + 1) {
+    if (this.transactionsRecord.length - 100 < (event.pageIndex * event.pageSize) + 1) {
       this.isLoading = true;
       this.transactionsNextArchiver = [];
 
@@ -313,6 +319,21 @@ export class BalanceComponent implements OnInit {
       this.isLoading = false;
     }
     this.isLoading = false;
+  }
+
+
+  toggleView(event: MatSlideToggleChange) {
+    // this.isShowAfterEpochs = !this.isShowAfterEpochs;
+    //localStorage.setItem("show-after-epochs", this.isShowAfterEpochs ? '0' : '1');
+    this.isShowAfterEpochs = event.checked;
+
+    if (this.isShowAfterEpochs) {
+      this.selectedElement.setValue('element2');
+    }
+
+    this.SegmentedControlAction();
+
+    // window.location.reload();
   }
 
 

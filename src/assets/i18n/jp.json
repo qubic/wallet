@@ -352,7 +352,9 @@
       "status.unknown.tooltip": "不明",
       "status.confirmed.tooltip": "確定",
       "filter.seed.label": "住所でフィルター",
-      "exportButton": "取引をエクスポート"
+      "exportButton": "取引をエクスポート",
+      "afterEpochs": "時代でフィルター"
+
     },
     "repeatTransaction": "取引を繰り返す"
   },

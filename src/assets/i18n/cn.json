@@ -352,7 +352,8 @@
       "status.unknown.tooltip": "未知",
       "status.confirmed.tooltip": "已暂存",
       "filter.seed.label": "按地址筛选",
-      "exportButton": "导出交易"
+      "exportButton": "导出交易",
+      "afterEpochs": "按时代筛选"
     },
     "repeatTransaction": "重复交易"
   },
