@@ -136,15 +136,13 @@ export class BalanceComponent implements OnInit {
 
 
   SegmentedControlAction(): void {
-    this.isLoading = true; // Set isLoading to true at the beginning
     this.clearPaginator();
     const element = this.selectedElement.value;
     if (element === 'element1') {
-      this.isShowAllTransactions = false;
-      this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.currentTickArchiver.value;
-      this.toggleShowAllTransactionsView();
-      this.isLoading = false; // Set isLoading to false after the operation
+      const currentUrl = this.router.url;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([currentUrl]);
+      });
     } else if (element === 'element2') {
       if (!this.seedFilterFormControl.value) {
         const seeds = this.getSeedsWithOnlyWatch();
@@ -323,8 +321,6 @@ export class BalanceComponent implements OnInit {
 
 
   toggleView(event: MatSlideToggleChange) {
-    // this.isShowAfterEpochs = !this.isShowAfterEpochs;
-    //localStorage.setItem("show-after-epochs", this.isShowAfterEpochs ? '0' : '1');
     this.isShowAfterEpochs = event.checked;
 
     if (this.isShowAfterEpochs) {
@@ -332,8 +328,6 @@ export class BalanceComponent implements OnInit {
     }
 
     this.SegmentedControlAction();
-
-    // window.location.reload();
   }
 
 
