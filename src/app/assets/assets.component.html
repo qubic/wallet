@@ -180,9 +180,32 @@
             </div>
             <div class="row">
               <div class="col">
-                <mat-form-field class="full-width">
+                <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width"
+                  *ngIf="selectedAccountId">
+                  <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
+                    matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
+                    <mat-icon>account_balance_wallet</mat-icon>
+                  </button>
                   <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
-                  <input matInput formControlName="destinationAddress">
+                  <mat-select #selectedDestinationId formControlName="selectedDestinationId">
+                    <mat-option *ngFor="let seed of getSeeds(true); let i = index" [value]="seed.publicId"
+                      class="custom-mat-option">
+                      {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
+                      {{ t("general.currency") }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="sendForm.controls['selectedDestinationId'].hasError('required')">
+                    {{ t("assetsComponent.form.placeholder.error") }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width"  *ngIf="!selectedAccountId">
+                  <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
+                  <input matInput [placeholder]="t('paymentComponent.form.receiver.placeholder')"
+                  formControlName="destinationAddress">
+                  <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
+                  matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
+                  <mat-icon>import_contacts</mat-icon>
+                </button>
                   <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('required')">
                     {{ t("assetsComponent.form.placeholder.error") }}
                   </mat-error>
