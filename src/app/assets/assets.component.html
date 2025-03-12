@@ -1,13 +1,13 @@
 <ng-container *transloco="let t">
   <div class="content_container">
-    <h1>{{ t("assetsComponent.title") }}</h1>  
+    <h1>{{ t("assetsComponent.title") }}</h1>
     <div class="flex flex-wrap card-list">
-      <div *ngIf="assets.length > 0 && !showSendForm ">       
+      <div *ngIf="assets.length > 0 && !showSendForm ">
         <button mat-raised-button type="button" color="primary" [disabled]="isAssetsLoading" (click)="refreshData()">
           <span *ngIf="!isAssetsLoading">{{ t("assetsComponent.buttons.refresh") }}</span>
           <mat-progress-spinner mode="indeterminate" [diameter]="20" *ngIf="isAssetsLoading">
           </mat-progress-spinner>
-        </button> 
+        </button>
         <mat-slide-toggle (change)="toggleTableView($event)" [checked]="isTable">{{
           t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
       </div>
@@ -62,8 +62,8 @@
         <div *ngIf="assets.length > 0">
           <div class="mobileAssetItem" *ngFor="let asset of assets">
             <h3>
-              {{ asset.assetName }} <span
-              class="disable-area">- {{ getSeedAlias(asset.publicId) }} - {{asset.ownedAmount
+              {{ asset.assetName }} <span class="disable-area">- {{ getSeedAlias(asset.publicId) }} -
+                {{asset.ownedAmount
                 == undefined ||
                 asset.ownedAmount == null
                 ? "?"
@@ -76,7 +76,8 @@
               <ng-container
                 *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }t"></ng-container>
             </div>
-            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="asset.publicId">
+            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}"
+              [cdkCopyToClipboard]="asset.publicId">
               {{ asset.publicId }}
             </div>
           </div>
@@ -93,7 +94,8 @@
           <th mat-header-cell *matHeaderCellDef>{{ t("assetsComponent.table.assetName") }}</th>
           <td mat-cell *matCellDef="let asset">
             {{ asset.assetName }} - {{ getSeedAlias(asset.publicId) }}<br>
-            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}" [cdkCopyToClipboard]="asset.publicId">
+            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}"
+              [cdkCopyToClipboard]="asset.publicId">
               <!-- {{ asset.publicId.slice(0, 20) }}... -->
               {{ asset.publicId }}
             </div>
@@ -180,9 +182,32 @@
             </div>
             <div class="row">
               <div class="col">
-                <mat-form-field class="full-width">
+                <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width"
+                  *ngIf="selectedAccountId">
+                  <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
+                    matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
+                    <mat-icon>account_balance_wallet</mat-icon>
+                  </button>
                   <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
-                  <input matInput formControlName="destinationAddress">
+                  <mat-select #selectedDestinationId formControlName="selectedDestinationId">
+                    <mat-option *ngFor="let seed of getSeeds(true); let i = index" [value]="seed.publicId"
+                      class="custom-mat-option">
+                      {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
+                      {{ t("general.currency") }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="sendForm.controls['selectedDestinationId'].hasError('required')">
+                    {{ t("assetsComponent.form.placeholder.error") }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width"  *ngIf="!selectedAccountId">
+                  <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
+                  <input matInput [placeholder]="t('paymentComponent.form.receiver.placeholder')"
+                  formControlName="destinationAddress">
+                  <button type="button" matSuffix mat-icon-button (click)="toggleDestinationSelect()"
+                  matTooltip="{{ t('paymentComponent.form.receiver.chooseOwnSeed') }}">
+                  <mat-icon>import_contacts</mat-icon>
+                </button>
                   <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('required')">
                     {{ t("assetsComponent.form.placeholder.error") }}
                   </mat-error>
