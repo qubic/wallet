@@ -180,7 +180,11 @@ mat-card {
     color: grey;
 }
 
-.status-icon{
+.status-icon {
     padding-left: 6px;
     padding-right: 2px;
+}
+
+mat-paginator {
+    margin-bottom: 10px;
 }

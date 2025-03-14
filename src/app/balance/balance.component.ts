@@ -130,7 +130,7 @@ export class BalanceComponent implements OnInit {
   private clearPaginator() {
     // this.transactionsRecord = [];
     // this.pagedTransactions = [];
-    this.pageSize = 100;
+    this.pageSize = 25;
     this.currentPage = 0;
   }
 
@@ -228,7 +228,7 @@ export class BalanceComponent implements OnInit {
 
 
   onPageChange(event: PageEvent) {
-    if (this.transactionsRecord.length - 100 < (event.pageIndex * event.pageSize) + 1) {
+    if (this.transactionsRecord.length - 150 < (event.pageIndex * event.pageSize) + 1) {
       this.isLoading = true;
       this.transactionsNextArchiver = [];
 

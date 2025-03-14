@@ -207,6 +207,10 @@
             <div *ngIf="pagedTransactions.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
             </div>
+            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords"
+                [pageSize]="pageSize" [pageSizeOptions]="[ 10, 25, 50,]" (page)="onPageChange($event)"
+                aria-label="Select page">
+            </mat-paginator>
             <span *ngIf="pagedTransactions.length > 0">
                 <mat-accordion *ngFor="let transaction of pagedTransactions">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
