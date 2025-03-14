@@ -9,3 +9,14 @@ form {
 .file-input {
     display: none;
 }
+
+mat-form-field {
+    width: 100%;
+  }
+  
+  mat-error {
+    display: block;
+    width: 100%;
+    text-align: left; /* Optional, falls du den Text links ausrichten willst */
+  }
+  

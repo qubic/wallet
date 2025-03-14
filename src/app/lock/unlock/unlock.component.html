@@ -25,10 +25,9 @@
             requredText="{{ t('unlockComponent.form.file.error.required') }}"
             selectFileText="{{ t('unlockComponent.choosePrivateKeyFile') }}"></app-file-selector>
 
-          <mat-form-field class="full-width">
+          <mat-form-field class="">
             <input matInput placeholder="Password" formControlName="password" type="password"
               (input)="onPasswordChange()" />
-
             <mat-error *ngIf="importForm.controls['password'].hasError('required')">
               {{ t("unlockComponent.form.password.error.required") }}
             </mat-error>
