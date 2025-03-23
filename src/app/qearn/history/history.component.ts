@@ -65,7 +65,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   private async handleTxSuccess(d: any) {
     if (d?.publicId) {
       this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
-      await this.us.forceUpdateNetworkBalance(d.publicId, async () => {
+      this.us.forceUpdateNetworkBalance(d.publicId, async () => {
         await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
         this.resetSourceId(d.publicId);
         this.cdf.detectChanges();

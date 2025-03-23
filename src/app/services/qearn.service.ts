@@ -58,13 +58,7 @@ export class QearnService {
   public txSuccessSubject = new Subject<PendingStake>();
   public selectedPublicId = new Subject<string>();
 
-  constructor(
-    private apiLiveService: ApiLiveService,
-    private walletService: WalletService,
-    private us: UpdaterService,
-    private _snackBar: MatSnackBar,
-    private transloco: TranslocoService
-  ) {}
+  constructor(private apiLiveService: ApiLiveService, private walletService: WalletService, private us: UpdaterService, private _snackBar: MatSnackBar, private transloco: TranslocoService) {}
 
   private async queryStakingData(inputType: number, inputSize: number, requestData: string) {
     return lastValueFrom(
@@ -150,10 +144,11 @@ export class QearnService {
     const responseBuffer = this.walletService.base64ToArrayBuffer(res.responseData);
     const state = Number(new DataView(responseBuffer).getBigUint64(0, true));
 
-    return state.toString(2)
+    return state
+      .toString(2)
       .split('')
       .reverse()
-      .reduce((epochs, bit, index) => bit === '1' ? [...epochs, currentEpoch - index] : epochs, [] as number[]);
+      .reduce((epochs, bit, index) => (bit === '1' ? [...epochs, currentEpoch - index] : epochs), [] as number[]);
   }
 
   public async getEndedStatus(user: Uint8Array): Promise<{ fullUnlockedAmount?: number; fullRewardedAmount?: number; earlyUnlockedAmount?: number; earlyRewardedAmount?: number }> {
@@ -179,15 +174,6 @@ export class QearnService {
     this.epochInfo[epoch] = await this.getLockInfoPerEpoch(epoch);
     this.epochInfo = { ...this.epochInfo };
     this.epochInfoSubject.next(this.epochInfo);
-    console.log(this.epochInfo[epoch]);
-  }
-
-  public async fetchAllLockInfoFromCurrentEpoch(epoch: number) {
-    this.isLoading = true;
-    for (let i = 0; i < 52; i++) {
-      if (!this.epochInfo[epoch - i]) await this.fetchLockInfo(epoch - i);
-    }
-    this.isLoading = false;
   }
 
   private calculateRewards(lockAmount: number, totalLockedAmount: number, currentBonusAmount: number, yieldPercentage: number, currentEpoch: number, lockedEpoch: number) {
@@ -243,16 +229,6 @@ export class QearnService {
     }
   }
 
-  public async fetchStakeDataOfPublicId(publicId: string, currentEpoch: number) {
-    this.isLoading = true;
-    for (let i = 0; i < 52; i++) {
-      if (!this.stakeData[publicId]?.find((data) => data.lockedEpoch === currentEpoch - i)) {
-        await this.fetchStakeDataPerEpoch(publicId, currentEpoch - i, currentEpoch);
-      }
-    }
-    this.isLoading = false;
-  }
-
   public async fetchEndedStakeData(publicId: string) {
     const endedStatus = await this.getEndedStatus(new PublicKey(publicId).getPackageData());
     if (!endedStatus) return;
@@ -262,9 +238,9 @@ export class QearnService {
     }
 
     const updateOrAddStatus = (status: boolean, unLockedAmount: number, rewardedAmount: number) => {
-      const index = this.endedStakeData[publicId].findIndex(data => data.status === status);
+      const index = this.endedStakeData[publicId].findIndex((data) => data.status === status);
       const newData = { unLockedAmount, rewardedAmount, status };
-      
+
       if (index !== -1) {
         this.endedStakeData[publicId][index] = newData;
       } else {
@@ -285,30 +261,26 @@ export class QearnService {
   }
 
   private async monitorTransaction(publicId: string, initialLockedAmount: number, epoch: number, currentEpoch: number, type: 'stake' | 'unlock'): Promise<void> {
-    this.us.currentTick.pipe(
-      filter(tick => this.pendingStake !== null && tick > this.pendingStake.targetTick),
-      take(1)
-    ).subscribe(async () => {
-      await this.fetchStakeDataPerEpoch(publicId, epoch, currentEpoch, true);
-      
-      const updatedLockedAmount = this.stakeData[publicId]?.find(
-        data => data.lockedEpoch === epoch
-      )?.lockedAmount ?? 0;
+    this.us.currentTick
+      .pipe(
+        filter((tick) => this.pendingStake !== null && tick > this.pendingStake.targetTick),
+        take(1)
+      )
+      .subscribe(async () => {
+        await this.fetchStakeDataPerEpoch(publicId, epoch, currentEpoch, true);
 
-      const success = initialLockedAmount !== updatedLockedAmount;
-      
-      this._snackBar.open(
-        this.transloco.translate(success ? 'qearn.main.txSuccess' : 'qearn.main.txFailed'),
-        this.transloco.translate('general.close'),
-        {
+        const updatedLockedAmount = this.stakeData[publicId]?.find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
+
+        const success = initialLockedAmount !== updatedLockedAmount;
+
+        this._snackBar.open(this.transloco.translate(success ? 'qearn.main.txSuccess' : 'qearn.main.txFailed'), this.transloco.translate('general.close'), {
           duration: 0,
-          panelClass: success ? 'success' : 'error'
-        }
-      );
+          panelClass: success ? 'success' : 'error',
+        });
 
-      this.txSuccessSubject.next(this.pendingStake!);
-      this.pendingStake = null;
-    });
+        this.txSuccessSubject.next(this.pendingStake!);
+        this.pendingStake = null;
+      });
   }
 
   public monitorStakeTransaction(publicId: string, initialLockedAmount: number, epoch: number): void {
