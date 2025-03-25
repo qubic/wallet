@@ -207,8 +207,8 @@
             <div *ngIf="pagedTransactions.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
             </div>
-            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords"
-                [pageSize]="pageSize" [pageSizeOptions]="[ 10, 25, 50,]" (page)="onPageChange($event)"
+            <mat-paginator #paginatorTop *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords"
+                [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]" (page)="onPageChange($event, 'top')"
                 aria-label="Select page">
             </mat-paginator>
             <span *ngIf="pagedTransactions.length > 0">
@@ -345,8 +345,8 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </span>
-            <mat-paginator *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords"
-                [pageSize]="pageSize" [pageSizeOptions]="[ 10, 25, 50,100]" (page)="onPageChange($event)"
+            <mat-paginator #paginatorBottom *ngIf="transactionsRecord.length > 0" [length]="pagination[0].totalRecords"
+                [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]" (page)="onPageChange($event, 'bottom')"
                 aria-label="Select page">
             </mat-paginator>
         </div>

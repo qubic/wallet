@@ -49,6 +49,8 @@ export class BalanceComponent implements OnInit {
 
   @ViewChild('topScrollAnchor') topScroll: ElementRef | undefined;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('paginatorTop') paginatorTop!: MatPaginator;
+  @ViewChild('paginatorBottom') paginatorBottom!: MatPaginator;
   pageSize = 50;
   currentPage = 0;
 
@@ -227,7 +229,8 @@ export class BalanceComponent implements OnInit {
   }
 
 
-  onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent, source: 'top' | 'bottom') {
+
     if (this.transactionsRecord.length - 150 < (event.pageIndex * event.pageSize) + 1) {
       this.isLoading = true;
       this.transactionsNextArchiver = [];
@@ -254,16 +257,28 @@ export class BalanceComponent implements OnInit {
           this.updatePagedTransactions();
         });
       }
-      this.pageSize = event.pageSize;
-      this.currentPage = event.pageIndex;
-      this.updatePagedTransactions();
-    } else {
-      // Falls keine neuen Daten geladen werden müssen, sofort aktualisieren
-      this.pageSize = event.pageSize;
-      this.currentPage = event.pageIndex;
-      this.updatePagedTransactions();
     }
+
+    // Sync Paginator-Instanz
+    if (source === 'top' && this.paginatorBottom) {
+        this.paginatorBottom.pageIndex = event.pageIndex;
+        this.paginatorBottom.pageSize = event.pageSize;
+    } else if (source === 'bottom' && this.paginatorTop) {
+        this.paginatorTop.pageIndex = event.pageIndex;
+        this.paginatorTop.pageSize = event.pageSize;
+    }
+
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    this.updatePagedTransactions();
     this.gotoTop();
+  }
+
+  syncPaginator(event: PageEvent) {
+    if (this.paginator) {
+        this.paginator.pageIndex = event.pageIndex;
+        this.paginator.pageSize = event.pageSize;
+    }
   }
 
 
