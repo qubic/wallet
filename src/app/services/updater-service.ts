@@ -182,50 +182,53 @@ export class UpdaterService {
 
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
-    this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    if ((this.transactionArchiverLoading || this.currentTick.value === 0 || !this.status))
-      return;
+    //I have deactivated the regular update of the transactions, because the data is now retrieved manually via the paginator
+    return;
 
-    if (!publicIds)
-      publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
+    // this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
+    // if ((this.transactionArchiverLoading || this.currentTick.value === 0 || !this.status))
+    //   return;
 
-    let epoch = this.status.lastProcessedTick.epoch;
-    let initialTick = 0;
+    // if (!publicIds)
+    //   publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
 
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
+    // let epoch = this.status.lastProcessedTick.epoch;
+    // let initialTick = 0;
 
-    epoch = epoch - this.numberLastEpoch;
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
+    // this.status.processedTickIntervalsPerEpoch
+    //   .filter(e => e.epoch === epoch)
+    //   .forEach(e => {
+    //     initialTick = e.intervals[0].initialProcessedTick;
+    //   });
 
-    this.transactionArchiverLoading = true;
+    // epoch = epoch - this.numberLastEpoch;
+    // this.status.processedTickIntervalsPerEpoch
+    //   .filter(e => e.epoch === epoch)
+    //   .forEach(e => {
+    //     initialTick = e.intervals[0].initialProcessedTick;
+    //   });
+
+    // this.transactionArchiverLoading = true;
 
 
-    if (this.walletService.getSeeds().length > 0) {
-      const observables: Observable<TransactionsArchiver[]>[] = publicIds.map(publicId =>
-        this.apiArchiver.getTransactions(publicId, initialTick, this.currentTick.value)
-      );
+    // if (this.walletService.getSeeds().length > 0) {
+    //   const observables: Observable<TransactionsArchiver[]>[] = publicIds.map(publicId =>
+    //     this.apiArchiver.getTransactions(publicId, initialTick, this.currentTick.value)
+    //   );
 
-      // Combine all observables and collect results
-      forkJoin(observables).subscribe(results => {
-        // Combine all results into a single array
-        const allTransactions = results.flat();
+    //   // Combine all observables and collect results
+    //   forkJoin(observables).subscribe(results => {
+    //     // Combine all results into a single array
+    //     const allTransactions = results.flat();
 
-        // Update BehaviorSubject with the combined results
-        this.transactionsArray.next(allTransactions);
-        this.transactionArchiverLoading = false;
-      }, errorResponse => {
-        console.error('errorResponse:', errorResponse);
-        this.transactionArchiverLoading = false;
-      });
-    }
+    //     // Update BehaviorSubject with the combined results
+    //     this.transactionsArray.next(allTransactions);
+    //     this.transactionArchiverLoading = false;
+    //   }, errorResponse => {
+    //     console.error('errorResponse:', errorResponse);
+    //     this.transactionArchiverLoading = false;
+    //   });
+    // }
   }
 
   //#endregion
