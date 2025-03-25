@@ -32,7 +32,7 @@ export class QearnComponent implements OnInit, OnDestroy {
       .subscribe(async (res) => {
         try {
           this.epoch = res.lastProcessedTick.epoch;
-          this.qearnService.epochInfo$.pipe(takeUntil(this.unsubscribe$)).subscribe(epochInfos => {
+          this.qearnService.epochInfo$.pipe(takeUntil(this.unsubscribe$)).subscribe((epochInfos) => {
             const epochInfo = epochInfos[this.epoch];
             this.currentLockedAmount = epochInfo?.currentLockedAmount || 0;
             this.yieldPercentage = (epochInfo?.yieldPercentage || 0) / 100000;
@@ -46,16 +46,31 @@ export class QearnComponent implements OnInit, OnDestroy {
             return;
           }
           this.qearnService.setLoading(true);
-          for (const seed of seeds) {
-            const pubKey = new PublicKey(seed.publicId).getPackageData();
-            const epochs = await this.qearnService.getUserLockStatus(pubKey, this.epoch);
-            for (const epoch of epochs) {
-              await this.qearnService.fetchLockInfo(epoch);
-              await this.qearnService.fetchStakeDataPerEpoch(seed.publicId, epoch, this.epoch);
-            }
-            await this.qearnService.fetchEndedStakeData(seed.publicId);
+
+          try {
+            const lockStatusPromises = seeds.map(async (seed) => {
+              const pubKey = new PublicKey(seed.publicId).getPackageData();
+              const epochs = await this.qearnService.getUserLockStatus(pubKey, this.epoch);
+              return { seed, epochs };
+            });
+
+            const seedEpochs = await Promise.all(lockStatusPromises);
+
+            const uniqueEpochs = new Set<number>();
+            seedEpochs.forEach(({ epochs }) => {
+              epochs.forEach((epoch) => uniqueEpochs.add(epoch));
+            });
+
+            await Promise.all(Array.from(uniqueEpochs).map((epoch) => this.qearnService.fetchLockInfo(epoch)));
+
+            await Promise.all(
+              seedEpochs.map(async ({ seed, epochs }) => {
+                await Promise.all([...epochs.map((epoch) => this.qearnService.fetchStakeDataPerEpoch(seed.publicId, epoch, this.epoch)), this.qearnService.fetchEndedStakeData(seed.publicId)]);
+              })
+            );
+          } finally {
+            this.qearnService.setLoading(false);
           }
-          this.qearnService.setLoading(false);
         } catch (error) {
           console.error(error);
         }
