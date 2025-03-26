@@ -8,7 +8,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { MatTableDataSource } from '@angular/material/table';
 import { IStakeStatus, QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, takeUntil, Subject } from 'rxjs';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnComponent } from '../qearn.component';
@@ -25,6 +25,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   public dataSource = new MatTableDataSource<any>([]);
   public form: FormGroup;
   public showingEnded = false;
+  private destroy$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -52,25 +53,54 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private setupSubscriptions(): void {
-    this.qearnService.selectedPublicId.subscribe(publicId => {
-      if (publicId) this.form.get('sourceId')?.setValue(publicId);
-    });
+    this.qearnService.selectedPublicId
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(publicId => {
+        if (publicId) this.form.get('sourceId')?.setValue(publicId);
+      });
 
-    this.qearnService.txSuccessSubject.subscribe(this.handleTxSuccess.bind(this));
+    this.qearnService.txSuccessSubject
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(this.handleTxSuccess.bind(this));
 
-    this.form.get('sourceId')?.valueChanges.subscribe(this.loadData.bind(this));
+    this.form.get('sourceId')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(this.loadData.bind(this));
+
+    this.qearnService.stakeData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(stakeDataMap => {
+        const currentId = this.form.get('sourceId')?.value;
+        if (currentId && stakeDataMap[currentId]) {
+          this.loadData(currentId);
+        }
+      });
+
+    this.qearnService.endedStakeData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(endedStakeDataMap => {
+        const currentId = this.form.get('sourceId')?.value;
+        if (currentId && endedStakeDataMap[currentId]) {
+          this.loadData(currentId);
+        }
+      });
   }
 
   private async handleTxSuccess(d: any) {
-    if (d?.publicId) {
-      this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
-      this.us.forceUpdateNetworkBalance(d.publicId, async () => {
-        await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
-        this.resetSourceId(d.publicId);
-        this.cdf.detectChanges();
-      });
-    }
+    if (!d?.publicId) return;
+    
+    this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
+    this.us.forceUpdateNetworkBalance(d.publicId, async () => {
+      await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
+      this.resetSourceId(d.publicId);
+      this.cdf.detectChanges();
+    });
   }
 
   private resetSourceId(publicId: string): void {
@@ -79,6 +109,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   }
 
   private loadData(sourceId: string): void {
+    if (!sourceId) return;
+    
     this.dataSource.data = this.showingEnded
       ? [...(this.qearnService.endedStakeData[sourceId] || [])]
       : [...(this.qearnService.stakeData[sourceId] || [])];
@@ -103,24 +135,22 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     }
 
     const { publicId, lockedEpoch } = element;
-    const seed = this.walletService.getSeed(publicId)!;
-    if(seed.balance < 1 && lockedEpoch !== this.qearnComponent.epoch) {
+    const seed = this.walletService.getSeed(publicId);
+    if (!seed || (seed.balance < 1 && lockedEpoch !== this.qearnComponent.epoch)) {
       this.showSnackBar('qearn.history.unlock.insufficientMinTxAmount', 'error');
       return;
     }
 
-    const inputDialogRef = this.dialog.open(UnlockInputDialogComponent, {
+    this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
       data: { maxUnlockAmount: element.lockedAmount },
-    });
-
-    inputDialogRef.afterClosed().subscribe(unlockAmount => {
+    }).afterClosed().subscribe(unlockAmount => {
       if (unlockAmount) this.openConfirmDialog(element, unlockAmount);
     });
   }
 
   private openConfirmDialog(element: IStakeStatus, unlockAmount: number): void {
-    const dialogRef = this.dialog.open(ConfirmDialog, {
+    this.dialog.open(ConfirmDialog, {
       restoreFocus: false,
       data: {
         title: this.transloco.translate('qearn.history.unlock.title'),
@@ -129,9 +159,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    }).afterClosed().subscribe(result => {
       if (result) this.handleUnlockAction(element, unlockAmount);
     });
   }
@@ -171,7 +199,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private autoSelectFirstId(): void {
     const seeds = this.walletService.getSeeds();
-    if (seeds && seeds.length >= 1) {
+    if (seeds?.length > 0) {
       this.form.get('sourceId')?.setValue(seeds[0].publicId);
     }
   }
