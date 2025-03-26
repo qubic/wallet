@@ -32,7 +32,7 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl;
+    private basePath = environment.apiUrl + "/v1";
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
@@ -164,7 +164,7 @@ export class ApiLiveService {
 
 
     public submitQuerySmartContract(querySmartContract: QuerySmartContractRequest) {
-        let localVarPath = `/v1/querySmartContract`;
+        let localVarPath = `/querySmartContract`;
         return this.httpClient.request<QuerySmartContractResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
