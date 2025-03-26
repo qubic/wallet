@@ -52,6 +52,10 @@ export class QearnService {
   public epochInfo$ = this.epochInfoSubject.asObservable();
   public epochInfo: { [key: number]: LockInfoPerEpoch } = {};
   public stakeData: { [key: string]: IStakeStatus[] } = {};
+  public stakeDataSubject = new BehaviorSubject<{ [key: string]: IStakeStatus[] }>({});
+  public stakeData$ = this.stakeDataSubject.asObservable();
+  public endedStakeDataSubject = new BehaviorSubject<{ [key: string]: IEndedStakeStatus[] }>({});
+  public endedStakeData$ = this.endedStakeDataSubject.asObservable();
   public endedStakeData: { [key: string]: IEndedStakeStatus[] } = {};
   public isLoading = false;
   public pendingStake: PendingStake | null = null;
@@ -201,6 +205,7 @@ export class QearnService {
 
     if (!lockAmount) {
       this.stakeData[publicId] = (this.stakeData[publicId] || []).filter((data) => data.lockedEpoch !== epoch);
+      this.stakeDataSubject.next(this.stakeData);
       return;
     }
 
@@ -227,6 +232,8 @@ export class QearnService {
     } else {
       this.stakeData[publicId].push(stakeData);
     }
+
+    this.stakeDataSubject.next(this.stakeData);
   }
 
   public async fetchEndedStakeData(publicId: string) {
@@ -235,6 +242,7 @@ export class QearnService {
 
     if (!this.endedStakeData[publicId]) {
       this.endedStakeData[publicId] = [];
+      this.endedStakeDataSubject.next(this.endedStakeData);
     }
 
     const updateOrAddStatus = (status: boolean, unLockedAmount: number, rewardedAmount: number) => {
@@ -243,8 +251,10 @@ export class QearnService {
 
       if (index !== -1) {
         this.endedStakeData[publicId][index] = newData;
+        this.endedStakeDataSubject.next(this.endedStakeData);
       } else {
         this.endedStakeData[publicId].push(newData);
+        this.endedStakeDataSubject.next(this.endedStakeData);
       }
     };
 
