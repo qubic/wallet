@@ -175,9 +175,10 @@ export class QearnService {
   }
 
   public async fetchLockInfo(epoch: number) {
-    this.epochInfo[epoch] = await this.getLockInfoPerEpoch(epoch);
-    this.epochInfo = { ...this.epochInfo };
+    const res = await this.getLockInfoPerEpoch(epoch);
+    this.epochInfo = { ...this.epochInfo, [epoch]: res };
     this.epochInfoSubject.next(this.epochInfo);
+    return res;
   }
 
   private calculateRewards(lockAmount: number, totalLockedAmount: number, currentBonusAmount: number, yieldPercentage: number, currentEpoch: number, lockedEpoch: number) {
@@ -234,6 +235,8 @@ export class QearnService {
     }
 
     this.stakeDataSubject.next(this.stakeData);
+
+    return stakeData;
   }
 
   public async fetchEndedStakeData(publicId: string) {
