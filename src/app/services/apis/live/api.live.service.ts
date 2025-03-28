@@ -140,7 +140,7 @@ export class ApiLiveService {
 
 
     public submitBroadcastTransaction(encodedTransaction: string) {
-        let localVarPath = `/v1/broadcast-transaction`;
+        let localVarPath = `/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -235,7 +235,7 @@ export class ApiLiveService {
               tx.setPayload(dynamicPayload);
             }
             const res = await tx.build(seed);
-            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(res)));
+            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
             return {
                 txResult,
           };
