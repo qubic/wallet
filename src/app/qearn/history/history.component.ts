@@ -113,7 +113,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     
     this.dataSource.data = this.showingEnded
       ? [...(this.qearnService.endedStakeData[sourceId] || [])]
-      : [...(this.qearnService.stakeData[sourceId].sort((a, b) => b.lockedEpoch - a.lockedEpoch) || [])];
+      : [...(this.qearnService.stakeData[sourceId] || [])].sort((a, b) => b.lockedEpoch - a.lockedEpoch);
   }
 
   public getSeeds = () => this.walletService.getSeeds();
