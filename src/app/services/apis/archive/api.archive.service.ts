@@ -362,7 +362,7 @@ export class ApiArchiveService {
 
 
     public getIdentitiesTransfersWithTickRange(identity: string, startTick: number, endTick: number) {
-        let localVarPath = `/v2/identities/${identity}/transfers?startTick=${startTick}&endTick=${endTick}`;
+        let localVarPath = `/v2/identities/${identity}/transfers?startTick=${startTick}&endTick=${endTick}&pageSize=250`;
         return this.httpClient.request<TickHashResponse>('get', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),

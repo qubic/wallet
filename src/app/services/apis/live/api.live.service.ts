@@ -32,7 +32,7 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl;
+    private basePath = environment.apiUrl + "/v1";
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
@@ -140,7 +140,7 @@ export class ApiLiveService {
 
 
     public submitBroadcastTransaction(encodedTransaction: string) {
-        let localVarPath = `/v1/broadcast-transaction`;
+        let localVarPath = `/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -164,7 +164,7 @@ export class ApiLiveService {
 
 
     public submitQuerySmartContract(querySmartContract: QuerySmartContractRequest) {
-        let localVarPath = `/v1/querySmartContract`;
+        let localVarPath = `/querySmartContract`;
         return this.httpClient.request<QuerySmartContractResponse>('post', `${this.basePath}${localVarPath}`,
             {
                 context: new HttpContext(),
@@ -235,7 +235,7 @@ export class ApiLiveService {
               tx.setPayload(dynamicPayload);
             }
             const res = await tx.build(seed);
-            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(res)));
+            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
             return {
                 txResult,
           };
