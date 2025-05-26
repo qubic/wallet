@@ -151,7 +151,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   }
 
   public createVault() {
-    this.gengerateNew();
+    this.generateNew();
     this.randomizeSeed();
   }
 
@@ -209,7 +209,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
     this.nextStep();
   }
 
-  async gengerateNew() {
+  async generateNew() {
     if (this.hasExistingConfig()) {
       const confirmDialo = this.dialog.open(ConfirmDialog, {
         restoreFocus: false,
