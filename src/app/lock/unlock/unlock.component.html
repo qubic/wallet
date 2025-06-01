@@ -28,17 +28,16 @@
           <mat-form-field class="full-width">
             <input matInput placeholder="Password" formControlName="password" type="password"
               (input)="onPasswordChange()" />
-
-            <mat-error *ngIf="importForm.controls['password'].hasError('required')">
-              {{ t("unlockComponent.form.password.error.required") }}
-            </mat-error>
-            <mat-error *ngIf="importForm.controls['password'].hasError('minlength')">
-              {{ t("unlockComponent.form.password.error.min") }}
-            </mat-error>
-            <mat-error *ngIf="pwdWrong">
-              {{ t("unlockComponent.form.password.error.wrong") }}
-            </mat-error>
           </mat-form-field>
+          <mat-error *ngIf="importForm.controls['password'].hasError('required')">
+            {{ t("unlockComponent.form.password.error.required") }}
+          </mat-error>
+          <mat-error *ngIf="importForm.controls['password'].hasError('minlength')">
+            {{ t("unlockComponent.form.password.error.min") }}
+          </mat-error>
+          <mat-error *ngIf="pwdWrong">
+            {{ t("unlockComponent.form.password.error.wrong") }}
+          </mat-error>
           <div *ngIf="!hasExistingConfig() && !selectedFileIsVaultFile">
             <app-file-selector class="flex flex-center" (fileSelected)="onConfigFileSelected($event)" requredText="{{
                 t('unlockComponent.form.configFile.error.required')
