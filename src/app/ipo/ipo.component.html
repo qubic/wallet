@@ -34,7 +34,7 @@
                     </button>
                     <div *ngIf="ipoContracts">
                         <h3>{{ t("ipoComponent.yourShares") }}</h3>
-                        {{ t("ipoComponent.statusValid", {tick: getBidOverview(p.index).tick}) }}
+                        {{ t("ipoComponent.statusValid", {tick: getBidOverview(p.index).tick  | number: '1.0-0'}) }}
                         <div *ngFor="let bid of getMyShares(p.index)" class="transaction-list">
                             <strong>{{ bid.bids.length }} ({{ getTotalPrice(bid.bids) | number: '1.0-0'}} {{
                                 t("general.currency") }})</strong> {{ t("ipoComponent.sharesFor") }}
