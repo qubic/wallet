@@ -258,10 +258,6 @@ export class AssetsComponent implements OnInit {
     // sample send asset function
     const assetSelectControl = this.sendForm.get('assetSelect');
     const amountControl = this.sendForm.get('amount');
-
-    // let destinationAddress = this.sendForm.get('destinationAddress');
-    // let destinationId = this.selectedAccountId ? this.sendForm.get('selectedDestinationId') : destinationAddress?.value;
-
     const destinationAddressControl = this.sendForm.get('destinationAddress');
 
     if (!assetSelectControl || !amountControl || !destinationAddressControl) {
