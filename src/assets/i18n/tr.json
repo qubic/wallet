@@ -351,7 +351,7 @@
       "status.dismissed.tooltip": "Reddedildi",
       "status.unknown.tooltip": "Bilinmiyor",
       "status.confirmed.tooltip": "Aşamalı",
-      "filter.seed.label": "Cüzdana göre filtrele",
+      "filter.seed.label": "Adrese Göre Filtrele",
       "exportButton": "Dışa Aktar"
     },
     "repeatTransaction": "İşlemi Tekrarla"
