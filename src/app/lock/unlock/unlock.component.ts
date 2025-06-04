@@ -51,7 +51,6 @@ export class UnLockComponent extends QubicDialogWrapper {
     this.pwdWrong = false;
   }
 
-
   isNewUser() {
     return this.newUser;
   }
@@ -76,23 +75,6 @@ export class UnLockComponent extends QubicDialogWrapper {
       // do anything :)
       this.dialogRef?.close();
     });
-  }
-
-  gengerateNew() {
-    if (this.hasExistingConfig()) {
-      const confirmDialo = this.dialog.open(ConfirmDialog, {
-        restoreFocus: false, data: {
-          message: this.transloco.translate("unlockComponent.overwriteVault")
-        }
-      });
-      confirmDialo.afterClosed().subscribe(result => {
-        if (result) {
-          this.startCreateProcess();
-        }
-      })
-    } else {
-      this.startCreateProcess();
-    }
   }
 
   lock() {

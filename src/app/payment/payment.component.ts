@@ -19,6 +19,7 @@ import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPacka
 import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
@@ -60,7 +61,9 @@ export class PaymentComponent implements OnInit {
     private t: TranslocoService,
     private transactionService: TransactionService,
     private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
-    private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog) {
+    private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
+    private decimalPipe: DecimalPipe
+  ) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
       this.txTemplate = state['template'];
@@ -177,7 +180,7 @@ export class PaymentComponent implements OnInit {
             var publishResult = await this.transactionService.publishTransaction(qtx);
 
             if (publishResult && publishResult.success) {
-              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: qtx.tick }), this.t.translate('general.close'), {
+              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0')  }), this.t.translate('general.close'), {
                 duration: 10000,
               });
               this.isBroadcasting = false;
@@ -225,6 +228,7 @@ export class PaymentComponent implements OnInit {
     }
     this.changeDetectorRef?.detectChanges();
   }
+  
   getSeeds(isDestination = false) {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.transferForm.controls.sourceId.value))
   }

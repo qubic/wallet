@@ -176,15 +176,24 @@ export class BalanceComponent implements OnInit {
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
-      this.transactionsRecord = [];
-      this.transactionsArchiverSubscribe.forEach(archiver => {
-        if (archiver.transactions && archiver.transactions.length > 0) {
-          this.transactionsRecord.push(...archiver.transactions);
-        }
-      });
-      this.sortTransactions();
+        this.transactionsRecord = [];
+        this.transactionsArchiverSubscribe.forEach(archiver => {
+            if (archiver.transactions && archiver.transactions.length > 0) {
+                this.transactionsRecord.push(...archiver.transactions);
+            }
+        });
+
+        // Filter to keep only unique transactions based on txId
+        const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
+            index === self.findIndex((t) => (
+                t.transactions[0].transaction.txId === transactionRecord.transactions[0].transaction.txId
+            ))
+        );
+
+        this.transactionsRecord = uniqueTransactions;
+        this.sortTransactions();
     }
-  }
+}
 
 
   sortTransactions(): void {

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
@@ -17,6 +17,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
@@ -38,6 +39,19 @@ export class AssetsComponent implements OnInit {
   showSendForm: boolean = false;
   isTable: boolean = false;
 
+  public selectedAccountId = false;
+  private selectedDestinationId: any;
+
+  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+
+  @ViewChild('selectedDestinationId', {
+    static: false
+  }) set selectedDestinationIdContent(content: any) {
+    if (content) { // initially setter gets called with undefined
+      this.selectedDestinationId = content;
+    }
+  }
+
   constructor(
     private apiService: ApiService,
     public walletService: WalletService,
@@ -47,6 +61,8 @@ export class AssetsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private dialog: MatDialog,
     private router: Router,
+    private decimalPipe: DecimalPipe,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -58,6 +74,7 @@ export class AssetsComponent implements OnInit {
 
     this.sendForm = new FormGroup({
       destinationAddress: new FormControl('', Validators.required),
+      selectedDestinationId: new FormControl(''),
       amount: new FormControl('', Validators.required),
       tick: new FormControl('', Validators.required),
       assetSelect: new FormControl('', Validators.required),
@@ -65,7 +82,7 @@ export class AssetsComponent implements OnInit {
 
     // subscribe to config changes to receive asset updates
     this.walletService.onConfig.subscribe(c => {
-      this.assets = this.walletService.getSeeds().filter(p=>!p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+      this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
     });
 
     // const amountControl = this.sendForm.get('amount');
@@ -97,6 +114,24 @@ export class AssetsComponent implements OnInit {
         this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
       }
     })
+
+    this.sendForm.get('assetSelect')?.valueChanges.subscribe(s => {
+      if (s) {
+        if (this.sendForm.get('selectedDestinationId') == this.sendForm.get('assetSelect')) {
+          this.sendForm.controls['selectedDestinationId'].setValue(null);
+        }
+      }
+    });
+
+    this.sendForm.get('selectedDestinationId')?.valueChanges.subscribe(s => {
+      if (s) {
+        if (!this.selectedAccountId) {
+          this.sendForm.controls['destinationAddress'].setValue(null);
+        } else {
+          this.sendForm.controls['destinationAddress'].setValue(s);
+        }
+      }
+    });
   }
 
 
@@ -277,7 +312,7 @@ export class AssetsComponent implements OnInit {
     const publishResult = await this.transactionService.publishTransaction(tx);
 
     if (publishResult && publishResult.success) {
-      this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: tx.tick }), this.t.translate('general.close'), {
+      this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(tx.tick, '1.0-0') }), this.t.translate('general.close'), {
         duration: 0,
       });
       this.showSendForm = false;
@@ -292,5 +327,27 @@ export class AssetsComponent implements OnInit {
 
   loadKey() {
     const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+  }
+
+  getSeeds(isDestination = false) {
+    return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.sendForm.get('assetSelect')?.value?.publicId));
+  }
+
+  toggleDestinationSelect() {
+    this.selectedAccountId = !this.selectedAccountId;
+    this.changeDetectorRef?.detectChanges();
+    if (this.selectedAccountId) {
+      this.selectedDestinationId.open();
+      this.sendForm.get('selectedDestinationId')?.addValidators([Validators.required]);
+      this.sendForm.get('destinationAddress')?.clearValidators();
+      this.sendForm.get('destinationAddress')?.updateValueAndValidity();
+      this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
+    } else {
+      this.sendForm.get('destinationAddress')?.addValidators(this.destinationValidators);
+      this.sendForm.get('selectedDestinationId')?.clearAsyncValidators();
+      this.sendForm.get('destinationAddress')?.updateValueAndValidity();
+      this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
+    }
+    this.changeDetectorRef?.detectChanges();
   }
 }
