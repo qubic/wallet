@@ -353,7 +353,14 @@
       "filter.seed.label": "Filtrer par Adresse",
       "exportButton": "Exporter les transactions"
     },
-    "repeatTransaction": "Répéter la transaction"
+    "repeatTransaction": "Répéter la transaction",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Source",
+      "destination": "Destinataire",
+      "tick": "Tick",
+      "type": "Type"
+    }
   },
   "settings": {
     "general": {
@@ -657,7 +664,7 @@
       "boost": "Augmenter",
       "total": "Total"
     },
-    "main":{
+    "main": {
       "currentLockedAmount": "Montant verrouillé actuel",
       "apy": "APY",
       "lock": "Verrouiller",

@@ -353,7 +353,14 @@
       "filter.seed.label": "Filtern nach Adresse",
       "exportButton": "Export Buchungen"
     },
-    "repeatTransaction": "Zahlung wiederholen"
+    "repeatTransaction": "Zahlung wiederholen",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Quelle",
+      "destination": "Ziel",
+      "tick": "Tick",
+      "type": "Typ"
+    }
   },
   "settings": {
     "general": {

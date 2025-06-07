@@ -353,7 +353,14 @@
       "filter.seed.label": "Filtrar por Dirección",
       "exportButton": "Exportar transacciones"
     },
-    "repeatTransaction": "Repetir la transacción"
+    "repeatTransaction": "Repetir la transacción",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Fuente",
+      "destination": "Destinatario",
+      "tick": "Tick",
+      "type": "Tipo"
+    }
   },
   "settings": {
     "general": {

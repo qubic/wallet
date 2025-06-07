@@ -354,7 +354,14 @@
       "filter.seed.label": "Filter by Address",
       "exportButton": "Export Transactions"
     },
-    "repeatTransaction": "Repeat Transaction"
+    "repeatTransaction": "Repeat Transaction",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Source",
+      "destination": "Destination",
+      "tick": "Tick",
+      "type": "Type"
+    }
   },
   "settings": {
     "general": {

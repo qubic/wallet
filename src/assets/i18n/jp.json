@@ -354,7 +354,14 @@
       "filter.seed.label": "住所でフィルター",
       "exportButton": "取引をエクスポート"
     },
-    "repeatTransaction": "取引を繰り返す"
+    "repeatTransaction": "取引を繰り返す",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "ソース",
+      "destination": "宛先",
+      "tick": "ティック",
+      "type": "タイプ"
+    }
   },
   "settings": {
     "general": {

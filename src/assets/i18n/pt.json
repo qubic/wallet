@@ -352,7 +352,14 @@
       "filter.seed.label": "Filtrar por Endereço",
       "exportButton": "Exportar transações"
     },
-    "repeatTransaction": "Repetir a transação"
+    "repeatTransaction": "Repetir a transação",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Fonte",
+      "destination": "Destino",
+      "tick": "Tick",
+      "type": "Tipo"
+    }
   },
   "settings": {
     "general": {

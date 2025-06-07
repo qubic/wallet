@@ -354,7 +354,14 @@
       "filter.seed.label": "Adrese Göre Filtrele",
       "exportButton": "Dışa Aktar"
     },
-    "repeatTransaction": "İşlemi Tekrarla"
+    "repeatTransaction": "İşlemi Tekrarla",
+    "transaction": {
+      "trxId": "TX Kimlik",
+      "source": "Kaynak",
+      "destination": "Hedef",
+      "tick": "Tik",
+      "type": "Tür"
+    }
   },
   "settings": {
     "general": {
