@@ -35,8 +35,9 @@ export interface Transaction {
   targetTick: number;
   isPending: boolean;
   price?: number; // ipo bids
-  quantity?:number; // ipo bids
+  quantity?: number; // ipo bids
   moneyFlow: boolean;
+  type: number;
 }
 
 export interface BalanceResponse {

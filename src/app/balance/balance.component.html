@@ -145,6 +145,15 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">{{ t("balanceComponent.transaction.type") }}</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value"> {{ transaction.type
+                                                }}</span>
+                                        </div>
+                                    </div>
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -156,17 +165,17 @@
         </span>
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch" mat-icon-button
+                    (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
-                <button  *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    mat-icon-button >
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button>
                     <mat-icon class="large-icon"></mat-icon>
                 </button>
                 <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
-                <button *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                <button
+                    *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
                     mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
@@ -214,9 +223,8 @@
                                 date:'HH:mm:ss' }}
                                 )
                             </span>
-                            <button
-                                *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
-                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
+                                matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
