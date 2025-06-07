@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "Kopyala",
     "error": "Hata",
-    "close": "Kapat",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "Yükleniyor...",

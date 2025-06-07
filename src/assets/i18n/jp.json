@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "コピー",
     "error": "エラー",
-    "close": "閉じる",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "ティック: {{tick}}",
     "loading": "読み込み中...",
