@@ -4,7 +4,7 @@ import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, Transaction } from '../services/api.model';
+import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
 import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
@@ -62,7 +62,7 @@ export class BalanceComponent implements OnInit {
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
       this.us.internalTransactions.subscribe(txs => {
-        this.transactions = txs;
+        this.transactions = fixTransactionDates(txs);
         this.correctTheTransactionListByPublicId();
       });
 
