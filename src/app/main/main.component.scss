@@ -28,7 +28,7 @@
 .epochChanges {
     display: flex;
     align-items: center;
-    gap: 4px; 
+    gap: 4px;
 }
 
 .cardEpochChanges {
@@ -121,7 +121,7 @@ tr {
     padding-left: 10px;
 }
 
-.yellow-dot{
+.yellow-dot {
     background-color: yellowgreen;
     vertical-align: baseline;
     border-radius: 50%;
@@ -131,7 +131,7 @@ tr {
     color: black;
 }
 
-.orange-dot{
+.orange-dot {
     background-color: orange;
     vertical-align: baseline;
     border-radius: 50%;
@@ -142,11 +142,23 @@ tr {
 }
 
 .red-dot {
-    background-color: red;    
+    background-color: red;
     vertical-align: baseline;
     border-radius: 50%;
     width: 10px;
     height: 10px;
     display: inline-block;
     color: black;
+}
+
+.alias-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px; // spacing between alias and icon
+}
+
+.watch-icon {
+    font-size: 18px;
+    color: gray;
+    vertical-align: middle;
 }
