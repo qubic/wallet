@@ -150,8 +150,8 @@
                                             <span class="label">{{ t("balanceComponent.transaction.type") }}</span>
                                         </div>
                                         <div class="col-value disable-area">
-                                            <span class="value"> {{ transaction.type
-                                                }}</span>
+                                            <span class="value">
+                                                {{ formatInputType(transaction.type,transaction.destId) }}</span>
                                         </div>
                                     </div>
                                 </mat-card-content>
@@ -311,8 +311,10 @@
                                         <span class="label">{{ t("balanceComponent.transaction.type") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
-                                        <span class="value"> {{ transaction.transactions[0].transaction.inputType
-                                            }}</span>
+                                        <span class="value">
+                                            {{ formatInputType(transaction.transactions[0].transaction.inputType,
+                                            transaction.transactions[0].transaction.destId) }}
+                                        </span>
                                     </div>
                                 </div>
                             </mat-card-content>

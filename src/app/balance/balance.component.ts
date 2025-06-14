@@ -329,35 +329,14 @@ export class BalanceComponent implements OnInit {
     });
   }
 
+  formatInputType(inputType: number, destination: string) {
+    const emptyAddress = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
 
-  // getSeedName(publicId: string): string {
-  //   var seed = this.walletService.getSeed(publicId);
-  //   if (seed !== undefined)
-  //     return '- ' + seed.alias;
-  //   else
-  //     return '';
-  // }
-
-  // private getTransactionStatusLabel(status: string): string {
-  //   switch (status) {
-  //     case 'Pending':
-  //     case 'Broadcasted':
-  //       return 'Pending';
-  //     case 'Confirmed':
-  //     case 'Staged':
-  //       return 'Confirmed';
-  //     case 'Success':
-  //       return 'Executed';
-  //     case 'Failed':
-  //       return 'Dismissed';
-  //     case 'Unknown':
-  //       return 'Unknown';
-  //     case 'Created':
-  //       return 'Created';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
+    if (inputType === 0 || destination === emptyAddress) {
+      return `${inputType} Standard`;
+    } else {
+      return `${inputType} SC`;
+    }
+  }
 
 }
