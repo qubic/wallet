@@ -53,8 +53,7 @@
             <div class="dashboard-wallet-name">
               <div class="alias-wrapper">
                 <span>{{ address.alias }}</span>
-                <mat-icon *ngIf="address.isOnlyWatch" class="watch-icon" matTooltip="{{ t('watchonly.tooltip') }}"
-                  inline>
+                <mat-icon *ngIf="address.isOnlyWatch" class="watch-icon" inline>
                   visibility
                 </mat-icon>
               </div>
@@ -136,7 +135,7 @@
         <td mat-cell *matCellDef="let element">
           <div class="alias-wrapper">
             <span>{{ element.alias }}</span>
-            <mat-icon *ngIf="element.isOnlyWatch" class="watch-icon" matTooltip="{{ t('watchonly.tooltip') }}" inline>
+            <mat-icon *ngIf="element.isOnlyWatch" class="watch-icon" inline>
               visibility
             </mat-icon>
           </div>
