@@ -361,7 +361,9 @@
       "destination": "接收方",
       "tick": "刻度",
       "type": "类型"
-    }
+    },
+    "epoch": "纪元",
+    "ticks": "刻度"
   },
   "settings": {
     "general": {

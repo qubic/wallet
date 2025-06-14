@@ -359,7 +359,9 @@
       "destination": "Destino",
       "tick": "Tick",
       "type": "Tipo"
-    }
+    },
+    "epoch": "Época",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {

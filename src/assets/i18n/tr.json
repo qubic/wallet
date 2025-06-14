@@ -361,7 +361,9 @@
       "destination": "Hedef",
       "tick": "Tik",
       "type": "Tür"
-    }
+    },
+    "epoch": "Çağ",
+    "ticks": "Tikler"
   },
   "settings": {
     "general": {

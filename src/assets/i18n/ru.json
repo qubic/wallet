@@ -361,7 +361,9 @@
       "destination": "Получатель",
       "tick": "Тик",
       "type": "Тип"
-    }
+    },
+    "epoch": "Эпоха",
+    "ticks": "Тики"
   },
   "settings": {
     "general": {

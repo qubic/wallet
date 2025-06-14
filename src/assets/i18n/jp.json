@@ -361,7 +361,9 @@
       "destination": "宛先",
       "tick": "ティック",
       "type": "タイプ"
-    }
+    },
+    "epoch": "エポック",
+    "ticks": "ティック"
   },
   "settings": {
     "general": {

@@ -173,7 +173,7 @@
                     [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button>
                     <mat-icon class="large-icon"></mat-icon>
                 </button>
-                <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
+                <span class="label-epoch">{{ t("balanceComponent.epoch") }}</span> {{currentSelectedEpoch}}
                 <button
                     *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
                     mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
@@ -181,7 +181,8 @@
                 </button>
             </div>
             <div *ngIf="isShowAllTransactions" class="ticks">
-                Ticks {{initialProcessedTick | number: '1.0-0'}} - {{lastProcessedTick | number: '1.0-0'}}
+                {{ t("balanceComponent.ticks") }} {{initialProcessedTick | number: '1.0-0'}} - {{lastProcessedTick |
+                number: '1.0-0'}}
             </div>
             <br>
             <mat-form-field appearance="fill" class="full-width">

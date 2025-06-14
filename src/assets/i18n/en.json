@@ -361,7 +361,9 @@
       "destination": "Destination",
       "tick": "Tick",
       "type": "Type"
-    }
+    },
+    "epoch": "Epoch",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {

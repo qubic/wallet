@@ -360,7 +360,9 @@
       "destination": "Destinatario",
       "tick": "Tick",
       "type": "Tipo"
-    }
+    },
+    "epoch": "Época",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {

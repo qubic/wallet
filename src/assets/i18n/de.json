@@ -360,7 +360,9 @@
       "destination": "Ziel",
       "tick": "Tick",
       "type": "Typ"
-    }
+    },
+    "epoch": "Epoche",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {
