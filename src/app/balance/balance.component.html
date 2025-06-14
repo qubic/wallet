@@ -203,7 +203,7 @@
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <span class="status-icon">
+                            <span class="status-icon" *ngIf="+transaction.transactions[0].transaction.amount > 0">
                                 <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
                                     matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
                                 <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
