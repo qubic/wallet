@@ -35,7 +35,7 @@ export class UpdaterService {
   }
 
   private init(): void {
-    this.numberLastEpoch =  this.walletService.getSettings().numberLastEpoch;
+    this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
     this.getStatusArchiver();
     this.getCurrentTickArchiver();
     this.getCurrentBalance();
@@ -46,7 +46,7 @@ export class UpdaterService {
     // every 30 seconds
     setInterval(() => {
       this.getStatusArchiver();
-      this.getCurrentTickArchiver();            
+      this.getCurrentTickArchiver();
     }, 30000);
     // every minute
     setInterval(() => {
@@ -169,8 +169,8 @@ export class UpdaterService {
     this.apiArchiver.getCurrentTick().subscribe(latestTick => {
       if (latestTick) {
         this.currentTick.next(latestTick);
-        if(this.transactionsArray.getValue().length <= 0){
-          this.getTransactionsArchiver();          
+        if (this.transactionsArray.getValue().length <= 0) {
+          this.getTransactionsArchiver();
         }
       }
       this.tickLoading = false;
@@ -182,7 +182,7 @@ export class UpdaterService {
 
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
-    this.numberLastEpoch =  this.walletService.getSettings().numberLastEpoch;
+    this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
     if ((this.transactionArchiverLoading || this.currentTick.value === 0 || !this.status))
       return;
 
@@ -222,7 +222,7 @@ export class UpdaterService {
         this.transactionsArray.next(allTransactions);
         this.transactionArchiverLoading = false;
       }, errorResponse => {
-        console.error('errorResponse:', errorResponse); 
+        console.error('errorResponse:', errorResponse);
         this.transactionArchiverLoading = false;
       });
     }
@@ -328,7 +328,8 @@ export class UpdaterService {
       targetTick: tx.tick,
       created: new Date(),
       isPending: true,
-      moneyFlow: false
+      moneyFlow: false,
+      type: tx.inputType
     };
     this.addTransaction(newTx);
   }

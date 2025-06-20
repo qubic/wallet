@@ -58,7 +58,7 @@
                                 <span class="desktopOnly secondary ">
                                     &nbsp; (
                                     {{ transaction.created | date}}
-                                    {{ transaction.created | date:'HH:mm:ss' }} UTC
+                                    {{ transaction.created | date:'HH:mm:ss' }}
                                     )
                                 </span>
                                 <button
@@ -88,19 +88,7 @@
                                 <mat-card-content>
                                     <div class="row">
                                         <div class="col-label">
-                                            <span class="label">Amount</span>
-                                        </div>
-                                        <div class="col-value disable-area">
-                                            <span class="value value"> {{ transaction.amount |
-                                                number:
-                                                '1.0-0'
-                                                }}&nbsp;{{
-                                                t("general.currency") }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-label">
-                                            <span class="label">Tx</span>
+                                            <span class="label">{{ t("balanceComponent.transaction.trxId") }}</span>
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
@@ -115,7 +103,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-label">
-                                            <span class="label">Source</span>
+                                            <span class="label">{{ t("balanceComponent.transaction.source") }}</span>
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
@@ -130,7 +118,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-label">
-                                            <span class="label">Destination</span>
+                                            <span class="label">{{ t("balanceComponent.transaction.destination")
+                                                }}</span>
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
@@ -146,7 +135,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-label">
-                                            <span class="label">Tick</span>
+                                            <span class="label">{{ t("balanceComponent.transaction.tick") }}</span>
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
@@ -154,6 +143,15 @@
                                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
                                                 </a>
                                             </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-label">
+                                            <span class="label">{{ t("balanceComponent.transaction.type") }}</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value">
+                                                {{ formatInputType(transaction.type,transaction.destId) }}</span>
                                         </div>
                                     </div>
                                 </mat-card-content>
@@ -167,23 +165,24 @@
         </span>
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch"
-                    mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch" mat-icon-button
+                    (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
-                <button  *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    mat-icon-button >
+                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
+                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button>
                     <mat-icon class="large-icon"></mat-icon>
                 </button>
-                <span class="label-epoch">Epoch</span> {{currentSelectedEpoch}}
-                <button *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                <span class="label-epoch">{{ t("balanceComponent.epoch") }}</span> {{currentSelectedEpoch}}
+                <button
+                    *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
                     mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
             </div>
             <div *ngIf="isShowAllTransactions" class="ticks">
-                Ticks {{initialProcessedTick | number: '1.0-0'}} - {{lastProcessedTick | number: '1.0-0'}}
+                {{ t("balanceComponent.ticks") }} {{initialProcessedTick | number: '1.0-0'}} - {{lastProcessedTick |
+                number: '1.0-0'}}
             </div>
             <br>
             <mat-form-field appearance="fill" class="full-width">
@@ -205,7 +204,7 @@
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <span class="status-icon">
+                            <span class="status-icon" *ngIf="+transaction.transactions[0].transaction.amount > 0">
                                 <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
                                     matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
                                 <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
@@ -225,9 +224,8 @@
                                 date:'HH:mm:ss' }}
                                 )
                             </span>
-                            <button
-                                *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)"
-                                mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
+                                matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
@@ -252,19 +250,7 @@
                             <mat-card-content>
                                 <div class="row">
                                     <div class="col-label">
-                                        <span class="label">Amount</span>
-                                    </div>
-                                    <div class="col-value disable-area">
-                                        <span class="value value"> {{ transaction.transactions[0].transaction.amount |
-                                            number:
-                                            '1.0-0'
-                                            }}&nbsp;{{
-                                            t("general.currency") }}</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-label">
-                                        <span class="label">Tx</span>
+                                        <span class="label">{{ t("balanceComponent.transaction.trxId") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
@@ -280,10 +266,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-label">
-                                        <span class="label">Source</span>
+                                        <span class="label">{{ t("balanceComponent.transaction.source") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
-                                        <span class="value"> <a
+                                        <span class="value display-publicid"> <a
                                                 [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                                 target="_blank">
                                                 {{transaction.transactions[0].transaction.sourceId}}
@@ -295,7 +281,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-label">
-                                        <span class="label">Destination</span>
+                                        <span class="label">{{ t("balanceComponent.transaction.destination") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
@@ -311,7 +297,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-label">
-                                        <span class="label">Tick</span>
+                                        <span class="label">{{ t("balanceComponent.transaction.tick") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
@@ -323,11 +309,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-label">
-                                        <span class="label">Type</span>
+                                        <span class="label">{{ t("balanceComponent.transaction.type") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
-                                        <span class="value"> {{ transaction.transactions[0].transaction.inputType
-                                            }}</span>
+                                        <span class="value">
+                                            {{ formatInputType(transaction.transactions[0].transaction.inputType,
+                                            transaction.transactions[0].transaction.destId) }}
+                                        </span>
                                     </div>
                                 </div>
                             </mat-card-content>

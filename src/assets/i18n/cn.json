@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "复制",
     "error": "错误",
-    "close": "关闭",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "刻度: {{tick}}",
     "loading": "加载中...",
@@ -354,7 +354,16 @@
       "filter.seed.label": "按地址筛选",
       "exportButton": "导出交易"
     },
-    "repeatTransaction": "重复交易"
+    "repeatTransaction": "重复交易",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "发送方",
+      "destination": "接收方",
+      "tick": "刻度",
+      "type": "类型"
+    },
+    "epoch": "纪元",
+    "ticks": "刻度"
   },
   "settings": {
     "general": {

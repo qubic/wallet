@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "Kopyala",
     "error": "Hata",
-    "close": "Kapat",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "Yükleniyor...",
@@ -354,7 +354,16 @@
       "filter.seed.label": "Adrese Göre Filtrele",
       "exportButton": "Dışa Aktar"
     },
-    "repeatTransaction": "İşlemi Tekrarla"
+    "repeatTransaction": "İşlemi Tekrarla",
+    "transaction": {
+      "trxId": "TX Kimlik",
+      "source": "Kaynak",
+      "destination": "Hedef",
+      "tick": "Tik",
+      "type": "Tür"
+    },
+    "epoch": "Çağ",
+    "ticks": "Tikler"
   },
   "settings": {
     "general": {

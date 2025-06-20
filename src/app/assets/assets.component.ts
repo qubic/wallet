@@ -73,7 +73,7 @@ export class AssetsComponent implements OnInit {
     this.isTable = dashBoardStyle == '0' ? true : false;
 
     this.sendForm = new FormGroup({
-      destinationAddress: new FormControl('', Validators.required),
+      destinationAddress: new FormControl('', this.destinationValidators),
       selectedDestinationId: new FormControl(''),
       amount: new FormControl('', Validators.required),
       tick: new FormControl('', Validators.required),

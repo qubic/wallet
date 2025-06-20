@@ -4,7 +4,7 @@ import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, Transaction } from '../services/api.model';
+import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
 import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
@@ -62,7 +62,7 @@ export class BalanceComponent implements OnInit {
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
       this.us.internalTransactions.subscribe(txs => {
-        this.transactions = txs;
+        this.transactions = fixTransactionDates(txs);
         this.correctTheTransactionListByPublicId();
       });
 
@@ -90,7 +90,7 @@ export class BalanceComponent implements OnInit {
     this.apiArchiver.getStatus().subscribe(s => {
       if (s) {
         this.status = s;
-        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length-1].epoch;
+        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
         this.GetTransactionsByTick(this.currentSelectedEpoch);
       }
     }, errorResponse => {
@@ -114,7 +114,7 @@ export class BalanceComponent implements OnInit {
 
   GetTransactionsByTick(epoch: number): void {
     this.status.processedTickIntervalsPerEpoch
-      .filter(t=> t.epoch === epoch)
+      .filter(t => t.epoch === epoch)
       .forEach(e => {
         this.initialProcessedTick = e.intervals[0].initialProcessedTick;
         this.lastProcessedTick = e.intervals[0].lastProcessedTick;
@@ -137,7 +137,7 @@ export class BalanceComponent implements OnInit {
         }
       }
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
-    }    
+    }
   }
 
 
@@ -176,24 +176,24 @@ export class BalanceComponent implements OnInit {
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
-        this.transactionsRecord = [];
-        this.transactionsArchiverSubscribe.forEach(archiver => {
-            if (archiver.transactions && archiver.transactions.length > 0) {
-                this.transactionsRecord.push(...archiver.transactions);
-            }
-        });
+      this.transactionsRecord = [];
+      this.transactionsArchiverSubscribe.forEach(archiver => {
+        if (archiver.transactions && archiver.transactions.length > 0) {
+          this.transactionsRecord.push(...archiver.transactions);
+        }
+      });
 
-        // Filter to keep only unique transactions based on txId
-        const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
-            index === self.findIndex((t) => (
-                t.transactions[0].transaction.txId === transactionRecord.transactions[0].transaction.txId
-            ))
-        );
+      // Filter to keep only unique transactions based on txId
+      const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
+        index === self.findIndex((t) => (
+          t.transactions[0].transaction.txId === transactionRecord.transactions[0].transaction.txId
+        ))
+      );
 
-        this.transactionsRecord = uniqueTransactions;
-        this.sortTransactions();
+      this.transactionsRecord = uniqueTransactions;
+      this.sortTransactions();
     }
-}
+  }
 
 
   sortTransactions(): void {
@@ -217,8 +217,27 @@ export class BalanceComponent implements OnInit {
 
 
   getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(f => (publicId == null || f.sourceId == publicId || f.destId == publicId) && f.status != 'Success');
+    return this.transactions.filter(transaction => {
+      // check publicId and status
+      const matchesPublicId = publicId == null || transaction.sourceId === publicId || transaction.destId === publicId;
+      const isNotSuccess = transaction.status !== 'Success';
+
+      if (!matchesPublicId || !isNotSuccess) return false;
+
+      // get the tick and txId to compare
+      const txId = transaction.id;
+      const tick = transaction.targetTick;
+
+      // check if the transaction is already returned by the archiver so it can be excluded
+      const shouldBeExcluded = this.transactionsRecord.some(ref =>
+        ref.tickNumber === tick &&
+        ref.transactions.some(t => t.transaction.txId === txId)
+      );
+
+      return !shouldBeExcluded; // Exclude if matched
+    });
   }
+
 
 
   isOwnId(publicId: string): boolean {
@@ -293,7 +312,7 @@ export class BalanceComponent implements OnInit {
     return `${start}...${end}`;
   }
 
-  
+
   repeat(transaction: Transaction) {
     this.router.navigate(['payment'], {
       state: {
@@ -310,35 +329,14 @@ export class BalanceComponent implements OnInit {
     });
   }
 
+  formatInputType(inputType: number, destination: string) {
+    const emptyAddress = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
 
-  // getSeedName(publicId: string): string {
-  //   var seed = this.walletService.getSeed(publicId);
-  //   if (seed !== undefined)
-  //     return '- ' + seed.alias;
-  //   else
-  //     return '';
-  // }
-
-  // private getTransactionStatusLabel(status: string): string {
-  //   switch (status) {
-  //     case 'Pending':
-  //     case 'Broadcasted':
-  //       return 'Pending';
-  //     case 'Confirmed':
-  //     case 'Staged':
-  //       return 'Confirmed';
-  //     case 'Success':
-  //       return 'Executed';
-  //     case 'Failed':
-  //       return 'Dismissed';
-  //     case 'Unknown':
-  //       return 'Unknown';
-  //     case 'Created':
-  //       return 'Created';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
+    if (inputType === 0 || destination === emptyAddress) {
+      return `${inputType} Standard`;
+    } else {
+      return `${inputType} SC`;
+    }
+  }
 
 }

@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "Copiar",
     "error": "Error",
-    "close": "cerrar",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "cargando...",
@@ -353,7 +353,16 @@
       "filter.seed.label": "Filtrar por Dirección",
       "exportButton": "Exportar transacciones"
     },
-    "repeatTransaction": "Repetir la transacción"
+    "repeatTransaction": "Repetir la transacción",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Fuente",
+      "destination": "Destinatario",
+      "tick": "Tick",
+      "type": "Tipo"
+    },
+    "epoch": "Época",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {

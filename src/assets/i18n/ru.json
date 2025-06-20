@@ -17,7 +17,7 @@
     "version.url": "qubic.org",
     "copy.tooltip": "Копировать",
     "error": "Ошибка",
-    "close": "Закрыть",
+    "close": "X",
     "currency": "QUBIC",
     "currentTick": "Тик: {{tick}}",
     "loading": "Загрузка...",
@@ -44,7 +44,6 @@
     "hint": "Кастомный сид имеет большой риск взлома. Используйте рандомно-генерируемый сид.",
     "button": "Используйте свой сид.",
     "buttonInsertSeedViaClipboard": "Seed можно вставить только через буфер обмена"
-
   },
   "payment": {
     "keyRequestReason": "Поскольку транзакции подписываются цифровым ключом, вам необходимо сначала загрузить свой ключ."
@@ -355,7 +354,16 @@
       "filter.seed.label": "Фильтровать по адресу",
       "exportButton": "Экспорт транзакций"
     },
-    "repeatTransaction": "Повторить транзакцию"
+    "repeatTransaction": "Повторить транзакцию",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Источник",
+      "destination": "Получатель",
+      "tick": "Тик",
+      "type": "Тип"
+    },
+    "epoch": "Эпоха",
+    "ticks": "Тики"
   },
   "settings": {
     "general": {

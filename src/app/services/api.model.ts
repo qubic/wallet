@@ -35,8 +35,37 @@ export interface Transaction {
   targetTick: number;
   isPending: boolean;
   price?: number; // ipo bids
-  quantity?:number; // ipo bids
+  quantity?: number; // ipo bids
   moneyFlow: boolean;
+  type: number;
+}
+
+export function fixUTCDateFormat(input: any): Date {
+  if (!input) {
+    // fallback date if input is null/undefined/empty
+    return new Date(0); // 1970-01-01T00:00:00.000Z
+  }
+
+  if (input instanceof Date) {
+    // Already a Date instance, return as-is
+    return input;
+  }
+
+  if (typeof input === 'string') {
+    // Append 'Z' if missing to ensure UTC parsing
+    const str = input.endsWith('Z') ? input : input + 'Z';
+    return new Date(str);
+  }
+
+  // If input is a number (timestamp) or something else, try to convert
+  return new Date(input);
+}
+
+export function fixTransactionDates(transactions: Transaction[]): Transaction[] {
+  return transactions.map(tx => ({
+    ...tx,
+    created: fixUTCDateFormat(tx.created)
+  }));
 }
 
 export interface BalanceResponse {

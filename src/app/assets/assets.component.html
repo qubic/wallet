@@ -208,7 +208,11 @@
                     <mat-icon>import_contacts</mat-icon>
                   </button>
                   <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('required')">
-                    {{ t("assetsComponent.form.placeholder.error") }}
+                    {{ t("paymentComponent.form.receiver.error.required") }}
+                  </mat-error>
+                  <mat-error
+                    *ngIf="sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength')">
+                    {{ t("paymentComponent.form.receiver.error.length") }}
                   </mat-error>
                 </mat-form-field>
               </div>

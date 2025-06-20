@@ -66,11 +66,12 @@
     }
 
     .label {
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--mat-expansion-header-description-color);
     }
 
     .value {
         word-break: break-all;
+        color: var(--mat-expansion-header-description-color);
     }
 
     @media (max-width: 600px) {
@@ -126,7 +127,6 @@
 
 mat-card {
     width: 100%;
-    font-size: 1.1rem;
 }
 
 .mat-expansion-panel-body {
@@ -139,11 +139,11 @@ mat-card {
 
 
 .icon-color-link {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--mat-expansion-header-description-color);
 }
 
 .secondary {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--mat-expansion-header-description-color);
 }
 
 .icon {
@@ -180,7 +180,7 @@ mat-card {
     color: grey;
 }
 
-.status-icon{
+.status-icon {
     padding-left: 6px;
     padding-right: 2px;
 }
