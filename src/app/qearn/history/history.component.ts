@@ -13,6 +13,7 @@ import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnComponent } from '../qearn.component';
 import { UnlockInputDialogComponent } from '../components/unlock-input-dialog/unlock-input-dialog.component';
+import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 
 @Component({
   selector: 'app-history',
@@ -39,7 +40,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     private us: UpdaterService,
     private fb: FormBuilder,
     private qearnComponent: QearnComponent,
-    private cdf: ChangeDetectorRef
+    private cdf: ChangeDetectorRef,
+    private apiLiveService: ApiLiveService
   ) {
     this.form = this.fb.group({ sourceId: [''] });
   }
@@ -94,7 +96,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private async handleTxSuccess(d: any) {
     if (!d?.publicId) return;
-    
+
     this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
     this.us.forceUpdateNetworkBalance(d.publicId, async () => {
       await this.qearnService.fetchStakeDataPerEpoch(d.publicId, d.epoch, this.qearnComponent.epoch, true);
@@ -110,7 +112,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   private loadData(sourceId: string): void {
     if (!sourceId) return;
-    
+
     this.dataSource.data = this.showingEnded
       ? [...(this.qearnService.endedStakeData[sourceId] || [])]
       : [...(this.qearnService.stakeData[sourceId] || [])].sort((a, b) => b.lockedEpoch - a.lockedEpoch);
@@ -167,9 +169,9 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   private async handleUnlockAction(element: IStakeStatus, unlockAmount: number) {
     try {
       const { publicId, lockedEpoch, lockedAmount } = element;
-      const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
+      const tick = (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo.tick;
       const seed = await this.walletService.revealSeed(publicId);
-      
+
       const unlockResult = await this.qearnService.unLockQubic(seed, unlockAmount, lockedEpoch, tick);
       if (!unlockResult) return;
 

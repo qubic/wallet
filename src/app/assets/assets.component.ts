@@ -18,6 +18,7 @@ import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
+import { ApiLiveService } from '../services/apis/live/api.live.service';
 
 
 @Component({
@@ -63,6 +64,7 @@ export class AssetsComponent implements OnInit {
     private router: Router,
     private decimalPipe: DecimalPipe,
     private changeDetectorRef: ChangeDetectorRef,
+    private apiLiveService: ApiLiveService
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -285,8 +287,8 @@ export class AssetsComponent implements OnInit {
     // todo: think about if we want to let the user set a custom target tick
 
     if (!this.tickOverwrite || targetTick == 0) {
-      const currentTick = await lastValueFrom(this.apiService.getCurrentTick());
-      targetTick = currentTick.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
+      const tickInfo = (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo;
+      targetTick = tickInfo.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
     }
 
     // load the seed from wallet service

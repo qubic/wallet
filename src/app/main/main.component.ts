@@ -9,7 +9,7 @@ import { SeedEditDialog } from './edit-seed/seed-edit.component';
 import { RevealSeedDialog } from './reveal-seed/reveal-seed.component';
 import { Router } from '@angular/router';
 import { QrReceiveDialog } from './qr-receive/qr-receive.component';
-import { BalanceResponse, NetworkBalance, Transaction, MarketInformation } from '../services/api.model';
+import { BalanceResponse, NetworkBalance, Transaction } from '../services/api.model';
 import { MatSort } from '@angular/material/sort';
 import { UpdaterService } from '../services/updater-service';
 import { QubicService } from '../services/qubic.service';
@@ -23,6 +23,7 @@ import { ExportConfigDialog } from '../lock/export-config/export-config.componen
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
+import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
 
 
 @Component({
@@ -38,7 +39,23 @@ export class MainComponent implements AfterViewInit {
   public transactions: Transaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
-  currentPrice: MarketInformation = ({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
+
+  latestStats: LatestStatsResponse = {
+    data: {
+      price: 0,
+      timestamp: '',
+      circulatingSupply: '',
+      activeAddresses: 0,
+      marketCap: '',
+      epoch: 0,
+      currentTick: 0,
+      ticksInCurrentEpoch: 0,
+      emptyTicksInCurrentEpoch: 0,
+      epochTickQuality: 0,
+      burnedQus: ''
+    }
+  }
+
   public isMobile = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
@@ -86,8 +103,8 @@ export class MainComponent implements AfterViewInit {
     var vaultExportDialog = localStorage.getItem("vault-export-dialog");
     this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
 
-    this.updaterService.currentPrice.subscribe(response => {
-      this.currentPrice = response;
+    this.updaterService.latestStats.subscribe(response => {
+      this.latestStats = response;
     }, errorResponse => {
       this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
         duration: 0,

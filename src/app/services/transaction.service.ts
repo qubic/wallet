@@ -10,6 +10,7 @@ import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { lastValueFrom } from 'rxjs';
+import { ApiLiveService } from './apis/live/api.live.service';
 
 
 /**
@@ -20,7 +21,7 @@ import { lastValueFrom } from 'rxjs';
 })
 export class TransactionService {
 
-    constructor(private t: TranslocoService, private visibilityService: VisibilityService, private updateService: UpdaterService, private walletService: WalletService, private api: ApiService) {
+    constructor(private t: TranslocoService, private visibilityService: VisibilityService, private updateService: UpdaterService, private walletService: WalletService, private api: ApiService, private apiLiveService: ApiLiveService) {
 
     }
 
@@ -116,7 +117,7 @@ export class TransactionService {
             };
         }
 
-        // if we are using bridged mode, the transaction is sent directly to the network and is not prxied through qli backend
+        // if we are using bridged mode, the transaction is sent directly to the network and is not proxied through qli backend
         if (this.walletService.getSettings().useBridge) {
             return new Promise((resolve) => {
                 this.directPush(qtx, (r) => {
@@ -128,18 +129,19 @@ export class TransactionService {
 
             const binaryData = qtx.getPackageData();
 
-            // submit transaction to the qli api/proxy
+            // submit transaction to the rpc live service
             try {
-                const apiResult = await lastValueFrom(this.api.submitTransaction({ SignedTransaction: this.walletService.arrayBufferToBase64(binaryData) }));
-                // Handle the successful response here
-                if (apiResult && apiResult.id) {
+
+                const txResult = await lastValueFrom(this.apiLiveService.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(binaryData).buffer)));
+
+                if (txResult && txResult.transactionId) {
                     // transaction was submitted successfully
                     this.updateService.loadCurrentBalance(); // reload balance to get created tx into list of tx's
                     return {
                         success: true
                     };
                 } else {
-                    // failed to submit solution to qli api
+                    // failed to submit solution to rpc live service
                     return {
                         success: false,
                         message: this.t.translate('paymentComponent.messages.failedToSend')
@@ -150,7 +152,7 @@ export class TransactionService {
                 // Handle any errors that occur during the HTTP request
                 return {
                     success: false,
-                    message: this.t.translate('paymentComponent.messages.failedToSend') 
+                    message: this.t.translate('paymentComponent.messages.failedToSend')
                 };
             }
         }

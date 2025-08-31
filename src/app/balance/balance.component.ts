@@ -142,7 +142,7 @@ export class BalanceComponent implements OnInit {
 
 
   private getCurrentTickArchiver() {
-    this.apiArchiver.getCurrentTick().subscribe(latestTick => {
+    this.apiArchiver.getLatestTick().subscribe(latestTick => {
       if (latestTick) {
         this.currentTickArchiver.next(latestTick);
       }

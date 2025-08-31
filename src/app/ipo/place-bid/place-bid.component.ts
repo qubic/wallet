@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { lastValueFrom } from 'rxjs';
+import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 
 export interface ComputorSelected {
   name: string;
@@ -53,6 +54,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     , private fb: FormBuilder
     , private dialog: MatDialog
     , private apiService: ApiService
+    , private apiLiveService: ApiLiveService
   ) {
     this.activatedRoute.params.subscribe(state => {
       if (state && state['contractId']) {
@@ -159,8 +161,8 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
 
       let targetTick = this.ipoForm.controls.tick.value ?? 0;
       if (!this.tickOverwrite || targetTick == 0) {
-        const currentTick = await lastValueFrom(this.apiService.getCurrentTick());
-        targetTick = currentTick.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
+        const tickInfo = (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo;
+        targetTick = tickInfo.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
       }
 
       this.walletService.revealSeed((<any>this.ipoForm.controls.sourceId.value)).then(s => {

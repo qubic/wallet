@@ -62,7 +62,7 @@ export class QearnService {
   public txSuccessSubject = new Subject<PendingStake>();
   public selectedPublicId = new Subject<string>();
 
-  constructor(private apiLiveService: ApiLiveService, private walletService: WalletService, private us: UpdaterService, private _snackBar: MatSnackBar, private transloco: TranslocoService) {}
+  constructor(private apiLiveService: ApiLiveService, private walletService: WalletService, private us: UpdaterService, private _snackBar: MatSnackBar, private transloco: TranslocoService) { }
 
   private async queryStakingData(inputType: number, inputSize: number, requestData: string) {
     return lastValueFrom(
