@@ -5,7 +5,6 @@ import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 import { TimeService } from '../../services/time.service';
-import { ApiService } from 'src/app/services/api.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +13,7 @@ import { lastValueFrom } from 'rxjs';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { QearnComponent } from '../qearn.component';
 import { ISeed } from 'src/app/model/seed';
+import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 
 @Component({
   selector: 'app-staking',
@@ -43,14 +43,14 @@ export class StakingComponent implements OnInit {
     private timeService: TimeService,
     private dialog: MatDialog,
     private transloco: TranslocoService,
-    private apiService: ApiService,
     private us: UpdaterService,
     public qearnService: QearnService,
     private _snackBar: MatSnackBar,
     private apiArchiver: ApiArchiverService,
     public qearnComponent: QearnComponent,
-    private cdf: ChangeDetectorRef
-  ) {}
+    private cdf: ChangeDetectorRef,
+    private apiLiveService: ApiLiveService
+  ) { }
 
   ngOnInit(): void {
     if (!this.walletService.isWalletReady) {
@@ -164,8 +164,9 @@ export class StakingComponent implements OnInit {
 
   private async processLock(publicId: string, amountToStake: number): Promise<void> {
     try {
-      const tick = await lastValueFrom(this.apiArchiver.getCurrentTick());
-      const epoch = (await lastValueFrom(this.apiArchiver.getStatus())).lastProcessedTick.epoch;
+      const tickInfo = (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo;
+      const tick = tickInfo.tick;
+      const epoch = tickInfo.epoch;
 
       const initialLockedAmountOfThisEpoch = this.qearnService.stakeData[publicId]?.find((data) => data.lockedEpoch === epoch)?.lockedAmount ?? 0;
 
@@ -204,5 +205,5 @@ export class StakingComponent implements OnInit {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  onSubmit() {}
+  onSubmit() { }
 }
