@@ -220,7 +220,9 @@
     "title": "Dashboard",
     "balance": "Balance del Wallet",
     "currency": "Qu",
-    "totalBalance": "Saldo en USD"
+    "totalBalance": "Saldo en USD",
+    "showBalance": "Mostrar Saldo",
+    "hideBalance": "Ocultar Saldo"
   },
   "unlockComponent": {
     "title": "Desbloquear el Wallet",
