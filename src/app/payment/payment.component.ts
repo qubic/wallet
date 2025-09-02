@@ -1,26 +1,20 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
-import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
 import { CurrentTickResponse, Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
-import { concatMap, of } from 'rxjs';
+import { concatMap, lastValueFrom, of } from 'rxjs';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
-import { QubicConnector } from '@qubic-lib/qubic-ts-library/dist/QubicConnector';
-import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
-import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { DecimalPipe } from '@angular/common';
-
+import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 
 @Component({
   selector: 'app-wallet',
@@ -50,7 +44,7 @@ export class PaymentComponent implements OnInit {
   private txTemplate: Transaction | undefined;
 
   transferForm = this.fb.group({
-    sourceId: ['',[Validators.required]],
+    sourceId: ['', [Validators.required]],
     destinationId: ["", this.destinationValidators],
     selectedDestinationId: [""],
     amount: [0, [Validators.required, Validators.min(1)]],
@@ -62,7 +56,7 @@ export class PaymentComponent implements OnInit {
     private transactionService: TransactionService,
     private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService
   ) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
@@ -139,9 +133,9 @@ export class PaymentComponent implements OnInit {
       });
     }
     if (this.transferForm.valid) {
-      
+
       let destinationId = this.selectedAccountId ? this.transferForm.controls.selectedDestinationId.value : this.transferForm.controls.destinationId.value;
-      
+
       if (destinationId === null) {
         this._snackBar.open("INVALID RECEIVER ADDRESSS IS NULL", this.t.translate('general.close'), {
           duration: 10000,
@@ -149,38 +143,36 @@ export class PaymentComponent implements OnInit {
         });
         return;
       }
-      
+
       const targetAddress = new PublicKey(destinationId);
-      
+
       // verify target address
       if (!(await targetAddress.verifyIdentity())) {
         this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
           duration: 10000,
           panelClass: "error"
         });
-        
+
         return;
       }
-      
+
       this.isBroadcasting = true;
       this.walletService.revealSeed((<any>this.transferForm.controls.sourceId.value)).then(s => {
         of(this.transferForm.controls.tick.value!).pipe(
-          concatMap(data => {
+          concatMap(async data => {
             if (!this.tickOverwrite) {
-              return this.api.getCurrentTick();
+              return (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo.tick;
             } else {
-              return of(<CurrentTickResponse>{
-                tick: data - this.walletService.getSettings().tickAddition, // fake because we add it afterwards; todo: do that right!
-              });
+              return (data - this.walletService.getSettings().tickAddition);
             }
           })).subscribe(async tick => {
             var qtx = new QubicTransaction();
-            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick.tick + this.walletService.getSettings().tickAddition).build(s);
+            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick + this.walletService.getSettings().tickAddition).build(s);
 
             var publishResult = await this.transactionService.publishTransaction(qtx);
 
             if (publishResult && publishResult.success) {
-              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0')  }), this.t.translate('general.close'), {
+              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0') }), this.t.translate('general.close'), {
                 duration: 10000,
               });
               this.isBroadcasting = false;
@@ -228,7 +220,7 @@ export class PaymentComponent implements OnInit {
     }
     this.changeDetectorRef?.detectChanges();
   }
-  
+
   getSeeds(isDestination = false) {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.transferForm.controls.sourceId.value))
   }
