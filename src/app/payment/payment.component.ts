@@ -1,26 +1,19 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
-import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
-import { Transaction } from '../services/api.model';
+import { CurrentTickResponse, Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
-import { concatMap, of } from 'rxjs';
+import { concatMap, lastValueFrom, of } from 'rxjs';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
-import { QubicConnector } from '@qubic-lib/qubic-ts-library/dist/QubicConnector';
-import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
-import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { DecimalPipe } from '@angular/common';
-import { lastValueFrom } from 'rxjs';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 
 @Component({
@@ -29,6 +22,7 @@ import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent implements OnInit {
+
 
   private selectedDestinationId: any;
   public maxAmount: number = 0;
@@ -62,8 +56,7 @@ export class PaymentComponent implements OnInit {
     private transactionService: TransactionService,
     private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
-    private decimalPipe: DecimalPipe,
-    private apiLiveService: ApiLiveService
+    private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService
   ) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
@@ -133,14 +126,12 @@ export class PaymentComponent implements OnInit {
   }
 
   async onSubmit() {
-
     if (!this.walletService.privateKey) {
       this._snackBar.open(this.t.translate('paymentComponent.messages.pleaseUnlock'), this.t.translate('general.close'), {
         duration: 5000,
         panelClass: "error"
       });
     }
-
     if (this.transferForm.valid) {
 
       let destinationId = this.selectedAccountId ? this.transferForm.controls.selectedDestinationId.value : this.transferForm.controls.destinationId.value;
@@ -166,85 +157,50 @@ export class PaymentComponent implements OnInit {
       }
 
       this.isBroadcasting = true;
+      this.walletService.revealSeed((<any>this.transferForm.controls.sourceId.value)).then(s => {
+        of(this.transferForm.controls.tick.value!).pipe(
+          concatMap(async data => {
+            if (!this.tickOverwrite) {
+              return (await lastValueFrom(this.apiLiveService.getTickInfo())).tickInfo.tick;
+            } else {
+              return (data - this.walletService.getSettings().tickAddition);
+            }
+          })).subscribe(async tick => {
+            var qtx = new QubicTransaction();
+            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick + this.walletService.getSettings().tickAddition).build(s);
 
-      try {
-        // Get the seed first
-        const seed = await this.walletService.revealSeed(<any>this.transferForm.controls.sourceId.value);
+            var publishResult = await this.transactionService.publishTransaction(qtx);
 
-        // Get the current tick
-        const currentTick = await this.getCurrentTick();
-
-        // Build and publish the transaction
-        const qtx = await this.buildTransaction(currentTick, destinationId, seed);
-        const publishResult = await this.transactionService.publishTransaction(qtx);
-
-        // Handle the result
-        this.handleTransactionResult(publishResult, qtx);
-
-      } catch (error) {
-        this.handleTransactionError(error);
-      } finally {
+            if (publishResult && publishResult.success) {
+              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0') }), this.t.translate('general.close'), {
+                duration: 10000,
+              });
+              this.isBroadcasting = false;
+              this.router.navigate(['/']);
+            }
+            else {
+              this._snackBar.open(publishResult.message ?? this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
+                duration: 10000,
+                panelClass: "error"
+              });
+              this.isBroadcasting = false;
+            }
+          });
+      }).catch(e => {
+        this._snackBar.open(this.t.translate('paymentComponent.messages.failedToDecrypt'), this.t.translate('general.close'), {
+          duration: 10000,
+          panelClass: "error"
+        });
         this.isBroadcasting = false;
-      }
-    }
-  }
+      }).finally(() => {
 
-
-  private async getCurrentTick(): Promise<number> {
-    const formTick = this.transferForm.controls.tick.value!;
-
-    if (!this.tickOverwrite) {
-      const tickInfo = await lastValueFrom(this.apiLiveService.getTickInfo());
-      return tickInfo.tickInfo.tick;
-    } else {
-      // Remove the addition temporarily since we'll add it back later
-      return formTick - this.walletService.getSettings().tickAddition;
-    }
-  }
-
-  private async buildTransaction(currentTick: number, destinationId: string, seed: any): Promise<QubicTransaction> {
-    const qtx = new QubicTransaction();
-    const finalTick = currentTick + this.walletService.getSettings().tickAddition;
-
-    await qtx
-      .setSourcePublicKey(this.transferForm.controls.sourceId.value!)
-      .setDestinationPublicKey(destinationId)
-      .setAmount(this.transferForm.controls.amount.value!)
-      .setTick(finalTick)
-      .build(seed);
-
-    return qtx;
-  }
-
-  private handleTransactionResult(publishResult: any, qtx: QubicTransaction): void {
-    if (publishResult?.success) {
-      const message = this.t.translate('paymentComponent.messages.storedForPropagation', {
-        tick: this.decimalPipe.transform(qtx.tick, '1.0-0')
       });
-      this._snackBar.open(message, this.t.translate('general.close'), {
-        duration: 10000,
-      });
-      this.router.navigate(['/']);
     } else {
-      const errorMessage = publishResult?.message ?? this.t.translate('paymentComponent.messages.failedToSend');
-      this._snackBar.open(errorMessage, this.t.translate('general.close'), {
-        duration: 10000,
+      this._snackBar.open(this.t.translate('paymentComponent.messages.failedValidation'), this.t.translate('general.close'), {
+        duration: 5000,
         panelClass: "error"
       });
     }
-  }
-
-  private handleTransactionError(error: any): void {
-
-    console.error('Transaction failed:', error);
-    this._snackBar.open(
-      this.t.translate('paymentComponent.messages.failedToSend'),
-      this.t.translate('general.close'),
-      {
-        duration: 10000,
-        panelClass: "error"
-      }
-    );
   }
 
   toggleDestinationSelect() {
