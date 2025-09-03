@@ -9,7 +9,8 @@
             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
               <mat-label>{{ t('qearn.stakeQubic.sourceSeed.label') }}</mat-label>
               <mat-select formControlName="sourceId" panelClass="full-width">
-                <mat-option *ngFor="let seed of seeds; let i = index" [value]="seed.publicId" class="custom-mat-option">
+                <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
+                  class="custom-mat-option">
                   {{ seed.publicId }}<br />
                   {{ seed.alias }} - {{ seed.balance | number : '1.0-0' }}
                   {{ t('general.currency') }}
@@ -25,13 +26,11 @@
           <button type="submit" color="primary" mat-raised-button class="full-width button"
             [disabled]="stakeForm.invalid || isChecking || isStakePending">
 
-            <ng-container
-              *ngIf="!(isStakePending)">
+            <ng-container *ngIf="!(isStakePending)">
               {{ t('qearn.stakeQubic.stake') }}
             </ng-container>
 
-            <ng-container
-              *ngIf="isStakePending">
+            <ng-container *ngIf="isStakePending">
               <mat-spinner [diameter]="20"></mat-spinner>
             </ng-container>
 
