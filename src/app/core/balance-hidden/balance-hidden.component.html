@@ -1,4 +1,6 @@
-<img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
-    (click)="balanceHidden()" title="Hide Balance" />
-<img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()"
-    title="Show Balance" />
+<ng-container *transloco="let t">
+    <img src="assets/img/view-off-slash-stroke-rounded.svg" class="eye-icon" *ngIf="!isBalanceHidden"
+        (click)="balanceHidden()" [title]="t('dashboard.hideBalance')" />
+    <img src="assets/img/eye-open.svg" class="eye-icon" *ngIf="isBalanceHidden" (click)="balanceHidden()"
+        [title]="t('dashboard.showBalance')" />
+</ng-container>

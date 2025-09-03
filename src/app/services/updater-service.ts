@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { BalanceResponse, MarketInformation, NetworkBalance, QubicAsset, Transaction } from './api.model';
+import { BalanceResponse, NetworkBalance, QubicAsset, Transaction } from './api.model';
 import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
+import { ApiStatsService } from './apis/stats/api.stats.service';
+import { LatestStatsResponse } from './apis/stats/api.stats.model';
+import { ApiLiveService } from './apis/live/api.live.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +18,30 @@ import { forkJoin, Observable } from 'rxjs';
 export class UpdaterService {
 
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
+  public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public numberLastEpoch = 5;
   public currentBalance: BehaviorSubject<BalanceResponse[]> = new BehaviorSubject<BalanceResponse[]>([]);
-  public currentPrice: BehaviorSubject<MarketInformation> = new BehaviorSubject<MarketInformation>({ supply: 0, price: 0, capitalization: 0, currency: 'USD' });
+  public latestStats: BehaviorSubject<LatestStatsResponse> = new BehaviorSubject<LatestStatsResponse>({
+    data: {
+      price: 0,
+      timestamp: '',
+      circulatingSupply: '',
+      activeAddresses: 0,
+      marketCap: '',
+      epoch: 0,
+      currentTick: 0,
+      ticksInCurrentEpoch: 0,
+      emptyTicksInCurrentEpoch: 0,
+      epochTickQuality: 0,
+      burnedQus: ''
+    }
+  });
   public internalTransactions: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]); // used to store internal tx
   public errorStatus: BehaviorSubject<string> = new BehaviorSubject<string>("");
   private tickLoading = false;
+  private tickInfoLoading = false;
   private balanceLoading = false;
-  private currentPriceLoading = false;
+  private latestStatsLoading = false;
   private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
@@ -30,7 +49,7 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
     this.init();
   }
 
@@ -38,15 +57,17 @@ export class UpdaterService {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
     this.getStatusArchiver();
     this.getCurrentTickArchiver();
+    this.getTickInfo();
     this.getCurrentBalance();
     this.getNetworkBalances();
     this.getAssets();
-    this.getCurrentPrice();
+    this.getLatestStats();
     this.getTransactionsArchiver();
     // every 30 seconds
     setInterval(() => {
       this.getStatusArchiver();
       this.getCurrentTickArchiver();
+      this.getTickInfo();
     }, 30000);
     // every minute
     setInterval(() => {
@@ -57,7 +78,7 @@ export class UpdaterService {
     }, 60000);
     // every hour
     setInterval(() => {
-      this.getCurrentPrice();
+      this.getLatestStats();
     }, 60000 * 60);
 
     this.visibilityService.isActive().subscribe(s => {
@@ -160,15 +181,34 @@ export class UpdaterService {
   }
 
 
+  private getTickInfo() {
+
+    if (this.tickInfoLoading) {
+      return;
+    }
+
+    this.tickInfoLoading = true;
+
+    this.apiLive.getTickInfo().subscribe(r => {
+      if (r && r.tickInfo) {
+        this.currentTick.next(r.tickInfo.tick);
+      }
+      this.tickInfoLoading = false;
+    }, errorResponse => {
+      this.processError(errorResponse, false);
+      this.tickInfoLoading = false;
+    });
+  }
+
   private getCurrentTickArchiver() {
     if (this.tickLoading)
       return;
 
     this.tickLoading = true;
 
-    this.apiArchiver.getCurrentTick().subscribe(latestTick => {
+    this.apiArchiver.getLatestTick().subscribe(latestTick => {
       if (latestTick) {
-        this.currentTick.next(latestTick);
+        this.archiverLatestTick.next(latestTick);
         if (this.transactionsArray.getValue().length <= 0) {
           this.getTransactionsArchiver();
         }
@@ -183,7 +223,7 @@ export class UpdaterService {
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    if ((this.transactionArchiverLoading || this.currentTick.value === 0 || !this.status))
+    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || !this.status))
       return;
 
     if (!publicIds)
@@ -276,28 +316,27 @@ export class UpdaterService {
     }
   }
 
-  /**
-    * load balances directly from network
-    * @returns 
-    */
-  private getCurrentPrice(callbackFn: ((mi: MarketInformation) => void) | undefined = undefined): void {
-    if (!this.isActive || this.currentPriceLoading)
+  private getLatestStats(callbackFn: ((mi: LatestStatsResponse) => void) | undefined = undefined): void {
+    if (!this.isActive || this.latestStatsLoading)
       return;
 
-    this.currentPriceLoading = true;
+    this.latestStatsLoading = true;
 
-    // todo: Use Websocket!
-    this.api.getCurrentPrice().subscribe((r: MarketInformation) => {
-      if (r) {
-        this.currentPrice.next(r);
+    this.apiStats.getLatestStats().subscribe({
+      next: (r: LatestStatsResponse) => {
+        if (r) {
+          this.latestStats.next(r);
 
-        if (callbackFn)
-          callbackFn(r);
+          if (callbackFn) {
+            callbackFn(r);
+          }
+        }
+        this.latestStatsLoading = false;
+      },
+      error: (errorResponse) => {
+        this.processError(errorResponse, false);
+        this.latestStatsLoading = false;
       }
-      this.currentPriceLoading = false;
-    }, errorResponse => {
-      this.processError(errorResponse, false);
-      this.currentPriceLoading = false;
     });
   }
 
