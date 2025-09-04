@@ -220,7 +220,9 @@
     "title": "ダッシュボード",
     "balance": "ヴォールトの残高",
     "currency": "Qu",
-    "totalBalance": "USD残高"
+    "totalBalance": "USD残高",
+    "showBalance": "残高を表示",
+    "hideBalance": "残高を非表示"
   },
   "unlockComponent": {
     "title": "ヴォールトのロック解除",

@@ -36,7 +36,7 @@ export class ApiArchiverService {
       }
     ).pipe(
       map((response: StatusArchiver) => {
-        if (response) {          
+        if (response) {
           //console.log('Response from getStatus:', response);
           return response;
         } else {
@@ -47,7 +47,7 @@ export class ApiArchiverService {
   }
 
 
-  public getCurrentTick(): Observable<number> {
+  public getLatestTick(): Observable<number> {
     let localVarPath = `/v1/latestTick`;
     return this.httpClient.request<LatestTickResponseArchiver>('get', `${this.basePath}${localVarPath}`,
       {
@@ -67,7 +67,7 @@ export class ApiArchiverService {
   }
 
 
-  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TransactionsArchiver[]>  {
+  public getTransactions(publicId: string, startTick: number = 0, lastTick: number): Observable<TransactionsArchiver[]> {
     const localVarPath = `/v2/identities/${publicId}/transfers?startTick=${startTick}&endTick=${lastTick}&pageSize=250&desc=true`;
     // alert(localVarPath);
     // console.log('localVarPath: ', localVarPath);
@@ -76,7 +76,7 @@ export class ApiArchiverService {
       responseType: 'json'
     }).pipe(
       tap(response => {
-       //console.log('Response from getTransactions:', response);
+        //console.log('Response from getTransactions:', response);
       })
     );
   }

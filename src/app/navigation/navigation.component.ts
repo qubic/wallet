@@ -9,10 +9,10 @@ import { environment } from 'src/environments/environment';
 import { UpdaterService } from '../services/updater-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { MarketInformation } from '../services/api.model';
 import { EnvironmentService } from '../services/env.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
 
 @Component({
   selector: 'app-navigation',
@@ -40,12 +40,22 @@ export class NavigationComponent implements OnInit {
 
   private isMaximized = false;
   public showMinimize = false;
-  public currentPrice: MarketInformation = {
-    supply: 0,
-    price: 0,
-    capitalization: 0,
-    currency: 'USD',
-  };
+  public latestStats: LatestStatsResponse = {
+    data: {
+      price: 0,
+      timestamp: '',
+      circulatingSupply: '',
+      activeAddresses: 0,
+      marketCap: '',
+      epoch: 0,
+      currentTick: 0,
+      ticksInCurrentEpoch: 0,
+      emptyTicksInCurrentEpoch: 0,
+      epochTickQuality: 0,
+      burnedQus: ''
+    }
+  }
+
   private _mobileQueryListener!: () => void;
 
   public isHomeSelected = true;
@@ -98,9 +108,9 @@ export class NavigationComponent implements OnInit {
     //   this.showMinimize = true;
     // }
 
-    this.us.currentPrice.subscribe(
+    this.us.latestStats.subscribe(
       (response) => {
-        this.currentPrice = response;
+        this.latestStats = response;
       },
       (errorResponse) => {
         this._snackBar.open(errorResponse.error, this.transloco.translate('general.close'), {
