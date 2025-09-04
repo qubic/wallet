@@ -206,4 +206,9 @@ export class StakingComponent implements OnInit {
   }
 
   onSubmit() { }
+
+  getSeeds() {
+    return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
+  }
+
 }
