@@ -1,0 +1,684 @@
+{
+  "general": {
+    "title": "Qubic - Wallet",
+    "comingSoon": "sắp ra mắt!",
+    "themeSwitch": "Chuyển đổi giao diện",
+    "navigation": {
+      "home": "Bảng điều khiển",
+      "payment": "Thanh toán",
+      "balance": "Giao dịch",
+      "qearn": "Qearn",
+      "settings": "Cài đặt",
+      "voting": "Bỏ phiếu",
+      "ipo": "IPO",
+      "assets": "Tài sản"
+    },
+    "version": "Phiên bản {{version}}",
+    "version.url": "qubic.org",
+    "copy.tooltip": "Sao chép",
+    "error": "Lỗi",
+    "close": "Đóng",
+    "currency": "QUBIC",
+    "currentTick": "Tick: {{tick}}",
+    "loading": "đang tải...",
+    "buttons": {
+      "close": "Đóng",
+      "maximize": "Phóng to"
+    },
+    "messages": {
+      "notConnected": "Chưa kết nối với Mạng Qubic. Vui lòng kết nối trước.",
+      "refreshRequested": "Yêu cầu làm mới đã được gửi",
+      "refreshFailed": "Làm mới thất bại, vui lòng thử lại sau",
+      "balanceReceived": "Mạng báo cáo {{balance}} QUBIC cho {{publicId}}.",
+      "timeoutTryAgain": "Đã hết thời gian chờ. Vui lòng thử lại."
+    }
+  },
+  "languageIconComponent": {
+    "title": "Chọn ngôn ngữ"
+  },
+  "privacyPolicyIcon": {
+    "title": "Mở Chính sách bảo mật"
+  },
+  "ownSeedWarningDialog": {
+    "message": "<span class='danger'><b>Cảnh báo</b></span>: Tạo cụm Seed tùy chỉnh chỉ dành cho người dùng nâng cao. <span class='danger'>Hacker đã từng lợi dụng Seed tùy chỉnh trước đây.</span> Để bảo mật tối đa, <b>hãy dùng cụm Seed được tạo ngẫu nhiên</b> do ví cung cấp.<br><br><b><i>Bạn có chắc chắn về điều này?</i></b>",
+    "hint": "Seed tự tạo có nguy cơ bị đánh cắp. Hãy dùng Seed ngẫu nhiên của ví để an toàn nhất.",
+    "button": "Dùng Seed của riêng bạn",
+    "buttonInsertSeedViaClipboard": "Chỉ có thể chèn Seed qua clipboard"
+  },
+  "payment": {
+    "keyRequestReason": "Vì giao dịch được ký số bằng khóa của bạn, bạn cần tải khóa trước."
+  },
+  "confirmDialog": {
+    "title": "Xác nhận",
+    "buttons": {
+      "cancel": "Hủy",
+      "confirm": "Vâng, tôi xác nhận"
+    },
+    "confirmationText": "Bạn có chắc không?"
+  },
+  "maxNumberOfAddressesDialog": {
+    "title": "Lưu ý quan trọng",
+    "button": "OK",
+    "message": "<div>Bạn đã đạt số lượng tối đa 15 địa chỉ trong ví của mình.</div>"
+  },
+  "switchExportDialog": {
+    "title": "Lưu ý quan trọng khi chuyển sang ví mới",
+    "buttons": {
+      "cancel": "Hủy",
+      "confirm": "Xuất"
+    },
+    "confirmationText": "<div class='danger'>Bạn cần thực hiện ngay!</div><div class='text-center'> <a href='https://www.youtube.com/watch?v=wf6JlrKZs9c' target='_blank'><img src='../assets/img/youtube.png' title='Hướng dẫn chuyển ví Qubic Wallet' width='10%' height='10%'><br>Video hướng dẫn</a></div><br>Vui lòng xuất tệp Vault của bạn và nhập nó vào ví mới tại <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a> trước ngày 30/06/2024.<br><br><div class='danger text-center'>Như đã thông báo, địa chỉ wallet.qubic.li sẽ bị ngưng hoạt động vào 30/06/2024.</div><br>Xuất tệp Vault ngay bây giờ?",
+    "okDialogMessage": "<div class='danger text-center'>Quan trọng, bạn cần thực hiện ngay!</div><div class='text-center'> <a href='https://www.youtube.com/watch?v=wf6JlrKZs9c' target='_blank'><img src='../assets/img/youtube.png' title='Hướng dẫn chuyển ví Qubic Wallet' width='10%' height='10%'><br>Video hướng dẫn</a></div><br>Vui lòng mở khóa tệp Vault của bạn và xem thêm thông tin về việc chuyển sang ví mới tại <a href='https://wallet.qubic.org' target='_blank'>wallet.qubic.org</a>. Sẽ không còn truy cập kể từ 30/06/2024."
+  },
+  "notifyComponent": {
+    "saveYourSettings": "Vui lòng Xuất/Tải xuống Cài đặt của bạn. Cài đặt chứa các Seed đã mã hóa mà bạn cần để khôi phục Vault.",
+    "saveYourKey": "Hãy lưu trữ tệp Vault của bạn ở nơi an toàn.",
+    "qubicLiSync": "Đồng bộ cài đặt của bạn với qubic.li",
+    "qubicOffline": "Mạng QUBIC chưa kết nối",
+    "qubicOnline": "Đã kết nối với mạng QUBIC"
+  },
+  "revealSeedComponent": {
+    "title": "Thông tin địa chỉ",
+    "publicId": "ID địa chỉ",
+    "privateId": "Seed 55 ký tự",
+    "buttons": {
+      "close": "Đóng"
+    }
+  },
+  "assetsComponent": {
+    "title": "Tài sản của bạn",
+    "openAssets": "Đi tới Quản lý tài sản",
+    "overview": {
+      "title": "Tổng quan tài sản"
+    },
+    "table": {
+      "publicId": "Public ID",
+      "contractIndex": "Chỉ mục Hợp đồng",
+      "assetName": "Tên tài sản",
+      "contractName": "Tên Hợp đồng",
+      "ownedAmount": "Số lượng sở hữu",
+      "possessedAmount": "Số lượng đang giữ",
+      "tick": "Hợp lệ cho Tick {{tick}}",
+      "reportingNodes": "Nút báo cáo",
+      "issuerIdentity": "Danh tính nhà phát hành"
+    },
+    "buttons": {
+      "close": "Đóng",
+      "refresh": "Làm mới",
+      "send": "Chuyển tài sản"
+    },
+    "form": {
+      "info": "Gửi tài sản",
+      "fees": "Phí gửi cố định: 100 Qubic",
+      "balance": "Số dư của bạn sau khi trừ phí chuyển (100 Qubic) sẽ là:",
+      "select": "Chọn tài sản",
+      "select.error": "Yêu cầu chọn tài sản",
+      "placeholder": "ID địa chỉ của người nhận",
+      "placeholder.error": "Yêu cầu public-key 60 ký tự.",
+      "amount": "Số lượng cần gửi",
+      "amount.error": "Yêu cầu số lượng",
+      "amount.value.error": "Số lượng phải lớn hơn 0",
+      "amount.max.error": "Số lượng không thể vượt quá số đang giữ",
+      "tick": "Tick",
+      "tick.error": "Yêu cầu Tick",
+      "tick.tooltip": "Yêu cầu Tick",
+      "tick.min": "Tick phải tối thiểu là {{currentTick}}",
+      "buttons": {
+        "send": "Gửi",
+        "cancel": "Hủy",
+        "error.balance": "Số dư không đủ, số dư tối thiểu là 100 Qubic"
+      }
+    },
+    "noAssets": "Không có tài sản"
+  },
+  "qrReceiveComponent": {
+    "title": "Nhận thanh toán",
+    "downloadLink": "Tải xuống",
+    "hint": "Quét/Gửi mã QR này để nhận thanh toán cho",
+    "buttons.close": "Đóng"
+  },
+  "seedEditComponent": {
+    "title.add": "Thêm địa chỉ",
+    "title.edit": "Sửa địa chỉ",
+    "newSeedName": "Tên địa chỉ",
+    "seedWarning": "<b>QUAN TRỌNG!<br> 55 ký tự này là Qubic Private Key (Seed) của bạn!<br>Hãy lưu/trữ Seed này ở nơi an toàn.<br>Bạn có thể mất tiền nếu không sao lưu Seed!<br><br>Tham khảo thêm:</b><br> <a href=\"https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups\" target=\"_blank\">https://unchained.com/blog/how-to-store-bitcoin-seed-phrase-backups</a> ",
+    "form": {
+      "alias": {
+        "placeholder": "Đặt tên riêng cho địa chỉ để dễ nhận biết.",
+        "error": {
+          "required": "Yêu cầu tên",
+          "min": "Tên phải có ít nhất 3 ký tự",
+          "max": "Tên tối đa 50 ký tự",
+          "regex": "Chỉ được chứa {{regex}}"
+        }
+      },
+      "seed": {
+        "placeholder": "Seed 55 ký tự",
+        "error": {
+          "required": "Yêu cầu Seed 55 ký tự.",
+          "min": "Seed 55 ký tự phải gồm chính xác 55 ký tự viết thường",
+          "max": "Seed 55 ký tự phải gồm chính xác 55 ký tự viết thường",
+          "regex": "Chỉ được chứa a-z"
+        },
+        "generateSeed": "Tạo Seed ngẫu nhiên"
+      },
+      "watchOnlyAddress": {
+        "title": "Địa chỉ chỉ-theo-dõi",
+        "placeholder": "public-key 60 ký tự",
+        "error": {
+          "required": "Yêu cầu public-key 60 ký tự.",
+          "min": "Public-key 60 ký tự phải gồm chính xác 60 ký tự viết hoa",
+          "max": "Public-key 60 ký tự phải gồm chính xác 60 ký tự viết hoa",
+          "regex": "Chỉ được chứa A-Z"
+        }
+      },
+      "error": {
+        "text": "Vui lòng kiểm tra biểu mẫu.",
+        "publicIdAvailable": "PublicId này đã tồn tại trong tài khoản của bạn.",
+        "close": "đóng"
+      }
+    },
+    "publicIdMessage": "ID địa chỉ của bạn là:",
+    "privateKeyWarning": "Cẩn thận! Tệp Vault của bạn chưa được tải. Hãy chắc chắn bạn đã lưu trữ an toàn.",
+    "buttons": {
+      "cancel": "Hủy",
+      "create": "Tạo địa chỉ",
+      "save": "Lưu địa chỉ"
+    }
+  },
+  "seedOverviewComponent": {
+    "title": "Địa chỉ",
+    "isTable": "Hiển thị dạng bảng",
+    "addSeedButton": "Thêm địa chỉ",
+    "importButton": "Nhập",
+    "exportButton": "Xuất",
+    "search.label": "Tìm kiếm",
+    "table": {
+      "alias": "Tên địa chỉ",
+      "publicId": "ID địa chỉ",
+      "balance": "Số dư",
+      "epochChanges": "Thay đổi Epoch",
+      "noData": "Không có dữ liệu khớp với bộ lọc \"{{q}}\"",
+      "actions": {
+        "title": "Thao tác",
+        "revealSeed": "Hiển thị Seed 55 ký tự",
+        "assets": "Xem tài sản sở hữu",
+        "makePayment": "Thực hiện thanh toán",
+        "receivePayment": "Tạo mã QR để nhận thanh toán",
+        "editSeed": "Sửa địa chỉ",
+        "deleteSeed": "Xóa địa chỉ",
+        "refreshBalance": "Làm mới số dư từ mạng"
+      }
+    },
+    "hasPendingTransaction": "Giao dịch đang chờ",
+    "marketPrice": "Giá",
+    "marketSupply": "Nguồn cung",
+    "marketCap": "Vốn hóa",
+    "marketCurrency": "$"
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "balance": "Số dư Vault",
+    "currency": "Qu",
+    "totalBalance": "Giá trị bằng USD",
+    "showBalance": "Hiện số dư",
+    "hideBalance": "Ẩn số dư"
+  },
+  "unlockComponent": {
+    "title": "Mở khóa Vault",
+    "title.new": "Tạo Vault",
+    "welcomeMessage": "Chào mừng đến với Qubic Wallet.\nĐể sử dụng ví, bạn cần tạo tệp Vault. Tệp này chứa khóa công khai/bí mật của bạn và sẽ được dùng để mã hóa/giải mã dữ liệu.",
+    "reasonMessage": "Để mở khóa Vault, cần có tệp Vault hoặc tệp mở khóa ví của bạn. Dữ liệu ví sẽ tự động bị xóa khi trang được tải lại hoặc đóng.",
+    "choosePrivateKeyFile": "Chọn tệp Vault",
+    "chooseConfigFile": "Chọn tệp Config",
+    "overwriteVault": "Có vẻ trình duyệt này đã lưu một số dữ liệu. Bạn có chắc muốn ghi đè?",
+    "form": {
+      "file.error.required": "Yêu cầu tệp mở khóa Vault/Wallet",
+      "password.error.required": "Yêu cầu mật khẩu Vault",
+      "password.error.min": "Mật khẩu phải có tối thiểu 8 ký tự.",
+      "password.error.wrong": "Mật khẩu không chính xác.",
+      "configFile": {
+        "error": {
+          "required": "Yêu cầu tệp Config"
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "Hủy",
+      "generateKey": "Tạo Vault",
+      "importAndUnlock": "Nhập Vault và mở khóa",
+      "unlock": "Mở khóa Vault",
+      "existingUser": "Tôi đã có Wallet",
+      "newUser": "Tạo Vault",
+      "closeWallet": "Đóng Wallet",
+      "importVault": "Nhập Vault"
+    },
+    "welcomeHintMessage": "Sau khi tải xuống tệp Vault, bạn cần chọn lại tệp vừa tải và nhập mật khẩu để mở khóa ví."
+  },
+  "lockIconComponent": {
+    "lock": "Khóa Vault",
+    "unlock": "Mở khóa Vault"
+  },
+  "lockComponent": {
+    "title": "Khóa Vault?",
+    "forceDownload": {
+      "title": "Tải xuống tệp Vault",
+      "reason": "Khi bạn khóa ví, tệp Vault đang tải sẽ tự động bị xóa. Không có tệp này bạn sẽ không thể thực hiện giao dịch. Hãy đảm bảo tệp Vault được lưu trữ an toàn. Hãy xuất lại nếu còn nghi ngờ...",
+      "buttons": {
+        "allOk": "Tôi đã có tệp mở khóa, cảm ơn"
+      }
+    },
+    "reason": "Việc lưu trữ tệp Vault an toàn là tối quan trọng. Hãy chọn mật khẩu mạnh và không quên, rồi bấm \"lưu\".",
+    "warning": "Tôi xác nhận đã lưu tệp Vault.",
+    "password.placeholder": "Mật khẩu",
+    "password.required": "Yêu cầu mật khẩu",
+    "password.min": "Mật khẩu tối thiểu 8 ký tự.",
+    "buttons": {
+      "savePrivateKey": "Lưu tệp Vault",
+      "closeWallet": "Khóa Vault",
+      "exportAndCloseWallet": "Xuất tệp Vault và khóa ví",
+      "enableExport": "Xuất tệp Vault",
+      "cancel": "Hủy"
+    }
+  },
+  "paymentComponent": {
+    "title": "Gửi Qubic Units (QUBIC)",
+    "messages": {
+      "pleaseUnlock": "Vui lòng mở khóa Wallet trước",
+      "storedForPropagation": "Giao dịch của bạn đã được lưu để phát tán ở tick {{tick}}",
+      "failedToSend": "Không thể gửi giao dịch. Vui lòng thử lại sau.",
+      "failedToDecrypt": "Chúng tôi không thể giải mã Seed của bạn. Bạn có dùng đúng tệp mở khóa (private key) không?",
+      "failedValidation": "Biểu mẫu có lỗi. Vui lòng kiểm tra."
+    },
+    "form": {
+      "sourceSeed": {
+        "label": "Địa chỉ gửi QUBIC",
+        "error": {
+          "required": "Yêu cầu địa chỉ người gửi"
+        }
+      },
+      "receiver": {
+        "placeholder": "ID địa chỉ của người nhận",
+        "hint": "60 ký tự viết hoa",
+        "chooseOwnSeed": "Chọn ID địa chỉ của bạn",
+        "error": {
+          "required": "Yêu cầu ID địa chỉ",
+          "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa."
+        }
+      },
+      "amount": {
+        "placeholder": "Số lượng Qubic Units (QUBIC)",
+        "max.tooltip": "Đặt tối đa số có sẵn trên Seed này",
+        "error": {
+          "required": "Yêu cầu số lượng",
+          "min": "Số lượng tối thiểu là 1"
+        }
+      },
+      "tick": {
+        "placeholder": "Tick thực thi",
+        "customize.tooltip": "Bật để đặt Tick thực thi tùy chỉnh",
+        "error": {
+          "required": "Yêu cầu Tick",
+          "min": "Tick phải tối thiểu là {{currentTick}}"
+        }
+      }
+    },
+    "buttons": {
+      "send": "Thực hiện giao dịch",
+      "reset": "Đặt lại",
+      "loadPrivateKey": "Tải tệp Vault"
+    }
+  },
+  "balanceComponent": {
+    "title": "Số dư",
+    "createSeedHint": "Vui lòng tạo Seed trước",
+    "overview": {
+      "title": "Tổng quan",
+      "totalWalletValue": "Giá trị Wallet cố định",
+      "estimatedWalletValue": "Giá trị Wallet ước tính",
+      "baseDate": "theo"
+    },
+    "transactions": {
+      "title": "Giao dịch mở",
+      "titleLastEpochs": "{{lastEpochsText}} epoch gần đây",
+      "titleAllEpochs": "Theo Epoch",
+      "verificationAlert": "Không thể xác minh dữ liệu xem trước",
+      "noTransactions": "Không tìm thấy giao dịch",
+      "send.tooltip": "Chuyển đi",
+      "exchange.tooltip": "Chuyển nội bộ",
+      "explorer.tooltip": "Xem giao dịch trên Explorer",
+      "receive.tooltip": "Nhận vào",
+      "status.pending.tooltip": "Đang chờ",
+      "status.executed.tooltip": "Đã thực thi",
+      "status.dismissed.tooltip": "Đã hủy",
+      "status.unknown.tooltip": "Không rõ",
+      "status.confirmed.tooltip": "Đã xếp lịch",
+      "filter.seed.label": "Lọc theo địa chỉ",
+      "exportButton": "Xuất giao dịch"
+    },
+    "repeatTransaction": "Lặp lại giao dịch",
+    "transaction": {
+      "trxId": "TX ID",
+      "source": "Nguồn",
+      "destination": "Đích",
+      "tick": "Tick",
+      "type": "Loại"
+    },
+    "epoch": "Epoch",
+    "ticks": "Ticks"
+  },
+  "settings": {
+    "general": {
+      "title": "Web Bridge",
+      "tickAddition.placeholder": "Số Tick cộng thêm vào tick hiện tại khi gửi giao dịch mới",
+      "webBridge.placeholder": "Bật Web Bridge (Kết nối trực tiếp tới mạng QUBIC)",
+      "button.save": "Lưu cài đặt",
+      "beta": {
+        "placeholder": "Bật tính năng Beta"
+      }
+    },
+    "import": {
+      "title": "Nhập cài đặt",
+      "doneMessage": "Nhập thành công",
+      "dropMessage": "Kéo thả tệp cấu hình địa chỉ để nhập vào đây",
+      "buttons.import": "Nhập tệp cấu hình địa chỉ",
+      "seedsMessage": "Bạn sắp nhập {{amount}} Seed.",
+      "goHomeLink": "Xem các Seed đã nhập"
+    },
+    "export": {
+      "title": "Xuất cài đặt",
+      "hint": "Nhấn nút bên dưới để tải xuống tệp cấu hình địa chỉ hiện tại. Tệp chứa các Seed đã mã hóa. Bạn cũng nên lưu tệp mở khóa (private key).",
+      "buttons.export": "Xuất/Lưu tệp Config"
+    }
+  },
+  "votingComponent": {
+    "title": "Bỏ phiếu Computor Qubic",
+    "description": "Bỏ phiếu của Computor Qubic được dùng để đạt đồng thuận cho các chủ đề cần quyết định của toàn mạng. Điều này có thể bao gồm chấp nhận smart contract hoặc quyết định thay đổi giao thức khác. Chỉ Computor mới được tham gia.",
+    "proposals": {
+      "editButton": "Sửa",
+      "createButton": "Tạo đề xuất",
+      "voteButton": "Bỏ phiếu",
+      "title": "{{amount}} Đề xuất hiện tại",
+      "noComputorHint": "Bạn chưa đăng ký Computor nào. Nếu muốn tạo đề xuất, bạn cần ít nhất một Seed của Computor.",
+      "votingResult": "Kết quả bỏ phiếu",
+      "noVotes": "chưa có phiếu",
+      "from": "Từ:",
+      "url": "URL đề xuất:"
+    },
+    "participate": {
+      "title": "Tham gia",
+      "cancelButton": "Hủy",
+      "sendVotesButton": "Gửi phiếu",
+      "notConfirmedMessage": "Đề xuất này chưa được mạng Qubic xác nhận. Vui lòng chờ để bỏ phiếu.",
+      "noComputorsText": "Bạn không có Computor hoặc Computor của bạn đã tạo một đề xuất.",
+      "computorsSelected": "Đã chọn Computor"
+    },
+    "create": {
+      "title": "Tạo đề xuất",
+      "cancelButton": "Hủy",
+      "sendVotesButton": "Gửi đề xuất",
+      "alreadyPublished": "Computor này đã có đề xuất được công bố. Chỉ được phép một đề xuất mỗi Epoch",
+      "buttons": {
+        "create": "Tạo đề xuất",
+        "publish": "Kết nối và công bố đề xuất",
+        "reset": "Đặt lại biểu mẫu",
+        "loadPrivateKey": "Tải tệp Vault",
+        "finish": "Xem đề xuất"
+      },
+      "form": {
+        "operatorSeed.label": "Operator Seed",
+        "operatorSeed.error.required": "Yêu cầu Operator",
+        "sourceSeed.label": "Computor dùng để đề xuất",
+        "sourceSeed.error.required": "Yêu cầu Computor",
+        "title.label": "Tiêu đề đề xuất",
+        "title.placeholder": "Tiêu đề đề xuất",
+        "title.error.required": "Yêu cầu tiêu đề",
+        "title.error.min": "Tiêu đề phải có ít nhất 2 ký tự",
+        "title.error.max": "Tiêu đề tối đa 100 ký tự",
+        "description.label": "Mô tả đề xuất",
+        "description.placeholder": "Mô tả đề xuất",
+        "description.error.min": "Mô tả phải có ít nhất 2 ký tự",
+        "description.error.max": "Mô tả tối đa 5000 ký tự",
+        "description.error.required": "Yêu cầu mô tả",
+        "option.label": "Tùy chọn {{id}}",
+        "option.placeholder": "Tùy chọn {{id}}",
+        "option.error.required": "Yêu cầu tùy chọn {{id}}",
+        "option.error.min": "Tùy chọn phải có ít nhất 2 ký tự",
+        "option.error.max": "Tùy chọn tối đa 50 ký tự",
+        "computorIp.label": "Địa chỉ IP của Computor",
+        "computorIp.placeholder": "Địa chỉ IP của Computor",
+        "computorIp.error.required": "Yêu cầu địa chỉ IP của Computor"
+      },
+      "proposalStep.label": "Tạo đề xuất",
+      "publishStep.label": "Công bố đề xuất",
+      "finishStep.label": "Hoàn tất",
+      "finishStep.success": "Đề xuất của bạn đã được gửi tới Computor."
+    },
+    "status": {
+      "success": "Được Quorum chấp nhận",
+      "failed": "Bị Quorum bác bỏ",
+      "publishing": "Đang công bố",
+      "pending": "Đang mở bỏ phiếu",
+      "draft": "Bản nháp",
+      "unknown": "Trạng thái không rõ"
+    }
+  },
+  "ipoComponent": {
+    "messages": {
+      "unlock": "Vui lòng mở khóa Wallet trước",
+      "storedForPropagation": "IPO của bạn đã được lưu để phát tán ở tick {{tick}}",
+      "failedToSend": "Không thể gửi IPO. Vui lòng thử lại sau.",
+      "failedToDecrypt": "Chúng tôi không thể giải mã Seed của bạn. Bạn có dùng đúng tệp mở khóa (private key) không?",
+      "failedToValidate": "Biểu mẫu có lỗi. Vui lòng kiểm tra."
+    },
+    "title": "Qubic IPO",
+    "description": "Qubic IPO là cuộc đấu giá cổ phần của các smart contract.",
+    "noIpos": "Hiện chưa có IPO nào hoạt động",
+    "yourBids": "Giá thầu của bạn",
+    "yourShares": "Cổ phần của bạn",
+    "sharesFor": "Cổ phần cho",
+    "statusValid": "Trạng thái hợp lệ cho tick {{tick}}",
+    "livPanelHint": "Xem kết quả hiện tại",
+    "buttons.place-bid": "Đặt giá thầu",
+    "buttons.refresh": "Làm mới trạng thái",
+    "bidStatus.hint": "Trạng thái chỉ cho biết giá thầu của bạn đã được gửi, KHÔNG cho biết có thành công hay không.",
+    "bidStatus.pcs": "món",
+    "place-bid": {
+      "title": "Đặt giá thầu",
+      "needBalance": "Bạn cần ít nhất một Seed có số dư dương.",
+      "noContract": "Không tìm thấy Hợp đồng. Vui lòng thử lại sau.",
+      "noContract.gotoIpoLabel": "Xem các IPO Hợp đồng hiện có",
+      "buttons": {
+        "send": "Gửi giá thầu"
+      },
+      "form": {
+        "quantity": {
+          "placeholder": "Số lượng",
+          "error.min": "Tối thiểu 1",
+          "error.required": "Yêu cầu số lượng"
+        },
+        "price": {
+          "placeholder": "Giá (QUBIC)",
+          "error.min": "Tối thiểu 1",
+          "error.required": "Yêu cầu giá",
+          "max.tooltip": "Đặt giá thầu bằng toàn bộ QUBIC hiện có"
+        }
+      }
+    }
+  },
+  "okDialog": {
+    "title": "Thông báo",
+    "button": "Vâng, tôi xác nhận.",
+    "messages": {
+      "tresorText": "Bạn đã tải xuống tệp Vault chưa? Vui lòng chọn tệp Vault này ở bước tiếp theo để mở Vault!"
+    }
+  },
+  "loadConfigComponent": {
+    "title": "Nhập địa chỉ",
+    "buttons": {
+      "import": "Nhập",
+      "cancel": "Bắt đầu không có địa chỉ"
+    },
+    "messages": {
+      "import": "Nếu bạn đã có tệp cấu hình địa chỉ ví chứa PublicKeys, hãy chọn và nhập ngay bây giờ.",
+      "noImport": "Nếu bạn chưa có tệp cấu hình địa chỉ, hãy tạo tài khoản ở bước tiếp theo."
+    }
+  },
+  "exportConfigComponent": {
+    "title": "Xuất tệp Vault",
+    "buttons": {
+      "export": "Xuất",
+      "cancel": "Hủy",
+      "unlock": "Mở khóa Vault"
+    },
+    "messages": {
+      "unlockInfo": "Vui lòng mở khóa Vault để có thể xuất tệp Vault với tồn kho mới nhất.",
+      "export": "Bạn đã thay đổi tồn kho tài khoản. Hãy tải xuống tệp Vault hiện tại để có thể nhập sau này.",
+      "info": "Tệp chứa tồn kho tài khoản, cài đặt và các Seed đã mã hóa. Tệp Vault sẽ được bảo vệ bằng mật khẩu bạn cung cấp."
+    }
+  },
+  "welcomeComponent": {
+    "welcomeMessage": "Để sử dụng ví, bạn cần tạo mới hoặc nhập Vault hiện có. Vault sẽ chứa khóa công khai/bí mật của bạn và dùng để mã hóa/giải mã dữ liệu.",
+    "button": {
+      "createVault": "Tạo Vault",
+      "importVault": "Nhập Vault"
+    },
+    "title": "Chào mừng đến với Qubic Wallet"
+  },
+  "importComponent": {
+    "title": "Nhập Vault",
+    "message": "Bạn có thể nhập một Vault hiện có vào Wallet của mình."
+  },
+  "createVaultComponent": {
+    "createVault": {
+      "message": "Bước này sẽ tạo cặp khóa bí mật/công khai cho ví. Hãy chọn tên và bấm \"Create Vault\" để tạo Qubic\r\n        Wallet của bạn.",
+      "stepTitle": "Tạo Vault",
+      "vaultName": "Tên",
+      "button": "Tạo Vault",
+      "placeholder": "Đặt tên cho Vault của bạn"
+    },
+    "createAddress": {
+      "title": "Thêm địa chỉ",
+      "message": "Trong Qubic Wallet, bạn có thể có nhiều địa chỉ. Mỗi địa chỉ\r\n        gồm một Seed (khóa bí mật) và một Public Id. Seed dùng để\r\n        gửi Qubic và Public Id dùng để nhận Qubic. Giờ chúng ta sẽ tạo\r\n        địa chỉ đầu tiên cho bạn.",
+      "addressNam": "Tên",
+      "seed": "Seed",
+      "seedPlaceholder": "Chọn Seed ngẫu nhiên...",
+      "publicId": "Public Id",
+      "radomizeSeed": "Tạo Seed ngẫu nhiên",
+      "addressPlaceholder": "Đặt tên tài khoản",
+      "button": "Tạo địa chỉ"
+    },
+    "downloadVault": {
+      "stepTitle": "Tải xuống Vault ban đầu",
+      "message": "Vault cá nhân của bạn đã được tạo. Bây giờ bạn có thể tải xuống. Vui lòng\r\n          chọn mật khẩu an toàn và bấm \"Download Vault\".",
+      "password": "Mật khẩu",
+      "passwordHint": "Chọn mật khẩu mạnh...",
+      "button": "Tải xuống Vault"
+    },
+    "verifyVault": {
+      "stpTitle": "Tải/Nhập Vault",
+      "message": "Tệp Vault đã tải xuống chứa\r\n          thông tin quan trọng. Bạn sẽ cần tệp này để mở khóa ví. Ngoài ra, mỗi khi bạn cập nhật Wallet\r\n          (ví dụ thêm hoặc sửa địa chỉ), bạn sẽ được yêu cầu tải xuống\r\n          tệp Vault mới nhất. Để đảm bảo mọi thứ hoạt động đúng, vui lòng chọn\r\n          tệp Vault đã tải và nhập lại mật khẩu Vault của bạn.",
+      "password": "Mật khẩu",
+      "passwordHint": "Mật khẩu Vault của bạn",
+      "button": "Xác minh tệp Vault"
+    },
+    "done": {
+      "stepTitle": "Hoàn tất",
+      "message": "Happy Qubic! Ví của bạn đã sẵn sàng.",
+      "button": "Mở ví của tôi"
+    },
+    "buttons": {
+      "cancel": "Hủy",
+      "reset": "Đặt lại"
+    }
+  },
+  "qearn": {
+    "stakeQubic": {
+      "title": "Khóa Qubic",
+      "subText": "Kiếm $QUBIC bằng cách khóa coin của bạn tối đa 52 tuần.",
+      "enterAmount": "Nhập số lượng",
+      "stake": "Khóa",
+      "availableBalance": "Số dư khả dụng",
+      "weeklySatking": "Quỹ khóa hàng tuần đóng sau",
+      "date": "ngày",
+      "hour": "giờ",
+      "minute": "phút",
+      "sourceSeed": {
+        "label": "Địa chỉ để khóa QUBIC"
+      },
+      "error": {
+        "required": "Yêu cầu số lượng",
+        "min": "Số lượng phải lớn hơn 10M",
+        "numberOnly": "Chỉ cho phép số",
+        "exceedsBalance": "Số lượng không được vượt quá số dư khả dụng"
+      },
+      "confirmDialog": {
+        "confirmLockTitle": "Xác nhận khóa",
+        "confirmLockMessage": "Bạn có muốn khóa {{amount}} {{currency}} không?",
+        "confirm": "Khóa",
+        "cancel": "Hủy",
+        "success": "Đã gửi giao dịch! Sẽ mất một lúc để được xác nhận.",
+        "error": "Có lỗi xảy ra khi khóa!"
+      },
+      "fullAmountWarningTitle": "Cảnh báo: Khóa toàn bộ số dư",
+      "fullAmountWarningMessage": "Nếu bạn khóa toàn bộ số dư của địa chỉ này, bạn sẽ không thể mở khóa Qubic. Để mở khóa Qubic, địa chỉ phải còn ít nhất 1 Qubic. Bạn có chắc muốn tiếp tục?"
+    },
+    "history": {
+      "lockedEpoch": "Epoch đã khóa",
+      "lockedAmount": "Số lượng đã khóa",
+      "lockedWeeks": "Số tuần đã khóa",
+      "totalLockedAmountInEpoch": "Tổng số lượng đã khóa",
+      "currentBonusAmountInEpoch": "Tiền thưởng hiện tại",
+      "earlyUnlockPercent": "Thưởng mở khóa sớm",
+      "fullUnlockPercent": "Thưởng mở khóa đầy đủ",
+      "actions": "Thao tác",
+      "noDataMessage": "Không có dữ liệu khóa",
+      "unlockedStatus": "Trạng thái đã mở khóa",
+      "lockedStatus": "Trạng thái đã khóa",
+      "unlockStatus": "Trạng thái mở khóa",
+      "fullUnlocked": "Đã mở khóa đầy đủ",
+      "earlyUnlocked": "Đã mở khóa sớm",
+      "unlockedAmount": "Số lượng đã mở khóa",
+      "rewardedAmount": "Số lượng được thưởng",
+      "note": "Trạng thái mở khóa của Epoch hiện tại",
+      "sourceSeed": {
+        "label": "Địa chỉ để kiểm tra trạng thái khóa"
+      },
+      "unlock": {
+        "title": "Mở khóa",
+        "message": "Bạn có muốn mở khóa {{amount}} {{currency}} sớm không?",
+        "confirm": "Xác nhận",
+        "success": "Đã gửi giao dịch! Sẽ mất một lúc để được xác nhận.",
+        "error": "Có lỗi xảy ra khi mở khóa!",
+        "insufficientMinTxAmount": "Địa chỉ phải có ít nhất 1 Qubic để thực hiện giao dịch"
+      },
+      "pleaseUnlock": "Vui lòng mở khóa ví trước."
+    },
+    "earned": {
+      "rewards": "Phần thưởng đã kiếm",
+      "unlockEarly": "Mở khóa sớm",
+      "lockedBalance": "Số dư đã khóa",
+      "earningRate": "Tốc độ kiếm",
+      "unlocksIn": "Sẽ mở khóa sau",
+      "apy": "APY",
+      "weeks": "Tuần"
+    },
+    "rewardTable": {
+      "weekFrom": "Tuần từ",
+      "weekTo": "Tuần đến",
+      "earlyUnlock": "Mở khóa sớm",
+      "burn": "Đốt",
+      "boost": "Tăng thêm",
+      "total": "Tổng"
+    },
+    "main": {
+      "currentLockedAmount": "Tổng số lượng đang khóa",
+      "apy": "APY",
+      "lock": "Khóa",
+      "lockHistory": "Lịch sử khóa",
+      "rewardTable": "Bảng phần thưởng",
+      "txSuccess": "Giao dịch thành công!",
+      "txFailed": "Giao dịch thất bại!"
+    }
+  }
+}

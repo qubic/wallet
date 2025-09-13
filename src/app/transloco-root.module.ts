@@ -16,7 +16,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoHttpLoader implements TranslocoLoader {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTranslation(lang: string) {
     return this.http.get<Translation>(`assets/i18n/${lang}.json`);
@@ -24,7 +24,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
 }
 
 @NgModule({
-  exports: [ TranslocoModule ],
+  exports: [TranslocoModule],
   imports: [
   ],
   providers: [
@@ -35,15 +35,15 @@ export class TranslocoHttpLoader implements TranslocoLoader {
     }),
     provideTransloco({
       config: {
-          availableLangs: ['de', 'en', 'es', 'fr', 'nl','pt','ru','tr', 'cn', 'jp'],
-          defaultLang: 'en',
-          // Remove this option if your application doesn't support changing language in runtime.
-          reRenderOnLangChange: true,
-          prodMode: !isDevMode(),
+        availableLangs: ['de', 'en', 'es', 'fr', 'nl', 'pt', 'ru', 'tr', 'cn', 'jp', 'vi'],
+        defaultLang: 'en',
+        // Remove this option if your application doesn't support changing language in runtime.
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader
-  }),
+    }),
     { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader }
   ]
 })
-export class TranslocoRootModule {}
+export class TranslocoRootModule { }
