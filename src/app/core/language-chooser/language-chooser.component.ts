@@ -22,6 +22,7 @@ export class LanguageChooserComponent implements OnInit {
     'tr': 'Türkçe',
     'cn': '中文',
     'jp': '日本語',
+    'vi': 'Tiếng Việt'
   };
 
   public selected: string = "en";
