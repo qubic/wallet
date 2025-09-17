@@ -362,7 +362,8 @@
       "source": "Source",
       "destination": "Destination",
       "tick": "Tick",
-      "type": "Type"
+      "type": "Type",
+      "fee": "Fee"
     },
     "epoch": "Epoch",
     "ticks": "Ticks"
