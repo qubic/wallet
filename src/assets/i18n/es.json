@@ -361,7 +361,8 @@
       "source": "Fuente",
       "destination": "Destinatario",
       "tick": "Tick",
-      "type": "Tipo"
+      "type": "Tipo",
+      "fee": "Tarifa"
     },
     "epoch": "Época",
     "ticks": "Ticks"

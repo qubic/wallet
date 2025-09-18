@@ -362,7 +362,8 @@
       "source": "发送方",
       "destination": "接收方",
       "tick": "刻度",
-      "type": "类型"
+      "type": "类型",
+      "fee": "费用"
     },
     "epoch": "纪元",
     "ticks": "刻度"

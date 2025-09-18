@@ -361,7 +361,8 @@
       "source": "Source",
       "destination": "Destinataire",
       "tick": "Tick",
-      "type": "Type"
+      "type": "Type",
+      "fee": "Frais"
     },
     "epoch": "Époque",
     "ticks": "Ticks"

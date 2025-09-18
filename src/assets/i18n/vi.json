@@ -362,7 +362,8 @@
       "source": "Nguồn",
       "destination": "Đích",
       "tick": "Tick",
-      "type": "Loại"
+      "type": "Loại",
+      "fee": "Phí"
     },
     "epoch": "Epoch",
     "ticks": "Ticks"
