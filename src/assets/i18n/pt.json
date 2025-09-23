@@ -360,7 +360,8 @@
       "source": "Fonte",
       "destination": "Destino",
       "tick": "Tick",
-      "type": "Tipo"
+      "type": "Tipo",
+      "fee": "Taxa"
     },
     "epoch": "Época",
     "ticks": "Ticks"

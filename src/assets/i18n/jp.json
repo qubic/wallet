@@ -362,7 +362,8 @@
       "source": "ソース",
       "destination": "宛先",
       "tick": "ティック",
-      "type": "タイプ"
+      "type": "タイプ",
+      "fee": "手数料"
     },
     "epoch": "エポック",
     "ticks": "ティック"

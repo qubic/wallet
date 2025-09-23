@@ -180,3 +180,8 @@ export interface QubicAsset {
   reportingNodes: string[]; // New field to report source node
   issuerIdentity: string;
 }
+export interface AssetTransfer {
+  assetName: string
+  units: string
+  newOwnerAndPossessor: string
+}

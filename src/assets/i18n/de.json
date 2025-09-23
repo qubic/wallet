@@ -361,7 +361,8 @@
       "source": "Quelle",
       "destination": "Ziel",
       "tick": "Tick",
-      "type": "Typ"
+      "type": "Typ",
+      "fee": "Gebühr"
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

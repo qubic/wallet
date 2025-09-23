@@ -362,7 +362,8 @@
       "source": "Kaynak",
       "destination": "Hedef",
       "tick": "Tik",
-      "type": "Tür"
+      "type": "Tür",
+      "fee": "Ücret"
     },
     "epoch": "Çağ",
     "ticks": "Tikler"
