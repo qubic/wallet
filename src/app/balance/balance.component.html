@@ -252,6 +252,14 @@
                             </span>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
+                    <div *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId)" class="alert-wrapper">
+                        <div class="alert alert-warning">
+                            <mat-icon class="alert-icon">warning</mat-icon>
+                            <span class="alert-message">This transaction record is currently visible only to the sender.
+                                The recipient will not have access to this transaction data in their records at this
+                                time.</span>
+                        </div>
+                    </div>
                     <div class="transaction-list-compact">
                         <mat-card class="responsive-card">
                             <mat-card-content>
