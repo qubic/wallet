@@ -363,7 +363,8 @@
       "destination": "Hedef",
       "tick": "Tik",
       "type": "Tür",
-      "fee": "Ücret"
+      "fee": "Ücret",
+      "assetTransferWarning": "Bu işlem kaydı şu anda yalnızca gönderen tarafından görülebilir. Alıcı, şu anda bu işlem verilerine kayıtlarında erişemeyecektir."
     },
     "epoch": "Çağ",
     "ticks": "Tikler"

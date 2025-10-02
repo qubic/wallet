@@ -362,7 +362,8 @@
       "destination": "Bestemming",
       "tick": "Tick",
       "type": "Type",
-      "fee": "Kosten"
+      "fee": "Kosten",
+      "assetTransferWarning": "Dit transactieoverzicht is momenteel alleen zichtbaar voor de afzender. De ontvanger heeft op dit moment geen toegang tot deze transactiegegevens in zijn administratie."
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

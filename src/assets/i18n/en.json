@@ -363,7 +363,8 @@
       "destination": "Destination",
       "tick": "Tick",
       "type": "Type",
-      "fee": "Fee"
+      "fee": "Fee",
+      "assetTransferWarning": "This transaction record is currently visible only to the sender. The recipient will not have access to this transaction data in their records at this time."
     },
     "epoch": "Epoch",
     "ticks": "Ticks"
