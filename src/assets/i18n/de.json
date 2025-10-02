@@ -362,7 +362,8 @@
       "destination": "Ziel",
       "tick": "Tick",
       "type": "Typ",
-      "fee": "Gebühr"
+      "fee": "Gebühr",
+      "assetTransferWarning": "Dieser Transaktionsdatensatz ist derzeit nur für den Absender sichtbar. Der Empfänger hat zu diesem Zeitpunkt keinen Zugriff auf diese Transaktionsdaten in seinen Aufzeichnungen."
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

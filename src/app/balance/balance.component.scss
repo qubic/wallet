@@ -184,3 +184,39 @@ mat-card {
     padding-left: 6px;
     padding-right: 2px;
 }
+
+.alert-wrapper {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 14px;
+
+    &.alert-warning {
+        background-color: #122b35;
+        color: #61f0fe;
+
+        .alert-icon {
+            color: #61f0fe;
+        }
+    }
+
+    .alert-icon {
+        flex-shrink: 0;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .alert-message {
+        font-family: inherit;
+        line-height: 1.5;
+        margin: 0;
+    }
+}

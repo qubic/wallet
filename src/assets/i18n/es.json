@@ -362,7 +362,8 @@
       "destination": "Destinatario",
       "tick": "Tick",
       "type": "Tipo",
-      "fee": "Tarifa"
+      "fee": "Tarifa",
+      "assetTransferWarning": "Este registro de transacción es actualmente visible solo para el remitente. El destinatario no tendrá acceso a estos datos de la transacción en sus registros en este momento."
     },
     "epoch": "Época",
     "ticks": "Ticks"
