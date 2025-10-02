@@ -187,3 +187,9 @@ export interface SmartContract {
   address: string,
   name: string
 }
+
+export interface AssetTransfer {
+  assetName: string
+  units: string
+  newOwnerAndPossessor: string
+}

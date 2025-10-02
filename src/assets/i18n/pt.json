@@ -360,7 +360,9 @@
       "source": "Fonte",
       "destination": "Destino",
       "tick": "Tick",
-      "type": "Tipo"
+      "type": "Tipo",
+      "fee": "Taxa",
+      "assetTransferWarning": "Este registro de transação está atualmente visível apenas para o remetente. O destinatário não terá acesso a esses dados de transação em seus registros neste momento."
     },
     "epoch": "Época",
     "ticks": "Ticks"

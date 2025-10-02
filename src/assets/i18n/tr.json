@@ -362,7 +362,9 @@
       "source": "Kaynak",
       "destination": "Hedef",
       "tick": "Tik",
-      "type": "Tür"
+      "type": "Tür",
+      "fee": "Ücret",
+      "assetTransferWarning": "Bu işlem kaydı şu anda yalnızca gönderen tarafından görülebilir. Alıcı, şu anda bu işlem verilerine kayıtlarında erişemeyecektir."
     },
     "epoch": "Çağ",
     "ticks": "Tikler"

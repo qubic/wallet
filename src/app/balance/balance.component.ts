@@ -11,6 +11,8 @@ import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
+import { AssetTransfer } from '../services/api.model';
 
 @Component({
   selector: 'app-balance',
@@ -38,6 +40,8 @@ export class BalanceComponent implements OnInit {
   public currentSelectedEpoch = 0;
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
+  public assetTransferData: { [key: string]: AssetTransfer } = {};
+
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
     this.getCurrentTickArchiver();
@@ -157,7 +161,7 @@ export class BalanceComponent implements OnInit {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(r => {
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(async r => {
       if (r) {
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
@@ -168,11 +172,64 @@ export class BalanceComponent implements OnInit {
         if (this.transactionsRecord.length <= 0) {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
         }
+
+        await Promise.all(this.transactionsRecord.map(transaction =>
+          this.checkAndParseAssetTransfer(transaction)
+        ));
+
         this.sortTransactions();
       }
     });
   }
 
+  isQxTransferShares(destId: string, inputType: number): boolean {
+    const qxAddress = 'BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID';
+    const transferAssetInputType = 2;
+    return destId == qxAddress && inputType == transferAssetInputType;
+  }
+
+  getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {
+    const decoder = new TextDecoder()
+    const binaryData = new Uint8Array(data.match(/.{1,2}/g)?.map((pair) => parseInt(pair, 16)) ?? [])
+
+    const parsedPayload = await new QubicTransferAssetPayload().parse(binaryData)
+
+    if (!parsedPayload) {
+      return null
+    }
+
+    const assetName = decoder.decode(parsedPayload.getAssetName()).replace(/\0/g, '')
+    const units = parsedPayload.getNumberOfUnits().getNumber().toString()
+    const newOwnerAndPossessor = parsedPayload.getNewOwnerAndPossessor().getIdentityAsSring() ?? ''
+
+    return {
+      assetName,
+      units,
+      newOwnerAndPossessor
+    }
+  }
+
+  async checkAndParseAssetTransfer(transaction: any): Promise<void> {
+    const txId = transaction.transactions[0].transaction.txId;
+
+    if (this.isQxTransferShares(
+      transaction.transactions[0].transaction.destId,
+      transaction.transactions[0].transaction.inputType
+    )) {
+      try {
+        const assetData = await this.getAssetsTransfers(transaction.transactions[0].transaction.inputHex);
+        if (assetData) {
+          this.assetTransferData[txId] = assetData;
+        }
+      } catch (error) {
+        console.error('Error parsing asset transfer:', error);
+      }
+    }
+  }
+
+  getAssetTransfer(txId: string): AssetTransfer | null {
+    return this.assetTransferData[txId] || null;
+  }
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
