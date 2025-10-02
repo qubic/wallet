@@ -482,6 +482,7 @@
     "buttons.refresh": "Status aktualisieren",
     "bidStatus.hint": "Der Status zeigt nur an, ob Ihr Gebot abgegeben wurde. NICHT, ob es erfolgreich war.",
     "bidStatus.pcs": "pcs",
+    "noBids": "Keine Gebote gefunden",
     "place-bid": {
       "title": "Gebot abgeben",
       "needBalance": "Sie benötigen mindestens einen Seed mit einem positiven Guthaben.",

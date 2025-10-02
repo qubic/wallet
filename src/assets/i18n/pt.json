@@ -480,6 +480,7 @@
     "buttons.refresh": "Atualizar Status",
     "bidStatus.hint": "O status é exibido apenas se o seu lance foi colocado. NÃO se foi bem-sucedido.",
     "bidStatus.pcs": "pcs",
+    "noBids": "Nenhum Lance encontrado",
     "place-bid": {
       "title": "Colocar um Lance",
       "needBalance": "Você precisa ter pelo menos uma Seed com saldo positivo.",
