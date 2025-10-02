@@ -485,6 +485,7 @@
     "buttons.refresh": "Durumu Yenile",
     "bidStatus.hint": "Durum yalnızca teklifiniz verilmişse gösterilir, başarılıysa gösterilmez.",
     "bidStatus.pcs": "pcs",
+    "noBids": "Teklif bulunamadı",
     "place-bid": {
       "title": "Teklif Ver",
       "needBalance": "Pozitif bakiyeye sahip en az bir cüzdana ihtiyacınız var.",

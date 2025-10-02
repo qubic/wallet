@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
   HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
@@ -146,7 +146,7 @@ export class ApiService {
         body: submitTransaction,
         responseType: 'json'
       })
-    }
+  }
 
   public getCurrentTick() {
     let localVarPath = `/Public/CurrentTick`;
@@ -250,4 +250,18 @@ export class ApiService {
     }));
   }
 
+  public getSmartContracts() {
+
+    let localVarPath = `/ipo/contracts`;
+
+    return this.httpClient.request<SmartContract[]>('get', `${this.basePath}${localVarPath}`,
+      {
+        context: new HttpContext(),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        responseType: 'json'
+      }
+    );
+  }
 }

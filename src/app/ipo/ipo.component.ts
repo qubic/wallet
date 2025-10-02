@@ -3,7 +3,7 @@ import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, ContractDto, IpoBid, IpoBidOverview, ProposalDto, Transaction } from '../services/api.model';
+import { BalanceResponse, ContractDto, IpoBid, IpoBidOverview, ProposalDto, SmartContract, Transaction } from '../services/api.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -15,29 +15,30 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ipo.component.scss']
 })
 export class IpoComponent implements OnInit, OnDestroy {
-  
+
   public ipoContracts: ContractDto[] = [];
   public loaded: boolean = false;
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
   public userServiceSubscription: Subscription | undefined;
   public ipoBids: Transaction[] = [];
+  public smartContracts: SmartContract[] = [];
 
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
-   
+
   }
   ngOnDestroy(): void {
-    if(this.userServiceSubscription)
+    if (this.userServiceSubscription)
       this.userServiceSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    
+
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
-    
+
     this.init();
   }
 
@@ -46,14 +47,20 @@ export class IpoComponent implements OnInit, OnDestroy {
   }
 
   init() {
+
+    this.api.getSmartContracts().subscribe(s => {
+      this.smartContracts = s;
+    });
+
     this.api.getIpoContracts().subscribe(s => {
       this.ipoContracts = s;
       this.loaded = true;
     });
+
     this.loadBids();
   }
-  
-  onlyUnique(value: Transaction, index:any, array:Transaction[]) {
+
+  onlyUnique(value: Transaction, index: any, array: Transaction[]) {
     return array.findIndex((f: Transaction) => f.id === value.id) == index;
   }
 
@@ -69,7 +76,7 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   getSeedName(publicId: string): string {
     var seed = this.walletService.getSeeds().find(f => f.publicId == publicId);
-    if(seed !== undefined)
+    if (seed !== undefined)
       return '(' + seed.alias + ')';
     else
       return '';
@@ -93,17 +100,26 @@ export class IpoComponent implements OnInit, OnDestroy {
     });
   }
 
-  getBids(contractId: number) {
-    // todo: map bids to correct contractid
-    return this.ipoBids;
+  getContractBids(contractId: number) {
+    const destination = this.smartContracts.find(
+      sc => sc.contractIndex === contractId
+    )?.address;
+
+    if (!destination) {
+      return [];
+    }
+
+    return this.ipoBids.filter(
+      (tx: Transaction) => tx.destId === destination
+    );
   }
 
   openStats() {
     window.open("https://live.qubic.li/ipo", "_blank");
   }
 
-  getTotalPrice(bids: IpoBid[]){
-    return bids.reduce((p,c) => p += c.price, 0);
+  getTotalPrice(bids: IpoBid[]) {
+    return bids.reduce((p, c) => p += c.price, 0);
   }
 
   getBidOverview(contractId: number): IpoBidOverview {
@@ -119,17 +135,18 @@ export class IpoComponent implements OnInit, OnDestroy {
     return arr;
   }
 
-  groupBy(list: any[], keyGetter: (n: any) => any ) {
+
+  groupBy(list: any[], keyGetter: (n: any) => any) {
     const map = new Map();
     list.forEach((item) => {
-         const key = keyGetter(item);
-         const collection = map.get(key);
-         if (!collection) {
-             map.set(key, [item]);
-         } else {
-             collection.push(item);
-         }
+      const key = keyGetter(item);
+      const collection = map.get(key);
+      if (!collection) {
+        map.set(key, [item]);
+      } else {
+        collection.push(item);
+      }
     });
     return map;
-}
+  }
 }
