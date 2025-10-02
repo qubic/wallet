@@ -354,7 +354,19 @@
       "status.confirmed.tooltip": "Gecontroleerd",
       "filter.seed.label": "Filter op adres",
       "exportButton": "Transacties exporteren"
-    }
+    },
+    "repeatTransaction": "Transactie herhalen",
+    "transaction": {
+      "trxId": "Transactie-ID",
+      "source": "Bron",
+      "destination": "Bestemming",
+      "tick": "Tick",
+      "type": "Type",
+      "fee": "Kosten",
+      "assetTransferWarning": "Dit transactieoverzicht is momenteel alleen zichtbaar voor de afzender. De ontvanger heeft op dit moment geen toegang tot deze transactiegegevens in zijn administratie."
+    },
+    "epoch": "Epoche",
+    "ticks": "Ticks"
   },
   "settings": {
     "general": {
@@ -471,6 +483,7 @@
     "buttons.refresh": "Refresh Status",
     "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
     "bidStatus.pcs": "pcs",
+    "noBids": "Geen biedingen gevonden",
     "place-bid": {
       "title": "Place a Bid",
       "needBalance": "You need at least one seed with a positive balance.",

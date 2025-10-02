@@ -362,7 +362,9 @@
       "source": "发送方",
       "destination": "接收方",
       "tick": "刻度",
-      "type": "类型"
+      "type": "类型",
+      "fee": "费用",
+      "assetTransferWarning": "此交易当前仅发送方可见，接收方暂时无法查看"
     },
     "epoch": "纪元",
     "ticks": "刻度"
@@ -483,6 +485,7 @@
     "buttons.refresh": "刷新状态",
     "bidStatus.hint": "仅当您已出价时才会显示该状态。 如果成功的话就不会。",
     "bidStatus.pcs": "pcs",
+    "noBids": "未找到出價",
     "place-bid": {
       "title": "出价",
       "needBalance": "您至少需要一颗具有正余额的种子。",

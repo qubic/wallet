@@ -361,7 +361,9 @@
       "source": "Source",
       "destination": "Destinataire",
       "tick": "Tick",
-      "type": "Type"
+      "type": "Type",
+      "fee": "Frais",
+      "assetTransferWarning": "Cet enregistrement de transaction est actuellement visible uniquement par l'expéditeur. Le destinataire n'aura pas accès à ces données de transaction dans ses enregistrements pour le moment."
     },
     "epoch": "Époque",
     "ticks": "Ticks"
@@ -481,6 +483,7 @@
     "buttons.refresh": "Actualiser le Statut",
     "bidStatus.hint": "Le statut s'affiche uniquement si votre offre a été placée. PAS si elle a été réussie.",
     "bidStatus.pcs": "pcs",
+    "noBids": "Aucune Offre trouvée",
     "place-bid": {
       "title": "Placer une Offre",
       "needBalance": "Vous avez besoin d'au moins une Seed avec un solde positif.",

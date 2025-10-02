@@ -229,9 +229,16 @@
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
-                            {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
-                            }}&nbsp;{{
-                            t("general.currency") }}
+                            <ng-container
+                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalAmount">
+                                {{ getAssetTransfer(transaction.transactions[0].transaction.txId)!.units | number:
+                                '1.0-0' }}&nbsp;{{
+                                getAssetTransfer(transaction.transactions[0].transaction.txId)!.assetName }}
+                            </ng-container>
+                            <ng-template #normalAmount>
+                                {{ transaction.transactions[0].transaction.amount | number: '1.0-0' }}&nbsp;{{
+                                t("general.currency") }}
+                            </ng-template>
                             <span class="send-receive-indicator">
                                 <mat-icon class="send"
                                     matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
@@ -245,6 +252,13 @@
                             </span>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
+                    <div *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId)" class="alert-wrapper">
+                        <div class="alert alert-warning">
+                            <mat-icon class="alert-icon text-info">info</mat-icon>
+                            <span class="alert-message">{{ t("balanceComponent.transaction.assetTransferWarning")
+                                }}</span>
+                        </div>
+                    </div>
                     <div class="transaction-list-compact">
                         <mat-card class="responsive-card">
                             <mat-card-content>
@@ -284,14 +298,28 @@
                                         <span class="label">{{ t("balanceComponent.transaction.destination") }}</span>
                                     </div>
                                     <div class="col-value disable-area">
-                                        <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
-                                                target="_blank">
-                                                {{transaction.transactions[0].transaction.destId}}
-                                            </a>
-                                            <mat-icon class="icon-color-link icon"
-                                                matTooltip="{{ t('general.copy.tooltip') }}"
-                                                [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
+                                        <span class="value">
+                                            <ng-container
+                                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalDest">
+                                                <a [href]="'https://explorer.qubic.org/network/address/' + getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor"
+                                                    target="_blank">
+                                                    {{
+                                                    getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor
+                                                    }}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor">content_copy</mat-icon>
+                                            </ng-container>
+                                            <ng-template #normalDest>
+                                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                                    target="_blank">
+                                                    {{ transaction.transactions[0].transaction.destId }}
+                                                </a>
+                                                <mat-icon class="icon-color-link icon"
+                                                    matTooltip="{{ t('general.copy.tooltip') }}"
+                                                    [cdkCopyToClipboard]="transaction.transactions[0].transaction.destId">content_copy</mat-icon>
+                                            </ng-template>
                                         </span>
                                     </div>
                                 </div>
@@ -315,6 +343,18 @@
                                         <span class="value">
                                             {{ formatInputType(transaction.transactions[0].transaction.inputType,
                                             transaction.transactions[0].transaction.destId) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Add Fee row after Type row for asset transfers -->
+                                <div class="row" *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId)">
+                                    <div class="col-label">
+                                        <span class="label">{{ t("balanceComponent.transaction.fee") }}</span>
+                                    </div>
+                                    <div class="col-value disable-area">
+                                        <span class="value">
+                                            {{ transaction.transactions[0].transaction.amount | number: '1.0-0'
+                                            }}&nbsp;{{ t("general.currency") }}
                                         </span>
                                     </div>
                                 </div>
