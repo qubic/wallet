@@ -114,8 +114,8 @@ export class IpoComponent implements OnInit, OnDestroy {
     );
   }
 
-  openStats() {
-    window.open("https://live.qubic.li/ipo", "_blank");
+  openStats(contractId: number) {
+    window.open(`https://ipo.qubic.tools/${contractId}`, "_blank");
   }
 
   getTotalPrice(bids: IpoBid[]) {

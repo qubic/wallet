@@ -29,7 +29,7 @@
                     <button mat-raised-button (click)="init()">
                         <mat-icon>refresh</mat-icon> {{ t("ipoComponent.buttons.refresh") }}
                     </button>
-                    <button mat-raised-button (click)="openStats()">
+                    <button mat-raised-button (click)="openStats(p.index)">
                         <mat-icon>query_stats</mat-icon> {{ t("ipoComponent.livPanelHint") }}
                     </button>
                     <div *ngIf="ipoContracts">
