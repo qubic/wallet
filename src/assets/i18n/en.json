@@ -469,7 +469,7 @@
     "messages": {
       "unlock": "Please unlock your Wallet first",
       "storedForPropagation": "Your transaction has been stored for propagation in tick {{tick}}",
-      "failedToSend": "Your IPO could not be sent. Pleas try again later.",
+      "failedToSend": "Your IPO could not be sent. Please try again later.",
       "failedToDecrypt": "We were not able to decrypt your seed. Did you use the correct unlock file (private key)??",
       "failedToValidate": "We had validation errors. Please check the form."
     },
