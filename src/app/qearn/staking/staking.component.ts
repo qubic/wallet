@@ -211,4 +211,9 @@ export class StakingComponent implements OnInit {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
   }
 
+  getSelectedSeed() {
+    const publicId = this.stakeForm.controls['sourceId'].value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
 }

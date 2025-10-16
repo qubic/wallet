@@ -22,7 +22,7 @@
                                     <mat-select formControlName="sourceId">
                                         <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId"
                                             class="custom-mat-option">
-                                            {{ seed.publicId }} <br />{{seed.alias}}
+                                            {{ seed | seedFirstLine }}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="ipoForm.controls['sourceId'].hasError('required')">

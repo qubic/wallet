@@ -168,8 +168,16 @@
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.select") }}</mat-label>
                   <mat-select formControlName="assetSelect">
+                    <mat-select-trigger>
+                      <span *ngIf="getSelectedAsset()">
+                        {{ getSeedAlias(getSelectedAsset()?.publicId) }}
+                        ({{ shortenAddress(getSelectedAsset()?.publicId) }}) -
+                        {{ getSelectedAsset()?.ownedAmount == undefined || getSelectedAsset()?.ownedAmount == null ? "?" : (getSelectedAsset()?.ownedAmount | number: '1.0-0') }}
+                        {{ getSelectedAsset()?.assetName }}
+                      </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let asset of assets" [value]="asset" class="custom-mat-option">
-                      {{ asset.publicId }} <br />{{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined
+                      {{ getSeedAlias(asset.publicId) }} ({{ shortenAddress(asset.publicId) }})<br />{{ asset.ownedAmount == undefined
                       || asset.ownedAmount == null ? "?" : asset.ownedAmount | number: '1.0-0'}} {{asset.assetName}}
                     </mat-option>
                   </mat-select>
@@ -189,10 +197,14 @@
                   </button>
                   <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
                   <mat-select #selectedDestinationId formControlName="selectedDestinationId">
+                    <mat-select-trigger>
+                      <span *ngIf="sendForm.controls['selectedDestinationId'].value && getSelectedDestinationSeed()">
+                        {{ getSelectedDestinationSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                      </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let seed of getSeeds(true); let i = index" [value]="seed.publicId"
                       class="custom-mat-option">
-                      {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                      {{ t("general.currency") }}
+                      {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="sendForm.controls['selectedDestinationId'].hasError('required')">

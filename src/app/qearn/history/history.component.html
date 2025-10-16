@@ -5,9 +5,14 @@
         <mat-form-field appearance="fill" placeholder="Seed" class="full-width">
           <mat-label>{{ t('qearn.history.sourceSeed.label') }}</mat-label>
           <mat-select formControlName="sourceId" panelClass="full-width">
+            <mat-select-trigger>
+              <span *ngIf="form.controls['sourceId'].value && getSelectedSeed()">
+                {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+              </span>
+            </mat-select-trigger>
             <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
               class="custom-mat-option">
-              {{ seed.publicId }}
+              {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
             </mat-option>
           </mat-select>
         </mat-form-field>

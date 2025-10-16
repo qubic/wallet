@@ -13,7 +13,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
-import { shortenAddress } from '../utils/address.utils';
+import { shortenAddress, getDisplayName, getShortDisplayName } from '../utils/address.utils';
 
 @Component({
   selector: 'app-balance',
@@ -312,6 +312,44 @@ export class BalanceComponent implements OnInit {
     return this.walletService.getSeeds();
   }
 
+  getSelectedSeed() {
+    const publicId = this.seedFilterFormControl.value;
+    return this.getSeedsWithOnlyWatch().find(s => s.publicId === publicId);
+  }
+
+  /**
+   * Returns display name for an address. If the address belongs to wallet,
+   * returns the account alias with full address in parentheses. Otherwise returns full address.
+   * Uses the reusable utility function from address.utils.ts
+   */
+  getAddressDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      return getDisplayName(address, this.walletService.getSeeds());
+    } catch (e) {
+      console.error('Error in getAddressDisplayName:', e);
+      return address; // Fallback to showing the address
+    }
+  }
+
+  /**
+   * Returns short display name for an address. If the address belongs to wallet,
+   * returns the account alias with shortened address in parentheses. Otherwise returns shortened address.
+   * Uses the reusable utility function from address.utils.ts
+   */
+  getAddressShortDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      return getShortDisplayName(address, this.walletService.getSeeds());
+    } catch (e) {
+      console.error('Error in getAddressShortDisplayName:', e);
+      return shortenAddress(address); // Fallback to showing the shortened address
+    }
+  }
 
   exportTransactionsToCsv() {
     const now = new Date();
