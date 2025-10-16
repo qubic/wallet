@@ -312,6 +312,11 @@ export class BalanceComponent implements OnInit {
     return this.walletService.getSeeds();
   }
 
+  getSelectedSeed() {
+    const publicId = this.seedFilterFormControl.value;
+    return this.getSeedsWithOnlyWatch().find(s => s.publicId === publicId);
+  }
+
   /**
    * Returns display name for an address. If the address belongs to wallet,
    * returns the account alias with full address in parentheses. Otherwise returns full address.

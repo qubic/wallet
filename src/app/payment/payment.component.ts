@@ -226,6 +226,16 @@ export class PaymentComponent implements OnInit {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.transferForm.controls.sourceId.value))
   }
 
+  getSelectedSourceSeed() {
+    const publicId = this.transferForm.controls.sourceId.value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
+  getSelectedDestinationSeed() {
+    const publicId = this.transferForm.controls.selectedDestinationId.value;
+    return this.getSeeds(true).find(s => s.publicId === publicId);
+  }
+
   loadKey() {
     const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
   }

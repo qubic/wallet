@@ -187,10 +187,14 @@
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
                 <mat-select [formControl]="seedFilterFormControl">
+                    <mat-select-trigger>
+                        <span *ngIf="seedFilterFormControl.value && getSelectedSeed()">
+                            {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                        </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let seed of getSeedsWithOnlyWatch()" [value]="seed.publicId"
                         class="custom-mat-option">
-                        {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                        {{ t("general.currency") }}
+                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

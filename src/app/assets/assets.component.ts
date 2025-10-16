@@ -19,6 +19,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
+import { shortenAddress } from '../utils/address.utils';
 
 
 @Component({
@@ -29,6 +30,7 @@ import { ApiLiveService } from '../services/apis/live/api.live.service';
 
 
 export class AssetsComponent implements OnInit {
+  shortenAddress = shortenAddress;
   displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
   public currentTick = 0;
@@ -322,6 +324,15 @@ export class AssetsComponent implements OnInit {
 
   getSeeds(isDestination = false) {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.sendForm.get('assetSelect')?.value?.publicId));
+  }
+
+  getSelectedDestinationSeed() {
+    const publicId = this.sendForm.controls['selectedDestinationId'].value;
+    return this.getSeeds(true).find(s => s.publicId === publicId);
+  }
+
+  getSelectedAsset() {
+    return this.sendForm.controls['assetSelect'].value;
   }
 
   toggleDestinationSelect() {
