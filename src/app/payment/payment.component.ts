@@ -15,6 +15,7 @@ import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
+import { shortenAddress } from '../utils/address.utils';
 
 @Component({
   selector: 'app-wallet',
@@ -23,7 +24,7 @@ import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 })
 export class PaymentComponent implements OnInit {
 
-
+  shortenAddress = shortenAddress;
   private selectedDestinationId: any;
   public maxAmount: number = 0;
   public currentTick = 0;
