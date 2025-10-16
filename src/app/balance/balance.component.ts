@@ -13,6 +13,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
+import { shortenAddress } from '../utils/address.utils';
 
 @Component({
   selector: 'app-balance',
@@ -21,6 +22,7 @@ import { AssetTransfer } from '../services/api.model';
 })
 export class BalanceComponent implements OnInit {
 
+  shortenAddress = shortenAddress;
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
@@ -356,19 +358,6 @@ export class BalanceComponent implements OnInit {
     this.sortTransactions();
     window.URL.revokeObjectURL(url);
   }
-
-
-  displayPublicId(input: string): string {
-    if (input.length <= 10) {
-      return input;
-    }
-
-    const start = input.slice(0, 5);
-    const end = input.slice(-5);
-
-    return `${start}...${end}`;
-  }
-
 
   repeat(transaction: Transaction) {
     this.router.navigate(['payment'], {

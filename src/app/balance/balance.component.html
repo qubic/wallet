@@ -52,7 +52,7 @@
                                 <span class="display-publicid disable-area">
                                     <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
                                         target="_blank">
-                                        {{ displayPublicId(transaction.sourceId)}}
+                                        {{ shortenAddress(transaction.sourceId)}}
                                     </a>
                                 </span>
                                 <span class="desktopOnly secondary ">
@@ -214,7 +214,7 @@
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                     target="_blank">
-                                    {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                                    {{ shortenAddress(transaction.transactions[0].transaction.sourceId)}}
                                 </a>
                             </span>
                             <span class="desktopOnly secondary ">
