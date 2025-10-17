@@ -29,11 +29,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Install commitlint
-        run: |
-          yarn add conventional-changelog-conventionalcommits
-          yarn add commitlint@latest
-
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
         run: npx commitlint --last --verbose
