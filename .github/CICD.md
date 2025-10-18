@@ -81,11 +81,11 @@ docs: add CI/CD documentation
 
 **Deployment Targets:**
 
-| Branch | Environment | URL | Server Directory |
-|--------|------------|-----|------------------|
-| `dev` | Development | dev.wallet.qubic.org | `/sites/dev.wallet.qubic.org/` |
-| `staging` | Staging | staging.wallet.qubic.org | `/sites/staging.wallet.qubic.org/` |
-| `main` | Production | wallet.qubic.org | `/sites/wallet.qubic.org/` |
+| Branch    | Environment | URL                      | Server Directory                   |
+| --------- | ----------- | ------------------------ | ---------------------------------- |
+| `dev`     | Development | dev.wallet.qubic.org     | `/sites/dev.wallet.qubic.org/`     |
+| `staging` | Staging     | staging.wallet.qubic.org | `/sites/staging.wallet.qubic.org/` |
+| `main`    | Production  | wallet.qubic.org         | `/sites/wallet.qubic.org/`         |
 
 **Workflow Steps:**
 1. Checkout repository with full git history
@@ -128,20 +128,20 @@ The following secrets must be configured in the repository settings:
 
 ### FTP Deployment Secrets
 
-| Secret Name | Description | Example |
-|------------|-------------|---------|
-| `FTP_SERVER` | FTP server hostname | `ftp.qubic.org` |
-| `FTP_USERNAME_DEV` | FTP username for dev environment | `dev_deploy` |
-| `FTP_PASSWORD_DEV` | FTP password for dev environment | `***` |
-| `FTP_USERNAME_STAGING` | FTP username for staging | `staging_deploy` |
-| `FTP_PASSWORD_STAGING` | FTP password for staging | `***` |
-| `FTP_USERNAME_PROD` | FTP username for production | `prod_deploy` |
-| `FTP_PASSWORD_PROD` | FTP password for production | `***` |
+| Secret Name            | Description                      | Example          |
+| ---------------------- | -------------------------------- | ---------------- |
+| `FTP_SERVER`           | FTP server hostname              | `ftp.qubic.org`  |
+| `FTP_USERNAME_DEV`     | FTP username for dev environment | `dev_deploy`     |
+| `FTP_PASSWORD_DEV`     | FTP password for dev environment | `***`            |
+| `FTP_USERNAME_STAGING` | FTP username for staging         | `staging_deploy` |
+| `FTP_PASSWORD_STAGING` | FTP password for staging         | `***`            |
+| `FTP_USERNAME_PROD`    | FTP username for production      | `prod_deploy`    |
+| `FTP_PASSWORD_PROD`    | FTP password for production      | `***`            |
 
 ### GitHub Token
 
-| Secret Name | Description | Notes |
-|------------|-------------|-------|
+| Secret Name    | Description                    | Notes                           |
+| -------------- | ------------------------------ | ------------------------------- |
 | `GITHUB_TOKEN` | Automatic token for GitHub API | Auto-provided by GitHub Actions |
 
 ## Branch Strategy
