@@ -54,10 +54,4 @@ jobs:
               secrets.FTP_PASSWORD_DEV
             }}
           local-dir: dist/qubic-wallet/
-          server-dir: |
-            ${{
-              github.ref == 'refs/heads/main' && '/sites/wallet.qubic.org/' ||
-              github.ref == 'refs/heads/staging' && '/sites/staging.wallet.qubic.org/' ||
-              '/sites/dev.wallet.qubic.org/'
-            }}
           protocol: ftps
