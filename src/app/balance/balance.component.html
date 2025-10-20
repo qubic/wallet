@@ -52,14 +52,13 @@
                                 <span class="display-publicid disable-area">
                                     <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
                                         target="_blank">
-                                        {{ shortenAddress(transaction.sourceId)}}
+                                        {{ getAddressShortDisplayName(transaction.sourceId)}}
                                     </a>
                                 </span>
                                 <span class="desktopOnly secondary ">
-                                    &nbsp; (
+                                    &nbsp;
                                     {{ transaction.created | date}}
                                     {{ transaction.created | date:'HH:mm:ss' }}
-                                    )
                                 </span>
                                 <button
                                     *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
@@ -109,7 +108,7 @@
                                             <span class="value"> <a
                                                     [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
                                                     target="_blank">
-                                                    {{transaction.sourceId}}
+                                                    {{getAddressDisplayName(transaction.sourceId)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
@@ -125,7 +124,7 @@
                                             <span class="value"> <a
                                                     [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
                                                     target="_blank">
-                                                    {{transaction.destId}}
+                                                    {{getAddressDisplayName(transaction.destId)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
@@ -188,10 +187,14 @@
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
                 <mat-select [formControl]="seedFilterFormControl">
+                    <mat-select-trigger>
+                        <span *ngIf="seedFilterFormControl.value && getSelectedSeed()">
+                            {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                        </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let seed of getSeedsWithOnlyWatch()" [value]="seed.publicId"
                         class="custom-mat-option">
-                        {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                        {{ t("general.currency") }}
+                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -214,15 +217,14 @@
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                     target="_blank">
-                                    {{ shortenAddress(transaction.transactions[0].transaction.sourceId)}}
+                                    {{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}
                                 </a>
                             </span>
                             <span class="desktopOnly secondary ">
-                                &nbsp; (
+                                &nbsp;
                                 {{ transaction.transactions[0].timestamp | date}} {{
                                 transaction.transactions[0].timestamp |
                                 date:'HH:mm:ss' }}
-                                )
                             </span>
                             <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
@@ -286,7 +288,7 @@
                                         <span class="value display-publicid"> <a
                                                 [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                                 target="_blank">
-                                                {{transaction.transactions[0].transaction.sourceId}}
+                                                {{getAddressDisplayName(transaction.transactions[0].transaction.sourceId)}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
                                                 matTooltip="{{ t('general.copy.tooltip') }}"
@@ -303,9 +305,7 @@
                                                 *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalDest">
                                                 <a [href]="'https://explorer.qubic.org/network/address/' + getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor"
                                                     target="_blank">
-                                                    {{
-                                                    getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor
-                                                    }}
+                                                    {{getAddressDisplayName(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
@@ -314,7 +314,7 @@
                                             <ng-template #normalDest>
                                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
                                                     target="_blank">
-                                                    {{ transaction.transactions[0].transaction.destId }}
+                                                    {{getAddressDisplayName(transaction.transactions[0].transaction.destId)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"

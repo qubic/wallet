@@ -120,6 +120,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   public getSeeds = () => this.walletService.getSeeds();
 
+  public getSelectedSeed() {
+    const publicId = this.form.controls['sourceId'].value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
   public toggleView(): void {
     this.showingEnded = !this.showingEnded;
     this.loadData(this.form.get('sourceId')?.value);
