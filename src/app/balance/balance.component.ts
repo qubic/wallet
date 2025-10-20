@@ -13,7 +13,9 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
-import { shortenAddress, getDisplayName, getShortDisplayName } from '../utils/address.utils';
+import { shortenAddress, getDisplayName, getShortDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { AddressNameService } from '../services/address-name.service';
+import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 
 @Component({
   selector: 'app-balance',
@@ -45,7 +47,16 @@ export class BalanceComponent implements OnInit {
   public assetTransferData: { [key: string]: AssetTransfer } = {};
 
 
-  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
+  constructor(
+    private router: Router,
+    private transloco: TranslocoService,
+    private api: ApiService,
+    private apiArchiver: ApiArchiverService,
+    private walletService: WalletService,
+    private _snackBar: MatSnackBar,
+    private us: UpdaterService,
+    private addressNameService: AddressNameService
+  ) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
@@ -327,7 +338,8 @@ export class BalanceComponent implements OnInit {
       return '';
     }
     try {
-      return getDisplayName(address, this.walletService.getSeeds());
+      const addressName = this.addressNameService.getAddressNameSync(address);
+      return getDisplayName(address, this.walletService.getSeeds(), addressName);
     } catch (e) {
       console.error('Error in getAddressDisplayName:', e);
       return address; // Fallback to showing the address
@@ -344,11 +356,20 @@ export class BalanceComponent implements OnInit {
       return '';
     }
     try {
-      return getShortDisplayName(address, this.walletService.getSeeds());
+      const addressName = this.addressNameService.getAddressNameSync(address);
+      return getShortDisplayName(address, this.walletService.getSeeds(), addressName);
     } catch (e) {
       console.error('Error in getAddressShortDisplayName:', e);
       return shortenAddress(address); // Fallback to showing the shortened address
     }
+  }
+
+  /**
+   * Get the address name result for an address
+   * Useful for getting both the name and type information
+   */
+  getAddressNameInfo(address: string): any {
+    return this.addressNameService.getAddressNameSync(address);
   }
 
   exportTransactionsToCsv() {
@@ -413,14 +434,27 @@ export class BalanceComponent implements OnInit {
     });
   }
 
-  formatInputType(inputType: number, destination: string) {
-    const emptyAddress = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
+  formatInputType(inputType: number, destination: string): string {
+    // Check if it's a smart contract transaction (inputType > 0 and not protocol message)
+    const isSmartContract = inputType > 0 && destination !== EMPTY_QUBIC_ADDRESS;
 
-    if (inputType === 0 || destination === emptyAddress) {
-      return `${inputType} Standard`;
-    } else {
-      return `${inputType} SC`;
+    // Base type
+    const baseType = inputType.toString();
+    const category = isSmartContract ? 'SC' : 'Standard';
+
+    // Try to get smart contract details and procedure name
+    if (isSmartContract) {
+      const smartContract = this.addressNameService.getSmartContractByAddressSync(destination);
+      if (smartContract && smartContract.procedures) {
+        const procedure = smartContract.procedures.find((p: any) => p.id === inputType);
+        if (procedure) {
+          return `${baseType} ${category} (${procedure.name})`;
+        }
+      }
     }
+
+    // Return without procedure name
+    return `${baseType} ${category}`;
   }
 
 }
