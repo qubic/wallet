@@ -30,86 +30,13 @@ export class AddressNameService {
   ) {}
 
   /**
-   * Get the display name for an address using the priority system
-   *
-   * @param address The address to resolve
-   * @returns Observable of AddressNameResult or undefined if no match found
-   */
-  public getAddressName(address: string): Observable<AddressNameResult | undefined> {
-    if (!address) {
-      return of(undefined);
-    }
-
-    return combineLatest([
-      this.staticService.smartContracts$,
-      this.staticService.exchanges$,
-      this.staticService.addressLabels$,
-      this.staticService.tokens$
-    ]).pipe(
-      map(([smartContracts, exchanges, addressLabels, tokens]) => {
-        // Priority 1: Check if it's one of the wallet's accounts
-        const seeds = this.walletService.getSeeds();
-        const accountMatch = this.findAccountMatch(address, seeds);
-        if (accountMatch) {
-          return accountMatch;
-        }
-
-        // Priority 2: Check smart contracts
-        if (smartContracts) {
-          const smartContract = smartContracts.find(sc => sc.address === address);
-          if (smartContract) {
-            return {
-              name: smartContract.name,
-              type: 'smart-contract' as const,
-              website: smartContract.website
-            };
-          }
-        }
-
-        // Priority 3: Check exchanges
-        if (exchanges) {
-          const exchange = exchanges.find(ex => ex.address === address);
-          if (exchange) {
-            return {
-              name: exchange.name,
-              type: 'exchange' as const
-            };
-          }
-        }
-
-        // Priority 4: Check tokens (asset issuers)
-        // Note: This requires checking against assets, which are loaded separately
-        // For now, we'll just check if the address is in the tokens list by matching issuer identity
-        // This will be enhanced when assets data is available
-        const tokenMatch = this.findTokenMatch(address, tokens);
-        if (tokenMatch) {
-          return tokenMatch;
-        }
-
-        // Priority 5: Check address labels
-        if (addressLabels) {
-          const addressLabel = addressLabels.find(label => label.address === address);
-          if (addressLabel) {
-            return {
-              name: addressLabel.label,
-              type: 'address-label' as const
-            };
-          }
-        }
-
-        return undefined;
-      })
-    );
-  }
-
-  /**
    * Get the display name synchronously using cached data
    * This is useful for components that need immediate results
    *
    * @param address The address to resolve
    * @returns AddressNameResult or undefined if no match found
    */
-  public getAddressNameSync(address: string): AddressNameResult | undefined {
+  public getAddressName(address: string): AddressNameResult | undefined {
     if (!address) {
       return undefined;
     }
@@ -193,7 +120,7 @@ export class AddressNameService {
    * @returns Formatted display string
    */
   public getFormattedAddressName(address: string, includeAddress: boolean = true): string {
-    const result = this.getAddressNameSync(address);
+    const result = this.getAddressName(address);
 
     if (!result) {
       return address;

@@ -338,7 +338,7 @@ export class BalanceComponent implements OnInit {
       return '';
     }
     try {
-      const addressName = this.addressNameService.getAddressNameSync(address);
+      const addressName = this.addressNameService.getAddressName(address);
       return getDisplayName(address, this.walletService.getSeeds(), addressName);
     } catch (e) {
       console.error('Error in getAddressDisplayName:', e);
@@ -356,7 +356,7 @@ export class BalanceComponent implements OnInit {
       return '';
     }
     try {
-      const addressName = this.addressNameService.getAddressNameSync(address);
+      const addressName = this.addressNameService.getAddressName(address);
       return getShortDisplayName(address, this.walletService.getSeeds(), addressName);
     } catch (e) {
       console.error('Error in getAddressShortDisplayName:', e);
@@ -369,7 +369,7 @@ export class BalanceComponent implements OnInit {
    * Useful for getting both the name and type information
    */
   getAddressNameInfo(address: string): any {
-    return this.addressNameService.getAddressNameSync(address);
+    return this.addressNameService.getAddressName(address);
   }
 
   exportTransactionsToCsv() {
