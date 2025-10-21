@@ -36,7 +36,7 @@ export class AddressNameService {
    * @returns Observable of AddressNameResult or undefined if no match found
    */
   public getAddressName(address: string): Observable<AddressNameResult | undefined> {
-    if (!address || address === EMPTY_QUBIC_ADDRESS) {
+    if (!address) {
       return of(undefined);
     }
 
@@ -110,7 +110,7 @@ export class AddressNameService {
    * @returns AddressNameResult or undefined if no match found
    */
   public getAddressNameSync(address: string): AddressNameResult | undefined {
-    if (!address || address === EMPTY_QUBIC_ADDRESS) {
+    if (!address) {
       return undefined;
     }
 
