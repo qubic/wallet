@@ -363,7 +363,8 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Frais",
-      "assetTransferWarning": "Cet enregistrement de transaction est actuellement visible uniquement par l'expéditeur. Le destinataire n'aura pas accès à ces données de transaction dans ses enregistrements pour le moment."
+      "assetTransferWarning": "Cet enregistrement de transaction est actuellement visible uniquement par l'expéditeur. Le destinataire n'aura pas accès à ces données de transaction dans ses enregistrements pour le moment.",
+      "timestamp": "Horodatage"
     },
     "epoch": "Époque",
     "ticks": "Ticks"

@@ -364,7 +364,8 @@
       "tick": "Tik",
       "type": "Tür",
       "fee": "Ücret",
-      "assetTransferWarning": "Bu işlem kaydı şu anda yalnızca gönderen tarafından görülebilir. Alıcı, şu anda bu işlem verilerine kayıtlarında erişemeyecektir."
+      "assetTransferWarning": "Bu işlem kaydı şu anda yalnızca gönderen tarafından görülebilir. Alıcı, şu anda bu işlem verilerine kayıtlarında erişemeyecektir.",
+      "timestamp": "Zaman damgası"
     },
     "epoch": "Çağ",
     "ticks": "Tikler"
