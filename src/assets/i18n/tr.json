@@ -20,7 +20,7 @@
     "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
-    "loading": "Yükleniyor...",
+    "loading": "Yükleniyor",
     "buttons": {
       "close": "Kapat",
       "maximize": "Büyüt"

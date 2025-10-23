@@ -20,7 +20,7 @@
     "close": "X",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
-    "loading": "cargando...",
+    "loading": "Cargando",
     "buttons": {
       "close": "Cerrar",
       "maximize": "Maximizar"

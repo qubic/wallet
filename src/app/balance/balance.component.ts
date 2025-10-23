@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -22,7 +22,7 @@ import { AddressNameResult } from '../services/apis/static/qubic-static.model';
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   shortenAddress = shortenAddress;
   public accountBalances: BalanceResponse[] = [];
@@ -45,6 +45,15 @@ export class BalanceComponent implements OnInit {
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
+
+  // Infinite scroll properties
+  public currentPage: number = 1;
+  public pageSize: number = 50;
+  public isLoadingMore: boolean = false;
+  public hasMoreTransactions: boolean = true;
+  private intersectionObserver?: IntersectionObserver;
+  private isObserving: boolean = false;
+  @ViewChild('scrollAnchor', { read: ElementRef }) scrollAnchor?: ElementRef;
 
 
   constructor(
@@ -98,6 +107,39 @@ export class BalanceComponent implements OnInit {
           panelClass: "error"
         });
       });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.setupIntersectionObserver();
+  }
+
+  ngOnDestroy(): void {
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
+  }
+
+  private setupIntersectionObserver(): void {
+    const options = {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1
+    };
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && this.hasMoreTransactions && !this.isLoadingMore && this.isShowAllTransactions) {
+          this.loadMoreTransactions();
+        }
+      });
+    }, options);
+  }
+
+  private observeScrollAnchor(): void {
+    if (this.intersectionObserver && this.scrollAnchor && !this.isObserving) {
+      this.intersectionObserver.observe(this.scrollAnchor.nativeElement);
+      this.isObserving = true;
     }
   }
 
@@ -167,31 +209,66 @@ export class BalanceComponent implements OnInit {
   }
 
 
-  getAllTransactionByPublicId(publicId: string): void {
+  getAllTransactionByPublicId(publicId: string, resetPagination: boolean = true): void {
     if (!this.isShowAllTransactions) {
       return;
     }
 
-    this.transactionsRecord = [];
-    this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(async r => {
+    if (resetPagination) {
+      this.transactionsRecord = [];
+      this.transactionsArchiver = [];
+      this.currentPage = 1;
+      this.hasMoreTransactions = true;
+      this.isObserving = false;
+    }
+
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick, this.currentPage, this.pageSize).subscribe(async r => {
       if (r) {
+        // Handle both array and single object responses
+        let transactionsData: TransactionRecord[] = [];
+
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
+
+          // Check if it's an array of TransactionsArchiver objects
+          if (r.length > 0 && r[0].transactions) {
+            transactionsData = r[0].transactions;
+          }
         } else {
-          this.transactionsArchiver.push(r);
+          const singleResponse = r as any; // Type cast to handle single object
+          this.transactionsArchiver.push(singleResponse);
+
+          // Single TransactionsArchiver object
+          if (singleResponse.transactions) {
+            transactionsData = singleResponse.transactions;
+          }
         }
 
-        if (this.transactionsRecord.length <= 0) {
-          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
-        }
+        if (transactionsData.length > 0) {
+          this.transactionsRecord.push(...transactionsData);
 
-        await Promise.all(this.transactionsRecord.map(transaction =>
-          this.checkAndParseAssetTransfer(transaction)
-        ));
+          await Promise.all(transactionsData.map(transaction =>
+            this.checkAndParseAssetTransfer(transaction)
+          ));
+
+          // Check if we have more transactions to load
+          this.hasMoreTransactions = transactionsData.length === this.pageSize;
+        } else {
+          this.hasMoreTransactions = false;
+        }
 
         this.sortTransactions();
+        this.isLoadingMore = false;
+
+        // Setup observer after data is loaded (need to wait for view to update)
+        setTimeout(() => {
+          this.observeScrollAnchor();
+        }, 100);
       }
+    }, error => {
+      console.error('API Error:', error);
+      this.isLoadingMore = false;
+      this.hasMoreTransactions = false;
     });
   }
 
@@ -370,6 +447,20 @@ export class BalanceComponent implements OnInit {
    */
   getAddressNameInfo(address: string): any {
     return this.addressNameService.getAddressName(address);
+  }
+
+  /**
+   * Load more transactions for infinite scroll
+   * Called when user scrolls to the bottom of the transaction list
+   */
+  loadMoreTransactions(): void {
+    if (this.isLoadingMore || !this.hasMoreTransactions || !this.isShowAllTransactions) {
+      return;
+    }
+
+    this.isLoadingMore = true;
+    this.currentPage++;
+    this.getAllTransactionByPublicId(this.seedFilterFormControl.value, false);
   }
 
   exportTransactionsToCsv() {

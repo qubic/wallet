@@ -20,7 +20,7 @@
     "close": "Đóng",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
-    "loading": "đang tải...",
+    "loading": "Đang tải",
     "buttons": {
       "close": "Đóng",
       "maximize": "Phóng to"

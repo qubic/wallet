@@ -20,7 +20,7 @@
     "close": "X",
     "currency": "QUBIC",
     "currentTick": "刻度: {{tick}}",
-    "loading": "加载中...",
+    "loading": "加载中",
     "buttons": {
       "close": "关闭",
       "maximize": "最小化"

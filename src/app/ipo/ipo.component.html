@@ -5,12 +5,7 @@
             {{ t("ipoComponent.description") }}
         </div>
         <div *ngIf="ipoContracts.length <= 0 && !loaded">
-            <div class="loading">
-                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-            </div>
-            <div class="text-center">
-                {{ t("general.loading") }}
-            </div>
+            <app-dots-loader></app-dots-loader>
         </div>
         <div *ngIf="ipoContracts.length <= 0  && loaded">
             <mat-card class="proposal-card">

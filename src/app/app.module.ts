@@ -46,6 +46,7 @@ import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
+import { DotsLoaderComponent } from './shared/dots-loader/dots-loader.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrReceiveDialog } from './main/qr-receive/qr-receive.component';
 import { TranslocoRootModule } from './transloco-root.module';
@@ -145,7 +146,8 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     BalanceHiddenComponent,
     SeedDisplayPipe,
     SeedFirstLinePipe,
-    SeedSecondLinePipe
+    SeedSecondLinePipe,
+    DotsLoaderComponent
   ],
   imports: [
     BrowserModule,

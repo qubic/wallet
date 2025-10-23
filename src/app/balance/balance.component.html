@@ -363,6 +363,11 @@
                     </div>
                 </mat-expansion-panel>
             </mat-accordion>
+
+            <!-- Infinite scroll anchor and loading indicator -->
+            <div #scrollAnchor *ngIf="isShowAllTransactions && transactionsRecord.length > 0"></div>
+
+            <app-dots-loader *ngIf="isLoadingMore && hasMoreTransactions"></app-dots-loader>
         </div>
         <div *ngIf="!hasSeeds()">
             <button [routerLink]="['/']" mat-raised-button>
