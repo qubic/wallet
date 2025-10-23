@@ -303,7 +303,8 @@
         "chooseOwnSeed": "Kendi Adres Kimliğinizi seçin",
         "error": {
           "required": "Adres kimliği gerekli",
-          "length": "Qubic adres kimliği 60 büyük harften oluşur."
+          "length": "Qubic adres kimliği 60 büyük harften oluşur.",
+          "invalidAddress": "Geçersiz alıcı adresi"
         }
       },
       "amount": {

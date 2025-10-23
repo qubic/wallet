@@ -302,7 +302,8 @@
         "chooseOwnSeed": "Выбрать собственный ID",
         "error": {
           "required": "Требуется ID",
-          "length": "ID Qubic состоит из 60 заглавных букв"
+          "length": "ID Qubic состоит из 60 заглавных букв",
+          "invalidAddress": "Недействительный адрес получателя"
         }
       },
       "amount": {

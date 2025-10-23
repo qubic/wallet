@@ -68,6 +68,9 @@
                                     *ngIf="transferForm.controls['destinationId'].hasError('minlength') || transferForm.controls['destinationId'].hasError('maxlength')">
                                     {{ t("paymentComponent.form.receiver.error.length") }}
                                 </mat-error>
+                                <mat-error *ngIf="transferForm.controls['destinationId'].hasError('invalidAddress')">
+                                    {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
+                                </mat-error>
                                 <span>
                                     <mat-hint align="start">{{ transferForm.controls['destinationId'].value?.length}}/{{ t("paymentComponent.form.receiver.hint") }}</mat-hint>
                                 </span>

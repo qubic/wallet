@@ -226,6 +226,9 @@
                     *ngIf="sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength')">
                     {{ t("paymentComponent.form.receiver.error.length") }}
                   </mat-error>
+                  <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('invalidAddress')">
+                    {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
