@@ -364,7 +364,7 @@
       "tick": "刻度",
       "type": "类型",
       "fee": "费用",
-      "assetTransferWarning": "此交易当前仅发送方可见，接收方暂时无法查看"
+      "assetTransferWarning": "此交易仅在源地址的交易列表中可见。在当前版本中尚不支持在目标地址的交易列表中显示它。"
     },
     "epoch": "纪元",
     "ticks": "刻度"

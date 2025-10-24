@@ -363,7 +363,7 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Kosten",
-      "assetTransferWarning": "Dit transactieoverzicht is momenteel alleen zichtbaar voor de afzender. De ontvanger heeft op dit moment geen toegang tot deze transactiegegevens in zijn administratie."
+      "assetTransferWarning": "Deze transactie is alleen zichtbaar in de transactielijst van het bronadres. Weergave in de transactielijst van het bestemmingsadres wordt in de huidige versie nog niet ondersteund."
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

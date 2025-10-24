@@ -363,7 +363,7 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Frais",
-      "assetTransferWarning": "Cet enregistrement de transaction est actuellement visible uniquement par l'expéditeur. Le destinataire n'aura pas accès à ces données de transaction dans ses enregistrements pour le moment."
+      "assetTransferWarning": "Cette transaction est visible uniquement dans la liste des transactions de l'adresse source. L'afficher dans la liste des transactions de l'adresse de destination n'est pas encore pris en charge dans la version actuelle."
     },
     "epoch": "Époque",
     "ticks": "Ticks"

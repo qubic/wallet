@@ -363,7 +363,7 @@
       "tick": "Tick",
       "type": "Tipo",
       "fee": "Tarifa",
-      "assetTransferWarning": "Este registro de transacción es actualmente visible solo para el remitente. El destinatario no tendrá acceso a estos datos de la transacción en sus registros en este momento."
+      "assetTransferWarning": "Esta transacción es visible solo en la lista de transacciones de la dirección de origen. Mostrarla en la lista de transacciones de la dirección de destino aún no está soportado en la versión actual."
     },
     "epoch": "Época",
     "ticks": "Ticks"
