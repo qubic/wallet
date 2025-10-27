@@ -150,7 +150,9 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
       if (s) {
         this.status = s;
         this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
-        this.GetTransactionsByTick(this.currentSelectedEpoch);
+        // Just initialize the tick range, don't fetch transactions yet
+        // Transactions will be fetched when user switches to "By Epochs" tab
+        this.GetTransactionsByTick(this.currentSelectedEpoch, false);
       }
     }, errorResponse => {
       console.log('errorResponse:', errorResponse);
@@ -166,20 +168,48 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lastProcessedTick = this.currentTickArchiver.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
+      // Initialize tick range for the current epoch when switching to epochs view
+      if (this.currentSelectedEpoch > 0) {
+        this.GetTransactionsByTick(this.currentSelectedEpoch, false); // Don't fetch transactions yet
+      }
     }
     this.toggleShowAllTransactionsView();
   }
 
 
-  GetTransactionsByTick(epoch: number): void {
+  get firstEpoch(): number | undefined {
+    return this.status?.processedTickIntervalsPerEpoch?.[0]?.epoch;
+  }
+
+  get lastEpoch(): number | undefined {
+    const intervals = this.status?.processedTickIntervalsPerEpoch;
+    if (!intervals || intervals.length === 0) return undefined;
+    return intervals[intervals.length - 1]?.epoch;
+  }
+
+  get canNavigateToPreviousEpoch(): boolean {
+    return this.firstEpoch !== undefined && this.firstEpoch < this.currentSelectedEpoch;
+  }
+
+  get canNavigateToNextEpoch(): boolean {
+    return this.lastEpoch !== undefined && this.lastEpoch > this.currentSelectedEpoch;
+  }
+
+  GetTransactionsByTick(epoch: number, fetchTransactions: boolean = true): void {
     this.status.processedTickIntervalsPerEpoch
       .filter(t => t.epoch === epoch)
       .forEach(e => {
-        this.initialProcessedTick = e.intervals[0].initialProcessedTick;
-        this.lastProcessedTick = e.intervals[0].lastProcessedTick;
-        this.currentSelectedEpoch = e.epoch;
+        // Only set tick range if intervals exist and have data
+        if (e.intervals && e.intervals.length > 0 && e.intervals[0]) {
+          this.initialProcessedTick = e.intervals[0].initialProcessedTick;
+          this.lastProcessedTick = e.intervals[0].lastProcessedTick;
+          this.currentSelectedEpoch = e.epoch;
+        }
       });
-    this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    // Only fetch transactions if explicitly requested (e.g., when navigating between epochs)
+    if (fetchTransactions) {
+      this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    }
   }
 
 
@@ -193,8 +223,11 @@ export class BalanceComponent implements OnInit, AfterViewInit, OnDestroy {
         const seeds = this.getSeedsWithOnlyWatch();
         if (seeds.length > 0) {
           this.seedFilterFormControl.setValue(seeds[0].publicId);
+          // No need to call getAllTransactionByPublicId here - setValue will trigger valueChanges
+          return;
         }
       }
+      // Only call if we didn't set a new value above (which would trigger valueChanges)
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
   }
