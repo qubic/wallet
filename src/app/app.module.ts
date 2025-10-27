@@ -94,6 +94,7 @@ import { UnlockInputDialogComponent } from './qearn/components/unlock-input-dial
 import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.component';
 import { SeedDisplayPipe } from './pipes/seed-display.pipe';
 import { SeedFirstLinePipe, SeedSecondLinePipe } from './pipes/seed-display-line.pipe';
+import { DateTimePipe } from './pipes/date-time.pipe';
 
 
 /** Http interceptor providers in outside-in order */
@@ -145,6 +146,7 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     BalanceHiddenComponent,
     SeedDisplayPipe,
     SeedFirstLinePipe,
+    DateTimePipe,
     SeedSecondLinePipe
   ],
   imports: [

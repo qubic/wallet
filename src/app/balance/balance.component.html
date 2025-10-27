@@ -57,7 +57,7 @@
                                 </span>
                                 <span class="transaction-datetime-header secondary">
                                     &nbsp;
-                                    {{ transaction.created | date}} {{ transaction.created | date:'HH:mm:ss' }}
+                                    {{ transaction.created | dateTime }}
                                 </span>
                                 <button
                                     *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
@@ -221,7 +221,7 @@
                             </span>
                             <span class="transaction-datetime-header secondary">
                                 &nbsp;
-                                {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp | date:'HH:mm:ss' }}
+                                {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
                             <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
@@ -349,7 +349,7 @@
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value">
-                                            {{ transaction.transactions[0].timestamp | date}} {{ transaction.transactions[0].timestamp | date:'HH:mm:ss' }}
+                                            {{ transaction.transactions[0].timestamp | dateTime }}
                                         </span>
                                     </div>
                                 </div>
