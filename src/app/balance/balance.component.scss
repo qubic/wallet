@@ -232,6 +232,17 @@ mat-card {
     display: flex !important; // Override .row display
 }
 
+// Address name responsive behavior:
+// - On small screens: show compact name (name only) when datetime is in header
+// - On large screens: show full name (name + shortened address) when datetime is in details
+.address-name-compact {
+    display: inline;
+}
+
+.address-name-full {
+    display: none;
+}
+
 // Use Material Design md breakpoint - tablet landscape and up
 @media screen and (min-width: $breakpoint-md) {
     .transaction-datetime-header {
@@ -240,5 +251,13 @@ mat-card {
 
     .transaction-datetime-details {
         display: none !important;
+    }
+
+    .address-name-compact {
+        display: none;
+    }
+
+    .address-name-full {
+        display: inline;
     }
 }

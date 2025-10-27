@@ -216,7 +216,10 @@
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                     target="_blank">
-                                    {{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}
+                                    <!-- Compact name for small screens (when datetime is in header) -->
+                                    <span class="address-name-compact">{{ getAddressCompactDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
+                                    <!-- Short name with address for large screens (when datetime is in details) -->
+                                    <span class="address-name-full">{{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
                                 </a>
                             </span>
                             <span class="transaction-datetime-header secondary">
