@@ -363,7 +363,8 @@
       "tick": "Tick",
       "type": "Tipo",
       "fee": "Tarifa",
-      "assetTransferWarning": "Esta transacción es visible solo en la lista de transacciones de la dirección de origen. Mostrarla en la lista de transacciones de la dirección de destino aún no está soportado en la versión actual."
+      "assetTransferWarning": "Esta transacción es visible solo en la lista de transacciones de la dirección de origen. Mostrarla en la lista de transacciones de la dirección de destino aún no está soportado en la versión actual.",
+      "timestamp": "Fecha"
     },
     "epoch": "Época",
     "ticks": "Ticks"

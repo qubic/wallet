@@ -13,7 +13,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
-import { shortenAddress, getDisplayName, getShortDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { AddressNameService } from '../services/address-name.service';
 import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 
@@ -370,6 +370,24 @@ export class BalanceComponent implements OnInit {
    */
   getAddressNameInfo(address: string): any {
     return this.addressNameService.getAddressName(address);
+  }
+
+  /**
+   * Returns compact display name for an address - shows ONLY the name for known addresses
+   * (wallet accounts, smart contracts, exchanges, tokens) without address in parentheses.
+   * For unknown addresses, shows shortened address. Ideal for mobile/compact views.
+   */
+  getAddressCompactDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      const addressName = this.addressNameService.getAddressName(address);
+      return getCompactDisplayName(address, this.walletService.getSeeds(), addressName);
+    } catch (e) {
+      console.error('Error in getAddressCompactDisplayName:', e);
+      return shortenAddress(address); // Fallback to showing the shortened address
+    }
   }
 
   exportTransactionsToCsv() {

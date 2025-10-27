@@ -363,7 +363,8 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Kosten",
-      "assetTransferWarning": "Deze transactie is alleen zichtbaar in de transactielijst van het bronadres. Weergave in de transactielijst van het bestemmingsadres wordt in de huidige versie nog niet ondersteund."
+      "assetTransferWarning": "Deze transactie is alleen zichtbaar in de transactielijst van het bronadres. Weergave in de transactielijst van het bestemmingsadres wordt in de huidige versie nog niet ondersteund.",
+      "timestamp": "Tijdstempel"
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

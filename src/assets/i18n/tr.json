@@ -364,7 +364,8 @@
       "tick": "Tik",
       "type": "Tür",
       "fee": "Ücret",
-      "assetTransferWarning": "Bu işlem yalnızca kaynak adresin işlem listesinde görünmektedir. Hedef adresin işlem listesinde gösterilmesi mevcut sürümde henüz desteklenmemektedir."
+      "assetTransferWarning": "Bu işlem yalnızca kaynak adresin işlem listesinde görünmektedir. Hedef adresin işlem listesinde gösterilmesi mevcut sürümde henüz desteklenmemektedir.",
+      "timestamp": "Zaman damgası"
     },
     "epoch": "Çağ",
     "ticks": "Tikler"

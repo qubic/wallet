@@ -55,10 +55,9 @@
                                         {{ getAddressShortDisplayName(transaction.sourceId)}}
                                     </a>
                                 </span>
-                                <span class="desktopOnly secondary ">
+                                <span class="transaction-datetime-header secondary">
                                     &nbsp;
-                                    {{ transaction.created | date}}
-                                    {{ transaction.created | date:'HH:mm:ss' }}
+                                    {{ transaction.created | dateTime }}
                                 </span>
                                 <button
                                     *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
@@ -217,14 +216,15 @@
                             <span class="display-publicid disable-area">
                                 <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
                                     target="_blank">
-                                    {{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}
+                                    <!-- Compact name for small screens (when datetime is in header) -->
+                                    <span class="address-name-compact">{{ getAddressCompactDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
+                                    <!-- Short name with address for large screens (when datetime is in details) -->
+                                    <span class="address-name-full">{{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
                                 </a>
                             </span>
-                            <span class="desktopOnly secondary ">
+                            <span class="transaction-datetime-header secondary">
                                 &nbsp;
-                                {{ transaction.transactions[0].timestamp | date}} {{
-                                transaction.transactions[0].timestamp |
-                                date:'HH:mm:ss' }}
+                                {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
                             <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
@@ -343,6 +343,16 @@
                                         <span class="value">
                                             {{ formatInputType(transaction.transactions[0].transaction.inputType,
                                             transaction.transactions[0].transaction.destId) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row transaction-datetime-details">
+                                    <div class="col-label">
+                                        <span class="label">{{ t("balanceComponent.transaction.timestamp") }}</span>
+                                    </div>
+                                    <div class="col-value disable-area">
+                                        <span class="value">
+                                            {{ transaction.transactions[0].timestamp | dateTime }}
                                         </span>
                                     </div>
                                 </div>

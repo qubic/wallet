@@ -362,6 +362,7 @@
       "destination": "Ziel",
       "tick": "Tick",
       "type": "Typ",
+      "timestamp": "Zeitstempel",
       "fee": "Gebühr",
       "assetTransferWarning": "Diese Transaktion ist nur in der Transaktionsliste der Quelladresse sichtbar. Die Anzeige in der Transaktionsliste der Zieladresse wird in der aktuellen Version noch nicht unterstützt."
     },

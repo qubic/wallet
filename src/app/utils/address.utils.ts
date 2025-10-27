@@ -107,3 +107,46 @@ export function getShortDisplayName(address: string, seeds: ISeed[], addressName
 
   return shortenAddress(address);
 }
+
+/**
+ * Returns a compact display name for an address, showing ONLY the name for known addresses
+ * (wallet accounts, smart contracts, exchanges, tokens) without the address in parentheses.
+ * For unknown addresses, returns the shortened address.
+ *
+ * This is ideal for mobile/compact views where space is limited.
+ *
+ * @param address The address to display
+ * @param seeds Array of wallet seeds/accounts
+ * @param addressNameResult Optional result from AddressNameService for enhanced display
+ * @returns Name only for known addresses, shortened address for unknown addresses
+ *
+ * @example
+ * // Address belongs to wallet
+ * getCompactDisplayName("ABCDEFGHIJKLMNOPQRSTUVWXYZ12345", seeds) // Returns "My Main Account"
+ *
+ * // Smart contract
+ * getCompactDisplayName("...", seeds, { name: "Qx", type: "smart-contract" }) // Returns "Qx"
+ *
+ * // Unknown address
+ * getCompactDisplayName("DEFGHIJKLMNOPQRSTUVWXYZ67890", seeds) // Returns "DEFGH...67890"
+ */
+export function getCompactDisplayName(address: string, seeds: ISeed[], addressNameResult?: AddressNameResult): string {
+  if (!address || !seeds) {
+    return address || '';
+  }
+
+  // Priority 1: Check wallet seeds (account) - show only the alias
+  const seed = seeds.find(s => s.publicId === address);
+  if (seed) {
+    return seed.alias;
+  }
+
+  // Priority 2: Use addressNameResult if provided - show only the name
+  if (addressNameResult) {
+    return addressNameResult.name;
+  }
+
+  // Unknown address - show shortened version
+  return shortenAddress(address);
+}
+

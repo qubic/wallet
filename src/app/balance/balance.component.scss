@@ -220,3 +220,44 @@ mat-card {
         margin: 0;
     }
 }
+
+// Timestamp responsive behavior:
+// - Show in header when there's enough space (tablet landscape and up)
+// - Show in details on mobile and small tablets
+.transaction-datetime-header {
+    display: none;
+}
+
+.transaction-datetime-details {
+    display: flex !important; // Override .row display
+}
+
+// Address name responsive behavior:
+// - On small screens: show compact name (name only) when datetime is in header
+// - On large screens: show full name (name + shortened address) when datetime is in details
+.address-name-compact {
+    display: inline;
+}
+
+.address-name-full {
+    display: none;
+}
+
+// Use Material Design md breakpoint - tablet landscape and up
+@media screen and (min-width: $breakpoint-md) {
+    .transaction-datetime-header {
+        display: inline;
+    }
+
+    .transaction-datetime-details {
+        display: none !important;
+    }
+
+    .address-name-compact {
+        display: none;
+    }
+
+    .address-name-full {
+        display: inline;
+    }
+}
