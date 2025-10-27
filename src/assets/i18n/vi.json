@@ -364,7 +364,7 @@
       "tick": "Tick",
       "type": "Loại",
       "fee": "Phí",
-      "assetTransferWarning": "Bản ghi giao dịch này hiện chỉ hiển thị cho người gửi. Người nhận sẽ chưa thấy dữ liệu giao dịch trong hồ sơ của họ vào lúc này.",
+      "assetTransferWarning": "Giao dịch này chỉ hiển thị trong danh sách giao dịch của địa chỉ nguồn. Việc hiển thị nó trong danh sách giao dịch của địa chỉ đích chưa được hỗ trợ trong phiên bản hiện tại.",
       "timestamp": "Dấu thời gian"
     },
     "epoch": "Epoch",

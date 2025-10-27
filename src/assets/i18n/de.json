@@ -364,7 +364,7 @@
       "type": "Typ",
       "timestamp": "Zeitstempel",
       "fee": "Gebühr",
-      "assetTransferWarning": "Dieser Transaktionsdatensatz ist derzeit nur für den Absender sichtbar. Der Empfänger hat zu diesem Zeitpunkt keinen Zugriff auf diese Transaktionsdaten in seinen Aufzeichnungen."
+      "assetTransferWarning": "Diese Transaktion ist nur in der Transaktionsliste der Quelladresse sichtbar. Die Anzeige in der Transaktionsliste der Zieladresse wird in der aktuellen Version noch nicht unterstützt."
     },
     "epoch": "Epoche",
     "ticks": "Ticks"
