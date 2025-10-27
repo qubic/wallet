@@ -301,7 +301,8 @@
         "chooseOwnSeed": "Escolher sua própria ID de endereço",
         "error": {
           "required": "O ID do endereço é obrigatório",
-          "length": "Um ID de endereço Qubic consiste em 60 letras maiúsculas."
+          "length": "Um ID de endereço Qubic consiste em 60 letras maiúsculas.",
+          "invalidAddress": "Endereço de destinatário inválido"
         }
       },
       "amount": {

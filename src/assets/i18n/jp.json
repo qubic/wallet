@@ -303,7 +303,8 @@
         "chooseOwnSeed": "自分のアドレスIDを選択",
         "error": {
           "required": "アドレスIDが必要です",
-          "length": "QubicのアドレスIDは60文字の大文字で構成されます。"
+          "length": "QubicのアドレスIDは60文字の大文字で構成されます。",
+          "invalidAddress": "無効な受信者アドレス"
         }
       },
       "amount": {

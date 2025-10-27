@@ -303,7 +303,8 @@
         "chooseOwnSeed": "Chọn ID địa chỉ của bạn",
         "error": {
           "required": "Yêu cầu ID địa chỉ",
-          "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa."
+          "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa.",
+          "invalidAddress": "Địa chỉ người nhận không hợp lệ"
         }
       },
       "amount": {

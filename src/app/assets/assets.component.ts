@@ -267,10 +267,8 @@ export class AssetsComponent implements OnInit {
 
     // verify target address
     if (!(await targetAddress.verifyIdentity())) {
-      this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
-        duration: 10000,
-        panelClass: "error"
-      });
+      destinationAddressControl.setErrors({ invalidAddress: true });
+      this.isSending = false;
       return;
     }
 

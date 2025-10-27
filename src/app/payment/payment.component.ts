@@ -149,11 +149,8 @@ export class PaymentComponent implements OnInit {
 
       // verify target address
       if (!(await targetAddress.verifyIdentity())) {
-        this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
-          duration: 10000,
-          panelClass: "error"
-        });
-
+        this.transferForm.controls.destinationId.setErrors({ invalidAddress: true });
+        this.isBroadcasting = false;
         return;
       }
 
