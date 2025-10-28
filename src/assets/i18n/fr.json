@@ -207,7 +207,8 @@
         "receivePayment": "Générer un QR Code pour recevoir un paiement.",
         "editSeed": "Modifier l'adresse",
         "deleteSeed": "Supprimer l'adresse",
-        "refreshBalance": "Actualiser le solde depuis le réseau"
+        "refreshBalance": "Actualiser le solde depuis le réseau",
+        "openExplorer": "Afficher dans l'Explorateur"
       }
     },
     "hasPendingTransaction": "Transactions en attente",

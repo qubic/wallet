@@ -207,7 +207,8 @@
         "receivePayment": "Tạo mã QR để nhận thanh toán",
         "editSeed": "Sửa địa chỉ",
         "deleteSeed": "Xóa địa chỉ",
-        "refreshBalance": "Làm mới số dư từ mạng"
+        "refreshBalance": "Làm mới số dư từ mạng",
+        "openExplorer": "Xem trên Explorer"
       }
     },
     "hasPendingTransaction": "Giao dịch đang chờ",

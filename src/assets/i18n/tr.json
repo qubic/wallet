@@ -207,7 +207,8 @@
         "receivePayment": "Ödeme almak için bir QR Kodu oluşturun.",
         "editSeed": "Adresi Düzenle",
         "deleteSeed": "Adresi Sil",
-        "refreshBalance": "Bakiyeyi Ağdan Yenile"
+        "refreshBalance": "Bakiyeyi Ağdan Yenile",
+        "openExplorer": "Explorer'da Görüntüle"
       }
     },
     "hasPendingTransaction": "Bekleyen İşlemler",

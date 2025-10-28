@@ -207,7 +207,8 @@
         "receivePayment": "QR Code zum Empfang einer Zahlung generieren.",
         "editSeed": "Konto bearbeiten",
         "deleteSeed": "Konto löschen",
-        "refreshBalance": "Kontostand im Netzwerk abrufen"
+        "refreshBalance": "Kontostand im Netzwerk abrufen",
+        "openExplorer": "In Explorer anzeigen"
       }
     },
     "hasPendingTransaction": "Offene Zahlungen",

@@ -207,7 +207,8 @@
         "receivePayment": "生成二维码以接收付款",
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
-        "refreshBalance": "刷新余额"
+        "refreshBalance": "刷新余额",
+        "openExplorer": "在浏览器中查看"
       }
     },
     "hasPendingTransaction": "交易待定",
