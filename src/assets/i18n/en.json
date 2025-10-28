@@ -207,7 +207,8 @@
         "receivePayment": "Generate a QR Code to receive a payment.",
         "editSeed": "Edit address",
         "deleteSeed": "Delete address",
-        "refreshBalance": "Refresh Balance from Network"
+        "refreshBalance": "Refresh Balance from Network",
+        "openExplorer": "View in Explorer"
       }
     },
     "hasPendingTransaction": "Transactions pending",

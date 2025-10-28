@@ -207,7 +207,8 @@
         "receivePayment": "Сгенерировать QR-код для получения платежа",
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
-        "refreshBalance": "Обновить баланс"
+        "refreshBalance": "Обновить баланс",
+        "openExplorer": "Показать в Explorer"
       }
     },
     "hasPendingTransaction": "Транзакция в обработке",

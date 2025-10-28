@@ -207,7 +207,8 @@
         "receivePayment": "Genereer een QR Code om een betaling te ontvangen.",
         "editSeed": "Account aanpassen",
         "deleteSeed": "Account verwijderen",
-        "refreshBalance": "Refresh Balance from Network"
+        "refreshBalance": "Refresh Balance from Network",
+        "openExplorer": "Weergeven in Explorer"
       }
     },
     "hasPendingTransaction": "Transactions pending",

@@ -207,7 +207,8 @@
         "receivePayment": "Generar un Código QR para recibir un pago",
         "editSeed": "Editar la dirección",
         "deleteSeed": "Eliminar la dirección",
-        "refreshBalance": "Actualizar el saldo desde la red"
+        "refreshBalance": "Actualizar el saldo desde la red",
+        "openExplorer": "Ver en el Explorador"
       }
     },
     "hasPendingTransaction": "Transacciones pendientes",

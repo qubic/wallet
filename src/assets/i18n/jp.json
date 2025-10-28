@@ -207,7 +207,8 @@
         "receivePayment": "支払いを受けるためのQRコードを生成する。",
         "editSeed": "アドレスを編集",
         "deleteSeed": "アドレスを削除",
-        "refreshBalance": "ネットワークから残高を更新"
+        "refreshBalance": "ネットワークから残高を更新",
+        "openExplorer": "エクスプローラーで表示"
       }
     },
     "hasPendingTransaction": "保留中の取引",
