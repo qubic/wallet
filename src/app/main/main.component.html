@@ -224,10 +224,10 @@
       (click)="receive(publicId)">
       <mat-icon>qr_code_2</mat-icon>
     </button>
-    <a mat-icon-button class="icon-color-link" [href]="'https://explorer.qubic.org/network/address/' + publicId"
-      target="_blank" title="explorer.qubic.org">
+    <button mat-icon-button class="icon-color-link" (click)="openExplorer(publicId)"
+      [title]="t('seedOverviewComponent.table.actions.openExplorer')">
       <mat-icon>explore</mat-icon>
-    </a>
+    </button>
     <br *ngIf="walletService.privateKey && !isTable">
     <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
       (click)="reveal(publicId)">

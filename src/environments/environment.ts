@@ -4,6 +4,6 @@ export const environment = {
     apiQliUrl: 'http://localhost:7003',
     apiUrl: 'http://localhost:7004',
     staticApiUrl: 'https://static.qubic.org',
-    explorer: 'https://explorer.qubic.org/network/address/',
+    explorerUrl: 'https://explorer.qubic.org',
     assetsFees: 100
 };

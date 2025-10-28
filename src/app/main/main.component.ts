@@ -24,6 +24,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 
 @Component({
@@ -355,6 +356,10 @@ export class MainComponent implements AfterViewInit {
 
   openAssetsPage() {
     this.router.navigate(['/assets-area']);
+  }
+
+  openExplorer(publicId: string) {
+    window.open(ExplorerUrlHelper.getAddressUrl(publicId), '_blank');
   }
 
 

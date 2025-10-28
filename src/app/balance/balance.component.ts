@@ -16,6 +16,7 @@ import { AssetTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { AddressNameService } from '../services/address-name.service';
 import { AddressNameResult } from '../services/apis/static/qubic-static.model';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 @Component({
   selector: 'app-balance',
@@ -25,6 +26,7 @@ import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 export class BalanceComponent implements OnInit {
 
   shortenAddress = shortenAddress;
+  ExplorerUrlHelper = ExplorerUrlHelper;
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;

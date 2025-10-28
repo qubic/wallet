@@ -4,7 +4,7 @@ export const environment = {
   apiQliUrl: 'https://api.qubic.li',
   apiUrl: 'https://rpc.qubic.org',
   staticApiUrl: 'https://static.qubic.org',
-  explorer: 'https://explorer.qubic.org/network/address/',
+  explorerUrl: 'https://explorer.qubic.org',
   assetsFees: 100
 };
 
