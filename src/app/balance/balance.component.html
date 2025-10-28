@@ -50,7 +50,7 @@
                                 <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
-                                    <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
                                         target="_blank">
                                         {{ getAddressShortDisplayName(transaction.sourceId)}}
                                     </a>
@@ -90,7 +90,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
-                                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.id"
+                                                    [href]="ExplorerUrlHelper.getTransactionUrl(transaction.id)"
                                                     target="_blank">{{transaction.id}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
@@ -105,7 +105,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                                    [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
                                                     target="_blank">
                                                     {{getAddressDisplayName(transaction.sourceId)}}
                                                 </a>
@@ -121,7 +121,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
+                                                    [href]="ExplorerUrlHelper.getAddressUrl(transaction.destId)"
                                                     target="_blank">
                                                     {{getAddressDisplayName(transaction.destId)}}
                                                 </a>
@@ -137,7 +137,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
+                                                    [href]="ExplorerUrlHelper.getTickUrl(transaction.targetTick)"
                                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
                                                 </a>
                                             </span>
@@ -213,7 +213,7 @@
                             </span>
                             &nbsp;
                             <span class="display-publicid disable-area">
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.sourceId)"
                                     target="_blank">
                                     <!-- Compact name for small screens (when datetime is in header) -->
                                     <span class="address-name-compact">{{ getAddressCompactDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
@@ -270,7 +270,7 @@
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
                                                 *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
-                                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
+                                                [href]="ExplorerUrlHelper.getTransactionUrl(transaction.transactions[0].transaction.txId)"
                                                 target="_blank">{{transaction.transactions[0].transaction.txId}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
@@ -285,7 +285,7 @@
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value display-publicid"> <a
-                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                                [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.sourceId)"
                                                 target="_blank">
                                                 {{getAddressDisplayName(transaction.transactions[0].transaction.sourceId)}}
                                             </a>
@@ -302,7 +302,7 @@
                                         <span class="value">
                                             <ng-container
                                                 *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalDest">
-                                                <a [href]="'https://explorer.qubic.org/network/address/' + getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor"
+                                                <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)"
                                                     target="_blank">
                                                     {{getAddressDisplayName(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)}}
                                                 </a>
@@ -311,7 +311,7 @@
                                                     [cdkCopyToClipboard]="getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor">content_copy</mat-icon>
                                             </ng-container>
                                             <ng-template #normalDest>
-                                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                                <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.destId)"
                                                     target="_blank">
                                                     {{getAddressDisplayName(transaction.transactions[0].transaction.destId)}}
                                                 </a>
@@ -328,7 +328,7 @@
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                                [href]="ExplorerUrlHelper.getTickUrl(transaction.tickNumber)"
                                                 target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
                                             </a>
                                         </span>

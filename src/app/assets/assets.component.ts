@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 
 @Component({
@@ -195,8 +196,7 @@ export class AssetsComponent implements OnInit {
   }
 
   openIssuerIdentity(issuerIdentity: string): void {
-    const url = `https://explorer.qubic.org/network/address/${issuerIdentity}`;
-    window.open(url, '_blank');
+    window.open(ExplorerUrlHelper.getAddressUrl(issuerIdentity), '_blank');
   }
 
   getBalanceAfterFees(): number {
