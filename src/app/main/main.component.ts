@@ -113,7 +113,10 @@ export class MainComponent implements AfterViewInit {
       });
     });
 
+    // Get current balance value first, then subscribe to updates
+    this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
+
     updaterService.currentBalance.subscribe(b => {
       this.balances = b;
       this.setDataSource();
