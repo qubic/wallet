@@ -344,7 +344,7 @@ export class UpdaterService {
   private processError(errObject: any, showToUser: boolean = true) {
     if (errObject.status == 401) {
       this.api.reAuthenticate();
-    } else if (errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
+    } else if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
       this.errorStatus.next(errObject.error);
     } else if (errObject.statusText) {
       if (showToUser)
