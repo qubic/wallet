@@ -250,13 +250,29 @@ export class WalletService {
 
   public async revealSeed(publicId: string): Promise<string> {
     const seed = this.getSeed(publicId);
+
+    if (!seed) {
+      return Promise.reject(new Error('Seed not found'));
+    }
+
+    if (!seed.encryptedSeed) {
+      return Promise.reject(new Error('Encrypted seed data is missing'));
+    }
+
+    if (!this.privateKey) {
+      return Promise.reject(new Error('Wallet is locked'));
+    }
+
     try {
       const decryptedSeed = await this.decrypt(
-        this.privateKey!,
-        this.base64ToArrayBuffer(seed?.encryptedSeed!)
+        this.privateKey,
+        this.base64ToArrayBuffer(seed.encryptedSeed)
       );
       return new TextDecoder().decode(decryptedSeed);
     } catch (e) {
+      if (e instanceof Error && e.name === 'OperationError') {
+        return Promise.reject(new Error('Failed to decrypt seed - data may be corrupted'));
+      }
       return Promise.reject(e);
     }
   }
