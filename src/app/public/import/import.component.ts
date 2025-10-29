@@ -1,5 +1,5 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { ChangeDetectorRef, Component, Injector, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +10,8 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +19,8 @@ import { Router } from '@angular/router';
   templateUrl: './import.component.html',
   styleUrls: ['./import.component.scss']
 })
-export class ImportVaultComponent extends QubicDialogWrapper {
+export class ImportVaultComponent extends QubicDialogWrapper implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
   public file: File | null = null;
   public selectedConfigFile: File | null = null;
@@ -66,7 +69,8 @@ export class ImportVaultComponent extends QubicDialogWrapper {
         if (success) {
           this.pwdWrong = false;
           this.walletService.isWalletReady = true;
-          this.updaterService.loadCurrentBalance(true);
+          // Use setTimeout to prevent pileup with interval-based calls
+          setTimeout(() => this.updaterService.loadCurrentBalance(true), 100);
           this.router.navigate(['/']);
         } else {
           this._snackBar.open("Import Failed (password or file do not match)", "close", {
@@ -92,7 +96,8 @@ export class ImportVaultComponent extends QubicDialogWrapper {
           if((await this.unlock())){
             // legacy format
             await this.walletService.importConfig(config);
-            this.updaterService.loadCurrentBalance(true);
+            // Use setTimeout to prevent pileup with interval-based calls
+            setTimeout(() => this.updaterService.loadCurrentBalance(true), 100);
           }
         } else {
           this._snackBar.open("Unlock Failed (no file)", "close", {
@@ -115,15 +120,22 @@ export class ImportVaultComponent extends QubicDialogWrapper {
           message: this.transloco.translate("unlockComponent.overwriteVault")
         }
       });
-      confirmDialo.afterClosed().subscribe(result => {
-        if (result) {
-          // start import
-          this.importAndUnlock();
-        }
-      })
+      confirmDialo.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (result) {
+            // start import
+            this.importAndUnlock();
+          }
+        });
     } else {
       this.importAndUnlock();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public async unlock(): Promise<boolean> {
@@ -159,7 +171,8 @@ export class ImportVaultComponent extends QubicDialogWrapper {
         if (r) {
           this.pwdWrong = false;
           this.walletService.isWalletReady = true;
-          this.updaterService.loadCurrentBalance(true);
+          // Use setTimeout to prevent pileup with interval-based calls
+          setTimeout(() => this.updaterService.loadCurrentBalance(true), 100);
           this.router.navigate(['/']);
         } else {
           this._snackBar.open("Import Failed", "close", {

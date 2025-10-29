@@ -153,7 +153,15 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
 
   ngAfterViewInit(): void {
-    this.setDataSource();
+    // Ensure we have data before setting datasource
+    // setDataSource will be called when currentBalance subscription fires
+    if (this.balances && this.balances.length > 0) {
+      this.setDataSource();
+    } else {
+      // Initialize with empty data to show the table structure
+      this.dataSource = new MatTableDataSource(this.walletService.getSeeds());
+      this.dataSource.sort = this.sort;
+    }
   }
 
 
@@ -168,10 +176,12 @@ export class MainComponent implements AfterViewInit, OnDestroy {
           confirm: this.transloco.translate("switchExportDialog.buttons.confirm")
         }
       });
-      confirmDialo.afterClosed().subscribe(result => {
-        if (result) {
-          //  alert("export vault");
-          this.openExportDialog();
+      confirmDialo.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (result) {
+            //  alert("export vault");
+            this.openExportDialog();
 
           this.isVaultExportDialog = true;
           localStorage.setItem("vault-export-dialog", this.isVaultExportDialog ? '1' : '0');

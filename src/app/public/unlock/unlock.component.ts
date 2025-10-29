@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Injector,
+  OnDestroy,
   Renderer2,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -15,13 +16,16 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'qli-public-unlock',
   templateUrl: './unlock.component.html',
   styleUrls: ['./unlock.component.scss'],
 })
-export class PublicUnLockComponent extends QubicDialogWrapper {
+export class PublicUnLockComponent extends QubicDialogWrapper implements OnDestroy {
+  private destroy$ = new Subject<void>();
   public file: File | null = null;
   public pwdWrong = false;
   public selectedFileIsVaultFile = false;
@@ -125,7 +129,8 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
             this.walletService.lock();
           } else {
             this.walletService.isWalletReady = true;
-            this.updaterService.loadCurrentBalance(true);
+            // Use setTimeout to prevent pileup with interval-based calls
+            setTimeout(() => this.updaterService.loadCurrentBalance(true), 100);
             this.router.navigate(['/']);
           }
         } else {
@@ -173,12 +178,19 @@ export class PublicUnLockComponent extends QubicDialogWrapper {
         message: this.transloco.translate('unlockComponent.overwriteVault'),
       },
     });
-    confirmDialo.afterClosed().subscribe((result) => {
-      if (result) {
-        this.walletService.clearConfig();
-        this.router.navigate([route]);
-      }
-    });
+    confirmDialo.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        if (result) {
+          this.walletService.clearConfig();
+          this.router.navigate([route]);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public importVault() {

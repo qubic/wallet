@@ -7,7 +7,7 @@ import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ApiStatsService } from './apis/stats/api.stats.service';
 import { LatestStatsResponse } from './apis/stats/api.stats.model';
 import { ApiLiveService } from './apis/live/api.live.service';
@@ -49,6 +49,10 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
+  // Subscription management to prevent request pileup
+  private balanceSubscription?: Subscription;
+  private networkBalanceSubscription?: Subscription;
+
   constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
     this.init();
   }
@@ -63,22 +67,31 @@ export class UpdaterService {
     this.getAssets();
     this.getLatestStats();
     this.getTransactionsArchiver();
-    // every 30 seconds
+
+    // Check for updates every 30 seconds
     setInterval(() => {
-      this.getStatusArchiver();
-      this.getCurrentTickArchiver();
-      this.getTickInfo();
+      if (this.isActive) {
+        this.getStatusArchiver();
+        this.getCurrentTickArchiver();
+        this.getTickInfo();
+      }
     }, 30000);
-    // every minute
+
+    // Check for balance and transaction updates every 60 seconds
     setInterval(() => {
-      this.getCurrentBalance();
-      this.getNetworkBalances();
-      this.getAssets();
-      this.getTransactionsArchiver();
+      if (this.isActive) {
+        this.getCurrentBalance();
+        this.getNetworkBalances();
+        this.getAssets();
+        this.getTransactionsArchiver();
+      }
     }, 60000);
-    // every hour
+
+    // Keep hourly stats check
     setInterval(() => {
-      this.getLatestStats();
+      if (this.isActive) {
+        this.getLatestStats();
+      }
     }, 60000 * 60);
 
     this.visibilityService.isActive().subscribe(s => {
@@ -100,16 +113,21 @@ export class UpdaterService {
 
   /**
    * should load the current balances for the accounts
-   * @returns 
+   * @returns
    */
   private getCurrentBalance(force = false) {
     if (!force && (this.balanceLoading || !this.isActive))
       return;
 
+    // Cancel any pending balance request before starting a new one
+    if (this.balanceSubscription && !this.balanceSubscription.closed) {
+      this.balanceSubscription.unsubscribe();
+    }
+
     this.balanceLoading = true;
     if (this.walletService.getSeeds().length > 0) {
       // todo: Use Websocket!
-      this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
+      this.balanceSubscription = this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
         if (r) {
           this.currentBalance.next(r);
           this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
@@ -137,7 +155,7 @@ export class UpdaterService {
 
   /**
    * load balances directly from network
-   * @returns 
+   * @returns
    */
   private getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): void {
     if (!force && (this.networkBalanceLoading || !this.isActive))
@@ -146,10 +164,15 @@ export class UpdaterService {
     if (!publicIds)
       publicIds = this.walletService.getSeeds().map(m => m.publicId);
 
+    // Cancel any pending network balance request before starting a new one
+    if (this.networkBalanceSubscription && !this.networkBalanceSubscription.closed) {
+      this.networkBalanceSubscription.unsubscribe();
+    }
+
     this.networkBalanceLoading = true;
     if (this.walletService.getSeeds().length > 0) {
       // todo: Use Websocket!
-      this.api.getNetworkBalances(publicIds).subscribe(r => {
+      this.networkBalanceSubscription = this.api.getNetworkBalances(publicIds).subscribe(r => {
         if (r) {
           // update wallet
           r.forEach((entry) => {
@@ -223,11 +246,16 @@ export class UpdaterService {
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || !this.status))
+    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || !this.status || !this.isActive))
       return;
 
     if (!publicIds)
       publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
+
+    // Don't proceed if no accounts to load
+    if (!publicIds || publicIds.length === 0) {
+      return;
+    }
 
     let epoch = this.status.lastProcessedTick.epoch;
     let initialTick = 0;
@@ -265,6 +293,8 @@ export class UpdaterService {
         console.error('errorResponse:', errorResponse);
         this.transactionArchiverLoading = false;
       });
+    } else {
+      this.transactionArchiverLoading = false;
     }
   }
 
