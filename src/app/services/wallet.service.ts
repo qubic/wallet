@@ -29,7 +29,7 @@ export class WalletService {
   //public webBridges: string[] = [];
   public txs: ITx[] = [];
   public configError = false;
-  public erroredCOnfig: string = '';
+  public erroredConfig: string = '';
   public shouldExportKey = true;
 
 
@@ -108,7 +108,7 @@ export class WalletService {
         await this.loadConfig(config);
       } catch (e) {
         this.configError = true;
-        this.erroredCOnfig = jsonString;
+        this.erroredConfig = jsonString;
       }
     }
     this.onConfig.next(this.runningConfiguration);

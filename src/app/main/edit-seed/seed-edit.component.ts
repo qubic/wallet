@@ -12,6 +12,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
+import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -26,12 +27,12 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
   seedEditForm = this.fb.group({
     alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
     seed: ['', [Validators.required, Validators.minLength(55), Validators.maxLength(55), Validators.pattern('[a-z]*')]],
-    publicId: ['', [Validators.required, Validators.minLength(60), Validators.maxLength(60), Validators.pattern('[A-Z]*')]],
+    publicId: ['', [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH), Validators.pattern('[A-Z]*')]],
     isWatchOnlyAddress: [false],
   });
   seedEditFormPublicId = this.fb.group({
     alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    publicId: ['', [Validators.required, Validators.minLength(60), Validators.maxLength(60), Validators.pattern('[A-Z]*')]],
+    publicId: ['', [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH), Validators.pattern('[A-Z]*')]],
   });
 
   isNew = true;
@@ -80,7 +81,7 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
 
   async onSubmit() {
     // Is the Publicid already present in the accounts?
-    if (this.isNew) {     
+    if (this.isNew) {
       if (this.walletService.getSeeds().filter(s =>
         s.publicId === this.seedEditForm.controls.publicId.value ||
         s.publicId === this.seedEditFormPublicId.controls.publicId.value
@@ -184,7 +185,7 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
   public insertSeed() {
     navigator.clipboard.readText().then(clipText => {
       this.seedEditForm.controls.seed.setValue(clipText);
-    });    
+    });
   }
 
   public resetSeed() {
