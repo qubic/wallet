@@ -61,18 +61,6 @@ export class MainComponent implements AfterViewInit {
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
 
-  public categorizedSeeds: {
-    strongSeeds: { publicKey: string, log: string }[],
-    okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[] }[],
-    weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[],
-    badSeeds: { publicKey: string, log: string, pattern: string }[]
-  } = {
-      strongSeeds: [],
-      okaySeeds: [],
-      weakSeeds: [],
-      badSeeds: []
-    };
-
 
   @ViewChild(MatTable)
   table!: MatTable<ISeed>;
@@ -199,14 +187,6 @@ export class MainComponent implements AfterViewInit {
       return m;
     }));
     this.dataSource.sort = this.sort;
-
-    if (this.walletService.privateKey) {
-      this.dataSource.data.forEach(element => {
-        this.checkQualitySeed(element.publicId);
-      });
-    } else {
-      this.resetCategorizedSeeds();
-    }
   }
 
 
@@ -442,71 +422,5 @@ export class MainComponent implements AfterViewInit {
   }
 
 
-  /**
-  * This function checks the quality of a seed based on its publicId by revealing it, categorizing it, 
-  * and then adding it to the appropriate category: strong, weak, or bad.
-  */
-  checkQualitySeed(publicId: string): void {
-    this.walletService.revealSeed(publicId).then(seed => {
-      const seeds: Seed[] = [
-        { seed: seed, publicKey: publicId },
-      ];
-
-      // Perform categorization and store the result in the component
-      const categorizedResult = this.walletService.categorizeSeeds(seeds);
-
-      // Find the corresponding seed in the result and add it
-      this.categorizedSeeds.strongSeeds.push(...categorizedResult.strongSeeds.map(strongSeed => ({
-        publicKey: publicId,
-        log: 'Strong seed' // You can add more logs here if necessary
-      })));
-
-      this.categorizedSeeds.okaySeeds.push(...categorizedResult.okaySeeds.map(okaySeed => ({
-        publicKey: publicId,
-        log: 'okay seed',
-        detailsOkay: okaySeed.detailsOkay // Details about weak sequences and positions
-      })));
-
-      this.categorizedSeeds.weakSeeds.push(...categorizedResult.weakSeeds.map(weakSeed => ({
-        publicKey: publicId,
-        log: 'Weak seed',
-        details: weakSeed.details // Details about weak sequences and positions
-      })));
-
-      this.categorizedSeeds.badSeeds.push(...categorizedResult.badSeeds.map(badSeed => ({
-        publicKey: publicId,
-        log: `Bad seed: pattern: ${badSeed.pattern}`,
-        pattern: badSeed.pattern
-      })));
-    });
-  }
-
-  /**
-   * Helper function to get the category of a seed by publicId.
-   * Can return 'strong', 'weak', or 'bad' seeds.
-   */
-  getSeedQualityCategory(publicId: string, category: 'strong' | 'okay' | 'weak' | 'bad') {
-    switch (category) {
-      case 'strong':
-        return this.categorizedSeeds.strongSeeds.filter(seed => seed.publicKey === publicId);
-      case 'okay':
-        return this.categorizedSeeds.okaySeeds.filter(seed => seed.publicKey === publicId);
-      case 'weak':
-        return this.categorizedSeeds.weakSeeds.filter(seed => seed.publicKey === publicId);
-      case 'bad':
-        return this.categorizedSeeds.badSeeds.filter(seed => seed.publicKey === publicId);
-      default:
-        return [];
-    }
-  }
-
-  public resetCategorizedSeeds(): void {
-    this.categorizedSeeds = {
-      strongSeeds: [],
-      okaySeeds: [],
-      weakSeeds: [],
-      badSeeds: []
-    };
-  }
 }
 
