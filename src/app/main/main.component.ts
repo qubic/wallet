@@ -60,6 +60,7 @@ export class MainComponent implements AfterViewInit {
   public isMobile = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
+  private lastSeedIds: string = '';
 
   public categorizedSeeds: {
     strongSeeds: { publicKey: string, log: string }[],
@@ -113,13 +114,32 @@ export class MainComponent implements AfterViewInit {
       });
     });
 
-    // Get current balance value first, then subscribe to updates
+    // Get initial balance value to ensure UI shows data immediately
     this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
 
+    // Subscribe to wallet config changes (e.g., when a new vault is loaded)
+    walletService.onConfig.subscribe(config => {
+      // Create a hash of seed IDs to detect if seeds have actually changed
+      const currentSeedIds = (config.seeds || []).map(s => s.publicId).sort().join(',');
+      if (currentSeedIds !== this.lastSeedIds) {
+        this.lastSeedIds = currentSeedIds;
+        // Immediately update the UI with new seeds
+        this.setDataSource();
+        // Force balance update when seeds change
+        if (config.seeds && config.seeds.length > 0) {
+          updaterService.loadCurrentBalance(true);
+        }
+      }
+    });
+
+    // Subscribe to balance updates (skip first emission to avoid double setDataSource call)
     updaterService.currentBalance.subscribe(b => {
-      this.balances = b;
-      this.setDataSource();
+      // Only update if the balance reference actually changed
+      if (this.balances !== b) {
+        this.balances = b;
+        this.setDataSource();
+      }
     })
 
     updaterService.internalTransactions.subscribe(txs => {
