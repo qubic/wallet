@@ -73,7 +73,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -111,7 +111,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">

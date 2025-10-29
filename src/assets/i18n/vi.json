@@ -88,6 +88,9 @@
   "assetsComponent": {
     "title": "Tài sản của bạn",
     "openAssets": "Đi tới Quản lý tài sản",
+    "managedBy": "Được quản lý bởi {{contract}}",
+    "by": "bởi {{contract}}",
+    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Tổng quan tài sản"
     },
@@ -100,7 +103,8 @@
       "possessedAmount": "Số lượng đang giữ",
       "tick": "Hợp lệ cho Tick {{tick}}",
       "reportingNodes": "Nút báo cáo",
-      "issuerIdentity": "Danh tính nhà phát hành"
+      "issuerIdentity": "Danh tính nhà phát hành",
+      "managedBy": "Được quản lý bởi"
     },
     "buttons": {
       "close": "Đóng",

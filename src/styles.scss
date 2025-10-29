@@ -236,6 +236,12 @@ $altTheme: (
     color: $light-accent-text;
   }
 
+  .currency-label {
+    font-size: 0.6em;
+    font-weight: normal;
+    color: $light-link;
+  }
+
   .isPositiv {
     color: $light-positiv-color;
   }
@@ -1041,6 +1047,12 @@ mat-hint {
 
 .dashboard-currency-name {
   color: $dark-primary-text;
+}
+
+.currency-label {
+  font-size: 0.6em;
+  font-weight: normal;
+  color: $dark-text;
 }
 
 .isPositiv {

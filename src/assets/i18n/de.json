@@ -88,6 +88,9 @@
   "assetsComponent": {
     "title": "Ihre Vermögenswerte",
     "openAssets": "Zur Vermögensverwaltung gehen",
+    "managedBy": "Verwaltet von {{contract}}",
+    "by": "von {{contract}}",
+    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Vermögensübersicht"
     },
@@ -96,11 +99,13 @@
       "contractIndex": "Vertragsindex",
       "assetName": "Vermögenswertname",
       "contractName": "Vertragsname",
+      "managedBy": "Verwaltet von",
       "ownedAmount": "Besitzende Menge",
       "possessedAmount": "Besessene Menge",
       "tick": "Gültig für Tick {{tick}}",
       "reportingNodes": "Berichtsknoten",
-      "issuerIdentity": "Identität des Ausstellers"
+      "issuerIdentity": "Identität des Ausstellers",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Schließen",

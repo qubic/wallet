@@ -21,7 +21,22 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 
+// Interfaces for asset grouping
+interface GroupedAsset {
+  publicId: string;
+  assetName: string;
+  issuerIdentity: string;
+  totalAmount: number;
+  contracts: ContractGroup[];
+}
+
+interface ContractGroup {
+  contractName: string;
+  contractIndex: number;
+  assets: QubicAsset[];
+}
 
 @Component({
   selector: 'app-assets',
@@ -32,8 +47,10 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 export class AssetsComponent implements OnInit {
   shortenAddress = shortenAddress;
-  displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
+  displayedColumns: string[] = ['publicId', 'ownedAmount', 'managedBy', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
+  public groupedAssets: GroupedAsset[] = [];
+  public isExpanded: Map<string, boolean> = new Map();
   public currentTick = 0;
   public tickOverwrite = false;
 
@@ -67,7 +84,8 @@ export class AssetsComponent implements OnInit {
     private router: Router,
     private decimalPipe: DecimalPipe,
     private changeDetectorRef: ChangeDetectorRef,
-    private apiLiveService: ApiLiveService
+    private apiLiveService: ApiLiveService,
+    private qubicStaticService: QubicStaticService
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -87,7 +105,8 @@ export class AssetsComponent implements OnInit {
 
     // subscribe to config changes to receive asset updates
     this.walletService.onConfig.subscribe(c => {
-      this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+      this.assets = this.walletService.getSeeds().flatMap(m => m.assets).filter(f => f && f.ownedAmount > 0).map(m => <QubicAsset>m);
+      this.computeGroupedAssets();
     });
 
     // const amountControl = this.sendForm.get('amount');
@@ -349,5 +368,123 @@ export class AssetsComponent implements OnInit {
       this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
     }
     this.changeDetectorRef?.detectChanges();
+  }
+
+  /**
+   * Compute grouped assets by publicId + assetName + issuerIdentity
+   * Similar to explorer-frontend implementation
+   */
+  computeGroupedAssets(): void {
+    const grouped = new Map<string, GroupedAsset>();
+    const smartContracts = this.qubicStaticService.smartContracts$.value || [];
+
+    this.assets.forEach(asset => {
+      // Create unique key for grouping: publicId + assetName + issuerIdentity
+      const key = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}`;
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          publicId: asset.publicId,
+          assetName: asset.assetName,
+          issuerIdentity: asset.issuerIdentity,
+          totalAmount: 0,
+          contracts: []
+        });
+      }
+
+      const group = grouped.get(key)!;
+      group.totalAmount += asset.ownedAmount || 0;
+
+      // Group by contract - look up contract name from smart contracts list
+      const contractIndex = asset.contractIndex || 0;
+      let contractGroup = group.contracts.find(c => c.contractIndex === contractIndex);
+
+      if (!contractGroup) {
+        // Find the contract name from smart contracts list by contractIndex
+        const smartContract = smartContracts.find(sc => sc.contractIndex === contractIndex);
+        const contractName = smartContract?.label || '';
+
+        contractGroup = {
+          contractName: contractName,
+          contractIndex: contractIndex,
+          assets: []
+        };
+        group.contracts.push(contractGroup);
+      }
+
+      contractGroup!.assets.push(asset);
+    });
+
+    this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
+      a.assetName.localeCompare(b.assetName)
+    );
+  }
+
+  /**
+   * Toggle the expanded state for a specific grouped asset
+   */
+  toggleExpanded(groupKey: string): void {
+    const currentState = this.isExpanded.get(groupKey) || false;
+    this.isExpanded.set(groupKey, !currentState);
+  }
+
+  /**
+   * Check if a specific grouped asset is expanded
+   */
+  isGroupExpanded(groupKey: string): boolean {
+    return this.isExpanded.get(groupKey) || false;
+  }
+
+  /**
+   * Get the unique key for a grouped asset
+   */
+  getGroupKey(group: GroupedAsset): string {
+    return `${group.publicId}-${group.assetName}-${group.issuerIdentity}`;
+  }
+
+  /**
+   * Get the contract name for a specific asset by its contract index
+   */
+  getContractName(contractIndex: number): string {
+    const smartContracts = this.qubicStaticService.smartContracts$.value || [];
+    const smartContract = smartContracts.find(sc => sc.contractIndex === contractIndex);
+    return smartContract?.label || '';
+  }
+
+  /**
+   * Check if any contract in the group has a valid contract name
+   */
+  hasContractNames(contracts: ContractGroup[]): boolean {
+    return contracts.some(contract => contract.contractName && contract.contractName.trim() !== '');
+  }
+
+  /**
+   * Calculate total owned amount across all contracts for a grouped asset
+   */
+  getTotalOwnedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.contracts.forEach(contract => {
+      contract.assets.forEach(asset => {
+        if (asset.ownedAmount !== undefined && asset.ownedAmount !== null) {
+          total += asset.ownedAmount;
+        }
+      });
+    });
+    return total;
+  }
+
+  /**
+   * Calculate total possessed amount across all contracts for a grouped asset
+   */
+  getTotalPossessedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.contracts.forEach(contract => {
+      contract.assets.forEach(asset => {
+        if (asset.possessedAmount !== undefined && asset.possessedAmount !== null) {
+          total += asset.possessedAmount;
+        }
+      });
+    });
+    return total;
   }
 }

@@ -88,6 +88,9 @@
   "assetsComponent": {
     "title": "Your Assets",
     "openAssets": "Goto Asset Management",
+    "managedBy": "Gerenciado por {{contract}}",
+    "by": "por {{contract}}",
+    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Asset Overview"
     },
@@ -96,11 +99,13 @@
       "contractIndex": "Contract Index",
       "assetName": "Asset Name",
       "contractName": "Contract Name",
+      "managedBy": "Gerenciado por",
       "ownedAmount": "Owned Amount",
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "issuerIdentity": "Issuer Identity",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Close",

@@ -88,6 +88,9 @@
   "assetsComponent": {
     "title": "Varlıklar",
     "openAssets": "Varlık Yönetimine Git",
+    "managedBy": "{{contract}} tarafından yönetilir",
+    "by": "{{contract}} tarafından",
+    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Varlıklara Genel Bakış"
     },
@@ -96,11 +99,13 @@
       "contractIndex": "Sözleşme Endeksi",
       "assetName": "Varlık Adı",
       "contractName": "Sözleşme Adı",
+      "managedBy": "Tarafından yönetiliyor",
       "ownedAmount": "Sahip Olunan Tutar",
       "possessedAmount": "İşlem Gören Tutar",
       "tick": "{{tick}} Tick için geçerlidir",
       "reportingNodes": "Raporlama Düğümleri",
-      "issuerIdentity": "Veren Kimliği"
+      "issuerIdentity": "Veren Kimliği",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Kapat",

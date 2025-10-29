@@ -88,6 +88,9 @@
   "assetsComponent": {
     "title": "Vos actifs",
     "openAssets": "Ouvrir la Gestion des actifs",
+    "managedBy": "Géré par {{contract}}",
+    "by": "par {{contract}}",
+    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Vue d'ensemble des Actifs"
     },
@@ -96,11 +99,13 @@
       "contractIndex": "Index du Contrat",
       "assetName": "Nom de l'Actif",
       "contractName": "Nom du Contrat",
+      "managedBy": "Géré par",
       "ownedAmount": "Quantité Possédée",
       "possessedAmount": "Quantité en Possession",
       "tick": "Valide pour le Tick {{tick}}",
       "reportingNodes": "Nœuds Rapporteurs",
-      "issuerIdentity": "Identité de l'Émetteur"
+      "issuerIdentity": "Identité de l'Émetteur",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Fermer",
