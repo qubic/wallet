@@ -7,7 +7,8 @@ import { BalanceResponse, ProposalDto, Transaction } from '../services/api.model
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-voting',
@@ -15,29 +16,30 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./voting.component.scss']
 })
 export class VotingComponent implements OnInit, OnDestroy {
-  
+
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl();
   public currentTick = 0;
   public userServiceSubscription: Subscription | undefined;
   public proposals: ProposalDto[] | undefined;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
-   
+
   }
   ngOnDestroy(): void {
-    if(this.userServiceSubscription)
-      this.userServiceSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  ngOnInit(): void {    
-    
+  ngOnInit(): void {
+
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
-    
+
     if(this.hasSeeds()){
-      this.userServiceSubscription = this.us.currentBalance.subscribe(response => {
+      this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(response => {
         this.accountBalances = response;
       }, errorResponse => {
         this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
@@ -46,7 +48,7 @@ export class VotingComponent implements OnInit, OnDestroy {
         });
       });
     }
-    this.api.getProposals().subscribe(s => {
+    this.api.getProposals().pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.proposals = s;
     });
   }

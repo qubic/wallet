@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators, FormBuilder } from "@angular/forms";
@@ -6,7 +6,8 @@ import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from "@angular/material/dialog";
 import { UpdaterService } from "../services/updater-service";
 import { UnLockComponent } from '../lock/unlock/unlock.component';
@@ -30,7 +31,9 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 })
 
 
-export class AssetsComponent implements OnInit {
+export class AssetsComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
   shortenAddress = shortenAddress;
   displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
@@ -86,9 +89,11 @@ export class AssetsComponent implements OnInit {
     });
 
     // subscribe to config changes to receive asset updates
-    this.walletService.onConfig.subscribe(c => {
-      this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
-    });
+    this.walletService.onConfig
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(c => {
+        this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+      });
 
     // const amountControl = this.sendForm.get('amount');
     const assetSelectControl = this.sendForm.get('assetSelect');
@@ -103,40 +108,48 @@ export class AssetsComponent implements OnInit {
     // }
 
     if (assetSelectControl) {
-      assetSelectControl.valueChanges.subscribe(() => {
-        this.updateAmountValidator();
-      });
+      assetSelectControl.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.updateAmountValidator();
+        });
     }
   }
 
   ngOnInit() {
     this.loadAssets();
 
-    this.updaterService.currentTick.subscribe(tick => {
-      this.currentTick = tick;
-      this.sendForm.controls['tick'].addValidators(Validators.min(tick));
-      if (!this.tickOverwrite) {
-        this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
-      }
-    })
-
-    this.sendForm.get('assetSelect')?.valueChanges.subscribe(s => {
-      if (s) {
-        if (this.sendForm.get('selectedDestinationId') == this.sendForm.get('assetSelect')) {
-          this.sendForm.controls['selectedDestinationId'].setValue(null);
+    this.updaterService.currentTick
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tick => {
+        this.currentTick = tick;
+        this.sendForm.controls['tick'].addValidators(Validators.min(tick));
+        if (!this.tickOverwrite) {
+          this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
         }
-      }
-    });
+      });
 
-    this.sendForm.get('selectedDestinationId')?.valueChanges.subscribe(s => {
-      if (s) {
-        if (!this.selectedAccountId) {
-          this.sendForm.controls['destinationAddress'].setValue(null);
-        } else {
-          this.sendForm.controls['destinationAddress'].setValue(s);
+    this.sendForm.get('assetSelect')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          if (this.sendForm.get('selectedDestinationId') == this.sendForm.get('assetSelect')) {
+            this.sendForm.controls['selectedDestinationId'].setValue(null);
+          }
         }
-      }
-    });
+      });
+
+    this.sendForm.get('selectedDestinationId')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          if (!this.selectedAccountId) {
+            this.sendForm.controls['destinationAddress'].setValue(null);
+          } else {
+            this.sendForm.controls['destinationAddress'].setValue(s);
+          }
+        }
+      });
   }
 
 
@@ -349,5 +362,10 @@ export class AssetsComponent implements OnInit {
       this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
     }
     this.changeDetectorRef?.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

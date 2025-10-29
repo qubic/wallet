@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
@@ -25,6 +25,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -32,7 +34,9 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
@@ -104,27 +108,33 @@ export class MainComponent implements AfterViewInit {
     var vaultExportDialog = localStorage.getItem("vault-export-dialog");
     this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
 
-    this.updaterService.latestStats.subscribe(response => {
-      this.latestStats = response;
-    }, errorResponse => {
-      this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
-        duration: 0,
-        panelClass: "error"
+    this.updaterService.latestStats
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+        this.latestStats = response;
+      }, errorResponse => {
+        this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
+          duration: 0,
+          panelClass: "error"
+        });
       });
-    });
 
     // Get current balance value first, then subscribe to updates
     this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
 
-    updaterService.currentBalance.subscribe(b => {
-      this.balances = b;
-      this.setDataSource();
-    })
+    updaterService.currentBalance
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(b => {
+        this.balances = b;
+        this.setDataSource();
+      });
 
-    updaterService.internalTransactions.subscribe(txs => {
-      this.transactions = txs;
-    });
+    updaterService.internalTransactions
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(txs => {
+        this.transactions = txs;
+      });
 
     //1. vault file export due to move to new wallet
     // if (domain === 'wallet.qubic.li' || domain === 'localhost') {
@@ -146,8 +156,8 @@ export class MainComponent implements AfterViewInit {
               if (walletService.privateKey) {
                 this.openVaultExportDialog();
               }
-            })
-          })
+            });
+          });
         }
       } else {
         this.openVaultExportDialog();
@@ -182,7 +192,7 @@ export class MainComponent implements AfterViewInit {
           this.isVaultExportDialog = true;
           localStorage.setItem("vault-export-dialog", this.isVaultExportDialog ? '1' : '0');
         }
-      })
+      });
     }
   }
 
@@ -281,7 +291,7 @@ export class MainComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         this.setDataSource();
         this.refreshData();
-      })
+      });
     }
   }
 
@@ -507,6 +517,11 @@ export class MainComponent implements AfterViewInit {
       weakSeeds: [],
       badSeeds: []
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 
