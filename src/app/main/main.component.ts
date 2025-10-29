@@ -135,7 +135,9 @@ export class MainComponent implements AfterViewInit {
 
     // Subscribe to balance updates (skip first emission to avoid double setDataSource call)
     updaterService.currentBalance.subscribe(b => {
-      // Only update if the balance reference actually changed
+      // Prevent unnecessary updates when the same array reference is emitted
+      // (e.g., on initial subscription to BehaviorSubject's current value).
+      // Each API call creates a new array reference, so this check is valid.
       if (this.balances !== b) {
         this.balances = b;
         this.setDataSource();
