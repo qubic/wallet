@@ -8,7 +8,8 @@ import { BalanceResponse, ProposalDto, Transaction } from '../../services/api.mo
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 
@@ -54,6 +55,7 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
   private isWsConnected = false;
   private peerConnected = false;
   public isPublishing = false;
+  private destroy$ = new Subject<void>();
 
   public publishForm = this.fb.group({
     operatorId: [localStorage.getItem("lastOperatorId"), [Validators.required]],
@@ -71,10 +73,8 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    if (this.userServiceSubscription)
-      this.userServiceSubscription.unsubscribe();
-    if (this.sub)
-      this.sub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
     if (this.ws) {
       this.ws.close();
     }
@@ -82,14 +82,14 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.api.currentProposals.subscribe(s => {
+    this.api.currentProposals.pipe(takeUntil(this.destroy$)).subscribe(s => {
       if (s.length == 0 && !this.triedToload) {
         this.triedToload = true;
         this.api.getProposals().subscribe();
       } else {
         this.proposals = s;
         if (this.hasSeeds()) {
-          this.userServiceSubscription = this.us.currentBalance.subscribe(response => {
+          this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(response => {
             this.accountBalances = response;
             this.init();
           }, errorResponse => {
@@ -209,7 +209,7 @@ export class VotingParticipateComponent implements OnInit, OnDestroy {
   }
   createPacket(comp: ComputorSelected) {
     this.walletService.revealSeed((<any>this.publishForm.controls.operatorId.value)).then(operatorSeed => {
-      this.api.currentProtocol.subscribe(protocol => {
+      this.api.currentProtocol.pipe(takeUntil(this.destroy$)).subscribe(protocol => {
         var computors = this.getSelectedComputors();
         if (computors?.length ?? 0 > 0) {
           new QubicHelper().createBallotRequests(protocol, operatorSeed, [comp.index!], this.votes.map(m => +m)).then(ballots => {

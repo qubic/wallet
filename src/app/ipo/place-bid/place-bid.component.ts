@@ -8,7 +8,8 @@ import { BalanceResponse, ContractDto, ProposalDto, Transaction } from '../../se
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { lastValueFrom } from 'rxjs';
@@ -39,6 +40,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   public tickOverwrite = false;
   public maxAmount: number = 0;
   public ipoContract: ContractDto | undefined;
+  private destroy$ = new Subject<void>();
 
   public ipoForm = this.fb.group({
     sourceId: ['', [Validators.required]],
@@ -56,10 +58,10 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     , private apiService: ApiService
     , private apiLiveService: ApiLiveService
   ) {
-    this.activatedRoute.params.subscribe(state => {
+    this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(state => {
       if (state && state['contractId']) {
         this.contractIndex = state['contractId'];
-        this.api.currentIpoContracts.subscribe(s => {
+        this.api.currentIpoContracts.pipe(takeUntil(this.destroy$)).subscribe(s => {
           this.ipoContract = s.find(f => f.index == this.contractIndex);
         });
       }
@@ -67,7 +69,8 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
@@ -75,17 +78,17 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   init(): void {
-    this.sub = this.us.currentBalance.subscribe(s => {
+    this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.balances = s;
     });
-    this.us.currentTick.subscribe(tick => {
+    this.us.currentTick.pipe(takeUntil(this.destroy$)).subscribe(tick => {
       this.currentTick = tick;
       this.ipoForm.controls.tick.addValidators(Validators.min(tick));
       if (!this.tickOverwrite) {
         this.ipoForm.controls.tick.setValue(tick + 10);
       }
     })
-    this.ipoForm.controls.sourceId.valueChanges.subscribe(s => {
+    this.ipoForm.controls.sourceId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(s => {
       if (s) {
         // try to get max amount
         this.getMaxAmount(s);
@@ -134,7 +137,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   getMaxAmount(publicId: string) {
-    this.us.currentBalance.subscribe(s => {
+    this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(s => {
       if (s && s.length > 0 && s.find(f => f.publicId == publicId)) {
         this.maxAmount = s.find(f => f.publicId == publicId)?.currentEstimatedAmount ?? s.find(f => f.publicId == publicId)?.epochBaseAmount ?? 0;
       } else {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
@@ -36,6 +36,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
@@ -43,7 +44,6 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   public transactions: Transaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
-  private destroy$ = new Subject<void>();
 
   latestStats: LatestStatsResponse = {
     data: {
@@ -97,14 +97,16 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     var vaultExportDialog = localStorage.getItem("vault-export-dialog");
     this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
 
-    this.updaterService.latestStats.subscribe(response => {
-      this.latestStats = response;
-    }, errorResponse => {
-      this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
-        duration: 0,
-        panelClass: "error"
+    this.updaterService.latestStats
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+        this.latestStats = response;
+      }, errorResponse => {
+        this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
+          duration: 0,
+          panelClass: "error"
+        });
       });
-    });
 
     // Get initial balance value to ensure UI shows data immediately
     this.balances = updaterService.currentBalance.getValue();
@@ -140,9 +142,11 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-    updaterService.internalTransactions.subscribe(txs => {
-      this.transactions = txs;
-    });
+    updaterService.internalTransactions
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(txs => {
+        this.transactions = txs;
+      });
 
     //1. vault file export due to move to new wallet
     // if (domain === 'wallet.qubic.li' || domain === 'localhost') {
@@ -164,8 +168,8 @@ export class MainComponent implements AfterViewInit, OnDestroy {
               if (walletService.privateKey) {
                 this.openVaultExportDialog();
               }
-            })
-          })
+            });
+          });
         }
       } else {
         this.openVaultExportDialog();
@@ -204,7 +208,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
           this.isVaultExportDialog = true;
           localStorage.setItem("vault-export-dialog", this.isVaultExportDialog ? '1' : '0');
         }
-      })
+      });
     }
   }
 
@@ -295,7 +299,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
         this.setDataSource();
         this.refreshData();
-      })
+      });
     }
   }
 
@@ -454,7 +458,6 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   hasPendingTransaction(publicId: string) {
     return this.transactions.find(t => (t.sourceId == publicId || t.destId == publicId) && t.isPending);
   }
-
 
 }
 

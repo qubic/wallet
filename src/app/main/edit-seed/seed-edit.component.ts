@@ -1,5 +1,5 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject, Renderer2 } from '@angular/core';
+import { Component, Inject, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -13,6 +13,8 @@ import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
   templateUrl: './seed-edit.component.html',
   styleUrls: ['./seed-edit.component.scss']
 })
-export class SeedEditDialog extends QubicDialogWrapper {
+export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
 
   seedEditForm = this.fb.group({
     alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -36,6 +38,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   isNew = true;
   seed: IDecodedSeed = (<IDecodedSeed>{});
   public ownSeedModeDeactivated = true;
+  private destroy$ = new Subject<void>();
 
   constructor(renderer: Renderer2, private matDialog: MatDialog, themeService: ThemeService, @Inject(MAT_DIALOG_DATA) public data: any, public walletService: WalletService, private dialog: Dialog, private fb: FormBuilder, private dialogRef: DialogRef, private _snackBar: MatSnackBar, private transloco: TranslocoService) {
     super(renderer, themeService);
@@ -45,11 +48,16 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.isNew = false;
     }
 
-    this.seedEditForm.controls.seed.valueChanges.subscribe(v => {
+    this.seedEditForm.controls.seed.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(v => {
       this.generateIds(v!);
     });
 
     this.init();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   init() {
@@ -73,7 +81,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
 
   async onSubmit() {
     // Is the Publicid already present in the accounts?
-    if (this.isNew) {     
+    if (this.isNew) {
       if (this.walletService.getSeeds().filter(s =>
         s.publicId === this.seedEditForm.controls.publicId.value ||
         s.publicId === this.seedEditFormPublicId.controls.publicId.value
@@ -177,7 +185,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
   public insertSeed() {
     navigator.clipboard.readText().then(clipText => {
       this.seedEditForm.controls.seed.setValue(clipText);
-    });    
+    });
   }
 
   public resetSeed() {
@@ -187,7 +195,7 @@ export class SeedEditDialog extends QubicDialogWrapper {
         message: this.transloco.translate('ownSeedWarningDialog.message'),
       },
     });
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) {
         this.ownSeedModeDeactivated = false;
         this.seedEditForm.controls.seed.setValue("");

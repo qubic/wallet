@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
@@ -10,7 +10,8 @@ import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
@@ -24,7 +25,9 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   shortenAddress = shortenAddress;
   ExplorerUrlHelper = ExplorerUrlHelper;
@@ -70,35 +73,45 @@ export class BalanceComponent implements OnInit {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
 
-    this.seedFilterFormControl.valueChanges.subscribe(value => {
-      this.getAllTransactionByPublicId(value);
-    });
+    this.seedFilterFormControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.getAllTransactionByPublicId(value);
+      });
 
     if (this.hasSeeds()) {
-      this.us.currentTick.subscribe(s => {
-        this.currentTick = s;
-      });
+      this.us.currentTick
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(s => {
+          this.currentTick = s;
+        });
 
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
-      this.us.internalTransactions.subscribe(txs => {
-        this.transactions = fixTransactionDates(txs);
-        this.correctTheTransactionListByPublicId();
-      });
+      this.us.internalTransactions
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(txs => {
+          this.transactions = fixTransactionDates(txs);
+          this.correctTheTransactionListByPublicId();
+        });
 
-      this.us.transactionsArray.subscribe((transactions: TransactionsArchiver[]) => {
-        if (transactions && transactions.length > 0) {
-          this.transactionsArchiverSubscribe = transactions;
-          this.updateTransactionsRecord();
-        }
-      });
+      this.us.transactionsArray
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((transactions: TransactionsArchiver[]) => {
+          if (transactions && transactions.length > 0) {
+            this.transactionsArchiverSubscribe = transactions;
+            this.updateTransactionsRecord();
+          }
+        });
 
-      this.us.currentBalance.subscribe(response => {
-        this.accountBalances = response;
-      }, errorResponse => {
-        this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
-          duration: 0,
-          panelClass: "error"
+      this.us.currentBalance
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+          this.accountBalances = response;
+        }, errorResponse => {
+          this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
+            duration: 0,
+            panelClass: "error"
         });
       });
     }
@@ -107,17 +120,18 @@ export class BalanceComponent implements OnInit {
 
   //**  new Archiver Api */
   private getStatusArchiver() {
-    this.apiArchiver.getStatus().subscribe(s => {
-      if (s) {
-        this.status = s;
-        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
-        // Just initialize the tick range, don't fetch transactions yet
-        // Transactions will be fetched when user switches to "By Epochs" tab
-        this.GetTransactionsByTick(this.currentSelectedEpoch, false);
-      }
-    }, errorResponse => {
-      console.log('errorResponse:', errorResponse);
-    });
+    this.apiArchiver.getStatus()
+      .subscribe(s => {
+        if (s) {
+          this.status = s;
+          this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
+          // Just initialize the tick range, don't fetch transactions yet
+          // Transactions will be fetched when user switches to "By Epochs" tab
+          this.GetTransactionsByTick(this.currentSelectedEpoch, false);
+        }
+      }, errorResponse => {
+        console.log('errorResponse:', errorResponse);
+      });
   }
 
 
@@ -195,11 +209,12 @@ export class BalanceComponent implements OnInit {
 
 
   private getCurrentTickArchiver() {
-    this.apiArchiver.getLatestTick().subscribe(latestTick => {
-      if (latestTick) {
-        this.currentTickArchiver.next(latestTick);
-      }
-    });
+    this.apiArchiver.getLatestTick()
+      .subscribe(latestTick => {
+        if (latestTick) {
+          this.currentTickArchiver.next(latestTick);
+        }
+      });
   }
 
 
@@ -210,7 +225,8 @@ export class BalanceComponent implements OnInit {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(async r => {
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick)
+      .subscribe(async r => {
       if (r) {
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
@@ -508,6 +524,11 @@ export class BalanceComponent implements OnInit {
 
     // Return without procedure name
     return `${baseType} ${category}`;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

@@ -7,7 +7,8 @@ import { BalanceResponse, ProposalCreateResponse, ProposalDto, Transaction } fro
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
@@ -39,6 +40,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
   private dataPackageToSend: string | null = null;
   public isPublishing = false;
   public isPublishedFormControl = new FormControl('')
+  private destroy$ = new Subject<void>();
 
 
   public proposalForm = this.fb.group({
@@ -64,7 +66,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
     , private fb: FormBuilder
     , private dialog: MatDialog
   ) {
-    this.api.currentProposals.subscribe(s => {
+    this.api.currentProposals.pipe(takeUntil(this.destroy$)).subscribe(s => {
       if (s.length == 0 && !this.triedToload) {
         this.triedToload = true;
         this.api.getProposals().subscribe();
@@ -76,10 +78,8 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
     this.isPublishedFormControl.setErrors({ "required": true}); // fake state for last step
   }
   ngOnDestroy(): void {
-    if (this.userServiceSubscription)
-      this.userServiceSubscription.unsubscribe();
-    if (this.sub)
-      this.sub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
     if (this.ws) {
       this.ws.close();
     }
@@ -87,7 +87,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.hasSeeds()) {
-      this.userServiceSubscription = this.us.currentBalance.subscribe(response => {
+      this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(response => {
         this.accountBalances = response;
       }, errorResponse => {
         this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
@@ -97,7 +97,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.proposalForm.controls.computorId.valueChanges.subscribe(s => {
+    this.proposalForm.controls.computorId.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(s => {
       if (!this.selectedComputorId)
         this.router.navigate(['/voting/create/', s])
     });
@@ -163,7 +163,7 @@ export class VotingCreateComponent implements OnInit, OnDestroy {
   }
 
   init(): void {
-    this.sub = this.route.params.subscribe((params) => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       if (params['computorId']) {
         this.selectedComputorId = params['computorId'];
         this.proposal = this.proposals?.find(f => f.computorId == this.selectedComputorId);

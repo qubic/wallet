@@ -1,5 +1,5 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { ChangeDetectorRef, Component, Injector, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +10,8 @@ import { TranslocoService } from '@ngneat/transloco';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { UpdaterService } from 'src/app/services/updater-service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -17,13 +19,14 @@ import { UpdaterService } from 'src/app/services/updater-service';
   templateUrl: './unlock.component.html',
   styleUrls: ['./unlock.component.scss']
 })
-export class UnLockComponent extends QubicDialogWrapper {
+export class UnLockComponent extends QubicDialogWrapper implements OnDestroy {
 
   public file: File | null = null;
   public configFile: File | null = null;
   public newUser = false;
   public pwdWrong = false;
   public selectedFileIsVaultFile = false;
+  private destroy$ = new Subject<void>();
 
   importForm = this.fb.group({
     password: [null, [Validators.required, Validators.minLength(8)]],
@@ -45,6 +48,11 @@ export class UnLockComponent extends QubicDialogWrapper {
     super(renderer, themeService);
     this.dialogRef = injector.get(DialogRef, null)
     this.newUser = this.walletService.getSeeds().length <= 0 && !this.walletService.publicKey;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onPasswordChange() {
@@ -71,7 +79,7 @@ export class UnLockComponent extends QubicDialogWrapper {
 
     // Manually restore focus to the menu trigger since the element that
     // opens the dialog won't be in the DOM any more when the dialog closes.
-    lockRef.afterClosed().subscribe(() => {
+    lockRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(() => {
       // do anything :)
       this.dialogRef?.close();
     });
@@ -149,7 +157,7 @@ export class UnLockComponent extends QubicDialogWrapper {
           message: this.transloco.translate("unlockComponent.overwriteVault")
         }
       });
-      confirmDialo.afterClosed().subscribe(result => {
+      confirmDialo.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
         if (result) {
           // start import
           this.importAndUnlock();

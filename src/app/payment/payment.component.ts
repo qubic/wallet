@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
@@ -9,7 +9,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
 import { CurrentTickResponse, Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
-import { concatMap, lastValueFrom, of } from 'rxjs';
+import { concatMap, lastValueFrom, of, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
@@ -23,7 +24,9 @@ import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   shortenAddress = shortenAddress;
   private selectedDestinationId: any;
@@ -72,33 +75,41 @@ export class PaymentComponent implements OnInit {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
 
-    this.us.currentTick.subscribe(tick => {
-      this.currentTick = tick;
-      this.transferForm.controls.tick.addValidators(Validators.min(tick));
-      if (!this.tickOverwrite) {
-        this.transferForm.controls.tick.setValue(tick + this.walletService.getSettings().tickAddition);
-      }
-    })
-    this.transferForm.controls.sourceId.valueChanges.subscribe(s => {
-      if (s) {
-        // try to get max amount
-        this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
-        if (this.transferForm.controls.selectedDestinationId.value == this.transferForm.controls.sourceId.value) {
-          this.transferForm.controls.selectedDestinationId.setValue(null);
+    this.us.currentTick
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tick => {
+        this.currentTick = tick;
+        this.transferForm.controls.tick.addValidators(Validators.min(tick));
+        if (!this.tickOverwrite) {
+          this.transferForm.controls.tick.setValue(tick + this.walletService.getSettings().tickAddition);
         }
-      }
-    });
+      });
+    this.transferForm.controls.sourceId.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          // try to get max amount
+          this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
+          if (this.transferForm.controls.selectedDestinationId.value == this.transferForm.controls.sourceId.value) {
+            this.transferForm.controls.selectedDestinationId.setValue(null);
+          }
+        }
+      });
 
-    this.route.queryParams.subscribe(params => {
-      if (params['publicId']) {
-        const publicId = params['publicId'];
-        this.transferForm.controls.sourceId.setValue(publicId);
-      }
-    });
-    this.route.params.subscribe(params => {
-      if (params['receiverId']) {
-        const publicId = params['receiverId'];
-        this.transferForm.controls.destinationId.setValue(publicId);
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['publicId']) {
+          const publicId = params['publicId'];
+          this.transferForm.controls.sourceId.setValue(publicId);
+        }
+      });
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['receiverId']) {
+          const publicId = params['receiverId'];
+          this.transferForm.controls.destinationId.setValue(publicId);
       }
       if (params['amount']) {
         const amount = params['amount'];
@@ -236,6 +247,11 @@ export class PaymentComponent implements OnInit {
 
   loadKey() {
     const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 
