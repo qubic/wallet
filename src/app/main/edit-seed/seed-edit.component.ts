@@ -1,5 +1,5 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { Component, Inject, Renderer2 } from '@angular/core';
+import { Component, Inject, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -12,6 +12,8 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -19,7 +21,9 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
   templateUrl: './seed-edit.component.html',
   styleUrls: ['./seed-edit.component.scss']
 })
-export class SeedEditDialog extends QubicDialogWrapper {
+export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   seedEditForm = this.fb.group({
     alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -44,11 +48,18 @@ export class SeedEditDialog extends QubicDialogWrapper {
       this.isNew = false;
     }
 
-    this.seedEditForm.controls.seed.valueChanges.subscribe(v => {
-      this.generateIds(v!);
-    });
+    this.seedEditForm.controls.seed.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(v => {
+        this.generateIds(v!);
+      });
 
     this.init();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   init() {
@@ -186,14 +197,16 @@ export class SeedEditDialog extends QubicDialogWrapper {
         message: this.transloco.translate('ownSeedWarningDialog.message'),
       },
     });
-    confirmDialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.ownSeedModeDeactivated = false;
-        this.seedEditForm.controls.seed.setValue("");
-        const seedValue = this.seedEditForm.controls.seed.value || "";
-        this.generateIds(seedValue);
-      }
-    })
+    confirmDialog.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          this.ownSeedModeDeactivated = false;
+          this.seedEditForm.controls.seed.setValue("");
+          const seedValue = this.seedEditForm.controls.seed.value || "";
+          this.generateIds(seedValue);
+        }
+      })
   }
 
   seedGen(): string {

@@ -38,6 +38,7 @@ export class UpdaterService {
   });
   public internalTransactions: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]); // used to store internal tx
   public errorStatus: BehaviorSubject<string> = new BehaviorSubject<string>("");
+  public isLoadingBalance: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true); // Track initial balance loading
   private tickLoading = false;
   private tickInfoLoading = false;
   private balanceLoading = false;
@@ -125,6 +126,7 @@ export class UpdaterService {
     }
 
     this.balanceLoading = true;
+    this.isLoadingBalance.next(true);
     if (this.walletService.getSeeds().length > 0) {
       // todo: Use Websocket!
       this.balanceSubscription = this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
@@ -133,9 +135,11 @@ export class UpdaterService {
           this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
         }
         this.balanceLoading = false;
+        this.isLoadingBalance.next(false);
       }, errorResponse => {
         this.processError(errorResponse, false);
         this.balanceLoading = false;
+        this.isLoadingBalance.next(false);
       });
     }
   }

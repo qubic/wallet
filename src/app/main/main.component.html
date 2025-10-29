@@ -202,7 +202,10 @@
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">
-          <div class="no-data">{{ t("seedOverviewComponent.table.noData", { q: input.value }) }}</div>
+          <div class="no-data" *ngIf="!isLoadingBalances">{{ t("seedOverviewComponent.table.noData", { q: input.value }) }}</div>
+          <div class="loading" *ngIf="isLoadingBalances">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+          </div>
         </td>
       </tr>
     </table>

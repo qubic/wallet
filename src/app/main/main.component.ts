@@ -44,6 +44,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   public transactions: Transaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
+  isLoadingBalances: boolean = true;
 
   latestStats: LatestStatsResponse = {
     data: {
@@ -107,6 +108,12 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         });
       });
 
+    updaterService.isLoadingBalance
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isLoading => {
+        this.isLoadingBalances = isLoading;
+      });
+
     updaterService.currentBalance
       .pipe(takeUntil(this.destroy$))
       .subscribe(b => {
@@ -133,15 +140,19 @@ export class MainComponent implements AfterViewInit, OnDestroy {
             },
           });
 
-          dialogRef.afterClosed().subscribe(result => {
-            const dialogRefUnLock = this.dialog.open(UnLockComponent, { restoreFocus: false });
+          dialogRef.afterClosed()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(result => {
+              const dialogRefUnLock = this.dialog.open(UnLockComponent, { restoreFocus: false });
 
-            dialogRefUnLock.afterClosed().subscribe(result => {
-              if (walletService.privateKey) {
-                this.openVaultExportDialog();
-              }
+              dialogRefUnLock.afterClosed()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(result => {
+                  if (walletService.privateKey) {
+                    this.openVaultExportDialog();
+                  }
+                })
             })
-          })
         }
       } else {
         this.openVaultExportDialog();
@@ -263,21 +274,25 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-      dialogRef.afterClosed().subscribe(result => {
-        if (this.walletService.privateKey) {
-          this.addSeed(); // execute the action again
-        }
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (this.walletService.privateKey) {
+            this.addSeed(); // execute the action again
+          }
+        });
     } else {
       const dialogRef = this.dialog.open(SeedEditDialog, {
         restoreFocus: false, data: {
           seed: null
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        this.setDataSource();
-        this.refreshData();
-      })
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          this.setDataSource();
+          this.refreshData();
+        })
     }
   }
 
@@ -292,30 +307,36 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   edit(publicId: string) {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-      dialogRef.afterClosed().subscribe(result => {
-        if (this.walletService.privateKey) {
-          this.edit(publicId); // execute the action again
-        }
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (this.walletService.privateKey) {
+            this.edit(publicId); // execute the action again
+          }
+        });
     } else {
       const confirmDialog = this.dialog.open(SeedEditDialog, {
         restoreFocus: false, data: {
           publicId: publicId
         }
       });
-      confirmDialog.afterClosed().subscribe(result => {
-        if (result) {
-          this.openExportDialog();
-        }
-      });
+      confirmDialog.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (result) {
+            this.openExportDialog();
+          }
+        });
     }
   }
 
   openExportDialog(disableClose = true) {
     const dialogRef = this.dialog.open(ExportConfigDialog, { disableClose: disableClose, });
-    dialogRef.afterClosed().subscribe(() => {
-      // do anything :)
-    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        // do anything :)
+      });
   }
 
   receive(publicId: string) {
@@ -337,11 +358,13 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   reveal(publicId: string) {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-      dialogRef.afterClosed().subscribe(result => {
-        if (this.walletService.privateKey) {
-          this.reveal(publicId); // execute the action again
-        }
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (this.walletService.privateKey) {
+            this.reveal(publicId); // execute the action again
+          }
+        });
     } else {
       const confirmDialo = this.dialog.open(RevealSeedDialog, {
         restoreFocus: false, data: {
@@ -374,20 +397,24 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   delete(publicId: string) {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
-      dialogRef.afterClosed().subscribe(result => {
-        if (this.walletService.privateKey) {
-          this.delete(publicId); // execute the action again
-        }
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (this.walletService.privateKey) {
+            this.delete(publicId); // execute the action again
+          }
+        });
     } else {
       const confirmDialo = this.dialog.open(ConfirmDialog, { restoreFocus: false });
-      confirmDialo.afterClosed().subscribe(result => {
-        if (result) {
-          this.walletService.deleteSeed(publicId);
-          this.refreshData();
-          this.openExportDialog();
-        }
-      });
+      confirmDialo.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (result) {
+            this.walletService.deleteSeed(publicId);
+            this.refreshData();
+            this.openExportDialog();
+          }
+        });
     }
   }
 

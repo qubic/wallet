@@ -178,7 +178,8 @@ export class PublicUnLockComponent extends QubicDialogWrapper implements OnDestr
         message: this.transloco.translate('unlockComponent.overwriteVault'),
       },
     });
-    confirmDialo.afterClosed()
+    confirmDialo
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
         if (result) {

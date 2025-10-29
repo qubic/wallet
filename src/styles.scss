@@ -393,12 +393,19 @@ simple-snack-bar {
   white-space: pre-wrap; // Zeilenumbruch für lange Texte
 
   .mdc-button__label {
-    color: $light-text;
+    color: $light-text !important;
   }
 }
 
-.mat-mdc-snack-bar-container .mdc-snackbar__surface {
-  background-color: transparent !important;
+.mat-mdc-snack-bar-container {
+  .mdc-snackbar__surface {
+    background-color: transparent !important;
+  }
+
+  .mat-mdc-snack-bar-label,
+  .mdc-snackbar__label {
+    color: $light-text !important;
+  }
 }
 
 .darkTheme {
@@ -424,7 +431,14 @@ simple-snack-bar {
     white-space: pre-wrap;
 
     .mdc-button__label {
-      color: $dark-text;
+      color: $dark-text !important;
+    }
+  }
+
+  .mat-mdc-snack-bar-container {
+    .mat-mdc-snack-bar-label,
+    .mdc-snackbar__label {
+      color: $dark-text !important;
     }
   }
 }

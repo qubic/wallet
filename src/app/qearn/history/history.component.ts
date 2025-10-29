@@ -151,9 +151,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
       data: { maxUnlockAmount: element.lockedAmount },
-    }).afterClosed().subscribe(unlockAmount => {
-      if (unlockAmount) this.openConfirmDialog(element, unlockAmount);
-    });
+    }).afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(unlockAmount => {
+        if (unlockAmount) this.openConfirmDialog(element, unlockAmount);
+      });
   }
 
   private openConfirmDialog(element: IStakeStatus, unlockAmount: number): void {
@@ -166,9 +168,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },
-    }).afterClosed().subscribe(result => {
-      if (result) this.handleUnlockAction(element, unlockAmount);
-    });
+    }).afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) this.handleUnlockAction(element, unlockAmount);
+      });
   }
 
   private async handleUnlockAction(element: IStakeStatus, unlockAmount: number) {

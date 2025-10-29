@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Injector,
+  OnDestroy,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -19,13 +20,17 @@ import { MatStepper } from '@angular/material/stepper';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'qli-create-vault',
   templateUrl: './create-vault.component.html',
   styleUrls: ['./create-vault.component.scss'],
 })
-export class CreateVaultComponent extends QubicDialogWrapper {
+export class CreateVaultComponent extends QubicDialogWrapper implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('stepper')
   private stepper: MatStepper | undefined;
 
@@ -90,9 +95,16 @@ export class CreateVaultComponent extends QubicDialogWrapper {
 
     this.walletService = new WalletService(false);
 
-    this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
-      if (s) this.generatePublicId(s);
-    });
+    this.createAddressForm.controls.seed.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((s) => {
+        if (s) this.generatePublicId(s);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private nextStep() {
@@ -130,14 +142,16 @@ export class CreateVaultComponent extends QubicDialogWrapper {
         message: this.transloco.translate('ownSeedWarningDialog.message'),
       },
     });
-    confirmDialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.ownSeedModeDeactivated = false;
-        this.createAddressForm.controls.seed.setValue("");
-        const seedValue = this.createAddressForm.controls.seed.value || "";
-        this.generatePublicId(seedValue);
-      }
-    })
+    confirmDialog.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          this.ownSeedModeDeactivated = false;
+          this.createAddressForm.controls.seed.setValue("");
+          const seedValue = this.createAddressForm.controls.seed.value || "";
+          this.generatePublicId(seedValue);
+        }
+      })
   }
 
   private seedGen(): string {
@@ -217,11 +231,13 @@ export class CreateVaultComponent extends QubicDialogWrapper {
           message: this.transloco.translate('unlockComponent.overwriteVault'),
         },
       });
-      confirmDialo.afterClosed().subscribe((result) => {
-        if (result) {
-          this.startCreateProcess();
-        }
-      });
+      confirmDialo.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((result) => {
+          if (result) {
+            this.startCreateProcess();
+          }
+        });
     } else {
       this.startCreateProcess();
     }

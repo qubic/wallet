@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
@@ -7,13 +7,16 @@ import { IConfig } from '../../model/config';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-export',
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.scss']
 })
-export class ExportComponent {
+export class ExportComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
 
   public fileError: string = "";
   public configToImport: IConfig | undefined;
@@ -23,23 +26,30 @@ export class ExportComponent {
   constructor (private walletService: WalletService, public dialog: MatDialog,  private _snackBar: MatSnackBar, private transloco: TranslocoService, private deviceService: DeviceDetectorService){
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   public import() {
     if(!this.configToImport)
       return;
     const confirmDialog = this.dialog.open(ConfirmDialog, { restoreFocus: false });
-    confirmDialog.afterClosed().subscribe(result => {
-      if (result) {
-        if(!this.walletService.importConfig(this.configToImport!)){
-          this._snackBar.open(this.transloco.translate("settings.import.failed"), this.transloco.translate("general.close") , {
-            duration: 0,
-            panelClass: "error"
-          });
-        }else {
-          this.importDone = true;          
-          window.location.reload();
+    confirmDialog.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          if(!this.walletService.importConfig(this.configToImport!)){
+            this._snackBar.open(this.transloco.translate("settings.import.failed"), this.transloco.translate("general.close") , {
+              duration: 0,
+              panelClass: "error"
+            });
+          }else {
+            this.importDone = true;
+            window.location.reload();
+          }
         }
-      }
-    })
+      })
 
    
   }
