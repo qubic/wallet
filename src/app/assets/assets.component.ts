@@ -21,6 +21,7 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class AssetsComponent implements OnInit {
   public selectedAccountId = false;
   private selectedDestinationId: any;
 
-  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+  private destinationValidators = [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
 
   @ViewChild('selectedDestinationId', {
     static: false

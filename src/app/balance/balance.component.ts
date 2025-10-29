@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
 import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
@@ -231,9 +232,8 @@ export class BalanceComponent implements OnInit {
   }
 
   isQxTransferShares(destId: string, inputType: number): boolean {
-    const qxAddress = 'BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID';
     const transferAssetInputType = 2;
-    return destId == qxAddress && inputType == transferAssetInputType;
+    return destId == QubicDefinitions.QX_ADDRESS && inputType == transferAssetInputType;
   }
 
   getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {

@@ -16,6 +16,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
+import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
 
 @Component({
   selector: 'app-wallet',
@@ -41,7 +42,7 @@ export class PaymentComponent implements OnInit {
   public tickOverwrite = false;
   public selectedAccountId = false;
 
-  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+  private destinationValidators = [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
   private txTemplate: Transaction | undefined;
 
   transferForm = this.fb.group({

@@ -25,6 +25,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { MAX_WALLET_ACCOUNTS } from '../constants/qubic.constants';
 
 
 @Component({
@@ -59,7 +60,7 @@ export class MainComponent implements AfterViewInit {
 
   public isMobile = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
-  maxNumberOfAddresses: number = 15;
+  maxNumberOfAddresses: number = MAX_WALLET_ACCOUNTS;
 
 
   @ViewChild(MatTable)
