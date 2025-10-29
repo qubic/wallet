@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
@@ -25,6 +25,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -32,7 +34,7 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
@@ -40,6 +42,7 @@ export class MainComponent implements AfterViewInit {
   public transactions: Transaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
+  private destroy$ = new Subject<void>();
 
   latestStats: LatestStatsResponse = {
     data: {
@@ -60,6 +63,7 @@ export class MainComponent implements AfterViewInit {
   public isMobile = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
   maxNumberOfAddresses: number = 15;
+  private lastSeedIds: string = '';
 
 
   @ViewChild(MatTable)
@@ -101,14 +105,39 @@ export class MainComponent implements AfterViewInit {
       });
     });
 
-    // Get current balance value first, then subscribe to updates
+    // Get initial balance value to ensure UI shows data immediately
     this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
 
-    updaterService.currentBalance.subscribe(b => {
-      this.balances = b;
-      this.setDataSource();
-    })
+    // Subscribe to wallet config changes (e.g., when a new vault is loaded)
+    walletService.onConfig
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(config => {
+        // Create a hash of seed IDs to detect if seeds have actually changed
+        const currentSeedIds = (config.seeds || []).map(s => s.publicId).sort().join(',');
+        if (currentSeedIds !== this.lastSeedIds) {
+          this.lastSeedIds = currentSeedIds;
+          // Immediately update the UI with new seeds
+          this.setDataSource();
+          // Force balance update when seeds change
+          if (config.seeds && config.seeds.length > 0) {
+            updaterService.loadCurrentBalance(true);
+          }
+        }
+      });
+
+    // Subscribe to balance updates (skip first emission to avoid double setDataSource call)
+    updaterService.currentBalance
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(b => {
+        // Prevent unnecessary updates when the same array reference is emitted
+        // (e.g., on initial subscription to BehaviorSubject's current value).
+        // Each API call creates a new array reference, so this check is valid.
+        if (this.balances !== b) {
+          this.balances = b;
+          this.setDataSource();
+        }
+      });
 
     updaterService.internalTransactions.subscribe(txs => {
       this.transactions = txs;
@@ -150,6 +179,10 @@ export class MainComponent implements AfterViewInit {
     this.setDataSource();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   //2. vault file export due to move to new wallet
   openVaultExportDialog(): void {
