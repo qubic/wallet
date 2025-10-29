@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Injector,
+  OnDestroy,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -19,13 +20,15 @@ import { MatStepper } from '@angular/material/stepper';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'qli-create-vault',
   templateUrl: './create-vault.component.html',
   styleUrls: ['./create-vault.component.scss'],
 })
-export class CreateVaultComponent extends QubicDialogWrapper {
+export class CreateVaultComponent extends QubicDialogWrapper implements OnDestroy {
   @ViewChild('stepper')
   private stepper: MatStepper | undefined;
 
@@ -41,6 +44,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
   private walletService: WalletService;
 
   public ownSeedModeDeactivated = true;
+  private destroy$ = new Subject<void>();
 
   createVaultForm = this.fb.group({
     name: [null, [Validators.required, Validators.minLength(3)]],
@@ -90,9 +94,14 @@ export class CreateVaultComponent extends QubicDialogWrapper {
 
     this.walletService = new WalletService(false);
 
-    this.createAddressForm.controls.seed.valueChanges.subscribe((s) => {
+    this.createAddressForm.controls.seed.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((s) => {
       if (s) this.generatePublicId(s);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private nextStep() {
@@ -130,7 +139,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
         message: this.transloco.translate('ownSeedWarningDialog.message'),
       },
     });
-    confirmDialog.afterClosed().subscribe(result => {
+    confirmDialog.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) {
         this.ownSeedModeDeactivated = false;
         this.createAddressForm.controls.seed.setValue("");
@@ -217,7 +226,7 @@ export class CreateVaultComponent extends QubicDialogWrapper {
           message: this.transloco.translate('unlockComponent.overwriteVault'),
         },
       });
-      confirmDialo.afterClosed().subscribe((result) => {
+      confirmDialo.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
         if (result) {
           this.startCreateProcess();
         }

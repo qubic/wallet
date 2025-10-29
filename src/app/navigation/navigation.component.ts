@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { WalletService } from '../services/wallet.service';
 import { ThemeService } from '../services/theme.service';
@@ -19,7 +19,7 @@ import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
   @ViewChild('snav') snav: any;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -66,6 +66,7 @@ export class NavigationComponent implements OnInit {
   public isAssetsSelected = false;
   public isVotingSelected = false;
   public isIpoSelected = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private renderer: Renderer2,
@@ -82,7 +83,10 @@ export class NavigationComponent implements OnInit {
     private router: Router
   ) {
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe((event: NavigationEnd) => {
         const currentUrl = event.urlAfterRedirects;
         this.isHomeSelected = currentUrl === '/';
@@ -108,7 +112,7 @@ export class NavigationComponent implements OnInit {
     //   this.showMinimize = true;
     // }
 
-    this.us.latestStats.subscribe(
+    this.us.latestStats.pipe(takeUntil(this.destroy$)).subscribe(
       (response) => {
         this.latestStats = response;
       },
@@ -120,7 +124,7 @@ export class NavigationComponent implements OnInit {
       }
     );
 
-    this.us.currentTick.subscribe((s) => {
+    this.us.currentTick.pipe(takeUntil(this.destroy$)).subscribe((s) => {
       if (s && s > this.currentTick) {
         this.currentTick = s;
         this.higlightTick = true;
@@ -132,7 +136,7 @@ export class NavigationComponent implements OnInit {
       }
     });
 
-    this.us.errorStatus.subscribe((s) => {
+    this.us.errorStatus.pipe(takeUntil(this.destroy$)).subscribe((s) => {
       if (s != '' && s != this.currentErrorState) {
         this.currentErrorState = s;
         this._snackBar.open(this.currentErrorState, this.transloco.translate('general.close'), {
@@ -168,6 +172,8 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 

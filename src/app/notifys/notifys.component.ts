@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { WalletService } from '../services/wallet.service';
 import {MatDialog} from '@angular/material/dialog';
 import { LockConfirmDialog } from '../lock/confirm-lock/confirm-lock.component';
@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { ExportComponent } from '../settings/export/export.component';
 import { ExportConfigDialog } from '../lock/export-config/export-config.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -14,8 +16,9 @@ import { ExportConfigDialog } from '../lock/export-config/export-config.componen
   templateUrl: './notifys.component.html',
   styleUrls: ['./notifys.component.scss']
 })
-export class NotifysComponent implements OnInit {
+export class NotifysComponent implements OnInit, OnDestroy {
 
+  private destroy$ = new Subject<void>();
   public isNodeConnected = false;
   public useBridge = false;
   private vaultSaverAcive = false;
@@ -24,17 +27,26 @@ export class NotifysComponent implements OnInit {
    
   }
   ngOnInit(): void {
-    this.q.isConnected.subscribe(s => {
-      this.isNodeConnected = s;
-      this.cd.detectChanges();
-    });
-    this.walletService.onConfig.subscribe(s => {
-      this.useBridge = s.useBridge;
-      if(this.hasUnsavedSeeds()) {
-        this.saveSettings(true);
-      }
-      this.cd.detectChanges();
-    });
+    this.q.isConnected
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        this.isNodeConnected = s;
+        this.cd.detectChanges();
+      });
+    this.walletService.onConfig
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        this.useBridge = s.useBridge;
+        if(this.hasUnsavedSeeds()) {
+          this.saveSettings(true);
+        }
+        this.cd.detectChanges();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   
   connect(): void{

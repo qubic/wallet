@@ -359,15 +359,6 @@ mat-dialog-actions.mat-mdc-dialog-actions {
   align-items: center;
 }
 
-mat-snack-bar-container.error .mdc-snackbar__surface {
-  background-color: #faa0a0;
-
-  .mdc-button__label,
-  .mat-mdc-snack-bar-label .mdc-snackbar__label {
-    color: black;
-  }
-}
-
 .content_container {
   padding: 24px;
   display: flex;
