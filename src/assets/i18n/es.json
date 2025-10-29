@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Nota importante",
     "button": "Ok",
-    "message": "<div>Has alcanzado el número máximo de 15 direcciones en tu wallet.</div>"
+    "message": "<div>Has alcanzado el número máximo de {{maxAddresses}} direcciones en tu wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Nota importante para migrar al Nuevo Wallet",

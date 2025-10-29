@@ -239,7 +239,7 @@ export class MainComponent implements AfterViewInit {
       const dialogRef = this.dialog.open(OkDialog, {
         data: {
           title: this.transloco.translate("maxNumberOfAddressesDialog.title"),
-          message: this.transloco.translate("maxNumberOfAddressesDialog.message"),
+          message: this.transloco.translate("maxNumberOfAddressesDialog.message", { maxAddresses: this.maxNumberOfAddresses }),
           button: this.transloco.translate("maxNumberOfAddressesDialog.button")
         },
       });
