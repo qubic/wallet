@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
+import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,7 +24,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
   transferForm = this.fb.group({
     sourceId: [],
-    destinationId: ["", [Validators.required, Validators.minLength(60), Validators.maxLength(60)]],
+    destinationId: ["", [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)]],
     amount: [10000, [Validators.required, Validators.min(1)]],
     tick: [0, [Validators.required]],
     autoTick: this.autoTick

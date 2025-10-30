@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Lưu ý quan trọng",
     "button": "OK",
-    "message": "<div>Bạn đã đạt số lượng tối đa 15 địa chỉ trong ví của mình.</div>"
+    "message": "<div>Bạn đã đạt số lượng tối đa {{maxAddresses}} địa chỉ trong ví của mình.</div>"
   },
   "switchExportDialog": {
     "title": "Lưu ý quan trọng khi chuyển sang ví mới",

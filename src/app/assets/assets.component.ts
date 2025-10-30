@@ -33,6 +33,7 @@ interface GroupedAsset {
   totalAmount: number;
   contracts: ContractGroup[];
 }
+import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
 
 interface ContractGroup {
   contractName: string;
@@ -72,7 +73,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
   public selectedAccountId = false;
   private selectedDestinationId: any;
 
-  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+  private destinationValidators = [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
 
   @ViewChild('selectedDestinationId', {
     static: false
