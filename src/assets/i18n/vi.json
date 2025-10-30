@@ -90,7 +90,6 @@
     "openAssets": "Đi tới Quản lý tài sản",
     "managedBy": "Được quản lý bởi {{contract}}",
     "by": "bởi {{contract}}",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Tổng quan tài sản"
     },

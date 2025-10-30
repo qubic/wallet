@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { QubicAsset } from "../services/api.model";
 import { ApiService } from "../services/api.service";
-import { FormControl, FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
@@ -58,6 +58,11 @@ export class AssetsComponent implements OnInit, OnDestroy {
   public currentTick = 0;
   public tickOverwrite = false;
 
+  // Cache for smart contract lookups to avoid repeated array searches
+  private smartContractsMap: Map<number, StaticSmartContract> = new Map();
+  // Track whether smart contracts data has been loaded to prevent flickering
+  public smartContractsLoaded: boolean = false;
+
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
   isSending: boolean = false;
@@ -107,11 +112,26 @@ export class AssetsComponent implements OnInit, OnDestroy {
       assetSelect: new FormControl('', Validators.required),
     });
 
-    // subscribe to config changes to receive asset updates
-    this.walletService.onConfig
+    // Use combineLatest to wait for BOTH smart contracts AND wallet config
+    combineLatest([
+      this.qubicStaticService.smartContracts$.pipe(
+        filter(contracts => contracts !== null && contracts.length > 0)
+      ),
+      this.walletService.onConfig
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(c => {
+      .subscribe(([contracts, config]) => {
+        // Build smart contracts lookup map (only once per update)
+        this.smartContractsMap.clear();
+        contracts!.forEach(contract => {
+          this.smartContractsMap.set(contract.contractIndex, contract);
+        });
+        this.smartContractsLoaded = true;
+
+        // Update assets from wallet
         this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+
+        // Compute grouped assets only ONCE when both are ready
         this.computeGroupedAssets();
       });
 
@@ -174,10 +194,8 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
 
   toggleTableView(event: MatSlideToggleChange) {
-    this.isTable = !this.isTable;
-    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
-    window.location.reload();
+    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
   }
 
   updateAmountValidator(): void {
@@ -386,11 +404,17 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   /**
    * Compute grouped assets by publicId + assetName + issuerIdentity
-   * Similar to explorer-frontend implementation
+   * Optimized with cached smart contract lookups
+   * Only computes if smart contracts data is loaded to prevent flickering
    */
   computeGroupedAssets(): void {
+    // Wait for smart contracts to load before computing groups to prevent flickering
+    if (!this.smartContractsLoaded) {
+      this.groupedAssets = [];
+      return;
+    }
+
     const grouped = new Map<string, GroupedAsset>();
-    const smartContracts = this.qubicStaticService.smartContracts$.value || [];
 
     this.assets.forEach(asset => {
       // Create unique key for grouping: publicId + assetName + issuerIdentity
@@ -409,14 +433,15 @@ export class AssetsComponent implements OnInit, OnDestroy {
       const group = grouped.get(key)!;
       group.totalAmount += asset.ownedAmount || 0;
 
-      // Group by contract - look up contract name from smart contracts list
+      // Group by contract - use cached Map lookup instead of array find
       const contractIndex = asset.contractIndex || 0;
       let contractGroup = group.contracts.find(c => c.contractIndex === contractIndex);
 
       if (!contractGroup) {
-        // Find the contract name from smart contracts list by contractIndex
-        const smartContract = smartContracts.find(sc => sc.contractIndex === contractIndex);
-        const contractName = smartContract?.label || '';
+        // Fast O(1) lookup from the cached Map instead of O(n) array search
+        const smartContract = this.smartContractsMap.get(contractIndex);
+        // Use contract label if found, otherwise show index to indicate unknown contract
+        const contractName = smartContract?.label || (contractIndex > 0 ? `Contract ${contractIndex}` : '');
 
         contractGroup = {
           contractName: contractName,
@@ -454,15 +479,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
    */
   getGroupKey(group: GroupedAsset): string {
     return `${group.publicId}-${group.assetName}-${group.issuerIdentity}`;
-  }
-
-  /**
-   * Get the contract name for a specific asset by its contract index
-   */
-  getContractName(contractIndex: number): string {
-    const smartContracts = this.qubicStaticService.smartContracts$.value || [];
-    const smartContract = smartContracts.find(sc => sc.contractIndex === contractIndex);
-    return smartContract?.label || '';
   }
 
   /**

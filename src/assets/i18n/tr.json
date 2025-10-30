@@ -90,7 +90,6 @@
     "openAssets": "Varlık Yönetimine Git",
     "managedBy": "{{contract}} tarafından yönetilir",
     "by": "{{contract}} tarafından",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Varlıklara Genel Bakış"
     },

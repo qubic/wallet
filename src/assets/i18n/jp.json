@@ -90,7 +90,6 @@
     "openAssets": "資産管理へ移動",
     "managedBy": "{{contract}}によって管理",
     "by": "{{contract}}による",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "資産の概要"
     },

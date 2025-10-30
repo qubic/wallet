@@ -90,7 +90,6 @@
     "openAssets": "Зайти в управление акциями",
     "managedBy": "Управляется {{contract}}",
     "by": "{{contract}}",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Просмотр акций"
     },

@@ -90,7 +90,6 @@
     "openAssets": "Ouvrir la Gestion des actifs",
     "managedBy": "Géré par {{contract}}",
     "by": "par {{contract}}",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Vue d'ensemble des Actifs"
     },

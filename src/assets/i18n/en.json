@@ -90,7 +90,6 @@
     "openAssets": "Goto Asset Management",
     "managedBy": "Managed by {{contract}}",
     "by": "by {{contract}}",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Asset Overview"
     },

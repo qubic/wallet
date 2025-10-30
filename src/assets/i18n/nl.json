@@ -90,7 +90,6 @@
     "openAssets": "Goto Asset Management",
     "managedBy": "Beheerd door {{contract}}",
     "by": "door {{contract}}",
-    "unknownContract": "Unknown Contract",
     "overview": {
       "title": "Asset Overview"
     },

@@ -18,7 +18,8 @@
         </div>
       </div>
     </div>
-    <div *ngIf="assets.length <= 0">
+    <!-- Only show "no assets" message after smart contracts have loaded to prevent flickering -->
+    <div *ngIf="assets.length <= 0 && smartContractsLoaded">
       <mat-card class="asset-card">
         <mat-card-content>
           {{ t("assetsComponent.noAssets") }}
@@ -28,7 +29,7 @@
 
     <!-- card version /-->
     <div *ngIf="!isTable">
-      <div *ngIf="!showSendForm" class="card-list flex flex-wrap">
+      <div *ngIf="!showSendForm && smartContractsLoaded" class="card-list flex flex-wrap">
         <mat-card *ngFor="let group of groupedAssets; let i = index">
           <mat-card-content>
             <br>
@@ -40,20 +41,22 @@
               {{ group.totalAmount | number:"1.0-0" }} <span class="currency-label">{{ group.assetName }}</span>
             </div>
 
-            <!-- Show contracts breakdown only if contract name is available -->
-            <div class="contract-breakdown" *ngIf="hasContractNames(group.contracts)">
-              <mat-divider></mat-divider>
-              <br>
-              <div *ngFor="let contract of group.contracts">
-                <div class="contract-group-header" *ngIf="contract.contractName">
-                  <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
+            <!-- Show contracts breakdown -->
+            <ng-container *ngIf="hasContractNames(group.contracts)">
+              <div class="contract-breakdown">
+                <mat-divider></mat-divider>
+                <br>
+                <div *ngFor="let contract of group.contracts">
+                  <div class="contract-group-header" *ngIf="contract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
+                  </div>
+                  <div *ngFor="let asset of contract.assets" class="contract-asset-item" style="padding-left: 10px;">
+                    <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
+                  </div>
                 </div>
-                <div *ngFor="let asset of contract.assets" class="contract-asset-item" style="padding-left: 10px;">
-                  <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
-                </div>
+                <br>
               </div>
-              <br>
-            </div>
+            </ng-container>
 
             <div class="text-center">
               <ng-container *ngFor="let contract of group.contracts; let first = first">
@@ -71,7 +74,7 @@
     <!-- phone version-->
     <div *ngIf="isTable" class="mobileOnly assetList">
       <span *ngIf="!showSendForm">
-        <div *ngIf="groupedAssets.length > 0">
+        <div *ngIf="groupedAssets.length > 0 && smartContractsLoaded">
           <div class="mobileAssetItem" *ngFor="let group of groupedAssets">
             <h3>
               {{ group.assetName }} <span class="disable-area">- {{ getSeedAlias(group.publicId) }} -
@@ -83,17 +86,19 @@
               {{ group.publicId }}
             </div>
 
-            <!-- Show managed by info if contract names available -->
-            <div *ngIf="hasContractNames(group.contracts)" style="margin: 10px 0;">
-              <div *ngFor="let contract of group.contracts">
-                <div *ngIf="contract.contractName">
-                  <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
-                </div>
-                <div *ngFor="let asset of contract.assets" style="padding-left: 10px;">
-                  <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
+            <!-- Show managed by info -->
+            <ng-container *ngIf="hasContractNames(group.contracts)">
+              <div style="margin: 10px 0;">
+                <div *ngFor="let contract of group.contracts">
+                  <div *ngIf="contract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
+                  </div>
+                  <div *ngFor="let asset of contract.assets" style="padding-left: 10px;">
+                    <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
 
             <div class="flex flex-wrap">
               <ng-container *ngFor="let contract of group.contracts; let first = first">
@@ -109,8 +114,7 @@
     </div>
 
     <!-- table version-->
-    <div *ngIf="isTable && !showSendForm && assets.length > 0" class="desktopOnly">
-
+    <div *ngIf="isTable && !showSendForm && assets.length > 0 && smartContractsLoaded" class="desktopOnly">
       <table mat-table [dataSource]="groupedAssets" class="mat-elevation-z8">
         <!-- Asset Name -->
         <ng-container matColumnDef="publicId">
