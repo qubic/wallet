@@ -304,6 +304,7 @@
         "chooseOwnSeed": "Choose an own Address ID",
         "error": {
           "required": "Address ID is required",
+          "notUppercase": "Address must be all uppercase letters",
           "length": "A Qubic address ID consists of 60 uppercase letters.",
           "invalidAddress": "Invalid receiver address"
         }

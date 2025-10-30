@@ -304,6 +304,7 @@
         "chooseOwnSeed": "选择自己的地址 ID",
         "error": {
           "required": "地址 ID为必填项",
+          "notUppercase": "地址必须全部为大写字母",
           "length": "Qubic 地址 ID 由 60 个大写字母组成。",
           "invalidAddress": "无效的接收地址"
         }

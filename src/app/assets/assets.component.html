@@ -167,7 +167,7 @@
               <div class="col">
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.select") }}</mat-label>
-                  <mat-select formControlName="assetSelect">
+                  <mat-select formControlName="assetSelect" [compareWith]="compareAssets">
                     <mat-select-trigger>
                       <span *ngIf="getSelectedAsset()">
                         {{ getSeedAlias(getSelectedAsset()?.publicId) }}
@@ -222,11 +222,14 @@
                   <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('required')">
                     {{ t("paymentComponent.form.receiver.error.required") }}
                   </mat-error>
+                  <mat-error *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && sendForm.controls['destinationAddress'].hasError('notUppercase')">
+                    {{ t("paymentComponent.form.receiver.error.notUppercase") }}
+                  </mat-error>
                   <mat-error
-                    *ngIf="sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength')">
+                    *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && !sendForm.controls['destinationAddress'].hasError('notUppercase') && (sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength'))">
                     {{ t("paymentComponent.form.receiver.error.length") }}
                   </mat-error>
-                  <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('invalidAddress')">
+                  <mat-error *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && !sendForm.controls['destinationAddress'].hasError('notUppercase') && !sendForm.controls['destinationAddress'].hasError('minlength') && !sendForm.controls['destinationAddress'].hasError('maxlength') && sendForm.controls['destinationAddress'].hasError('invalidAddress')">
                     {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
                   </mat-error>
                 </mat-form-field>

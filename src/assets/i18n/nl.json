@@ -303,6 +303,7 @@
         "chooseOwnSeed": "Kies een eigen Account ID",
         "error": {
           "required": "Account ID is vereist",
+          "notUppercase": "Het adres moet geheel in hoofdletters zijn",
           "length": "Een Qubic account ID bestaat uit 60 hoofdletters.",
           "invalidAddress": "Ongeldig ontvangersadres"
         }

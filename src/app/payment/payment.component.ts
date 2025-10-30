@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
@@ -18,6 +18,21 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+
+/**
+ * Validator to check if the address is all uppercase
+ * Qubic addresses must be uppercase letters only
+ */
+function uppercaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null; // Don't validate empty values (required validator handles that)
+    }
+    const value = control.value as string;
+    const isUppercase = value === value.toUpperCase();
+    return isUppercase ? null : { notUppercase: true };
+  };
+}
 
 @Component({
   selector: 'app-wallet',
@@ -45,7 +60,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   public tickOverwrite = false;
   public selectedAccountId = false;
 
-  private destinationValidators = [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
+  private destinationValidators = [Validators.required, uppercaseValidator(), Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
   private txTemplate: Transaction | undefined;
 
   transferForm = this.fb.group({
@@ -125,7 +140,22 @@ export class PaymentComponent implements OnInit, OnDestroy {
   fillFromTemplate(tx: Transaction) {
     this.transferForm.controls.amount.setValue(tx.amount);
     this.transferForm.controls.sourceId.setValue(tx.sourceId);
-    this.transferForm.controls.destinationId.setValue(tx.destId);
+
+    // Check if destination is one of the wallet's addresses
+    const destinationSeed = this.walletService.getSeeds().find(s => s.publicId === tx.destId);
+
+    if (destinationSeed) {
+      // Destination is in the wallet - use address book mode
+      this.selectedAccountId = true;
+      this.transferForm.controls.selectedDestinationId.addValidators([Validators.required]);
+      this.transferForm.controls.destinationId.clearValidators();
+      this.transferForm.controls.destinationId.updateValueAndValidity();
+      this.transferForm.controls.selectedDestinationId.setValue(tx.destId);
+      this.transferForm.controls.selectedDestinationId.updateValueAndValidity();
+    } else {
+      // Destination is external - use manual entry mode
+      this.transferForm.controls.destinationId.setValue(tx.destId);
+    }
   }
 
   setAmounToMax(addAmount: number = 0) {

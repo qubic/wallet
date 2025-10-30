@@ -304,6 +304,7 @@
         "chooseOwnSeed": "Kendi Adres Kimliğinizi seçin",
         "error": {
           "required": "Adres kimliği gerekli",
+          "notUppercase": "Adres tamamen büyük harflerle yazılmalıdır",
           "length": "Qubic adres kimliği 60 büyük harften oluşur.",
           "invalidAddress": "Geçersiz alıcı adresi"
         }

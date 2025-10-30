@@ -64,11 +64,14 @@
                                 <mat-error *ngIf="transferForm.controls['destinationId'].hasError('required')">
                                     {{ t("paymentComponent.form.receiver.error.required") }}
                                 </mat-error>
+                                <mat-error *ngIf="!transferForm.controls['destinationId'].hasError('required') && transferForm.controls['destinationId'].hasError('notUppercase')">
+                                    {{ t("paymentComponent.form.receiver.error.notUppercase") }}
+                                </mat-error>
                                 <mat-error
-                                    *ngIf="transferForm.controls['destinationId'].hasError('minlength') || transferForm.controls['destinationId'].hasError('maxlength')">
+                                    *ngIf="!transferForm.controls['destinationId'].hasError('required') && !transferForm.controls['destinationId'].hasError('notUppercase') && (transferForm.controls['destinationId'].hasError('minlength') || transferForm.controls['destinationId'].hasError('maxlength'))">
                                     {{ t("paymentComponent.form.receiver.error.length") }}
                                 </mat-error>
-                                <mat-error *ngIf="transferForm.controls['destinationId'].hasError('invalidAddress')">
+                                <mat-error *ngIf="!transferForm.controls['destinationId'].hasError('required') && !transferForm.controls['destinationId'].hasError('notUppercase') && !transferForm.controls['destinationId'].hasError('minlength') && !transferForm.controls['destinationId'].hasError('maxlength') && transferForm.controls['destinationId'].hasError('invalidAddress')">
                                     {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
                                 </mat-error>
                                 <span>

@@ -5,7 +5,7 @@ import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
+import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -90,9 +90,23 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.us.internalTransactions
         .pipe(takeUntil(this.destroy$))
-        .subscribe(txs => {
+        .subscribe(async txs => {
           this.transactions = fixTransactionDates(txs);
           this.correctTheTransactionListByPublicId();
+
+          // Parse asset transfers for qli transactions
+          for (const tx of this.transactions) {
+            if (tx.inputHex && this.isQxAssetTransfer(tx.destId, tx.type)) {
+              try {
+                const assetData = await this.getAssetsTransfers(tx.inputHex);
+                if (assetData) {
+                  this.assetTransferData[tx.id] = assetData;
+                }
+              } catch (error) {
+                console.error('Error parsing qli asset transfer:', error);
+              }
+            }
+          }
         });
 
       this.us.transactionsArray
@@ -247,9 +261,29 @@ export class BalanceComponent implements OnInit, OnDestroy {
     });
   }
 
-  isQxTransferShares(destId: string, inputType: number): boolean {
+  /**
+   * Check if transaction is a standard Qubic transfer (inputType 0)
+   */
+  isStandardQubicTransfer(inputType: number): boolean {
+    return inputType === 0;
+  }
+
+  /**
+   * Check if transaction is a QX asset transfer (inputType 2 to QX smart contract)
+   * This is the only type of asset transfer that should route to the assets component
+   */
+  isQxAssetTransfer(destId: string, inputType: number): boolean {
     const transferAssetInputType = 2;
     return destId == QubicDefinitions.QX_ADDRESS && inputType == transferAssetInputType;
+  }
+
+  /**
+   * Check if transaction can be repeated in the wallet
+   * Only standard Qubic transfers (inputType 0) and QX asset transfers (inputType 2) are repeatable
+   * Other smart contract transactions should use their dedicated dapp frontend
+   */
+  isRepeatableTransaction(destId: string, inputType: number): boolean {
+    return this.isStandardQubicTransfer(inputType) || this.isQxAssetTransfer(destId, inputType);
   }
 
   getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {
@@ -276,7 +310,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   async checkAndParseAssetTransfer(transaction: any): Promise<void> {
     const txId = transaction.transactions[0].transaction.txId;
 
-    if (this.isQxTransferShares(
+    if (this.isQxAssetTransfer(
       transaction.transactions[0].transaction.destId,
       transaction.transactions[0].transaction.inputType
     )) {
@@ -488,19 +522,65 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   repeat(transaction: Transaction) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
+    // Safety check: only allow repeatable transactions
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.type)) {
+      console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
+      return;
+    }
+
+    // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
+    if (this.isQxAssetTransfer(transaction.destId, transaction.type)) {
+      // Route to assets component for QX asset transfers
+      this.router.navigate(['assets-area'], {
+        state: {
+          template: transaction
+        }
+      });
+    } else {
+      // Route to payment component for standard Qubic transfers
+      this.router.navigate(['payment'], {
+        state: {
+          template: transaction
+        }
+      });
+    }
   }
 
-  repeatTransactionArchiver(transaction: TransactionArchiver) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
+  async repeatTransactionArchiver(transaction: TransactionDetails) {
+    // Safety check: only allow repeatable transactions
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType)) {
+      console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
+      return;
+    }
+
+    // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
+    if (this.isQxAssetTransfer(transaction.destId, transaction.inputType)) {
+      // Parse asset transfer data from inputHex
+      const assetData = await this.getAssetsTransfers(transaction.inputHex);
+
+      if (!assetData || !assetData.newOwnerAndPossessor) {
+        console.error('Failed to parse asset transfer data or missing destination address');
+        return;
       }
-    });
+
+      // Route to assets component with parsed asset data
+      // Use the actual destination from the asset payload, not the QX contract address
+      this.router.navigate(['assets-area'], {
+        state: {
+          template: transaction,
+          assetData: assetData,
+          sourceId: transaction.sourceId,
+          destId: assetData.newOwnerAndPossessor
+        }
+      });
+    } else {
+      // Route to payment component for standard Qubic transfers
+      this.router.navigate(['payment'], {
+        state: {
+          template: transaction
+        }
+      });
+    }
   }
 
   formatInputType(inputType: number, destination: string): string {

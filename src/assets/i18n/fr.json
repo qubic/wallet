@@ -303,6 +303,7 @@
         "chooseOwnSeed": "Choisir votre propre ID d'adresse",
         "error": {
           "required": "L'ID de l'adresse est requis",
+          "notUppercase": "L'adresse doit être entièrement en majuscules",
           "length": "Un ID d'adresse Qubic se compose de 60 lettres majuscules.",
           "invalidAddress": "Adresse de destinataire invalide"
         }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { QubicAsset } from "../services/api.model";
+import { QubicAsset, AssetTransfer } from "../services/api.model";
 import { ApiService } from "../services/api.service";
-import { FormControl, FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
@@ -24,6 +24,20 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
 
+/**
+ * Validator to check if the address is all uppercase
+ * Qubic addresses must be uppercase letters only
+ */
+function uppercaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null; // Don't validate empty values (required validator handles that)
+    }
+    const value = control.value as string;
+    const isUppercase = value === value.toUpperCase();
+    return isUppercase ? null : { notUppercase: true };
+  };
+}
 
 @Component({
   selector: 'app-assets',
@@ -50,7 +64,13 @@ export class AssetsComponent implements OnInit, OnDestroy {
   public selectedAccountId = false;
   private selectedDestinationId: any;
 
-  private destinationValidators = [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
+  private destinationValidators = [Validators.required, uppercaseValidator(), Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
+
+  // Template transaction data for repeating transactions
+  private txTemplate: any;
+  private txAssetData: AssetTransfer | null = null;
+  private txSourceId: string | null = null;
+  private txDestId: string | null = null;
 
   @ViewChild('selectedDestinationId', {
     static: false
@@ -80,6 +100,16 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
     var dashBoardStyle = localStorage.getItem("asset-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
+
+    // Check if we're repeating an asset transfer transaction
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state && state['template']) {
+      // We have a template transaction to repeat
+      this.txTemplate = state['template'];
+      this.txAssetData = state['assetData'];
+      this.txSourceId = state['sourceId'];
+      this.txDestId = state['destId'];
+    }
 
     this.sendForm = new FormGroup({
       destinationAddress: new FormControl('', this.destinationValidators),
@@ -151,6 +181,11 @@ export class AssetsComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    // Handle template transaction for repeating asset transfers
+    if (this.txTemplate) {
+      this.handleRepeatTransaction();
+    }
   }
 
 
@@ -234,6 +269,63 @@ export class AssetsComponent implements OnInit, OnDestroy {
         assetSelectControl.setValue(this.assets[0]);
       }
       this.updateAmountValidator();
+    }
+  }
+
+  /**
+   * Handle repeating an asset transfer transaction
+   * Pre-fills the send form with data from the template transaction
+   */
+  handleRepeatTransaction(): void {
+    if (!this.txAssetData) {
+      // If we don't have parsed asset data (for non-archiver transactions),
+      // just open the form and let user fill it manually
+      this.openSendForm();
+      return;
+    }
+
+    // Find the matching asset from the user's assets
+    const assetName = this.txAssetData.assetName;
+    const sourceId = this.txSourceId;
+
+    const matchingAsset = this.assets.find(asset =>
+      asset.assetName === assetName && asset.publicId === sourceId
+    );
+
+    if (!matchingAsset) {
+      // Asset not found, show error message
+      this._snackBar.open(
+        this.t.translate('assetsComponent.messages.assetNotFound'),
+        this.t.translate('general.close'),
+        { duration: 5000, panelClass: 'error' }
+      );
+      return;
+    }
+
+    // Open the send form with the matching asset
+    this.openSendForm(matchingAsset);
+
+    // Pre-fill the destination address and amount
+    if (this.txDestId) {
+      // Check if destination is one of the wallet's addresses
+      const destinationSeed = this.walletService.getSeeds().find(s => s.publicId === this.txDestId);
+
+      if (destinationSeed) {
+        // Destination is in the wallet - use address book mode
+        this.selectedAccountId = true;
+        this.sendForm.controls['selectedDestinationId'].addValidators([Validators.required]);
+        this.sendForm.controls['destinationAddress'].clearValidators();
+        this.sendForm.controls['destinationAddress'].updateValueAndValidity();
+        this.sendForm.controls['selectedDestinationId'].setValue(this.txDestId);
+        this.sendForm.controls['selectedDestinationId'].updateValueAndValidity();
+      } else {
+        // Destination is external - use manual entry mode
+        this.sendForm.controls['destinationAddress'].setValue(this.txDestId);
+      }
+    }
+
+    if (this.txAssetData.units) {
+      this.sendForm.controls['amount'].setValue(parseInt(this.txAssetData.units));
     }
   }
 
@@ -336,6 +428,14 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   getSeeds(isDestination = false) {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.sendForm.get('assetSelect')?.value?.publicId));
+  }
+
+  /**
+   * Compare function for mat-select to properly match assets by identity
+   * instead of object reference
+   */
+  compareAssets(asset1: QubicAsset, asset2: QubicAsset): boolean {
+    return asset1 && asset2 && asset1.assetName === asset2.assetName && asset1.publicId === asset2.publicId;
   }
 
   getSelectedDestinationSeed() {
