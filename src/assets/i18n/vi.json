@@ -307,6 +307,7 @@
         "chooseOwnSeed": "Chọn ID địa chỉ của bạn",
         "error": {
           "required": "Yêu cầu ID địa chỉ",
+          "notUppercase": "Địa chỉ phải viết toàn bộ bằng chữ in hoa",
           "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa.",
           "invalidAddress": "Địa chỉ người nhận không hợp lệ"
         }

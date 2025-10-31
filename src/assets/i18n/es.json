@@ -307,6 +307,7 @@
         "chooseOwnSeed": "Elegir tu propio ID de dirección",
         "error": {
           "required": "Se requiere el ID de la dirección",
+          "notUppercase": "La dirección debe estar completamente en mayúsculas",
           "length": "Un ID de dirección Qubic consta de 60 letras mayúsculas.",
           "invalidAddress": "Dirección de destinatario no válida"
         }

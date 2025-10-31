@@ -38,6 +38,7 @@ export interface Transaction {
   quantity?: number; // ipo bids
   moneyFlow: boolean;
   type: number;
+  inputHex?: string; // payload data for parsing asset transfers and other smart contract calls
 }
 
 export function fixUTCDateFormat(input: any): Date {
