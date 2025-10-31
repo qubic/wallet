@@ -60,14 +60,22 @@
                                     {{ transaction.created | dateTime }}
                                 </span>
                                 <button
-                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                             </mat-panel-title>
                             <mat-panel-description class="disable-area">
-                                {{ transaction.amount | number: '1.0-0'
-                                }}&nbsp;{{
-                                t("general.currency") }}
+                                <ng-container
+                                    *ngIf="getAssetTransfer(transaction.id); else normalAmount">
+                                    {{ getAssetTransfer(transaction.id)!.units | number:
+                                    '1.0-0' }}&nbsp;{{
+                                    getAssetTransfer(transaction.id)!.assetName }}
+                                </ng-container>
+                                <ng-template #normalAmount>
+                                    {{ transaction.amount | number: '1.0-0'
+                                    }}&nbsp;{{
+                                    t("general.currency") }}
+                                </ng-template>
                                 <span class="send-receive-indicator">
                                     <mat-icon class="send"
                                         matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
@@ -120,14 +128,25 @@
                                                 }}</span>
                                         </div>
                                         <div class="col-value disable-area">
-                                            <span class="value"> <a
-                                                    [href]="ExplorerUrlHelper.getAddressUrl(transaction.destId)"
-                                                    target="_blank">
-                                                    {{getAddressDisplayName(transaction.destId)}}
-                                                </a>
-                                                <mat-icon class="icon-color-link icon"
-                                                    matTooltip="{{ t('general.copy.tooltip') }}"
-                                                    [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                            <span class="value">
+                                                <ng-container *ngIf="getAssetTransfer(transaction.id); else normalDestination">
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)"
+                                                        target="_blank">
+                                                        {{getAddressDisplayName(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)}}
+                                                    </a>
+                                                    <mat-icon class="icon-color-link icon"
+                                                        matTooltip="{{ t('general.copy.tooltip') }}"
+                                                        [cdkCopyToClipboard]="getAssetTransfer(transaction.id)!.newOwnerAndPossessor">content_copy</mat-icon>
+                                                </ng-container>
+                                                <ng-template #normalDestination>
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.destId)"
+                                                        target="_blank">
+                                                        {{getAddressDisplayName(transaction.destId)}}
+                                                    </a>
+                                                    <mat-icon class="icon-color-link icon"
+                                                        matTooltip="{{ t('general.copy.tooltip') }}"
+                                                        [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                                </ng-template>
                                             </span>
                                         </div>
                                     </div>
@@ -150,6 +169,18 @@
                                         <div class="col-value disable-area">
                                             <span class="value">
                                                 {{ formatInputType(transaction.type,transaction.destId) }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Add Fee row after Type row for asset transfers -->
+                                    <div class="row" *ngIf="getAssetTransfer(transaction.id)">
+                                        <div class="col-label">
+                                            <span class="label">{{ t("balanceComponent.transaction.fee") }}</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value">
+                                                {{ transaction.amount | number: '1.0-0'
+                                                }}&nbsp;{{ t("general.currency") }}
+                                            </span>
                                         </div>
                                     </div>
                                 </mat-card-content>
@@ -225,7 +256,7 @@
                                 &nbsp;
                                 {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
-                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>

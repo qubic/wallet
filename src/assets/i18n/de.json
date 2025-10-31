@@ -304,6 +304,7 @@
         "chooseOwnSeed": "Wähle ein eigenes Konto",
         "error": {
           "required": "Konto-ID wird benötigt",
+          "notUppercase": "Die Adresse muss nur aus Großbuchstaben bestehen",
           "length": "Eine Qubic Konto-ID besteht aus 60 Großbuchstaben.",
           "invalidAddress": "Ungültige Empfängeradresse"
         }
