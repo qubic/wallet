@@ -45,7 +45,6 @@ export class UpdaterService {
   private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
-  private lastAssetsLoaded: Date | undefined;
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
@@ -127,7 +126,6 @@ export class UpdaterService {
   }
 
   public forceLoadAssets(allbackFn: ((assets: QubicAsset[]) => void) | undefined = undefined) {
-    this.lastAssetsLoaded = undefined;
     this.getAssets(undefined, allbackFn);
   }
 
@@ -280,11 +278,11 @@ export class UpdaterService {
   }
 
   /**
- * load balances directly from network
- * @returns 
+ * load assets from API
+ * @returns
  */
   private async getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): Promise<void> {
-    if (!this.isActive || (this.lastAssetsLoaded && new Date().getTime() - this.lastAssetsLoaded.getTime() < (12 * 3600 * 1000))) // only update assets every 12h
+    if (!this.isActive)
       return;
 
     if (!publicIds)
