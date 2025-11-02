@@ -292,30 +292,27 @@ export class UpdaterService {
     if (publicIds.length > 0) {
       // todo: Use Websocket!
       this.api.getOwnedAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
-        if (r && r.length > 0) {
-          // Filter out null/undefined entries and ensure asset has required fields
-          const validAssets = r.filter(asset =>
-            asset != null &&
-            asset.publicId &&
-            asset.assetName &&
-            asset.contractIndex !== undefined
-          );
-
+        if (r) {
           // update wallet - batch updates without saving
-          const groupedAssets = this.groupBy(validAssets, (a: QubicAsset) => a.publicId);
-          const updatePromises = Object.keys(groupedAssets).map(k =>
-            this.walletService.updateAssets(k, groupedAssets[k], false)
-          );
-          await Promise.all(updatePromises);
+          // Group assets by publicId, including empty arrays for publicIds with no assets
+          const groupedAssets = this.groupBy(r, (a: QubicAsset) => a.publicId);
 
-          // remove old entries - this will save once after all updates
-          const tickValue = validAssets.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
-          if (tickValue !== 0) {
-            await this.walletService.removeOldAssets(tickValue);
-          } else {
-            // If no old assets to remove, we still need to save the batch updates
-            await this.walletService.savePublic(false);
-          }
+          // Update all seeds atomically - trust the API response
+          publicIds!.forEach(publicId => {
+            const seed = this.walletService.getSeed(publicId);
+            if (seed) {
+              const assets = groupedAssets[publicId] || [];
+
+              // Filter out assets with 0 owned amount and 0 possessed amount
+              const filteredAssets = assets.filter((asset: any) =>
+                (asset.ownedAmount > 0) || (asset.possessedAmount > 0)
+              );
+              seed.assets = filteredAssets;
+            }
+          });
+
+          // Save once after ALL mutations are complete
+          await this.walletService.savePublic(false);
 
           if (callbackFn)
             callbackFn(r);
