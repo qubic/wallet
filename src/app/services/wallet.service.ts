@@ -184,6 +184,10 @@ export class WalletService {
     await this.saveConfig(lock);
   }
 
+  public async savePublic(lock: boolean = false): Promise<void> {
+    await this.saveConfig(lock);
+  }
+
   public getWebBridges(): string[] {
     return [...this.runningConfiguration.webBridges];
   }
@@ -298,12 +302,12 @@ export class WalletService {
    */
   public async removeOldAssets(referenceTick: number) {
     this.runningConfiguration.seeds.forEach(seed => {
-      seed.assets = seed.assets?.filter(f => f.tick >= referenceTick)
+      seed.assets = seed.assets?.filter(f => f.tick >= referenceTick);
     });
     await this.save();
   }
 
-  public async updateAssets(publicId: string, assets: QubicAsset[]) {
+  public async updateAssets(publicId: string, assets: QubicAsset[], save: boolean = true) {
     let seed = this.getSeed(publicId);
 
     if (!seed) return;
@@ -315,7 +319,9 @@ export class WalletService {
       assets.find((q) => q.contractIndex == f.contractIndex)
     );
 
-    await this.saveConfig(false);
+    if (save) {
+      await this.saveConfig(false);
+    }
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -400,6 +406,7 @@ export class WalletService {
   private async saveConfig(lock: boolean) {
     if (!this.persistence)
       return;
+
     if (lock) {
       // when locking we don't want that the public key is saved.
       this.runningConfiguration.publicKey = undefined;

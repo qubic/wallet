@@ -7,7 +7,7 @@ import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubi
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { lastValueFrom, Subject, combineLatest } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialog } from "@angular/material/dialog";
 import { UpdaterService } from "../services/updater-service";
 import { UnLockComponent } from '../lock/unlock/unlock.component';
@@ -149,7 +149,14 @@ export class AssetsComponent implements OnInit, OnDestroy {
       this.qubicStaticService.smartContracts$.pipe(
         filter(contracts => contracts !== null && contracts.length > 0)
       ),
-      this.walletService.onConfig
+      this.walletService.onConfig.pipe(
+        // Only react when assets actually change by comparing asset arrays
+        distinctUntilChanged((prev, curr) => {
+          const prevAssets = JSON.stringify(prev.seeds.map(s => ({ id: s.publicId, assets: s.assets })));
+          const currAssets = JSON.stringify(curr.seeds.map(s => ({ id: s.publicId, assets: s.assets })));
+          return prevAssets === currAssets;
+        })
+      )
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([contracts, config]) => {
@@ -161,7 +168,11 @@ export class AssetsComponent implements OnInit, OnDestroy {
         this.smartContractsLoaded = true;
 
         // Update assets from wallet
-        this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+        this.assets = this.walletService.getSeeds()
+          .filter(p => !p.isOnlyWatch)
+          .flatMap(m => m.assets)
+          .filter(f => f)
+          .map(m => <QubicAsset>m);
 
         // Compute grouped assets only ONCE when both are ready
         this.computeGroupedAssets();

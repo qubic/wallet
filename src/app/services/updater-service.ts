@@ -283,28 +283,40 @@ export class UpdaterService {
  * load balances directly from network
  * @returns 
  */
-  private getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): void {
+  private async getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): Promise<void> {
     if (!this.isActive || (this.lastAssetsLoaded && new Date().getTime() - this.lastAssetsLoaded.getTime() < (12 * 3600 * 1000))) // only update assets every 12h
       return;
 
     if (!publicIds)
-      publicIds = this.walletService.getSeeds().map(m => m.publicId);
+      // Only fetch assets for non-watch-only seeds since watch-only seeds don't display assets
+      publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
 
     if (publicIds.length > 0) {
       // todo: Use Websocket!
-      this.api.getOwnedAssets(publicIds).subscribe((r: QubicAsset[]) => {
+      this.api.getOwnedAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
         if (r && r.length > 0) {
+          // Filter out null/undefined entries and ensure asset has required fields
+          const validAssets = r.filter(asset =>
+            asset != null &&
+            asset.publicId &&
+            asset.assetName &&
+            asset.contractIndex !== undefined
+          );
 
-          // update wallet
-          const groupedAssets = this.groupBy(r, (a: QubicAsset) => a.publicId);
-          Object.keys(groupedAssets).forEach(k => {
-            this.walletService.updateAssets(k, groupedAssets[k]);
-          });
+          // update wallet - batch updates without saving
+          const groupedAssets = this.groupBy(validAssets, (a: QubicAsset) => a.publicId);
+          const updatePromises = Object.keys(groupedAssets).map(k =>
+            this.walletService.updateAssets(k, groupedAssets[k], false)
+          );
+          await Promise.all(updatePromises);
 
-          // remove old entries
-          const tickValue = r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
+          // remove old entries - this will save once after all updates
+          const tickValue = validAssets.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
           if (tickValue !== 0) {
-            this.walletService.removeOldAssets(tickValue);
+            await this.walletService.removeOldAssets(tickValue);
+          } else {
+            // If no old assets to remove, we still need to save the batch updates
+            await this.walletService.savePublic(false);
           }
 
           if (callbackFn)
