@@ -149,14 +149,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
       this.qubicStaticService.smartContracts$.pipe(
         filter(contracts => contracts !== null && contracts.length > 0)
       ),
-      this.walletService.onConfig.pipe(
-        // Only react when assets actually change by comparing asset arrays
-        distinctUntilChanged((prev, curr) => {
-          const prevAssets = JSON.stringify(prev.seeds.map(s => ({ id: s.publicId, assets: s.assets })));
-          const currAssets = JSON.stringify(curr.seeds.map(s => ({ id: s.publicId, assets: s.assets })));
-          return prevAssets === currAssets;
-        })
-      )
+      this.walletService.onConfig
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([contracts, config]) => {
@@ -168,8 +161,9 @@ export class AssetsComponent implements OnInit, OnDestroy {
         this.smartContractsLoaded = true;
 
         // Update assets from wallet
-        this.assets = this.walletService.getSeeds()
-          .filter(p => !p.isOnlyWatch)
+        const seeds = this.walletService.getSeeds().filter(p => !p.isOnlyWatch);
+
+        this.assets = seeds
           .flatMap(m => m.assets)
           .filter(f => f)
           .map(m => <QubicAsset>m);
@@ -568,7 +562,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
     });
 
     this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
-      a.assetName.localeCompare(b.assetName)
+      a.assetName.localeCompare(b.assetName, undefined, { sensitivity: 'base' })
     );
   }
 

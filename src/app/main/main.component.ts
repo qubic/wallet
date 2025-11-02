@@ -352,8 +352,8 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     return (this.walletService.getSeed(publicId)?.assets?.length ?? 0) > 0;
   }
 
-  hasIsOnlyWatch(publicId: string): boolean {
-    return !this.walletService.getSeed(publicId)?.isOnlyWatch ?? false;
+  isNotWatchOnly(publicId: string): boolean {
+    return !(this.walletService.getSeed(publicId)?.isOnlyWatch ?? false);
   }
 
   reveal(publicId: string) {

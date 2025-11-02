@@ -312,11 +312,9 @@ export class WalletService {
 
     if (!seed) return;
 
-    seed.assets = assets;
-
-    // remove lost assets
-    seed.assets = seed?.assets?.filter((f) =>
-      assets.find((q) => q.contractIndex == f.contractIndex)
+    // Filter out assets with 0 owned amount and 0 possessed amount
+    seed.assets = assets.filter((asset) =>
+      (asset.ownedAmount > 0) || (asset.possessedAmount > 0)
     );
 
     if (save) {

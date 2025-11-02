@@ -208,11 +208,11 @@
     </table>
   </div>
   <ng-template #actions let-publicId="publicId">
-    <button *ngIf="hasAssets(publicId) && hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId) && hasAssets(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.makePayment')" (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>
