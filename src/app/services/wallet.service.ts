@@ -296,32 +296,6 @@ export class WalletService {
   }
 
 
-  /**
-   * remove assets that are no longer updated
-   * @param referenceTick the tick from which on we consider an asset as old
-   */
-  public async removeOldAssets(referenceTick: number) {
-    this.runningConfiguration.seeds.forEach(seed => {
-      seed.assets = seed.assets?.filter(f => f.tick >= referenceTick);
-    });
-    await this.save();
-  }
-
-  public async updateAssets(publicId: string, assets: QubicAsset[], save: boolean = true) {
-    let seed = this.getSeed(publicId);
-
-    if (!seed) return;
-
-    // Filter out assets with 0 owned amount and 0 possessed amount
-    seed.assets = assets.filter((asset) =>
-      (asset.ownedAmount > 0) || (asset.possessedAmount > 0)
-    );
-
-    if (save) {
-      await this.saveConfig(false);
-    }
-  }
-
   arrayBufferToBase64(buffer: ArrayBuffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);
