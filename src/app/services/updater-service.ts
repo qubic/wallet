@@ -283,7 +283,7 @@ export class UpdaterService {
  * load balances directly from network
  * @returns 
  */
-  private getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): void {
+  private async getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): Promise<void> {
     if (!this.isActive || (this.lastAssetsLoaded && new Date().getTime() - this.lastAssetsLoaded.getTime() < (12 * 3600 * 1000))) // only update assets every 12h
       return;
 
@@ -292,19 +292,22 @@ export class UpdaterService {
 
     if (publicIds.length > 0) {
       // todo: Use Websocket!
-      this.api.getOwnedAssets(publicIds).subscribe((r: QubicAsset[]) => {
+      this.api.getOwnedAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
         if (r && r.length > 0) {
 
-          // update wallet
+          // update wallet - batch updates without saving
           const groupedAssets = this.groupBy(r, (a: QubicAsset) => a.publicId);
           Object.keys(groupedAssets).forEach(k => {
-            this.walletService.updateAssets(k, groupedAssets[k]);
+            this.walletService.updateAssets(k, groupedAssets[k], false);
           });
 
-          // remove old entries
+          // remove old entries - this will save once after all updates
           const tickValue = r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
           if (tickValue !== 0) {
-            this.walletService.removeOldAssets(tickValue);
+            await this.walletService.removeOldAssets(tickValue);
+          } else {
+            // If no old assets to remove, we still need to save the batch updates
+            await this.walletService.savePublic(false);
           }
 
           if (callbackFn)

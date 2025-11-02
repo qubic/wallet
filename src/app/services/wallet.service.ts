@@ -184,6 +184,10 @@ export class WalletService {
     await this.saveConfig(lock);
   }
 
+  public async savePublic(lock: boolean = false): Promise<void> {
+    await this.saveConfig(lock);
+  }
+
   public getWebBridges(): string[] {
     return [...this.runningConfiguration.webBridges];
   }
@@ -303,7 +307,7 @@ export class WalletService {
     await this.save();
   }
 
-  public async updateAssets(publicId: string, assets: QubicAsset[]) {
+  public async updateAssets(publicId: string, assets: QubicAsset[], save: boolean = true) {
     let seed = this.getSeed(publicId);
 
     if (!seed) return;
@@ -315,7 +319,9 @@ export class WalletService {
       assets.find((q) => q.contractIndex == f.contractIndex)
     );
 
-    await this.saveConfig(false);
+    if (save) {
+      await this.saveConfig(false);
+    }
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer) {
