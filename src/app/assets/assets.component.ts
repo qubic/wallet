@@ -625,6 +625,26 @@ export class AssetsComponent implements OnInit, OnDestroy {
     return total;
   }
 
+  /**
+   * Check if user can send this asset
+   * Only QX-managed assets can be transferred, and only if user has QUBIC balance > 0
+   */
+  canSendAsset(asset: QubicAsset): boolean {
+    // Find contract by index and check if it's QX by comparing address
+    const contract = this.smartContractsMap.get(asset.contractIndex);
+    const isQxContract = contract?.address === QubicDefinitions.QX_ADDRESS;
+
+    // Only QX-managed assets can be sent
+    if (!isQxContract) {
+      return false;
+    }
+
+    // Check if user has QUBIC balance > 0
+    const seed = this.walletService.getSeed(asset.publicId);
+    const balance = seed?.balance ?? 0;
+    return balance > 0;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

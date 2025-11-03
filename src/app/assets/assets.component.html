@@ -187,7 +187,7 @@
     </div>
 
     <ng-template #actions let-asset="asset" let-issuerIdentity="issuerIdentity">
-      <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)"
+      <button *ngIf="canSendAsset(asset)" mat-icon-button class="icon-color-link" (click)="openSendForm(asset)"
         title='{{ t("assetsComponent.buttons.send") }}'>
         <mat-icon>send</mat-icon>
       </button>
