@@ -112,6 +112,7 @@
     },
     "form": {
       "info": "Gửi tài sản",
+      "qxOnly": "Hiện tại, chỉ có thể chuyển tài sản được quản lý bởi Qx.",
       "fees": "Phí gửi cố định: 100 Qubic",
       "balance": "Số dư của bạn sau khi trừ phí chuyển (100 Qubic) sẽ là:",
       "select": "Chọn tài sản",

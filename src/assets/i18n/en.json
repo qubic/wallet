@@ -112,6 +112,7 @@
     },
     "form": {
       "info": "Send Assets",
+      "qxOnly": "Currently, only assets managed by Qx can be transferred.",
       "fees": "Fixed sending fees: 100 Qubic",
       "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
       "select": "Select Asset",

@@ -112,7 +112,8 @@
       "send": "Transfer Assets"
     },
     "form": {
-      "info": "Send Assets form",
+      "info": "Assets verzenden",
+      "qxOnly": "Momenteel kunnen alleen assets die door Qx worden beheerd, worden overgedragen.",
       "fees": "Fixed sending fees: 100 Qubic",
       "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
       "select": "Select Asset",

@@ -112,7 +112,8 @@
       "send": "Envoyer"
     },
     "form": {
-      "info": "Envoyer Assets",
+      "info": "Envoyer des Assets",
+      "qxOnly": "Actuellement, seuls les assets gérés par Qx peuvent être transférés.",
       "fees": "Frais d'envoi fixes : 100 Qubic",
       "balance": "Votre solde après déduction des frais de transfert (1 million de Qubics) sera de:",
       "select": "Sélectionner l'Actif",

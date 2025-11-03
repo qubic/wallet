@@ -112,7 +112,8 @@
       "send": "Vermögenswerte übertragen"
     },
     "form": {
-      "info": "Formular - Vermögenswerte senden",
+      "info": "Vermögenswerte senden",
+      "qxOnly": "Derzeit können nur von Qx verwaltete Vermögenswerte übertragen werden.",
       "fees": "Feste Sendegebühren: 100 Qubic",
       "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (100 Qubic) beträgt:",
       "select": "Vermögenswert auswählen",

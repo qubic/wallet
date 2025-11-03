@@ -113,6 +113,7 @@
     },
     "form": {
       "info": "Varlık Gönder",
+      "qxOnly": "Şu anda yalnızca Qx tarafından yönetilen varlıklar aktarılabilir.",
       "fees": "Sabit gönderim ücreti: 100 Qubic",
       "balance": "Transfer ücretleri (100 Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
       "select": "Varlık Seç",

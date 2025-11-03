@@ -112,7 +112,8 @@
       "send": "Enviar Activos"
     },
     "form": {
-      "info": "Envío de Assets",
+      "info": "Enviar Assets",
+      "qxOnly": "Actualmente, solo se pueden transferir assets gestionados por Qx.",
       "fees": "Costo fijo del envío: 100 Qubic",
       "balance": "Tu balance, luego de aplicar los costos de la transferencia (1M QUBIC), será:",
       "select": "Seleccione un Asset",
