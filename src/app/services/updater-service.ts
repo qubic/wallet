@@ -45,7 +45,6 @@ export class UpdaterService {
   private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
-  private lastAssetsLoaded: Date | undefined;
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
@@ -127,7 +126,6 @@ export class UpdaterService {
   }
 
   public forceLoadAssets(allbackFn: ((assets: QubicAsset[]) => void) | undefined = undefined) {
-    this.lastAssetsLoaded = undefined;
     this.getAssets(undefined, allbackFn);
   }
 
@@ -280,32 +278,41 @@ export class UpdaterService {
   }
 
   /**
- * load balances directly from network
- * @returns 
+ * load assets from API
+ * @returns
  */
-  private getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): void {
-    if (!this.isActive || (this.lastAssetsLoaded && new Date().getTime() - this.lastAssetsLoaded.getTime() < (12 * 3600 * 1000))) // only update assets every 12h
+  private async getAssets(publicIds: string[] | undefined = undefined, callbackFn: ((balances: QubicAsset[]) => void) | undefined = undefined): Promise<void> {
+    if (!this.isActive)
       return;
 
     if (!publicIds)
-      publicIds = this.walletService.getSeeds().map(m => m.publicId);
+      // Only fetch assets for non-watch-only seeds since watch-only seeds don't display assets
+      publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
 
     if (publicIds.length > 0) {
       // todo: Use Websocket!
-      this.api.getOwnedAssets(publicIds).subscribe((r: QubicAsset[]) => {
-        if (r && r.length > 0) {
-
-          // update wallet
+      this.api.getOwnedAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
+        if (r) {
+          // update wallet - batch updates without saving
+          // Group assets by publicId, including empty arrays for publicIds with no assets
           const groupedAssets = this.groupBy(r, (a: QubicAsset) => a.publicId);
-          Object.keys(groupedAssets).forEach(k => {
-            this.walletService.updateAssets(k, groupedAssets[k]);
+
+          // Update all seeds atomically - trust the API response
+          publicIds!.forEach(publicId => {
+            const seed = this.walletService.getSeed(publicId);
+            if (seed) {
+              const assets = groupedAssets[publicId] || [];
+
+              // Filter out assets with 0 owned amount and 0 possessed amount
+              const filteredAssets = assets.filter((asset: any) =>
+                (asset.ownedAmount > 0) || (asset.possessedAmount > 0)
+              );
+              seed.assets = filteredAssets;
+            }
           });
 
-          // remove old entries
-          const tickValue = r.reduce((p, c) => p !== 0 && p < c.tick ? p : c.tick, 0);
-          if (tickValue !== 0) {
-            this.walletService.removeOldAssets(tickValue);
-          }
+          // Save once after ALL mutations are complete
+          await this.walletService.savePublic(false);
 
           if (callbackFn)
             callbackFn(r);

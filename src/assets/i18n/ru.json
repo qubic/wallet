@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Ваши акции",
     "openAssets": "Зайти в управление акциями",
+    "managedBy": "Управляется {{contract}}",
+    "by": "{{contract}}",
     "overview": {
       "title": "Просмотр акций"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Индекс контракта",
       "assetName": "Имя акции",
       "contractName": "Имя контракта",
+      "managedBy": "Управляется",
       "ownedAmount": "Общая сумма",
       "possessedAmount": "Частичное владение",
       "tick": "Подтверждено тиком {{tick}}",
       "reportingNodes": "Отчетная Нода",
-      "issuerIdentity": "Идентификатор владельца"
+      "issuerIdentity": "Идентификатор владельца",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Закрыть",

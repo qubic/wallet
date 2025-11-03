@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "あなたの資産",
     "openAssets": "資産管理へ移動",
+    "managedBy": "{{contract}}によって管理",
+    "by": "{{contract}}による",
     "overview": {
       "title": "資産の概要"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "契約インデックス",
       "assetName": "資産名",
       "contractName": "契約名",
+      "managedBy": "管理者",
       "ownedAmount": "所有量",
       "possessedAmount": "保有量",
       "tick": "{{tick}}のティックで有効",
       "reportingNodes": "報告ノード",
-      "issuerIdentity": "発行者ID"
+      "issuerIdentity": "発行者ID",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "閉じる",

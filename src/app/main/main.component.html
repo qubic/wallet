@@ -73,7 +73,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -111,7 +111,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -208,11 +208,11 @@
     </table>
   </div>
   <ng-template #actions let-publicId="publicId">
-    <button *ngIf="hasAssets(publicId) && hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId) && hasAssets(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.makePayment')" (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>

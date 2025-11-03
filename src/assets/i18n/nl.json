@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Your Assets",
     "openAssets": "Goto Asset Management",
+    "managedBy": "Beheerd door {{contract}}",
+    "by": "door {{contract}}",
     "overview": {
       "title": "Asset Overview"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Contract Index",
       "assetName": "Asset Name",
       "contractName": "Contract Name",
+      "managedBy": "Beheerd door",
       "ownedAmount": "Owned Amount",
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "issuerIdentity": "Issuer Identity",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Close",

@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "您的资产",
     "openAssets": "转到资产管理",
+    "managedBy": "由{{contract}}管理",
+    "by": "由{{contract}}",
     "overview": {
       "title": "资产概览"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "合约指数",
       "assetName": "资产名称",
       "contractName": "合约名称",
+      "managedBy": "管理者",
       "ownedAmount": "持有数量",
       "possessedAmount": "持有量",
       "tick": "有效刻度 {{tick}}",
       "reportingNodes": "报告节点",
-      "issuerIdentity": "发行人身份"
+      "issuerIdentity": "发行人身份",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "关闭",

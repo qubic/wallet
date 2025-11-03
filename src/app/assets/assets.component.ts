@@ -6,8 +6,8 @@ import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
-import { lastValueFrom, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { lastValueFrom, Subject, combineLatest } from 'rxjs';
+import { takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialog } from "@angular/material/dialog";
 import { UpdaterService } from "../services/updater-service";
 import { UnLockComponent } from '../lock/unlock/unlock.component';
@@ -22,7 +22,24 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { QubicStaticService } from '../services/apis/static/qubic-static.service';
+import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+
+// Interfaces for asset grouping
+interface GroupedAsset {
+  publicId: string;
+  assetName: string;
+  issuerIdentity: string;
+  totalAmount: number;
+  contracts: ContractGroup[];
+}
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+
+interface ContractGroup {
+  contractName: string;
+  contractIndex: number;
+  assets: QubicAsset[];
+}
 
 /**
  * Validator to check if the address is all uppercase
@@ -50,10 +67,17 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   shortenAddress = shortenAddress;
-  displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
+  displayedColumns: string[] = ['publicId', 'ownedAmount', 'managedBy', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
+  public groupedAssets: GroupedAsset[] = [];
+  public isExpanded: Map<string, boolean> = new Map();
   public currentTick = 0;
   public tickOverwrite = false;
+
+  // Cache for smart contract lookups to avoid repeated array searches
+  private smartContractsMap: Map<number, StaticSmartContract> = new Map();
+  // Track whether smart contracts data has been loaded to prevent flickering
+  public smartContractsLoaded: boolean = false;
 
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
@@ -91,7 +115,8 @@ export class AssetsComponent implements OnInit, OnDestroy {
     private router: Router,
     private decimalPipe: DecimalPipe,
     private changeDetectorRef: ChangeDetectorRef,
-    private apiLiveService: ApiLiveService
+    private apiLiveService: ApiLiveService,
+    private qubicStaticService: QubicStaticService
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -119,11 +144,32 @@ export class AssetsComponent implements OnInit, OnDestroy {
       assetSelect: new FormControl('', Validators.required),
     });
 
-    // subscribe to config changes to receive asset updates
-    this.walletService.onConfig
+    // Use combineLatest to wait for BOTH smart contracts AND wallet config
+    combineLatest([
+      this.qubicStaticService.smartContracts$.pipe(
+        filter(contracts => contracts !== null && contracts.length > 0)
+      ),
+      this.walletService.onConfig
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(c => {
-        this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
+      .subscribe(([contracts, config]) => {
+        // Build smart contracts lookup map (only once per update)
+        this.smartContractsMap.clear();
+        contracts!.forEach(contract => {
+          this.smartContractsMap.set(contract.contractIndex, contract);
+        });
+        this.smartContractsLoaded = true;
+
+        // Update assets from wallet
+        const seeds = this.walletService.getSeeds().filter(p => !p.isOnlyWatch);
+
+        this.assets = seeds
+          .flatMap(m => m.assets)
+          .filter(f => f)
+          .map(m => <QubicAsset>m);
+
+        // Compute grouped assets only ONCE when both are ready
+        this.computeGroupedAssets();
       });
 
     // const amountControl = this.sendForm.get('amount');
@@ -190,10 +236,8 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
 
   toggleTableView(event: MatSlideToggleChange) {
-    this.isTable = !this.isTable;
-    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
-    window.location.reload();
+    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
   }
 
   updateAmountValidator(): void {
@@ -463,6 +507,122 @@ export class AssetsComponent implements OnInit, OnDestroy {
       this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
     }
     this.changeDetectorRef?.detectChanges();
+  }
+
+  /**
+   * Compute grouped assets by publicId + assetName + issuerIdentity
+   * Optimized with cached smart contract lookups
+   * Only computes if smart contracts data is loaded to prevent flickering
+   */
+  computeGroupedAssets(): void {
+    // Wait for smart contracts to load before computing groups to prevent flickering
+    if (!this.smartContractsLoaded) {
+      this.groupedAssets = [];
+      return;
+    }
+
+    const grouped = new Map<string, GroupedAsset>();
+
+    this.assets.forEach(asset => {
+      // Create unique key for grouping: publicId + assetName + issuerIdentity
+      const key = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}`;
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          publicId: asset.publicId,
+          assetName: asset.assetName,
+          issuerIdentity: asset.issuerIdentity,
+          totalAmount: 0,
+          contracts: []
+        });
+      }
+
+      const group = grouped.get(key)!;
+      group.totalAmount += asset.ownedAmount || 0;
+
+      // Group by contract - use cached Map lookup instead of array find
+      const contractIndex = asset.contractIndex || 0;
+      let contractGroup = group.contracts.find(c => c.contractIndex === contractIndex);
+
+      if (!contractGroup) {
+        // Fast O(1) lookup from the cached Map instead of O(n) array search
+        const smartContract = this.smartContractsMap.get(contractIndex);
+        // Use contract label if found, otherwise show index to indicate unknown contract
+        const contractName = smartContract?.label || (contractIndex > 0 ? `Contract ${contractIndex}` : '');
+
+        contractGroup = {
+          contractName: contractName,
+          contractIndex: contractIndex,
+          assets: []
+        };
+        group.contracts.push(contractGroup);
+      }
+
+      contractGroup!.assets.push(asset);
+    });
+
+    this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
+      a.assetName.localeCompare(b.assetName, undefined, { sensitivity: 'base' })
+    );
+  }
+
+  /**
+   * Toggle the expanded state for a specific grouped asset
+   */
+  toggleExpanded(groupKey: string): void {
+    const currentState = this.isExpanded.get(groupKey) || false;
+    this.isExpanded.set(groupKey, !currentState);
+  }
+
+  /**
+   * Check if a specific grouped asset is expanded
+   */
+  isGroupExpanded(groupKey: string): boolean {
+    return this.isExpanded.get(groupKey) || false;
+  }
+
+  /**
+   * Get the unique key for a grouped asset
+   */
+  getGroupKey(group: GroupedAsset): string {
+    return `${group.publicId}-${group.assetName}-${group.issuerIdentity}`;
+  }
+
+  /**
+   * Check if any contract in the group has a valid contract name
+   */
+  hasContractNames(contracts: ContractGroup[]): boolean {
+    return contracts.some(contract => contract.contractName && contract.contractName.trim() !== '');
+  }
+
+  /**
+   * Calculate total owned amount across all contracts for a grouped asset
+   */
+  getTotalOwnedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.contracts.forEach(contract => {
+      contract.assets.forEach(asset => {
+        if (asset.ownedAmount !== undefined && asset.ownedAmount !== null) {
+          total += asset.ownedAmount;
+        }
+      });
+    });
+    return total;
+  }
+
+  /**
+   * Calculate total possessed amount across all contracts for a grouped asset
+   */
+  getTotalPossessedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.contracts.forEach(contract => {
+      contract.assets.forEach(asset => {
+        if (asset.possessedAmount !== undefined && asset.possessedAmount !== null) {
+          total += asset.possessedAmount;
+        }
+      });
+    });
+    return total;
   }
 
   ngOnDestroy(): void {

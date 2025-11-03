@@ -184,6 +184,10 @@ export class WalletService {
     await this.saveConfig(lock);
   }
 
+  public async savePublic(lock: boolean = false): Promise<void> {
+    await this.saveConfig(lock);
+  }
+
   public getWebBridges(): string[] {
     return [...this.runningConfiguration.webBridges];
   }
@@ -292,32 +296,6 @@ export class WalletService {
   }
 
 
-  /**
-   * remove assets that are no longer updated
-   * @param referenceTick the tick from which on we consider an asset as old
-   */
-  public async removeOldAssets(referenceTick: number) {
-    this.runningConfiguration.seeds.forEach(seed => {
-      seed.assets = seed.assets?.filter(f => f.tick >= referenceTick)
-    });
-    await this.save();
-  }
-
-  public async updateAssets(publicId: string, assets: QubicAsset[]) {
-    let seed = this.getSeed(publicId);
-
-    if (!seed) return;
-
-    seed.assets = assets;
-
-    // remove lost assets
-    seed.assets = seed?.assets?.filter((f) =>
-      assets.find((q) => q.contractIndex == f.contractIndex)
-    );
-
-    await this.saveConfig(false);
-  }
-
   arrayBufferToBase64(buffer: ArrayBuffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);
@@ -400,6 +378,7 @@ export class WalletService {
   private async saveConfig(lock: boolean) {
     if (!this.persistence)
       return;
+
     if (lock) {
       // when locking we don't want that the public key is saved.
       this.runningConfiguration.publicKey = undefined;

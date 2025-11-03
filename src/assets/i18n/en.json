@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Your Assets",
     "openAssets": "Goto Asset Management",
+    "managedBy": "Managed by {{contract}}",
+    "by": "by {{contract}}",
     "overview": {
       "title": "Asset Overview"
     },
@@ -96,6 +98,7 @@
       "contractIndex": "Contract Index",
       "assetName": "Asset Name",
       "contractName": "Contract Name",
+      "managedBy": "Managed By",
       "ownedAmount": "Owned Amount",
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",

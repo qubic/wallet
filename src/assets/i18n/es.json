@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Mis activos",
     "openAssets": "Ir a Gestión de Activos",
+    "managedBy": "Gestionado por {{contract}}",
+    "by": "por {{contract}}",
     "overview": {
       "title": "Resumen de Activos"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Índice de contrato",
       "assetName": "Nombre del activo",
       "contractName": "Contrato",
+      "managedBy": "Gestionado por",
       "ownedAmount": "Cantidad propia",
       "possessedAmount": "Cantidad en posesión",
       "tick": "Válido para el Tick {{tick}}",
       "reportingNodes": "Nodos de reporte",
-      "issuerIdentity": "Identidad del emisor"
+      "issuerIdentity": "Identidad del emisor",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Cerrar",
