@@ -112,9 +112,10 @@
       "send": "Vermögenswerte übertragen"
     },
     "form": {
-      "info": "Formular - Vermögenswerte senden",
-      "fees": "Feste Sendegebühren: 100 Qubic",
-      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (100 Qubic) beträgt:",
+      "info": "Vermögenswerte senden",
+      "qxOnly": "Derzeit können nur von Qx verwaltete Vermögenswerte übertragen werden.",
+      "fees": "Feste Sendegebühren: {{fee}} Qubic",
+      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren ({{fee}} Qubic) beträgt:",
       "select": "Vermögenswert auswählen",
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",
@@ -130,7 +131,7 @@
       "buttons": {
         "send": "Senden",
         "cancel": "Abbrechen",
-        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt 100 Qubic"
+        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt {{fee}} Qubic"
       }
     },
     "noAssets": "Keine Vermögenswerte verfügbar"

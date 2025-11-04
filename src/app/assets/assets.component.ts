@@ -15,7 +15,6 @@ import { TransactionService } from '../services/transaction.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
-import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
@@ -24,6 +23,7 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
 
 // Interfaces for asset grouping
 interface GroupedAsset {
@@ -31,14 +31,14 @@ interface GroupedAsset {
   assetName: string;
   issuerIdentity: string;
   totalAmount: number;
-  contracts: ContractGroup[];
+  managingContracts: ManagingContract[];
 }
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
 
-interface ContractGroup {
+interface ManagingContract {
   contractName: string;
   contractIndex: number;
-  assets: QubicAsset[];
+  asset: QubicAsset;
 }
 
 /**
@@ -73,6 +73,9 @@ export class AssetsComponent implements OnInit, OnDestroy {
   public isExpanded: Map<string, boolean> = new Map();
   public currentTick = 0;
   public tickOverwrite = false;
+
+  // Asset transfer fee constant
+  public readonly assetTransferFee = ASSET_TRANSFER_FEE;
 
   // Cache for smart contract lookups to avoid repeated array searches
   private smartContractsMap: Map<number, StaticSmartContract> = new Map();
@@ -294,7 +297,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   getBalanceAfterFees(): number {
     var balanceOfSelectedId = this.walletService.getSeed((<QubicAsset>this.sendForm.controls['assetSelect']?.value)?.publicId)?.balance ?? 0;
-    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(environment.assetsFees);
+    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(this.assetTransferFee);
     return Number(balanceAfterFees);
   }
 
@@ -533,7 +536,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
           assetName: asset.assetName,
           issuerIdentity: asset.issuerIdentity,
           totalAmount: 0,
-          contracts: []
+          managingContracts: []
         });
       }
 
@@ -542,23 +545,21 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
       // Group by contract - use cached Map lookup instead of array find
       const contractIndex = asset.contractIndex || 0;
-      let contractGroup = group.contracts.find(c => c.contractIndex === contractIndex);
+      let managingContract = group.managingContracts.find((c: ManagingContract) => c.contractIndex === contractIndex);
 
-      if (!contractGroup) {
+      if (!managingContract) {
         // Fast O(1) lookup from the cached Map instead of O(n) array search
         const smartContract = this.smartContractsMap.get(contractIndex);
         // Use contract label if found, otherwise show index to indicate unknown contract
         const contractName = smartContract?.label || (contractIndex > 0 ? `Contract ${contractIndex}` : '');
 
-        contractGroup = {
+        managingContract = {
           contractName: contractName,
           contractIndex: contractIndex,
-          assets: []
+          asset: asset
         };
-        group.contracts.push(contractGroup);
+        group.managingContracts.push(managingContract);
       }
-
-      contractGroup!.assets.push(asset);
     });
 
     this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
@@ -589,40 +590,79 @@ export class AssetsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if any contract in the group has a valid contract name
+   * Check if any managing contract in the group has a valid contract name
    */
-  hasContractNames(contracts: ContractGroup[]): boolean {
-    return contracts.some(contract => contract.contractName && contract.contractName.trim() !== '');
+  hasContractNames(managingContracts: ManagingContract[]): boolean {
+    return managingContracts.some(mc => mc.contractName && mc.contractName.trim() !== '');
   }
 
   /**
-   * Calculate total owned amount across all contracts for a grouped asset
+   * Calculate total owned amount across all managing contracts for a grouped asset
    */
   getTotalOwnedAmount(group: GroupedAsset): number {
     let total = 0;
-    group.contracts.forEach(contract => {
-      contract.assets.forEach(asset => {
-        if (asset.ownedAmount !== undefined && asset.ownedAmount !== null) {
-          total += asset.ownedAmount;
-        }
-      });
+    group.managingContracts.forEach((mc: ManagingContract) => {
+      const asset = mc.asset;
+      if (asset.ownedAmount !== undefined && asset.ownedAmount !== null) {
+        total += asset.ownedAmount;
+      }
     });
     return total;
   }
 
   /**
-   * Calculate total possessed amount across all contracts for a grouped asset
+   * Calculate total possessed amount across all managing contracts for a grouped asset
    */
   getTotalPossessedAmount(group: GroupedAsset): number {
     let total = 0;
-    group.contracts.forEach(contract => {
-      contract.assets.forEach(asset => {
-        if (asset.possessedAmount !== undefined && asset.possessedAmount !== null) {
-          total += asset.possessedAmount;
-        }
-      });
+    group.managingContracts.forEach((mc: ManagingContract) => {
+      const asset = mc.asset;
+      if (asset.possessedAmount !== undefined && asset.possessedAmount !== null) {
+        total += asset.possessedAmount;
+      }
     });
     return total;
+  }
+
+  /**
+   * Check if user can send this asset
+   * Only QX-managed assets can be transferred
+   * Balance validation is handled in the send form
+   */
+  canSendAsset(asset: QubicAsset): boolean {
+    // Find contract by index and check if it's QX by comparing address
+    const contract = this.smartContractsMap.get(asset.contractIndex);
+    return contract?.address === QubicDefinitions.QX_ADDRESS;
+  }
+
+  /**
+   * Get only QX-managed assets that can be sent
+   */
+  getQxAssets(): QubicAsset[] {
+    return this.assets.filter(asset => this.canSendAsset(asset));
+  }
+
+  /**
+   * Check if a grouped asset has any sendable assets
+   * (at least one asset in the group is QX-managed)
+   */
+  canSendGroupedAsset(group: GroupedAsset): boolean {
+    // Check if any managing contract in this group can be sent
+    return group.managingContracts.some((mc: ManagingContract) =>
+      this.canSendAsset(mc.asset)
+    );
+  }
+
+  /**
+   * Get the QX-managed asset from a grouped asset
+   * Returns the asset managed by QX contract, or null if none found
+   */
+  getQxManagedAsset(group: GroupedAsset): QubicAsset | null {
+    const qxContract = group.managingContracts.find((mc: ManagingContract) => {
+      const contract = this.smartContractsMap.get(mc.contractIndex);
+      return contract?.address === QubicDefinitions.QX_ADDRESS;
+    });
+    return qxContract?.asset ?? null;
   }
 
   ngOnDestroy(): void {

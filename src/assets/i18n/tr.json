@@ -113,8 +113,9 @@
     },
     "form": {
       "info": "Varlık Gönder",
-      "fees": "Sabit gönderim ücreti: 100 Qubic",
-      "balance": "Transfer ücretleri (100 Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
+      "qxOnly": "Şu anda yalnızca Qx tarafından yönetilen varlıklar aktarılabilir.",
+      "fees": "Sabit gönderim ücreti: {{fee}} Qubic",
+      "balance": "Transfer ücretleri ({{fee}} Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
       "select": "Varlık Seç",
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
@@ -130,7 +131,7 @@
       "buttons": {
         "send": "Gönder",
         "cancel": "İptal",
-        "error.balance": "Yetersiz bakiye, minimum bakiye 100 Qubic olmalıdır"
+        "error.balance": "Yetersiz bakiye, minimum bakiye {{fee}} Qubic olmalıdır"
       }
     },
     "noAssets": "Kullanılabilir Varlık Bulunamadı"

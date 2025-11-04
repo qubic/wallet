@@ -112,8 +112,9 @@
     },
     "form": {
       "info": "Gửi tài sản",
-      "fees": "Phí gửi cố định: 100 Qubic",
-      "balance": "Số dư của bạn sau khi trừ phí chuyển (100 Qubic) sẽ là:",
+      "qxOnly": "Hiện tại, chỉ có thể chuyển tài sản được quản lý bởi Qx.",
+      "fees": "Phí gửi cố định: {{fee}} Qubic",
+      "balance": "Số dư của bạn sau khi trừ phí chuyển ({{fee}} Qubic) sẽ là:",
       "select": "Chọn tài sản",
       "select.error": "Yêu cầu chọn tài sản",
       "placeholder": "ID địa chỉ của người nhận",
@@ -129,7 +130,7 @@
       "buttons": {
         "send": "Gửi",
         "cancel": "Hủy",
-        "error.balance": "Số dư không đủ, số dư tối thiểu là 100 Qubic"
+        "error.balance": "Số dư không đủ, số dư tối thiểu là {{fee}} Qubic"
       }
     },
     "noAssets": "Không có tài sản"

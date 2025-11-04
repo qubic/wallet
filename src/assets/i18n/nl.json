@@ -112,9 +112,10 @@
       "send": "Transfer Assets"
     },
     "form": {
-      "info": "Send Assets form",
-      "fees": "Fixed sending fees: 100 Qubic",
-      "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
+      "info": "Assets verzenden",
+      "qxOnly": "Momenteel kunnen alleen assets die door Qx worden beheerd, worden overgedragen.",
+      "fees": "Vaste verzendkosten: {{fee}} Qubic",
+      "balance": "Uw saldo na aftrek van overdrachtskosten ({{fee}} Qubic) is:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
@@ -130,7 +131,7 @@
       "buttons": {
         "send": "Send",
         "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 100 Qubic"
+        "error.balance": "Onvoldoende saldo, minimumsaldo is {{fee}} Qubic"
       }
     },
     "noAssets": "No assets available"

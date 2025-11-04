@@ -42,16 +42,16 @@
             </div>
 
             <!-- Show contracts breakdown -->
-            <ng-container *ngIf="hasContractNames(group.contracts)">
+            <ng-container *ngIf="hasContractNames(group.managingContracts)">
               <div class="contract-breakdown">
                 <mat-divider></mat-divider>
                 <br>
-                <div *ngFor="let contract of group.contracts">
-                  <div class="contract-group-header" *ngIf="contract.contractName">
-                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
+                <div *ngFor="let managingContract of group.managingContracts">
+                  <div class="contract-group-header" *ngIf="managingContract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: managingContract.contractName }) }}</span>
                   </div>
-                  <div *ngFor="let asset of contract.assets" class="contract-asset-item" style="padding-left: 10px;">
-                    <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
+                  <div class="contract-asset-item" style="padding-left: 10px;">
+                    <span class="disable-area">{{ managingContract.asset.ownedAmount | number:"1.0-0" }} {{ managingContract.asset.assetName }}</span>
                   </div>
                 </div>
                 <br>
@@ -59,12 +59,8 @@
             </ng-container>
 
             <div class="text-center">
-              <ng-container *ngFor="let contract of group.contracts; let first = first">
-                <ng-container *ngIf="first">
-                  <ng-container
-                    *ngTemplateOutlet="actions; context: { asset: contract.assets[0], issuerIdentity: group.issuerIdentity }"></ng-container>
-                </ng-container>
-              </ng-container>
+              <ng-container
+                *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -87,26 +83,22 @@
             </div>
 
             <!-- Show managed by info -->
-            <ng-container *ngIf="hasContractNames(group.contracts)">
+            <ng-container *ngIf="hasContractNames(group.managingContracts)">
               <div style="margin: 10px 0;">
-                <div *ngFor="let contract of group.contracts">
-                  <div *ngIf="contract.contractName">
-                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: contract.contractName }) }}</span>
+                <div *ngFor="let managingContract of group.managingContracts">
+                  <div *ngIf="managingContract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: managingContract.contractName }) }}</span>
                   </div>
-                  <div *ngFor="let asset of contract.assets" style="padding-left: 10px;">
-                    <span class="disable-area">{{ asset.ownedAmount | number:"1.0-0" }} {{ asset.assetName }}</span>
+                  <div style="padding-left: 10px;">
+                    <span class="disable-area">{{ managingContract.asset.ownedAmount | number:"1.0-0" }} {{ managingContract.asset.assetName }}</span>
                   </div>
                 </div>
               </div>
             </ng-container>
 
             <div class="flex flex-wrap">
-              <ng-container *ngFor="let contract of group.contracts; let first = first">
-                <ng-container *ngIf="first">
-                  <ng-container
-                    *ngTemplateOutlet="actions; context: { asset: contract.assets[0], issuerIdentity: group.issuerIdentity }"></ng-container>
-                </ng-container>
-              </ng-container>
+              <ng-container
+                *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
             </div>
           </div>
         </div>
@@ -142,13 +134,11 @@
         <ng-container matColumnDef="managedBy">
           <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.managedBy") }}</th>
           <td mat-cell *matCellDef="let group" class="alignRight disable-area">
-            <div *ngFor="let contract of group.contracts">
-              <div *ngFor="let asset of contract.assets">
-                <ng-container *ngIf="contract.contractName">
-                  {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : (asset.ownedAmount | number:"1.0-0") }}
-                  <span class="dashboard-amount-name">{{ t("assetsComponent.by", { contract: contract.contractName }) }}</span>
-                </ng-container>
-              </div>
+            <div *ngFor="let managingContract of group.managingContracts">
+              <ng-container *ngIf="managingContract.contractName">
+                {{ managingContract.asset.ownedAmount == undefined || managingContract.asset.ownedAmount == null ? "?" : (managingContract.asset.ownedAmount | number:"1.0-0") }}
+                <span class="dashboard-amount-name">{{ t("assetsComponent.by", { contract: managingContract.contractName }) }}</span>
+              </ng-container>
             </div>
           </td>
         </ng-container>
@@ -158,10 +148,8 @@
           <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.tick") }} / <br /> {{
             t("assetsComponent.table.reportingNodes") }}</th>
           <td mat-cell *matCellDef="let group" class="alignRight">
-            <div *ngFor="let contract of group.contracts">
-              <div *ngFor="let asset of contract.assets">
-                {{ asset.tick | number: '1.0-0'}}<br />{{ asset.reportingNodes?.join(', ') }}
-              </div>
+            <div *ngFor="let managingContract of group.managingContracts">
+              {{ managingContract.asset.tick | number: '1.0-0'}}<br />{{ managingContract.asset.reportingNodes?.join(', ') }}
             </div>
           </td>
         </ng-container>
@@ -172,12 +160,8 @@
             {{ t("seedOverviewComponent.table.actions.title") }}
           </th>
           <td mat-cell *matCellDef="let group" class="alignRight">
-            <ng-container *ngFor="let contract of group.contracts; let first = first">
-              <ng-container *ngIf="first">
-                <ng-container
-                  *ngTemplateOutlet="actions; context: { asset: contract.assets[0], issuerIdentity: group.issuerIdentity }"></ng-container>
-              </ng-container>
-            </ng-container>
+            <ng-container
+              *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
           </td>
         </ng-container>
 
@@ -186,8 +170,8 @@
       </table>
     </div>
 
-    <ng-template #actions let-asset="asset" let-issuerIdentity="issuerIdentity">
-      <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)"
+    <ng-template #actions let-group="group" let-issuerIdentity="issuerIdentity">
+      <button *ngIf="canSendGroupedAsset(group)" mat-icon-button class="icon-color-link" (click)="openSendForm(getQxManagedAsset(group)!)"
         title='{{ t("assetsComponent.buttons.send") }}'>
         <mat-icon>send</mat-icon>
       </button>
@@ -201,7 +185,7 @@
       <mat-card class="sendAssets-card">
         <mat-card-content>
           <h2>{{ t("assetsComponent.form.info") }}</h2>
-          <div class="transaction-fee"> {{ t("assetsComponent.form.fees") }}</div>
+          <div class="transaction-fee"> {{ t("assetsComponent.form.fees", { fee: assetTransferFee }) }}</div>
           <form [formGroup]="sendForm" (ngSubmit)="onSubmitSendForm()">
             <div class="row">
               <div class="col">
@@ -216,7 +200,7 @@
                         {{ getSelectedAsset()?.assetName }}
                       </span>
                     </mat-select-trigger>
-                    <mat-option *ngFor="let asset of assets" [value]="asset" class="custom-mat-option">
+                    <mat-option *ngFor="let asset of getQxAssets()" [value]="asset" class="custom-mat-option">
                       {{ getSeedAlias(asset.publicId) }} ({{ shortenAddress(asset.publicId) }})<br />{{ asset.ownedAmount == undefined
                       || asset.ownedAmount == null ? "?" : asset.ownedAmount | number: '1.0-0'}} {{asset.assetName}}
                     </mat-option>
@@ -225,6 +209,7 @@
                     {{ t("assetsComponent.form.select.error") }}
                   </mat-error>
                 </mat-form-field>
+                <div class="info-note">* {{ t("assetsComponent.form.qxOnly") }}</div>
               </div>
             </div>
             <div class="row">
@@ -309,11 +294,11 @@
               </div>
             </div>
 
-            <div class="transaction-fee"> {{ t("assetsComponent.form.balance") }} {{ getBalanceAfterFees() | number:
+            <div class="transaction-fee"> {{ t("assetsComponent.form.balance", { fee: assetTransferFee }) }} {{ getBalanceAfterFees() | number:
               '1.0-0' }} {{ t("general.currency") }}
             </div>
             <div *ngIf="getBalanceAfterFees() < 0" class="error-message"> {{
-              t("assetsComponent.form.buttons.error.balance") }}
+              t("assetsComponent.form.buttons.error.balance", { fee: assetTransferFee }) }}
             </div>
             <mat-card-actions class="padding">
               <button mat-raised-button type="button" (click)="cancelSendForm()">

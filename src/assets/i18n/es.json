@@ -112,9 +112,10 @@
       "send": "Enviar Activos"
     },
     "form": {
-      "info": "Envío de Assets",
-      "fees": "Costo fijo del envío: 100 Qubic",
-      "balance": "Tu balance, luego de aplicar los costos de la transferencia (1M QUBIC), será:",
+      "info": "Enviar Assets",
+      "qxOnly": "Actualmente, solo se pueden transferir assets gestionados por Qx.",
+      "fees": "Costo fijo del envío: {{fee}} Qubic",
+      "balance": "Tu balance, luego de aplicar los costos de la transferencia ({{fee}} QUBIC), será:",
       "select": "Seleccione un Asset",
       "select.error": "Debe seleccionar un Asset",
       "placeholder": "ID de la dirección del destinatario",
@@ -130,7 +131,7 @@
       "buttons": {
         "send": "Enviar",
         "cancel": "Cancelar",
-        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de 100 QUBIC"
+        "error.balance": "No tienes saldo suficiente. Se requiere un mínimo de {{fee}} QUBIC"
       }
     },
     "noAssets": "No hay activos disponibles"
