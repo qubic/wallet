@@ -114,8 +114,8 @@
     "form": {
       "info": "发送资产",
       "qxOnly": "目前仅可转移由 Qx 管理的资产。",
-      "fees": "固定发送费用: 100 Qubic",
-      "balance": "扣除转账费用（100 Qubic）后，您的余额将为:",
+      "fees": "固定发送费用: {{fee}} Qubic",
+      "balance": "扣除转账费用（{{fee}} Qubic）后，您的余额将为:",
       "select": "选择资产",
       "select.error": "需要选择资产",
       "placeholder": "接收方地址 ID",
@@ -131,7 +131,7 @@
       "buttons": {
         "send": "发送",
         "cancel": "取消",
-        "error.balance": "余额不足, 余额需大于 100 Qubic"
+        "error.balance": "余额不足, 余额需大于 {{fee}} Qubic"
       }
     },
     "noAssets": "无可用资产"

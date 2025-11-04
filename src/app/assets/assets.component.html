@@ -185,7 +185,7 @@
       <mat-card class="sendAssets-card">
         <mat-card-content>
           <h2>{{ t("assetsComponent.form.info") }}</h2>
-          <div class="transaction-fee"> {{ t("assetsComponent.form.fees") }}</div>
+          <div class="transaction-fee"> {{ t("assetsComponent.form.fees", { fee: assetTransferFee }) }}</div>
           <form [formGroup]="sendForm" (ngSubmit)="onSubmitSendForm()">
             <div class="row">
               <div class="col">
@@ -294,11 +294,11 @@
               </div>
             </div>
 
-            <div class="transaction-fee"> {{ t("assetsComponent.form.balance") }} {{ getBalanceAfterFees() | number:
+            <div class="transaction-fee"> {{ t("assetsComponent.form.balance", { fee: assetTransferFee }) }} {{ getBalanceAfterFees() | number:
               '1.0-0' }} {{ t("general.currency") }}
             </div>
             <div *ngIf="getBalanceAfterFees() < 0" class="error-message"> {{
-              t("assetsComponent.form.buttons.error.balance") }}
+              t("assetsComponent.form.buttons.error.balance", { fee: assetTransferFee }) }}
             </div>
             <mat-card-actions class="padding">
               <button mat-raised-button type="button" (click)="cancelSendForm()">

@@ -113,8 +113,8 @@
     "form": {
       "info": "Send Assets",
       "qxOnly": "Currently, only assets managed by Qx can be transferred.",
-      "fees": "Fixed sending fees: 100 Qubic",
-      "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
+      "fees": "Fixed sending fees: {{fee}} Qubic",
+      "balance": "Your balance after deducting transfer fees ({{fee}} Qubic) will be:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
@@ -130,7 +130,7 @@
       "buttons": {
         "send": "Send",
         "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 100 Qubic"
+        "error.balance": "Insufficient balance, minimum balance is {{fee}} Qubic"
       }
     },
     "noAssets": "No assets available"

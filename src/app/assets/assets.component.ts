@@ -15,7 +15,6 @@ import { TransactionService } from '../services/transaction.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
-import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
@@ -24,6 +23,7 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
 
 // Interfaces for asset grouping
 interface GroupedAsset {
@@ -73,6 +73,9 @@ export class AssetsComponent implements OnInit, OnDestroy {
   public isExpanded: Map<string, boolean> = new Map();
   public currentTick = 0;
   public tickOverwrite = false;
+
+  // Asset transfer fee constant
+  public readonly assetTransferFee = ASSET_TRANSFER_FEE;
 
   // Cache for smart contract lookups to avoid repeated array searches
   private smartContractsMap: Map<number, StaticSmartContract> = new Map();
@@ -294,7 +297,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   getBalanceAfterFees(): number {
     var balanceOfSelectedId = this.walletService.getSeed((<QubicAsset>this.sendForm.controls['assetSelect']?.value)?.publicId)?.balance ?? 0;
-    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(environment.assetsFees);
+    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(this.assetTransferFee);
     return Number(balanceAfterFees);
   }
 

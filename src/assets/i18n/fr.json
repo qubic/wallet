@@ -114,8 +114,8 @@
     "form": {
       "info": "Envoyer des Assets",
       "qxOnly": "Actuellement, seuls les assets gérés par Qx peuvent être transférés.",
-      "fees": "Frais d'envoi fixes : 100 Qubic",
-      "balance": "Votre solde après déduction des frais de transfert (1 million de Qubics) sera de:",
+      "fees": "Frais d'envoi fixes : {{fee}} Qubic",
+      "balance": "Votre solde après déduction des frais de transfert ({{fee}} Qubics) sera de:",
       "select": "Sélectionner l'Actif",
       "select.error": "La sélection de l'actif est requise",
       "placeholder": "ID de l'adresse du destinataire",
@@ -131,7 +131,7 @@
       "buttons": {
         "send": "Envoyer Assets",
         "cancel": "Annuler",
-        "error.balance": "Balance insuffisante, vous devez avoir un minimum de 100 Qubic"
+        "error.balance": "Balance insuffisante, vous devez avoir un minimum de {{fee}} Qubic"
       }
     },
     "noAssets": "Aucun actif disponible"
