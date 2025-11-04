@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Wichtiger Hinweis",
     "button": "Okay",
-    "message": "<div>Sie habe die maximale Anzahl von 15 Adressen in Ihrer Wallet erreicht.</div>"
+    "message": "<div>Sie habe die maximale Anzahl von {{maxAddresses}} Adressen in Ihrer Wallet erreicht.</div>"
   },
   "switchExportDialog": {
     "title": "Wichtiger Hinweis zur Umstellung auf die neue Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Ihre Vermögenswerte",
     "openAssets": "Zur Vermögensverwaltung gehen",
+    "managedBy": "Verwaltet von {{contract}}",
+    "by": "von {{contract}}",
     "overview": {
       "title": "Vermögensübersicht"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Vertragsindex",
       "assetName": "Vermögenswertname",
       "contractName": "Vertragsname",
+      "managedBy": "Verwaltet von",
       "ownedAmount": "Besitzende Menge",
       "possessedAmount": "Besessene Menge",
       "tick": "Gültig für Tick {{tick}}",
       "reportingNodes": "Berichtsknoten",
-      "issuerIdentity": "Identität des Ausstellers"
+      "issuerIdentity": "Identität des Ausstellers",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Schließen",
@@ -108,9 +112,10 @@
       "send": "Vermögenswerte übertragen"
     },
     "form": {
-      "info": "Formular - Vermögenswerte senden",
-      "fees": "Feste Sendegebühren: 100 Qubic",
-      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren (100 Qubic) beträgt:",
+      "info": "Vermögenswerte senden",
+      "qxOnly": "Derzeit können nur von Qx verwaltete Vermögenswerte übertragen werden.",
+      "fees": "Feste Sendegebühren: {{fee}} Qubic",
+      "balance": "Ihr Kontostand nach Abzug der Überweisungsgebühren ({{fee}} Qubic) beträgt:",
       "select": "Vermögenswert auswählen",
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "Senden",
         "cancel": "Abbrechen",
-        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt 100 Qubic"
+        "error.balance": "Unzureichendes Guthaben, Mindestguthaben beträgt {{fee}} Qubic"
       }
     },
     "noAssets": "Keine Vermögenswerte verfügbar"
@@ -207,7 +212,8 @@
         "receivePayment": "QR Code zum Empfang einer Zahlung generieren.",
         "editSeed": "Konto bearbeiten",
         "deleteSeed": "Konto löschen",
-        "refreshBalance": "Kontostand im Netzwerk abrufen"
+        "refreshBalance": "Kontostand im Netzwerk abrufen",
+        "openExplorer": "In Explorer anzeigen"
       }
     },
     "hasPendingTransaction": "Offene Zahlungen",
@@ -303,7 +309,9 @@
         "chooseOwnSeed": "Wähle ein eigenes Konto",
         "error": {
           "required": "Konto-ID wird benötigt",
-          "length": "Eine Qubic Konto-ID besteht aus 60 Großbuchstaben."
+          "notUppercase": "Die Adresse muss nur aus Großbuchstaben bestehen",
+          "length": "Eine Qubic Konto-ID besteht aus 60 Großbuchstaben.",
+          "invalidAddress": "Ungültige Empfängeradresse"
         }
       },
       "amount": {
@@ -362,8 +370,9 @@
       "destination": "Ziel",
       "tick": "Tick",
       "type": "Typ",
+      "timestamp": "Zeitstempel",
       "fee": "Gebühr",
-      "assetTransferWarning": "Dieser Transaktionsdatensatz ist derzeit nur für den Absender sichtbar. Der Empfänger hat zu diesem Zeitpunkt keinen Zugriff auf diese Transaktionsdaten in seinen Aufzeichnungen."
+      "assetTransferWarning": "Diese Transaktion ist nur in der Transaktionsliste der Quelladresse sichtbar. Die Anzeige in der Transaktionsliste der Zieladresse wird in der aktuellen Version noch nicht unterstützt."
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

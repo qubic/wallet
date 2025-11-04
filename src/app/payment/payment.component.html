@@ -9,10 +9,14 @@
                             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
                                 <mat-label>{{ t("paymentComponent.form.sourceSeed.label") }}</mat-label>
                                 <mat-select formControlName="sourceId" panelClass="full-width">
+                                    <mat-select-trigger>
+                                        <span *ngIf="transferForm.controls['sourceId'].value && getSelectedSourceSeed()">
+                                            {{ getSelectedSourceSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                                        </span>
+                                    </mat-select-trigger>
                                     <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
                                         class="custom-mat-option">
-                                        {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                                        {{ t("general.currency") }}
+                                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                                     </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="transferForm.controls['sourceId'].hasError('required')">
@@ -31,10 +35,14 @@
                                 </button>
                                 <mat-label>{{ t("paymentComponent.form.receiver.placeholder") }}</mat-label>
                                 <mat-select #selectedDestinationId formControlName="selectedDestinationId">
+                                    <mat-select-trigger>
+                                        <span *ngIf="transferForm.controls['selectedDestinationId'].value && getSelectedDestinationSeed()">
+                                            {{ getSelectedDestinationSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                                        </span>
+                                    </mat-select-trigger>
                                     <mat-option *ngFor="let seed of getSeeds(true); let i = index"
                                         [value]="seed.publicId" class="custom-mat-option">
-                                        {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                                        {{ t("general.currency") }}
+                                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                                     </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="transferForm.controls['selectedDestinationId'].hasError('required')">
@@ -56,9 +64,15 @@
                                 <mat-error *ngIf="transferForm.controls['destinationId'].hasError('required')">
                                     {{ t("paymentComponent.form.receiver.error.required") }}
                                 </mat-error>
+                                <mat-error *ngIf="!transferForm.controls['destinationId'].hasError('required') && transferForm.controls['destinationId'].hasError('notUppercase')">
+                                    {{ t("paymentComponent.form.receiver.error.notUppercase") }}
+                                </mat-error>
                                 <mat-error
-                                    *ngIf="transferForm.controls['destinationId'].hasError('minlength') || transferForm.controls['destinationId'].hasError('maxlength')">
+                                    *ngIf="!transferForm.controls['destinationId'].hasError('required') && !transferForm.controls['destinationId'].hasError('notUppercase') && (transferForm.controls['destinationId'].hasError('minlength') || transferForm.controls['destinationId'].hasError('maxlength'))">
                                     {{ t("paymentComponent.form.receiver.error.length") }}
+                                </mat-error>
+                                <mat-error *ngIf="!transferForm.controls['destinationId'].hasError('required') && !transferForm.controls['destinationId'].hasError('notUppercase') && !transferForm.controls['destinationId'].hasError('minlength') && !transferForm.controls['destinationId'].hasError('maxlength') && transferForm.controls['destinationId'].hasError('invalidAddress')">
+                                    {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
                                 </mat-error>
                                 <span>
                                     <mat-hint align="start">{{ transferForm.controls['destinationId'].value?.length}}/{{ t("paymentComponent.form.receiver.hint") }}</mat-hint>

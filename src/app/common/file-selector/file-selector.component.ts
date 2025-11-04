@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 
-
+let nextUniqueId = 0;
 
 @Component({
   selector: 'app-file-selector',
@@ -14,6 +14,7 @@ export class FileSelectorComponent {
 
   selectedFile: File | undefined = undefined;
   isDragOver = false;
+  uniqueId: string = `input-file-id-${nextUniqueId++}`;
 
   @HostListener('dragover', ['$event'])
   onDragOver(event: DragEvent): void {

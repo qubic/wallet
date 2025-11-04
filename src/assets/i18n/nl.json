@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
-    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+    "message": "<div>You have reached the maximum number of {{maxAddresses}} addresses in your wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Your Assets",
     "openAssets": "Goto Asset Management",
+    "managedBy": "Beheerd door {{contract}}",
+    "by": "door {{contract}}",
     "overview": {
       "title": "Asset Overview"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Contract Index",
       "assetName": "Asset Name",
       "contractName": "Contract Name",
+      "managedBy": "Beheerd door",
       "ownedAmount": "Owned Amount",
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "issuerIdentity": "Issuer Identity",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Close",
@@ -108,9 +112,10 @@
       "send": "Transfer Assets"
     },
     "form": {
-      "info": "Send Assets form",
-      "fees": "Fixed sending fees: 100 Qubic",
-      "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
+      "info": "Assets verzenden",
+      "qxOnly": "Momenteel kunnen alleen assets die door Qx worden beheerd, worden overgedragen.",
+      "fees": "Vaste verzendkosten: {{fee}} Qubic",
+      "balance": "Uw saldo na aftrek van overdrachtskosten ({{fee}} Qubic) is:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "Send",
         "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 100 Qubic"
+        "error.balance": "Onvoldoende saldo, minimumsaldo is {{fee}} Qubic"
       }
     },
     "noAssets": "No assets available"
@@ -207,7 +212,8 @@
         "receivePayment": "Genereer een QR Code om een betaling te ontvangen.",
         "editSeed": "Account aanpassen",
         "deleteSeed": "Account verwijderen",
-        "refreshBalance": "Refresh Balance from Network"
+        "refreshBalance": "Refresh Balance from Network",
+        "openExplorer": "Weergeven in Explorer"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -302,7 +308,9 @@
         "chooseOwnSeed": "Kies een eigen Account ID",
         "error": {
           "required": "Account ID is vereist",
-          "length": "Een Qubic account ID bestaat uit 60 hoofdletters."
+          "notUppercase": "Het adres moet geheel in hoofdletters zijn",
+          "length": "Een Qubic account ID bestaat uit 60 hoofdletters.",
+          "invalidAddress": "Ongeldig ontvangersadres"
         }
       },
       "amount": {
@@ -363,7 +371,8 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Kosten",
-      "assetTransferWarning": "Dit transactieoverzicht is momenteel alleen zichtbaar voor de afzender. De ontvanger heeft op dit moment geen toegang tot deze transactiegegevens in zijn administratie."
+      "assetTransferWarning": "Deze transactie is alleen zichtbaar in de transactielijst van het bronadres. Weergave in de transactielijst van het bestemmingsadres wordt in de huidige versie nog niet ondersteund.",
+      "timestamp": "Tijdstempel"
     },
     "epoch": "Epoche",
     "ticks": "Ticks"

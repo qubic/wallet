@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
-    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+    "message": "<div>You have reached the maximum number of {{maxAddresses}} addresses in your wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "您的资产",
     "openAssets": "转到资产管理",
+    "managedBy": "由{{contract}}管理",
+    "by": "由{{contract}}",
     "overview": {
       "title": "资产概览"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "合约指数",
       "assetName": "资产名称",
       "contractName": "合约名称",
+      "managedBy": "管理者",
       "ownedAmount": "持有数量",
       "possessedAmount": "持有量",
       "tick": "有效刻度 {{tick}}",
       "reportingNodes": "报告节点",
-      "issuerIdentity": "发行人身份"
+      "issuerIdentity": "发行人身份",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "关闭",
@@ -109,8 +113,9 @@
     },
     "form": {
       "info": "发送资产",
-      "fees": "固定发送费用: 100 Qubic",
-      "balance": "扣除转账费用（100 Qubic）后，您的余额将为:",
+      "qxOnly": "目前仅可转移由 Qx 管理的资产。",
+      "fees": "固定发送费用: {{fee}} Qubic",
+      "balance": "扣除转账费用（{{fee}} Qubic）后，您的余额将为:",
       "select": "选择资产",
       "select.error": "需要选择资产",
       "placeholder": "接收方地址 ID",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "发送",
         "cancel": "取消",
-        "error.balance": "余额不足, 余额需大于 100 Qubic"
+        "error.balance": "余额不足, 余额需大于 {{fee}} Qubic"
       }
     },
     "noAssets": "无可用资产"
@@ -207,7 +212,8 @@
         "receivePayment": "生成二维码以接收付款",
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
-        "refreshBalance": "刷新余额"
+        "refreshBalance": "刷新余额",
+        "openExplorer": "在浏览器中查看"
       }
     },
     "hasPendingTransaction": "交易待定",
@@ -303,7 +309,9 @@
         "chooseOwnSeed": "选择自己的地址 ID",
         "error": {
           "required": "地址 ID为必填项",
-          "length": "Qubic 地址 ID 由 60 个大写字母组成。"
+          "notUppercase": "地址必须全部为大写字母",
+          "length": "Qubic 地址 ID 由 60 个大写字母组成。",
+          "invalidAddress": "无效的接收地址"
         }
       },
       "amount": {
@@ -364,7 +372,8 @@
       "tick": "刻度",
       "type": "类型",
       "fee": "费用",
-      "assetTransferWarning": "此交易当前仅发送方可见，接收方暂时无法查看"
+      "assetTransferWarning": "此交易仅在源地址的交易列表中可见。在当前版本中尚不支持在目标地址的交易列表中显示它。",
+      "timestamp": "时间戳"
     },
     "epoch": "纪元",
     "ticks": "刻度"

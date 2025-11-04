@@ -120,6 +120,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
 
   public getSeeds = () => this.walletService.getSeeds();
 
+  public getSelectedSeed() {
+    const publicId = this.form.controls['sourceId'].value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
   public toggleView(): void {
     this.showingEnded = !this.showingEnded;
     this.loadData(this.form.get('sourceId')?.value);
@@ -146,7 +151,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.dialog.open(UnlockInputDialogComponent, {
       restoreFocus: false,
       data: { maxUnlockAmount: element.lockedAmount },
-    }).afterClosed().subscribe(unlockAmount => {
+    }).afterClosed().pipe(takeUntil(this.destroy$)).subscribe(unlockAmount => {
       if (unlockAmount) this.openConfirmDialog(element, unlockAmount);
     });
   }
@@ -161,7 +166,7 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         }),
         confirm: this.transloco.translate('confirmDialog.buttons.confirm'),
       },
-    }).afterClosed().subscribe(result => {
+    }).afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) this.handleUnlockAction(element, unlockAmount);
     });
   }

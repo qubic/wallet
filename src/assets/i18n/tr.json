@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
-    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+    "message": "<div>You have reached the maximum number of {{maxAddresses}} addresses in your wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Varlıklar",
     "openAssets": "Varlık Yönetimine Git",
+    "managedBy": "{{contract}} tarafından yönetilir",
+    "by": "{{contract}} tarafından",
     "overview": {
       "title": "Varlıklara Genel Bakış"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Sözleşme Endeksi",
       "assetName": "Varlık Adı",
       "contractName": "Sözleşme Adı",
+      "managedBy": "Tarafından yönetiliyor",
       "ownedAmount": "Sahip Olunan Tutar",
       "possessedAmount": "İşlem Gören Tutar",
       "tick": "{{tick}} Tick için geçerlidir",
       "reportingNodes": "Raporlama Düğümleri",
-      "issuerIdentity": "Veren Kimliği"
+      "issuerIdentity": "Veren Kimliği",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Kapat",
@@ -109,8 +113,9 @@
     },
     "form": {
       "info": "Varlık Gönder",
-      "fees": "Sabit gönderim ücreti: 100 Qubic",
-      "balance": "Transfer ücretleri (100 Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
+      "qxOnly": "Şu anda yalnızca Qx tarafından yönetilen varlıklar aktarılabilir.",
+      "fees": "Sabit gönderim ücreti: {{fee}} Qubic",
+      "balance": "Transfer ücretleri ({{fee}} Qubic) düşüldükten sonraki bakiyeniz şu şekilde olacaktır:",
       "select": "Varlık Seç",
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "Gönder",
         "cancel": "İptal",
-        "error.balance": "Yetersiz bakiye, minimum bakiye 100 Qubic olmalıdır"
+        "error.balance": "Yetersiz bakiye, minimum bakiye {{fee}} Qubic olmalıdır"
       }
     },
     "noAssets": "Kullanılabilir Varlık Bulunamadı"
@@ -207,7 +212,8 @@
         "receivePayment": "Ödeme almak için bir QR Kodu oluşturun.",
         "editSeed": "Adresi Düzenle",
         "deleteSeed": "Adresi Sil",
-        "refreshBalance": "Bakiyeyi Ağdan Yenile"
+        "refreshBalance": "Bakiyeyi Ağdan Yenile",
+        "openExplorer": "Explorer'da Görüntüle"
       }
     },
     "hasPendingTransaction": "Bekleyen İşlemler",
@@ -303,7 +309,9 @@
         "chooseOwnSeed": "Kendi Adres Kimliğinizi seçin",
         "error": {
           "required": "Adres kimliği gerekli",
-          "length": "Qubic adres kimliği 60 büyük harften oluşur."
+          "notUppercase": "Adres tamamen büyük harflerle yazılmalıdır",
+          "length": "Qubic adres kimliği 60 büyük harften oluşur.",
+          "invalidAddress": "Geçersiz alıcı adresi"
         }
       },
       "amount": {
@@ -364,7 +372,8 @@
       "tick": "Tik",
       "type": "Tür",
       "fee": "Ücret",
-      "assetTransferWarning": "Bu işlem kaydı şu anda yalnızca gönderen tarafından görülebilir. Alıcı, şu anda bu işlem verilerine kayıtlarında erişemeyecektir."
+      "assetTransferWarning": "Bu işlem yalnızca kaynak adresin işlem listesinde görünmektedir. Hedef adresin işlem listesinde gösterilmesi mevcut sürümde henüz desteklenmemektedir.",
+      "timestamp": "Zaman damgası"
     },
     "epoch": "Çağ",
     "ticks": "Tikler"

@@ -9,11 +9,14 @@
             <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
               <mat-label>{{ t('qearn.stakeQubic.sourceSeed.label') }}</mat-label>
               <mat-select formControlName="sourceId" panelClass="full-width">
+                <mat-select-trigger>
+                  <span *ngIf="stakeForm.controls['sourceId'].value && getSelectedSeed()">
+                    {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                  </span>
+                </mat-select-trigger>
                 <mat-option *ngFor="let seed of getSeeds(); let i = index" [value]="seed.publicId"
                   class="custom-mat-option">
-                  {{ seed.publicId }}<br />
-                  {{ seed.alias }} - {{ seed.balance | number : '1.0-0' }}
-                  {{ t('general.currency') }}
+                  {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="stakeForm.controls['sourceId'].hasError('required')">

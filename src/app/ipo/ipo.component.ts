@@ -7,7 +7,8 @@ import { BalanceResponse, ContractDto, IpoBid, IpoBidOverview, ProposalDto, Smar
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ipo',
@@ -23,14 +24,15 @@ export class IpoComponent implements OnInit, OnDestroy {
   public userServiceSubscription: Subscription | undefined;
   public ipoBids: Transaction[] = [];
   public smartContracts: SmartContract[] = [];
+  private destroy$ = new Subject<void>();
 
 
   constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
 
   }
   ngOnDestroy(): void {
-    if (this.userServiceSubscription)
-      this.userServiceSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
@@ -48,11 +50,11 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   init() {
 
-    this.api.getSmartContracts().subscribe(s => {
+    this.api.getSmartContracts().pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.smartContracts = s;
     });
 
-    this.api.getIpoContracts().subscribe(s => {
+    this.api.getIpoContracts().pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.ipoContracts = s;
       this.loaded = true;
     });
@@ -87,7 +89,7 @@ export class IpoComponent implements OnInit, OnDestroy {
   }
 
   loadBids(contractId: number | null = null) {
-    this.api.getCurrentIpoBids(this.getSeeds().map(m => m.publicId)).subscribe(s => {
+    this.api.getCurrentIpoBids(this.getSeeds().map(m => m.publicId)).pipe(takeUntil(this.destroy$)).subscribe(s => {
       this.ipoBids = s;
     });
   }

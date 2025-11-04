@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
@@ -24,6 +24,10 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { OkDialog } from 'src/app/core/ok-dialog/ok-dialog.component';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { MAX_WALLET_ACCOUNTS } from '../constants/qubic.constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -31,7 +35,8 @@ import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
@@ -58,19 +63,8 @@ export class MainComponent implements AfterViewInit {
 
   public isMobile = false;
   textQubicLiShutdown: string = "Effective June 30, 2024, the website wallet.qubic.li will no longer be updated. Please use <a href='https://wallet.qubic.org' title='open'>wallet.qubic.org</a> instead."
-  maxNumberOfAddresses: number = 15;
-
-  public categorizedSeeds: {
-    strongSeeds: { publicKey: string, log: string }[],
-    okaySeeds: { publicKey: string, log: string, detailsOkay: { sequence: string, indices: number[] }[] }[],
-    weakSeeds: { publicKey: string, log: string, details: { sequence: string, indices: number[] }[] }[],
-    badSeeds: { publicKey: string, log: string, pattern: string }[]
-  } = {
-      strongSeeds: [],
-      okaySeeds: [],
-      weakSeeds: [],
-      badSeeds: []
-    };
+  maxNumberOfAddresses: number = MAX_WALLET_ACCOUNTS;
+  private lastSeedIds: string = '';
 
 
   @ViewChild(MatTable)
@@ -103,24 +97,56 @@ export class MainComponent implements AfterViewInit {
     var vaultExportDialog = localStorage.getItem("vault-export-dialog");
     this.isVaultExportDialog = vaultExportDialog == '1' ? true : false;
 
-    this.updaterService.latestStats.subscribe(response => {
-      this.latestStats = response;
-    }, errorResponse => {
-      this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
-        duration: 0,
-        panelClass: "error"
+    this.updaterService.latestStats
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+        this.latestStats = response;
+      }, errorResponse => {
+        this._snackBar.open(errorResponse.error, this.t.translate("general.close"), {
+          duration: 0,
+          panelClass: "error"
+        });
       });
-    });
 
+    // Get initial balance value to ensure UI shows data immediately
+    this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
-    updaterService.currentBalance.subscribe(b => {
-      this.balances = b;
-      this.setDataSource();
-    })
 
-    updaterService.internalTransactions.subscribe(txs => {
-      this.transactions = txs;
-    });
+    // Subscribe to wallet config changes (e.g., when a new vault is loaded)
+    walletService.onConfig
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(config => {
+        // Create a hash of seed IDs to detect if seeds have actually changed
+        const currentSeedIds = (config.seeds || []).map(s => s.publicId).sort().join(',');
+        if (currentSeedIds !== this.lastSeedIds) {
+          this.lastSeedIds = currentSeedIds;
+          // Immediately update the UI with new seeds
+          this.setDataSource();
+          // Force balance update when seeds change
+          if (config.seeds && config.seeds.length > 0) {
+            updaterService.loadCurrentBalance(true);
+          }
+        }
+      });
+
+    // Subscribe to balance updates (skip first emission to avoid double setDataSource call)
+    updaterService.currentBalance
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(b => {
+        // Prevent unnecessary updates when the same array reference is emitted
+        // (e.g., on initial subscription to BehaviorSubject's current value).
+        // Each API call creates a new array reference, so this check is valid.
+        if (this.balances !== b) {
+          this.balances = b;
+          this.setDataSource();
+        }
+      });
+
+    updaterService.internalTransactions
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(txs => {
+        this.transactions = txs;
+      });
 
     //1. vault file export due to move to new wallet
     // if (domain === 'wallet.qubic.li' || domain === 'localhost') {
@@ -142,8 +168,8 @@ export class MainComponent implements AfterViewInit {
               if (walletService.privateKey) {
                 this.openVaultExportDialog();
               }
-            })
-          })
+            });
+          });
         }
       } else {
         this.openVaultExportDialog();
@@ -158,6 +184,10 @@ export class MainComponent implements AfterViewInit {
     this.setDataSource();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   //2. vault file export due to move to new wallet
   openVaultExportDialog(): void {
@@ -178,7 +208,7 @@ export class MainComponent implements AfterViewInit {
           this.isVaultExportDialog = true;
           localStorage.setItem("vault-export-dialog", this.isVaultExportDialog ? '1' : '0');
         }
-      })
+      });
     }
   }
 
@@ -195,14 +225,6 @@ export class MainComponent implements AfterViewInit {
       return m;
     }));
     this.dataSource.sort = this.sort;
-
-    if (this.walletService.privateKey) {
-      this.dataSource.data.forEach(element => {
-        this.checkQualitySeed(element.publicId);
-      });
-    } else {
-      this.resetCategorizedSeeds();
-    }
   }
 
 
@@ -254,7 +276,7 @@ export class MainComponent implements AfterViewInit {
       const dialogRef = this.dialog.open(OkDialog, {
         data: {
           title: this.transloco.translate("maxNumberOfAddressesDialog.title"),
-          message: this.transloco.translate("maxNumberOfAddressesDialog.message"),
+          message: this.transloco.translate("maxNumberOfAddressesDialog.message", { maxAddresses: this.maxNumberOfAddresses }),
           button: this.transloco.translate("maxNumberOfAddressesDialog.button")
         },
       });
@@ -277,7 +299,7 @@ export class MainComponent implements AfterViewInit {
       dialogRef.afterClosed().subscribe(result => {
         this.setDataSource();
         this.refreshData();
-      })
+      });
     }
   }
 
@@ -330,8 +352,8 @@ export class MainComponent implements AfterViewInit {
     return (this.walletService.getSeed(publicId)?.assets?.length ?? 0) > 0;
   }
 
-  hasIsOnlyWatch(publicId: string): boolean {
-    return !this.walletService.getSeed(publicId)?.isOnlyWatch ?? false;
+  isNotWatchOnly(publicId: string): boolean {
+    return !(this.walletService.getSeed(publicId)?.isOnlyWatch ?? false);
   }
 
   reveal(publicId: string) {
@@ -355,6 +377,10 @@ export class MainComponent implements AfterViewInit {
 
   openAssetsPage() {
     this.router.navigate(['/assets-area']);
+  }
+
+  openExplorer(publicId: string) {
+    window.open(ExplorerUrlHelper.getAddressUrl(publicId), '_blank');
   }
 
 
@@ -433,72 +459,5 @@ export class MainComponent implements AfterViewInit {
     return this.transactions.find(t => (t.sourceId == publicId || t.destId == publicId) && t.isPending);
   }
 
-
-  /**
-  * This function checks the quality of a seed based on its publicId by revealing it, categorizing it, 
-  * and then adding it to the appropriate category: strong, weak, or bad.
-  */
-  checkQualitySeed(publicId: string): void {
-    this.walletService.revealSeed(publicId).then(seed => {
-      const seeds: Seed[] = [
-        { seed: seed, publicKey: publicId },
-      ];
-
-      // Perform categorization and store the result in the component
-      const categorizedResult = this.walletService.categorizeSeeds(seeds);
-
-      // Find the corresponding seed in the result and add it
-      this.categorizedSeeds.strongSeeds.push(...categorizedResult.strongSeeds.map(strongSeed => ({
-        publicKey: publicId,
-        log: 'Strong seed' // You can add more logs here if necessary
-      })));
-
-      this.categorizedSeeds.okaySeeds.push(...categorizedResult.okaySeeds.map(okaySeed => ({
-        publicKey: publicId,
-        log: 'okay seed',
-        detailsOkay: okaySeed.detailsOkay // Details about weak sequences and positions
-      })));
-
-      this.categorizedSeeds.weakSeeds.push(...categorizedResult.weakSeeds.map(weakSeed => ({
-        publicKey: publicId,
-        log: 'Weak seed',
-        details: weakSeed.details // Details about weak sequences and positions
-      })));
-
-      this.categorizedSeeds.badSeeds.push(...categorizedResult.badSeeds.map(badSeed => ({
-        publicKey: publicId,
-        log: `Bad seed: pattern: ${badSeed.pattern}`,
-        pattern: badSeed.pattern
-      })));
-    });
-  }
-
-  /**
-   * Helper function to get the category of a seed by publicId.
-   * Can return 'strong', 'weak', or 'bad' seeds.
-   */
-  getSeedQualityCategory(publicId: string, category: 'strong' | 'okay' | 'weak' | 'bad') {
-    switch (category) {
-      case 'strong':
-        return this.categorizedSeeds.strongSeeds.filter(seed => seed.publicKey === publicId);
-      case 'okay':
-        return this.categorizedSeeds.okaySeeds.filter(seed => seed.publicKey === publicId);
-      case 'weak':
-        return this.categorizedSeeds.weakSeeds.filter(seed => seed.publicKey === publicId);
-      case 'bad':
-        return this.categorizedSeeds.badSeeds.filter(seed => seed.publicKey === publicId);
-      default:
-        return [];
-    }
-  }
-
-  public resetCategorizedSeeds(): void {
-    this.categorizedSeeds = {
-      strongSeeds: [],
-      okaySeeds: [],
-      weakSeeds: [],
-      badSeeds: []
-    };
-  }
 }
 

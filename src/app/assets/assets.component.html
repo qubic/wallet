@@ -18,7 +18,8 @@
         </div>
       </div>
     </div>
-    <div *ngIf="assets.length <= 0">
+    <!-- Only show "no assets" message after smart contracts have loaded to prevent flickering -->
+    <div *ngIf="assets.length <= 0 && smartContractsLoaded">
       <mat-card class="asset-card">
         <mat-card-content>
           {{ t("assetsComponent.noAssets") }}
@@ -28,28 +29,38 @@
 
     <!-- card version /-->
     <div *ngIf="!isTable">
-      <div *ngIf="!showSendForm" class="card-list flex flex-wrap">
-        <mat-card *ngFor="let asset of assets; let i = index">
+      <div *ngIf="!showSendForm && smartContractsLoaded" class="card-list flex flex-wrap">
+        <mat-card *ngFor="let group of groupedAssets; let i = index">
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name disable-area">
-              {{ getSeedAlias(asset.publicId) }}
+              {{ getSeedAlias(group.publicId) }}
             </div>
             <br>
-            <div>
-              {{ asset.assetName }}
-            </div>
             <div class="dashboard-balance-name disable-area">
-              {{ asset.ownedAmount == undefined || asset.ownedAmount == null ? "?" : asset.ownedAmount | number
-              :"1.0-0"
-              }}
+              {{ group.totalAmount | number:"1.0-0" }} <span class="currency-label">{{ group.assetName }}</span>
             </div>
-            <div class="dashboard-amount-name disable-area">
-              {{ t("assetsComponent.table.tick" ) }} {{ currentTick | number: '1.0-0' }}
-            </div>
+
+            <!-- Show contracts breakdown -->
+            <ng-container *ngIf="hasContractNames(group.managingContracts)">
+              <div class="contract-breakdown">
+                <mat-divider></mat-divider>
+                <br>
+                <div *ngFor="let managingContract of group.managingContracts">
+                  <div class="contract-group-header" *ngIf="managingContract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: managingContract.contractName }) }}</span>
+                  </div>
+                  <div class="contract-asset-item" style="padding-left: 10px;">
+                    <span class="disable-area">{{ managingContract.asset.ownedAmount | number:"1.0-0" }} {{ managingContract.asset.assetName }}</span>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </ng-container>
+
             <div class="text-center">
               <ng-container
-                *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }"></ng-container>
+                *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -59,26 +70,35 @@
     <!-- phone version-->
     <div *ngIf="isTable" class="mobileOnly assetList">
       <span *ngIf="!showSendForm">
-        <div *ngIf="assets.length > 0">
-          <div class="mobileAssetItem" *ngFor="let asset of assets">
+        <div *ngIf="groupedAssets.length > 0 && smartContractsLoaded">
+          <div class="mobileAssetItem" *ngFor="let group of groupedAssets">
             <h3>
-              {{ asset.assetName }} <span class="disable-area">- {{ getSeedAlias(asset.publicId) }} -
-                {{asset.ownedAmount
-                == undefined ||
-                asset.ownedAmount == null
-                ? "?"
-                : asset.ownedAmount | number :"1.0-0"}} ({{ asset.possessedAmount == undefined ||
-                asset.possessedAmount
-                ==
-                null ? "?" : asset.possessedAmount | number :"1.0-0"}})</span>
+              {{ group.assetName }} <span class="disable-area">- {{ getSeedAlias(group.publicId) }} -
+                {{getTotalOwnedAmount(group) | number :"1.0-0"}} ({{ getTotalPossessedAmount(group) | number :"1.0-0"}})</span>
             </h3>
+
+            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}"
+              [cdkCopyToClipboard]="group.publicId">
+              {{ group.publicId }}
+            </div>
+
+            <!-- Show managed by info -->
+            <ng-container *ngIf="hasContractNames(group.managingContracts)">
+              <div style="margin: 10px 0;">
+                <div *ngFor="let managingContract of group.managingContracts">
+                  <div *ngIf="managingContract.contractName">
+                    <span class="dashboard-amount-name">{{ t("assetsComponent.managedBy", { contract: managingContract.contractName }) }}</span>
+                  </div>
+                  <div style="padding-left: 10px;">
+                    <span class="disable-area">{{ managingContract.asset.ownedAmount | number:"1.0-0" }} {{ managingContract.asset.assetName }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
             <div class="flex flex-wrap">
               <ng-container
-                *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }t"></ng-container>
-            </div>
-            <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}"
-              [cdkCopyToClipboard]="asset.publicId">
-              {{ asset.publicId }}
+                *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
             </div>
           </div>
         </div>
@@ -86,26 +106,18 @@
     </div>
 
     <!-- table version-->
-    <div *ngIf="isTable && !showSendForm && assets.length > 0" class="desktopOnly">
-
-      <table mat-table [dataSource]="assets" class="mat-elevation-z8">
-        <!-- Public ID -->
+    <div *ngIf="isTable && !showSendForm && assets.length > 0 && smartContractsLoaded" class="desktopOnly">
+      <table mat-table [dataSource]="groupedAssets" class="mat-elevation-z8">
+        <!-- Asset Name -->
         <ng-container matColumnDef="publicId">
           <th mat-header-cell *matHeaderCellDef>{{ t("assetsComponent.table.assetName") }}</th>
-          <td mat-cell *matCellDef="let asset">
-            {{ asset.assetName }} - {{ getSeedAlias(asset.publicId) }}<br>
+          <td mat-cell *matCellDef="let group">
+            {{ group.assetName }} - {{ getSeedAlias(group.publicId) }}<br>
             <div class="copy disable-area" matTooltip="{{ t('general.copy.tooltip') }}"
-              [cdkCopyToClipboard]="asset.publicId">
-              <!-- {{ asset.publicId.slice(0, 20) }}... -->
-              {{ asset.publicId }}
+              [cdkCopyToClipboard]="group.publicId">
+              {{ group.publicId }}
             </div>
           </td>
-        </ng-container>
-
-        <!-- Contract Name -->
-        <ng-container matColumnDef="contractName">
-          <th mat-header-cell *matHeaderCellDef> {{ t("assetsComponent.table.contractName") }}</th>
-          <td mat-cell *matCellDef="let asset">{{ asset.contractName }}</td>
         </ng-container>
 
         <!-- Owned Amount -->
@@ -113,21 +125,33 @@
           <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.ownedAmount") }}
             /<br />{{
             t("assetsComponent.table.possessedAmount") }}</th>
-          <td mat-cell *matCellDef="let asset" class="alignRight disable-area"> {{ asset.ownedAmount == undefined ||
-            asset.ownedAmount == null ?
-            "?"
-            : asset.ownedAmount | number :"1.0-0"}}<br>{{ asset.possessedAmount == undefined || asset.possessedAmount
-            ==
-            null ? "?" : asset.possessedAmount | number :"1.0-0" }}</td>
+          <td mat-cell *matCellDef="let group" class="alignRight disable-area">
+            {{ getTotalOwnedAmount(group) | number :"1.0-0"}} {{ group.assetName }}<br>{{ getTotalPossessedAmount(group) | number :"1.0-0" }} {{ group.assetName }}
+          </td>
+        </ng-container>
+
+        <!-- Managed By -->
+        <ng-container matColumnDef="managedBy">
+          <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.managedBy") }}</th>
+          <td mat-cell *matCellDef="let group" class="alignRight disable-area">
+            <div *ngFor="let managingContract of group.managingContracts">
+              <ng-container *ngIf="managingContract.contractName">
+                {{ managingContract.asset.ownedAmount == undefined || managingContract.asset.ownedAmount == null ? "?" : (managingContract.asset.ownedAmount | number:"1.0-0") }}
+                <span class="dashboard-amount-name">{{ t("assetsComponent.by", { contract: managingContract.contractName }) }}</span>
+              </ng-container>
+            </div>
+          </td>
         </ng-container>
 
         <!-- Tick & Reporting Nodes -->
         <ng-container matColumnDef="tick">
           <th mat-header-cell *matHeaderCellDef class="alignRight"> {{ t("assetsComponent.table.tick") }} / <br /> {{
             t("assetsComponent.table.reportingNodes") }}</th>
-          <td mat-cell *matCellDef="let asset" class="alignRight"> {{ asset.tick | number: '1.0-0'}}<br /> {{
-            asset.reportingNodes?.join(',
-            ') }}</td>
+          <td mat-cell *matCellDef="let group" class="alignRight">
+            <div *ngFor="let managingContract of group.managingContracts">
+              {{ managingContract.asset.tick | number: '1.0-0'}}<br />{{ managingContract.asset.reportingNodes?.join(', ') }}
+            </div>
+          </td>
         </ng-container>
 
         <!-- Actions -->
@@ -135,9 +159,9 @@
           <th mat-header-cell *matHeaderCellDef class="alignRight">
             {{ t("seedOverviewComponent.table.actions.title") }}
           </th>
-          <td mat-cell *matCellDef="let asset" class="alignRight">
+          <td mat-cell *matCellDef="let group" class="alignRight">
             <ng-container
-              *ngTemplateOutlet="actions; context: { asset: asset, issuerIdentity: asset.issuerIdentity }"></ng-container>
+              *ngTemplateOutlet="actions; context: { group: group, issuerIdentity: group.issuerIdentity }"></ng-container>
           </td>
         </ng-container>
 
@@ -146,8 +170,8 @@
       </table>
     </div>
 
-    <ng-template #actions let-asset="asset" let-issuerIdentity="issuerIdentity">
-      <button mat-icon-button class="icon-color-link" (click)="openSendForm(asset)"
+    <ng-template #actions let-group="group" let-issuerIdentity="issuerIdentity">
+      <button *ngIf="canSendGroupedAsset(group)" mat-icon-button class="icon-color-link" (click)="openSendForm(getQxManagedAsset(group)!)"
         title='{{ t("assetsComponent.buttons.send") }}'>
         <mat-icon>send</mat-icon>
       </button>
@@ -161,15 +185,23 @@
       <mat-card class="sendAssets-card">
         <mat-card-content>
           <h2>{{ t("assetsComponent.form.info") }}</h2>
-          <div class="transaction-fee"> {{ t("assetsComponent.form.fees") }}</div>
+          <div class="transaction-fee"> {{ t("assetsComponent.form.fees", { fee: assetTransferFee }) }}</div>
           <form [formGroup]="sendForm" (ngSubmit)="onSubmitSendForm()">
             <div class="row">
               <div class="col">
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.select") }}</mat-label>
-                  <mat-select formControlName="assetSelect">
-                    <mat-option *ngFor="let asset of assets" [value]="asset" class="custom-mat-option">
-                      {{ asset.publicId }} <br />{{ getSeedAlias(asset.publicId) }} - {{ asset.ownedAmount == undefined
+                  <mat-select formControlName="assetSelect" [compareWith]="compareAssets">
+                    <mat-select-trigger>
+                      <span *ngIf="getSelectedAsset()">
+                        {{ getSeedAlias(getSelectedAsset()?.publicId) }}
+                        ({{ shortenAddress(getSelectedAsset()?.publicId) }}) -
+                        {{ getSelectedAsset()?.ownedAmount == undefined || getSelectedAsset()?.ownedAmount == null ? "?" : (getSelectedAsset()?.ownedAmount | number: '1.0-0') }}
+                        {{ getSelectedAsset()?.assetName }}
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let asset of getQxAssets()" [value]="asset" class="custom-mat-option">
+                      {{ getSeedAlias(asset.publicId) }} ({{ shortenAddress(asset.publicId) }})<br />{{ asset.ownedAmount == undefined
                       || asset.ownedAmount == null ? "?" : asset.ownedAmount | number: '1.0-0'}} {{asset.assetName}}
                     </mat-option>
                   </mat-select>
@@ -177,6 +209,7 @@
                     {{ t("assetsComponent.form.select.error") }}
                   </mat-error>
                 </mat-form-field>
+                <div class="info-note">* {{ t("assetsComponent.form.qxOnly") }}</div>
               </div>
             </div>
             <div class="row">
@@ -189,10 +222,14 @@
                   </button>
                   <mat-label>{{ t("assetsComponent.form.placeholder") }}</mat-label>
                   <mat-select #selectedDestinationId formControlName="selectedDestinationId">
+                    <mat-select-trigger>
+                      <span *ngIf="sendForm.controls['selectedDestinationId'].value && getSelectedDestinationSeed()">
+                        {{ getSelectedDestinationSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                      </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let seed of getSeeds(true); let i = index" [value]="seed.publicId"
                       class="custom-mat-option">
-                      {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                      {{ t("general.currency") }}
+                      {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="sendForm.controls['selectedDestinationId'].hasError('required')">
@@ -210,9 +247,15 @@
                   <mat-error *ngIf="sendForm.controls['destinationAddress'].hasError('required')">
                     {{ t("paymentComponent.form.receiver.error.required") }}
                   </mat-error>
+                  <mat-error *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && sendForm.controls['destinationAddress'].hasError('notUppercase')">
+                    {{ t("paymentComponent.form.receiver.error.notUppercase") }}
+                  </mat-error>
                   <mat-error
-                    *ngIf="sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength')">
+                    *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && !sendForm.controls['destinationAddress'].hasError('notUppercase') && (sendForm.controls['destinationAddress'].hasError('minlength') || sendForm.controls['destinationAddress'].hasError('maxlength'))">
                     {{ t("paymentComponent.form.receiver.error.length") }}
+                  </mat-error>
+                  <mat-error *ngIf="!sendForm.controls['destinationAddress'].hasError('required') && !sendForm.controls['destinationAddress'].hasError('notUppercase') && !sendForm.controls['destinationAddress'].hasError('minlength') && !sendForm.controls['destinationAddress'].hasError('maxlength') && sendForm.controls['destinationAddress'].hasError('invalidAddress')">
+                    {{ t("paymentComponent.form.receiver.error.invalidAddress") }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -251,11 +294,11 @@
               </div>
             </div>
 
-            <div class="transaction-fee"> {{ t("assetsComponent.form.balance") }} {{ getBalanceAfterFees() | number:
+            <div class="transaction-fee"> {{ t("assetsComponent.form.balance", { fee: assetTransferFee }) }} {{ getBalanceAfterFees() | number:
               '1.0-0' }} {{ t("general.currency") }}
             </div>
             <div *ngIf="getBalanceAfterFees() < 0" class="error-message"> {{
-              t("assetsComponent.form.buttons.error.balance") }}
+              t("assetsComponent.form.buttons.error.balance", { fee: assetTransferFee }) }}
             </div>
             <mat-card-actions class="padding">
               <button mat-raised-button type="button" (click)="cancelSendForm()">

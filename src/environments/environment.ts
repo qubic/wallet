@@ -3,6 +3,6 @@ export const environment = {
     production: false,
     apiQliUrl: 'http://localhost:7003',
     apiUrl: 'http://localhost:7004',
-    explorer: 'https://explorer.qubic.org/network/address/',
-    assetsFees: 100
+    staticApiUrl: 'https://static.qubic.org',
+    explorerUrl: 'https://explorer.qubic.org'
 };

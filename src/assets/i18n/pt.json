@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
-    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+    "message": "<div>You have reached the maximum number of {{maxAddresses}} addresses in your wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Your Assets",
     "openAssets": "Goto Asset Management",
+    "managedBy": "Gerenciado por {{contract}}",
+    "by": "por {{contract}}",
     "overview": {
       "title": "Asset Overview"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Contract Index",
       "assetName": "Asset Name",
       "contractName": "Contract Name",
+      "managedBy": "Gerenciado por",
       "ownedAmount": "Owned Amount",
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity"
+      "issuerIdentity": "Issuer Identity",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Close",
@@ -108,9 +112,10 @@
       "send": "Transfer Assets"
     },
     "form": {
-      "info": "Send Assets form",
-      "fees": "Fixed sending fees: 100 Qubic",
-      "balance": "Your balance after deducting transfer fees (100 Qubic) will be:",
+      "info": "Enviar Assets",
+      "qxOnly": "Atualmente, apenas assets gerenciados por Qx podem ser transferidos.",
+      "fees": "Taxa de envio fixa: {{fee}} Qubic",
+      "balance": "Seu saldo após deduzir as taxas de transferência ({{fee}} Qubic) será:",
       "select": "Select Asset",
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "Send",
         "cancel": "Cancel",
-        "error.balance": "Insufficient balance, minimum balance is 100 Qubic"
+        "error.balance": "Saldo insuficiente, saldo mínimo é {{fee}} Qubic"
       }
     },
     "noAssets": "No assets available"
@@ -207,7 +212,8 @@
         "receivePayment": "Gerar um QR Code para receber um pagamento",
         "editSeed": "Editar endereço",
         "deleteSeed": "Excluir endereço",
-        "refreshBalance": "Atualizar saldo da rede"
+        "refreshBalance": "Atualizar saldo da rede",
+        "openExplorer": "Ver no Explorador"
       }
     },
     "hasPendingTransaction": "Transações pendentes",
@@ -301,7 +307,9 @@
         "chooseOwnSeed": "Escolher sua própria ID de endereço",
         "error": {
           "required": "O ID do endereço é obrigatório",
-          "length": "Um ID de endereço Qubic consiste em 60 letras maiúsculas."
+          "notUppercase": "O endereço deve estar todo em letras maiúsculas",
+          "length": "Um ID de endereço Qubic consiste em 60 letras maiúsculas.",
+          "invalidAddress": "Endereço de destinatário inválido"
         }
       },
       "amount": {
@@ -362,7 +370,8 @@
       "tick": "Tick",
       "type": "Tipo",
       "fee": "Taxa",
-      "assetTransferWarning": "Este registro de transação está atualmente visível apenas para o remetente. O destinatário não terá acesso a esses dados de transação em seus registros neste momento."
+      "assetTransferWarning": "Esta transação está visível apenas na lista de transações do endereço de origem. Exibi-la na lista de transações do endereço de destino ainda não é suportado na versão atual.",
+      "timestamp": "Carimbo de tempo"
     },
     "epoch": "Época",
     "ticks": "Ticks"
