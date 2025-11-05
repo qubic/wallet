@@ -1,26 +1,36 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver } from '../services/api.archiver.model';
+import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { AssetTransfer } from '../services/api.model';
+import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
+import { AddressNameService } from '../services/address-name.service';
+import { AddressNameResult } from '../services/apis/static/qubic-static.model';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 @Component({
   selector: 'app-balance',
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss'],
 })
-export class BalanceComponent implements OnInit {
+export class BalanceComponent implements OnInit, OnDestroy {
 
+  private destroy$ = new Subject<void>();
+
+  shortenAddress = shortenAddress;
+  ExplorerUrlHelper = ExplorerUrlHelper;
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
@@ -43,7 +53,16 @@ export class BalanceComponent implements OnInit {
   public assetTransferData: { [key: string]: AssetTransfer } = {};
 
 
-  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
+  constructor(
+    private router: Router,
+    private transloco: TranslocoService,
+    private api: ApiService,
+    private apiArchiver: ApiArchiverService,
+    private walletService: WalletService,
+    private _snackBar: MatSnackBar,
+    private us: UpdaterService,
+    private addressNameService: AddressNameService
+  ) {
     this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
@@ -54,35 +73,59 @@ export class BalanceComponent implements OnInit {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
 
-    this.seedFilterFormControl.valueChanges.subscribe(value => {
-      this.getAllTransactionByPublicId(value);
-    });
+    this.seedFilterFormControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.getAllTransactionByPublicId(value);
+      });
 
     if (this.hasSeeds()) {
-      this.us.currentTick.subscribe(s => {
-        this.currentTick = s;
-      });
+      this.us.currentTick
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(s => {
+          this.currentTick = s;
+        });
 
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
-      this.us.internalTransactions.subscribe(txs => {
-        this.transactions = fixTransactionDates(txs);
-        this.correctTheTransactionListByPublicId();
-      });
+      this.us.internalTransactions
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(async txs => {
+          this.transactions = fixTransactionDates(txs);
+          this.correctTheTransactionListByPublicId();
 
-      this.us.transactionsArray.subscribe((transactions: TransactionsArchiver[]) => {
-        if (transactions && transactions.length > 0) {
-          this.transactionsArchiverSubscribe = transactions;
-          this.updateTransactionsRecord();
-        }
-      });
+          // Parse asset transfers for qli transactions
+          for (const tx of this.transactions) {
+            if (tx.inputHex && this.isQxAssetTransfer(tx.destId, tx.type)) {
+              try {
+                const assetData = await this.getAssetsTransfers(tx.inputHex);
+                if (assetData) {
+                  this.assetTransferData[tx.id] = assetData;
+                }
+              } catch (error) {
+                console.error('Error parsing qli asset transfer:', error);
+              }
+            }
+          }
+        });
 
-      this.us.currentBalance.subscribe(response => {
-        this.accountBalances = response;
-      }, errorResponse => {
-        this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
-          duration: 0,
-          panelClass: "error"
+      this.us.transactionsArray
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((transactions: TransactionsArchiver[]) => {
+          if (transactions && transactions.length > 0) {
+            this.transactionsArchiverSubscribe = transactions;
+            this.updateTransactionsRecord();
+          }
+        });
+
+      this.us.currentBalance
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
+          this.accountBalances = response;
+        }, errorResponse => {
+          this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
+            duration: 0,
+            panelClass: "error"
         });
       });
     }
@@ -91,15 +134,18 @@ export class BalanceComponent implements OnInit {
 
   //**  new Archiver Api */
   private getStatusArchiver() {
-    this.apiArchiver.getStatus().subscribe(s => {
-      if (s) {
-        this.status = s;
-        this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
-        this.GetTransactionsByTick(this.currentSelectedEpoch);
-      }
-    }, errorResponse => {
-      console.log('errorResponse:', errorResponse);
-    });
+    this.apiArchiver.getStatus()
+      .subscribe(s => {
+        if (s) {
+          this.status = s;
+          this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
+          // Just initialize the tick range, don't fetch transactions yet
+          // Transactions will be fetched when user switches to "By Epochs" tab
+          this.GetTransactionsByTick(this.currentSelectedEpoch, false);
+        }
+      }, errorResponse => {
+        console.log('errorResponse:', errorResponse);
+      });
   }
 
 
@@ -111,20 +157,48 @@ export class BalanceComponent implements OnInit {
       this.lastProcessedTick = this.currentTickArchiver.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
+      // Initialize tick range for the current epoch when switching to epochs view
+      if (this.currentSelectedEpoch > 0) {
+        this.GetTransactionsByTick(this.currentSelectedEpoch, false); // Don't fetch transactions yet
+      }
     }
     this.toggleShowAllTransactionsView();
   }
 
 
-  GetTransactionsByTick(epoch: number): void {
+  get firstEpoch(): number | undefined {
+    return this.status?.processedTickIntervalsPerEpoch?.[0]?.epoch;
+  }
+
+  get lastEpoch(): number | undefined {
+    const intervals = this.status?.processedTickIntervalsPerEpoch;
+    if (!intervals || intervals.length === 0) return undefined;
+    return intervals[intervals.length - 1]?.epoch;
+  }
+
+  get canNavigateToPreviousEpoch(): boolean {
+    return this.firstEpoch !== undefined && this.firstEpoch < this.currentSelectedEpoch;
+  }
+
+  get canNavigateToNextEpoch(): boolean {
+    return this.lastEpoch !== undefined && this.lastEpoch > this.currentSelectedEpoch;
+  }
+
+  GetTransactionsByTick(epoch: number, fetchTransactions: boolean = true): void {
     this.status.processedTickIntervalsPerEpoch
       .filter(t => t.epoch === epoch)
       .forEach(e => {
-        this.initialProcessedTick = e.intervals[0].initialProcessedTick;
-        this.lastProcessedTick = e.intervals[0].lastProcessedTick;
-        this.currentSelectedEpoch = e.epoch;
+        // Only set tick range if intervals exist and have data
+        if (e.intervals && e.intervals.length > 0 && e.intervals[0]) {
+          this.initialProcessedTick = e.intervals[0].initialProcessedTick;
+          this.lastProcessedTick = e.intervals[0].lastProcessedTick;
+          this.currentSelectedEpoch = e.epoch;
+        }
       });
-    this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    // Only fetch transactions if explicitly requested (e.g., when navigating between epochs)
+    if (fetchTransactions) {
+      this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
+    }
   }
 
 
@@ -138,19 +212,23 @@ export class BalanceComponent implements OnInit {
         const seeds = this.getSeedsWithOnlyWatch();
         if (seeds.length > 0) {
           this.seedFilterFormControl.setValue(seeds[0].publicId);
+          // No need to call getAllTransactionByPublicId here - setValue will trigger valueChanges
+          return;
         }
       }
+      // Only call if we didn't set a new value above (which would trigger valueChanges)
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
   }
 
 
   private getCurrentTickArchiver() {
-    this.apiArchiver.getLatestTick().subscribe(latestTick => {
-      if (latestTick) {
-        this.currentTickArchiver.next(latestTick);
-      }
-    });
+    this.apiArchiver.getLatestTick()
+      .subscribe(latestTick => {
+        if (latestTick) {
+          this.currentTickArchiver.next(latestTick);
+        }
+      });
   }
 
 
@@ -161,7 +239,8 @@ export class BalanceComponent implements OnInit {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick).subscribe(async r => {
+    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick)
+      .subscribe(async r => {
       if (r) {
         if (Array.isArray(r)) {
           this.transactionsArchiver.push(...r);
@@ -182,10 +261,29 @@ export class BalanceComponent implements OnInit {
     });
   }
 
-  isQxTransferShares(destId: string, inputType: number): boolean {
-    const qxAddress = 'BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARMID';
+  /**
+   * Check if transaction is a standard Qubic transfer (inputType 0)
+   */
+  isStandardQubicTransfer(inputType: number): boolean {
+    return inputType === 0;
+  }
+
+  /**
+   * Check if transaction is a QX asset transfer (inputType 2 to QX smart contract)
+   * This is the only type of asset transfer that should route to the assets component
+   */
+  isQxAssetTransfer(destId: string, inputType: number): boolean {
     const transferAssetInputType = 2;
-    return destId == qxAddress && inputType == transferAssetInputType;
+    return destId == QubicDefinitions.QX_ADDRESS && inputType == transferAssetInputType;
+  }
+
+  /**
+   * Check if transaction can be repeated in the wallet
+   * Only standard Qubic transfers (inputType 0) and QX asset transfers (inputType 2) are repeatable
+   * Other smart contract transactions should use their dedicated dapp frontend
+   */
+  isRepeatableTransaction(destId: string, inputType: number): boolean {
+    return this.isStandardQubicTransfer(inputType) || this.isQxAssetTransfer(destId, inputType);
   }
 
   getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {
@@ -212,7 +310,7 @@ export class BalanceComponent implements OnInit {
   async checkAndParseAssetTransfer(transaction: any): Promise<void> {
     const txId = transaction.transactions[0].transaction.txId;
 
-    if (this.isQxTransferShares(
+    if (this.isQxAssetTransfer(
       transaction.transactions[0].transaction.destId,
       transaction.transactions[0].transaction.inputType
     )) {
@@ -310,6 +408,72 @@ export class BalanceComponent implements OnInit {
     return this.walletService.getSeeds();
   }
 
+  getSelectedSeed() {
+    const publicId = this.seedFilterFormControl.value;
+    return this.getSeedsWithOnlyWatch().find(s => s.publicId === publicId);
+  }
+
+  /**
+   * Returns display name for an address. If the address belongs to wallet,
+   * returns the account alias with full address in parentheses. Otherwise returns full address.
+   * Uses the reusable utility function from address.utils.ts
+   */
+  getAddressDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      const addressName = this.addressNameService.getAddressName(address);
+      return getDisplayName(address, this.walletService.getSeeds(), addressName);
+    } catch (e) {
+      console.error('Error in getAddressDisplayName:', e);
+      return address; // Fallback to showing the address
+    }
+  }
+
+  /**
+   * Returns short display name for an address. If the address belongs to wallet,
+   * returns the account alias with shortened address in parentheses. Otherwise returns shortened address.
+   * Uses the reusable utility function from address.utils.ts
+   */
+  getAddressShortDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      const addressName = this.addressNameService.getAddressName(address);
+      return getShortDisplayName(address, this.walletService.getSeeds(), addressName);
+    } catch (e) {
+      console.error('Error in getAddressShortDisplayName:', e);
+      return shortenAddress(address); // Fallback to showing the shortened address
+    }
+  }
+
+  /**
+   * Get the address name result for an address
+   * Useful for getting both the name and type information
+   */
+  getAddressNameInfo(address: string): any {
+    return this.addressNameService.getAddressName(address);
+  }
+
+  /**
+   * Returns compact display name for an address - shows ONLY the name for known addresses
+   * (wallet accounts, smart contracts, exchanges, tokens) without address in parentheses.
+   * For unknown addresses, shows shortened address. Ideal for mobile/compact views.
+   */
+  getAddressCompactDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      const addressName = this.addressNameService.getAddressName(address);
+      return getCompactDisplayName(address, this.walletService.getSeeds(), addressName);
+    } catch (e) {
+      console.error('Error in getAddressCompactDisplayName:', e);
+      return shortenAddress(address); // Fallback to showing the shortened address
+    }
+  }
 
   exportTransactionsToCsv() {
     const now = new Date();
@@ -357,43 +521,94 @@ export class BalanceComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
-
-  displayPublicId(input: string): string {
-    if (input.length <= 10) {
-      return input;
-    }
-
-    const start = input.slice(0, 5);
-    const end = input.slice(-5);
-
-    return `${start}...${end}`;
-  }
-
-
   repeat(transaction: Transaction) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
-  }
-
-  repeatTransactionArchiver(transaction: TransactionArchiver) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
-  }
-
-  formatInputType(inputType: number, destination: string) {
-    const emptyAddress = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB';
-
-    if (inputType === 0 || destination === emptyAddress) {
-      return `${inputType} Standard`;
-    } else {
-      return `${inputType} SC`;
+    // Safety check: only allow repeatable transactions
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.type)) {
+      console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
+      return;
     }
+
+    // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
+    if (this.isQxAssetTransfer(transaction.destId, transaction.type)) {
+      // Route to assets component for QX asset transfers
+      this.router.navigate(['assets-area'], {
+        state: {
+          template: transaction
+        }
+      });
+    } else {
+      // Route to payment component for standard Qubic transfers
+      this.router.navigate(['payment'], {
+        state: {
+          template: transaction
+        }
+      });
+    }
+  }
+
+  async repeatTransactionArchiver(transaction: TransactionDetails) {
+    // Safety check: only allow repeatable transactions
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType)) {
+      console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
+      return;
+    }
+
+    // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
+    if (this.isQxAssetTransfer(transaction.destId, transaction.inputType)) {
+      // Parse asset transfer data from inputHex
+      const assetData = await this.getAssetsTransfers(transaction.inputHex);
+
+      if (!assetData || !assetData.newOwnerAndPossessor) {
+        console.error('Failed to parse asset transfer data or missing destination address');
+        return;
+      }
+
+      // Route to assets component with parsed asset data
+      // Use the actual destination from the asset payload, not the QX contract address
+      this.router.navigate(['assets-area'], {
+        state: {
+          template: transaction,
+          assetData: assetData,
+          sourceId: transaction.sourceId,
+          destId: assetData.newOwnerAndPossessor
+        }
+      });
+    } else {
+      // Route to payment component for standard Qubic transfers
+      this.router.navigate(['payment'], {
+        state: {
+          template: transaction
+        }
+      });
+    }
+  }
+
+  formatInputType(inputType: number, destination: string): string {
+    // Check if it's a smart contract transaction (inputType > 0 and not protocol message)
+    const isSmartContract = inputType > 0 && destination !== EMPTY_QUBIC_ADDRESS;
+
+    // Base type
+    const baseType = inputType.toString();
+    const category = isSmartContract ? 'SC' : 'Standard';
+
+    // Try to get smart contract details and procedure name
+    if (isSmartContract) {
+      const smartContract = this.addressNameService.getSmartContractByAddressSync(destination);
+      if (smartContract && smartContract.procedures) {
+        const procedure = smartContract.procedures.find((p: any) => p.id === inputType);
+        if (procedure) {
+          return `${baseType} ${category} (${procedure.name})`;
+        }
+      }
+    }
+
+    // Return without procedure name
+    return `${baseType} ${category}`;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

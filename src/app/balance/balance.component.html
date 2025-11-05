@@ -50,26 +50,32 @@
                                 <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
-                                    <a [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
                                         target="_blank">
-                                        {{ displayPublicId(transaction.sourceId)}}
+                                        {{ getAddressShortDisplayName(transaction.sourceId)}}
                                     </a>
                                 </span>
-                                <span class="desktopOnly secondary ">
-                                    &nbsp; (
-                                    {{ transaction.created | date}}
-                                    {{ transaction.created | date:'HH:mm:ss' }}
-                                    )
+                                <span class="transaction-datetime-header secondary">
+                                    &nbsp;
+                                    {{ transaction.created | dateTime }}
                                 </span>
                                 <button
-                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                             </mat-panel-title>
                             <mat-panel-description class="disable-area">
-                                {{ transaction.amount | number: '1.0-0'
-                                }}&nbsp;{{
-                                t("general.currency") }}
+                                <ng-container
+                                    *ngIf="getAssetTransfer(transaction.id); else normalAmount">
+                                    {{ getAssetTransfer(transaction.id)!.units | number:
+                                    '1.0-0' }}&nbsp;{{
+                                    getAssetTransfer(transaction.id)!.assetName }}
+                                </ng-container>
+                                <ng-template #normalAmount>
+                                    {{ transaction.amount | number: '1.0-0'
+                                    }}&nbsp;{{
+                                    t("general.currency") }}
+                                </ng-template>
                                 <span class="send-receive-indicator">
                                     <mat-icon class="send"
                                         matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
@@ -92,7 +98,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
-                                                    [href]="'https://explorer.qubic.org/network/tx/' + transaction.id"
+                                                    [href]="ExplorerUrlHelper.getTransactionUrl(transaction.id)"
                                                     target="_blank">{{transaction.id}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
@@ -107,9 +113,9 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.sourceId"
+                                                    [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
                                                     target="_blank">
-                                                    {{transaction.sourceId}}
+                                                    {{getAddressDisplayName(transaction.sourceId)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
@@ -122,14 +128,25 @@
                                                 }}</span>
                                         </div>
                                         <div class="col-value disable-area">
-                                            <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/address/' + transaction.destId"
-                                                    target="_blank">
-                                                    {{transaction.destId}}
-                                                </a>
-                                                <mat-icon class="icon-color-link icon"
-                                                    matTooltip="{{ t('general.copy.tooltip') }}"
-                                                    [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                            <span class="value">
+                                                <ng-container *ngIf="getAssetTransfer(transaction.id); else normalDestination">
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)"
+                                                        target="_blank">
+                                                        {{getAddressDisplayName(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)}}
+                                                    </a>
+                                                    <mat-icon class="icon-color-link icon"
+                                                        matTooltip="{{ t('general.copy.tooltip') }}"
+                                                        [cdkCopyToClipboard]="getAssetTransfer(transaction.id)!.newOwnerAndPossessor">content_copy</mat-icon>
+                                                </ng-container>
+                                                <ng-template #normalDestination>
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.destId)"
+                                                        target="_blank">
+                                                        {{getAddressDisplayName(transaction.destId)}}
+                                                    </a>
+                                                    <mat-icon class="icon-color-link icon"
+                                                        matTooltip="{{ t('general.copy.tooltip') }}"
+                                                        [cdkCopyToClipboard]="transaction.destId">content_copy</mat-icon>
+                                                </ng-template>
                                             </span>
                                         </div>
                                     </div>
@@ -139,7 +156,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="'https://explorer.qubic.org/network/tick/' + transaction.targetTick"
+                                                    [href]="ExplorerUrlHelper.getTickUrl(transaction.targetTick)"
                                                     target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
                                                 </a>
                                             </span>
@@ -154,6 +171,18 @@
                                                 {{ formatInputType(transaction.type,transaction.destId) }}</span>
                                         </div>
                                     </div>
+                                    <!-- Add Fee row after Type row for asset transfers -->
+                                    <div class="row" *ngIf="getAssetTransfer(transaction.id)">
+                                        <div class="col-label">
+                                            <span class="label">{{ t("balanceComponent.transaction.fee") }}</span>
+                                        </div>
+                                        <div class="col-value disable-area">
+                                            <span class="value">
+                                                {{ transaction.amount | number: '1.0-0'
+                                                }}&nbsp;{{ t("general.currency") }}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -165,17 +194,16 @@
         </span>
         <span *ngIf="isShowAllTransactions">
             <div *ngIf="isShowAllTransactions" class="epoch">
-                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch < currentSelectedEpoch" mat-icon-button
+                <button *ngIf="canNavigateToPreviousEpoch" mat-icon-button
                     (click)="GetTransactionsByTick(currentSelectedEpoch-1)">
                     <mat-icon class="large-icon">keyboard_arrow_left</mat-icon>
                 </button>
-                <button *ngIf="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch"
-                    [disabled]="status.processedTickIntervalsPerEpoch[0].epoch >= currentSelectedEpoch" mat-icon-button>
+                <button *ngIf="!canNavigateToPreviousEpoch"
+                    [disabled]="true" mat-icon-button>
                     <mat-icon class="large-icon"></mat-icon>
                 </button>
                 <span class="label-epoch">{{ t("balanceComponent.epoch") }}</span> {{currentSelectedEpoch}}
-                <button
-                    *ngIf="status.processedTickIntervalsPerEpoch[status.processedTickIntervalsPerEpoch.length-1].epoch > currentSelectedEpoch"
+                <button *ngIf="canNavigateToNextEpoch"
                     mat-icon-button (click)="GetTransactionsByTick(currentSelectedEpoch+1)">
                     <mat-icon class="large-icon">keyboard_arrow_right</mat-icon>
                 </button>
@@ -188,10 +216,14 @@
             <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("balanceComponent.transactions.filter.seed.label") }}</mat-label>
                 <mat-select [formControl]="seedFilterFormControl">
+                    <mat-select-trigger>
+                        <span *ngIf="seedFilterFormControl.value && getSelectedSeed()">
+                            {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                        </span>
+                    </mat-select-trigger>
                     <mat-option *ngFor="let seed of getSeedsWithOnlyWatch()" [value]="seed.publicId"
                         class="custom-mat-option">
-                        {{ seed.publicId }}<br /> {{seed.alias}} - {{ seed.balance | number: '1.0-0'}}
-                        {{ t("general.currency") }}
+                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -212,19 +244,19 @@
                             </span>
                             &nbsp;
                             <span class="display-publicid disable-area">
-                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.sourceId)"
                                     target="_blank">
-                                    {{ displayPublicId(transaction.transactions[0].transaction.sourceId)}}
+                                    <!-- Compact name for small screens (when datetime is in header) -->
+                                    <span class="address-name-compact">{{ getAddressCompactDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
+                                    <!-- Short name with address for large screens (when datetime is in details) -->
+                                    <span class="address-name-full">{{ getAddressShortDisplayName(transaction.transactions[0].transaction.sourceId)}}</span>
                                 </a>
                             </span>
-                            <span class="desktopOnly secondary ">
-                                &nbsp; (
-                                {{ transaction.transactions[0].timestamp | date}} {{
-                                transaction.transactions[0].timestamp |
-                                date:'HH:mm:ss' }}
-                                )
+                            <span class="transaction-datetime-header secondary">
+                                &nbsp;
+                                {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
-                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId)" mat-icon-button
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>
@@ -269,7 +301,7 @@
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
                                                 *ngIf="transaction.transactions[0].transaction.txId.substring(56) !== 'aaaa'"
-                                                [href]="'https://explorer.qubic.org/network/tx/' + transaction.transactions[0].transaction.txId"
+                                                [href]="ExplorerUrlHelper.getTransactionUrl(transaction.transactions[0].transaction.txId)"
                                                 target="_blank">{{transaction.transactions[0].transaction.txId}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
@@ -284,9 +316,9 @@
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value display-publicid"> <a
-                                                [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.sourceId"
+                                                [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.sourceId)"
                                                 target="_blank">
-                                                {{transaction.transactions[0].transaction.sourceId}}
+                                                {{getAddressDisplayName(transaction.transactions[0].transaction.sourceId)}}
                                             </a>
                                             <mat-icon class="icon-color-link icon"
                                                 matTooltip="{{ t('general.copy.tooltip') }}"
@@ -301,20 +333,18 @@
                                         <span class="value">
                                             <ng-container
                                                 *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalDest">
-                                                <a [href]="'https://explorer.qubic.org/network/address/' + getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor"
+                                                <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)"
                                                     target="_blank">
-                                                    {{
-                                                    getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor
-                                                    }}
+                                                    {{getAddressDisplayName(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
                                                     [cdkCopyToClipboard]="getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor">content_copy</mat-icon>
                                             </ng-container>
                                             <ng-template #normalDest>
-                                                <a [href]="'https://explorer.qubic.org/network/address/' + transaction.transactions[0].transaction.destId"
+                                                <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.destId)"
                                                     target="_blank">
-                                                    {{ transaction.transactions[0].transaction.destId }}
+                                                    {{getAddressDisplayName(transaction.transactions[0].transaction.destId)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
@@ -329,7 +359,7 @@
                                     </div>
                                     <div class="col-value disable-area">
                                         <span class="value"> <a
-                                                [href]="'https://explorer.qubic.org/network/tick/' + transaction.tickNumber"
+                                                [href]="ExplorerUrlHelper.getTickUrl(transaction.tickNumber)"
                                                 target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
                                             </a>
                                         </span>
@@ -343,6 +373,16 @@
                                         <span class="value">
                                             {{ formatInputType(transaction.transactions[0].transaction.inputType,
                                             transaction.transactions[0].transaction.destId) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row transaction-datetime-details">
+                                    <div class="col-label">
+                                        <span class="label">{{ t("balanceComponent.transaction.timestamp") }}</span>
+                                    </div>
+                                    <div class="col-value disable-area">
+                                        <span class="value">
+                                            {{ transaction.transactions[0].timestamp | dateTime }}
                                         </span>
                                     </div>
                                 </div>

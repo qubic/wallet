@@ -73,7 +73,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -111,7 +111,7 @@
               </span>
             </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}}</span>
+              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
               <span *ngIf="!address.lastUpdate">?</span>
             </div>
             <div class="dashboard-amount-name disable-area">
@@ -202,17 +202,17 @@
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">
-          <div class="no-data">{{ t("seedOverviewComponent.table.noData", { q: input.value }) }}</div>
+          <div class="no-data" *ngIf="input.value">{{ t("seedOverviewComponent.table.noData", { q: input.value }) }}</div>
         </td>
       </tr>
     </table>
   </div>
   <ng-template #actions let-publicId="publicId">
-    <button *ngIf="hasAssets(publicId) && hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId) && hasAssets(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
     </button>
-    <button *ngIf="hasIsOnlyWatch(publicId)" mat-icon-button class="icon-color-link"
+    <button *ngIf="isNotWatchOnly(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.makePayment')" (click)="payment(publicId)">
       <mat-icon>payment</mat-icon>
     </button>
@@ -224,10 +224,10 @@
       (click)="receive(publicId)">
       <mat-icon>qr_code_2</mat-icon>
     </button>
-    <a mat-icon-button class="icon-color-link" [href]="'https://explorer.qubic.org/network/address/' + publicId"
-      target="_blank" title="explorer.qubic.org">
+    <button mat-icon-button class="icon-color-link" (click)="openExplorer(publicId)"
+      [title]="t('seedOverviewComponent.table.actions.openExplorer')">
       <mat-icon>explore</mat-icon>
-    </a>
+    </button>
     <br *ngIf="walletService.privateKey && !isTable">
     <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
       (click)="reveal(publicId)">

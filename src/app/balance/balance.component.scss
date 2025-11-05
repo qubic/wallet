@@ -159,10 +159,12 @@ mat-card {
 
 .epoch {
     font-size: 2.0em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
     .label-epoch {
         font-size: 1.0em;
-        padding-left: 18px;
     }
 
     mat-icon {
@@ -171,6 +173,31 @@ mat-card {
 
     .large-icon {
         font-size: xx-large;
+        width: 1em;
+        height: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    button[mat-icon-button] {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+
+        .mdc-button__label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mat-mdc-button-touch-target {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
 
@@ -218,5 +245,46 @@ mat-card {
         font-family: inherit;
         line-height: 1.5;
         margin: 0;
+    }
+}
+
+// Timestamp responsive behavior:
+// - Show in header when there's enough space (tablet landscape and up)
+// - Show in details on mobile and small tablets
+.transaction-datetime-header {
+    display: none;
+}
+
+.transaction-datetime-details {
+    display: flex !important; // Override .row display
+}
+
+// Address name responsive behavior:
+// - On small screens: show compact name (name only) when datetime is in header
+// - On large screens: show full name (name + shortened address) when datetime is in details
+.address-name-compact {
+    display: inline;
+}
+
+.address-name-full {
+    display: none;
+}
+
+// Use Material Design md breakpoint - tablet landscape and up
+@media screen and (min-width: $breakpoint-md) {
+    .transaction-datetime-header {
+        display: inline;
+    }
+
+    .transaction-datetime-details {
+        display: none !important;
+    }
+
+    .address-name-compact {
+        display: none;
+    }
+
+    .address-name-full {
+        display: inline;
     }
 }

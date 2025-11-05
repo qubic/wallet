@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { WalletService } from '../../services/wallet.service';
@@ -6,21 +6,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
+import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'qli-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements OnInit, OnDestroy {
 
   public currentTick = 0;
+  private destroy$ = new Subject<void>();
 
   autoTick: FormControl = new FormControl(true);
 
   transferForm = this.fb.group({
     sourceId: [],
-    destinationId: ["", [Validators.required, Validators.minLength(60), Validators.maxLength(60)]],
+    destinationId: ["", [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)]],
     amount: [10000, [Validators.required, Validators.min(1)]],
     tick: [0, [Validators.required]],
     autoTick: this.autoTick
@@ -32,13 +36,13 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['publicId']) {
         const publicId = params['publicId'];
         this.transferForm.controls.sourceId.setValue(publicId);
       }
     });
-    this.route.params.subscribe(params => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['receiverId']) {
         const publicId = params['receiverId'];
         this.transferForm.controls.destinationId.setValue(publicId);
@@ -50,8 +54,13 @@ export class WelcomeComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getCurrentTick() {
-    this.apiLiveService.getTickInfo().subscribe(r => {
+    this.apiLiveService.getTickInfo().pipe(takeUntil(this.destroy$)).subscribe(r => {
       if (r && r.tickInfo) {
         this.currentTick = r.tickInfo.tick;
         this.transferForm.controls.tick.setValue(this.currentTick + 10);

@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Lưu ý quan trọng",
     "button": "OK",
-    "message": "<div>Bạn đã đạt số lượng tối đa 15 địa chỉ trong ví của mình.</div>"
+    "message": "<div>Bạn đã đạt số lượng tối đa {{maxAddresses}} địa chỉ trong ví của mình.</div>"
   },
   "switchExportDialog": {
     "title": "Lưu ý quan trọng khi chuyển sang ví mới",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Tài sản của bạn",
     "openAssets": "Đi tới Quản lý tài sản",
+    "managedBy": "Được quản lý bởi {{contract}}",
+    "by": "bởi {{contract}}",
     "overview": {
       "title": "Tổng quan tài sản"
     },
@@ -100,7 +102,8 @@
       "possessedAmount": "Số lượng đang giữ",
       "tick": "Hợp lệ cho Tick {{tick}}",
       "reportingNodes": "Nút báo cáo",
-      "issuerIdentity": "Danh tính nhà phát hành"
+      "issuerIdentity": "Danh tính nhà phát hành",
+      "managedBy": "Được quản lý bởi"
     },
     "buttons": {
       "close": "Đóng",
@@ -109,8 +112,9 @@
     },
     "form": {
       "info": "Gửi tài sản",
-      "fees": "Phí gửi cố định: 100 Qubic",
-      "balance": "Số dư của bạn sau khi trừ phí chuyển (100 Qubic) sẽ là:",
+      "qxOnly": "Hiện tại, chỉ có thể chuyển tài sản được quản lý bởi Qx.",
+      "fees": "Phí gửi cố định: {{fee}} Qubic",
+      "balance": "Số dư của bạn sau khi trừ phí chuyển ({{fee}} Qubic) sẽ là:",
       "select": "Chọn tài sản",
       "select.error": "Yêu cầu chọn tài sản",
       "placeholder": "ID địa chỉ của người nhận",
@@ -126,7 +130,7 @@
       "buttons": {
         "send": "Gửi",
         "cancel": "Hủy",
-        "error.balance": "Số dư không đủ, số dư tối thiểu là 100 Qubic"
+        "error.balance": "Số dư không đủ, số dư tối thiểu là {{fee}} Qubic"
       }
     },
     "noAssets": "Không có tài sản"
@@ -207,7 +211,8 @@
         "receivePayment": "Tạo mã QR để nhận thanh toán",
         "editSeed": "Sửa địa chỉ",
         "deleteSeed": "Xóa địa chỉ",
-        "refreshBalance": "Làm mới số dư từ mạng"
+        "refreshBalance": "Làm mới số dư từ mạng",
+        "openExplorer": "Xem trên Explorer"
       }
     },
     "hasPendingTransaction": "Giao dịch đang chờ",
@@ -303,7 +308,9 @@
         "chooseOwnSeed": "Chọn ID địa chỉ của bạn",
         "error": {
           "required": "Yêu cầu ID địa chỉ",
-          "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa."
+          "notUppercase": "Địa chỉ phải viết toàn bộ bằng chữ in hoa",
+          "length": "ID địa chỉ Qubic gồm 60 chữ cái viết hoa.",
+          "invalidAddress": "Địa chỉ người nhận không hợp lệ"
         }
       },
       "amount": {
@@ -364,7 +371,8 @@
       "tick": "Tick",
       "type": "Loại",
       "fee": "Phí",
-      "assetTransferWarning": "Bản ghi giao dịch này hiện chỉ hiển thị cho người gửi. Người nhận sẽ chưa thấy dữ liệu giao dịch trong hồ sơ của họ vào lúc này."
+      "assetTransferWarning": "Giao dịch này chỉ hiển thị trong danh sách giao dịch của địa chỉ nguồn. Việc hiển thị nó trong danh sách giao dịch của địa chỉ đích chưa được hỗ trợ trong phiên bản hiện tại.",
+      "timestamp": "Dấu thời gian"
     },
     "epoch": "Epoch",
     "ticks": "Ticks"

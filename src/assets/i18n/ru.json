@@ -59,7 +59,7 @@
   "maxNumberOfAddressesDialog": {
     "title": "Important note",
     "button": "Okay",
-    "message": "<div>You have reached the maximum number of 15 addresses in your wallet.</div>"
+    "message": "<div>You have reached the maximum number of {{maxAddresses}} addresses in your wallet.</div>"
   },
   "switchExportDialog": {
     "title": "Important Notice for Switching to the New Wallet",
@@ -88,6 +88,8 @@
   "assetsComponent": {
     "title": "Ваши акции",
     "openAssets": "Зайти в управление акциями",
+    "managedBy": "Управляется {{contract}}",
+    "by": "{{contract}}",
     "overview": {
       "title": "Просмотр акций"
     },
@@ -96,11 +98,13 @@
       "contractIndex": "Индекс контракта",
       "assetName": "Имя акции",
       "contractName": "Имя контракта",
+      "managedBy": "Управляется",
       "ownedAmount": "Общая сумма",
       "possessedAmount": "Частичное владение",
       "tick": "Подтверждено тиком {{tick}}",
       "reportingNodes": "Отчетная Нода",
-      "issuerIdentity": "Идентификатор владельца"
+      "issuerIdentity": "Идентификатор владельца",
+      "managedBy": "Managed By"
     },
     "buttons": {
       "close": "Закрыть",
@@ -108,9 +112,10 @@
       "send": "Перевести акции"
     },
     "form": {
-      "info": "Форма перевода акций",
-      "fees": "Фиксированная комиссия за перевод: 100 Qubic",
-      "balance": "Ваш баланс после перевода акции с комиссией (100 Qubic) станет:",
+      "info": "Отправить Assets",
+      "qxOnly": "В настоящее время можно переводить только assets, управляемые Qx.",
+      "fees": "Фиксированная комиссия за перевод: {{fee}} Qubic",
+      "balance": "Ваш баланс после перевода акции с комиссией ({{fee}} Qubic) станет:",
       "select": "Выберите акцию",
       "select.error": "Сначала выберите акцию",
       "placeholder": "Введите ID получателя",
@@ -126,7 +131,7 @@
       "buttons": {
         "send": "Отправить",
         "cancel": "Отмена",
-        "error.balance": "Недостаточный баланс, требуется минимум 100 Qubic"
+        "error.balance": "Недостаточный баланс, требуется минимум {{fee}} Qubic"
       }
     },
     "noAssets": "Нет доступных акций"
@@ -207,7 +212,8 @@
         "receivePayment": "Сгенерировать QR-код для получения платежа",
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
-        "refreshBalance": "Обновить баланс"
+        "refreshBalance": "Обновить баланс",
+        "openExplorer": "Показать в Explorer"
       }
     },
     "hasPendingTransaction": "Транзакция в обработке",
@@ -302,7 +308,9 @@
         "chooseOwnSeed": "Выбрать собственный ID",
         "error": {
           "required": "Требуется ID",
-          "length": "ID Qubic состоит из 60 заглавных букв"
+          "notUppercase": "Адрес должен состоять только из заглавных букв",
+          "length": "ID Qubic состоит из 60 заглавных букв",
+          "invalidAddress": "Недействительный адрес получателя"
         }
       },
       "amount": {
@@ -364,7 +372,8 @@
       "tick": "Тик",
       "type": "Тип",
       "fee": "Комиссия",
-      "assetTransferWarning": "Эта запись о транзакции в данный момент видна только отправителю. Получатель не будет иметь доступа к этим данным транзакции в своих записях на данный момент."
+      "assetTransferWarning": "Эта транзакция видна только в списке транзакций исходного адреса. Отображение в списке транзакций адреса назначения пока не поддерживается в текущей версии.",
+      "timestamp": "Метка времени"
     },
     "epoch": "Эпоха",
     "ticks": "Тики"

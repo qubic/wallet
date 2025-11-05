@@ -1,12 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { QubicAsset } from "../services/api.model";
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { QubicAsset, AssetTransfer } from "../services/api.model";
 import { ApiService } from "../services/api.service";
-import { FormControl, FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject, combineLatest } from 'rxjs';
+import { takeUntil, filter, distinctUntilChanged } from 'rxjs/operators';
 import { MatDialog } from "@angular/material/dialog";
 import { UpdaterService } from "../services/updater-service";
 import { UnLockComponent } from '../lock/unlock/unlock.component';
@@ -14,12 +15,46 @@ import { TransactionService } from '../services/transaction.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
-import { environment } from "../../environments/environment";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
+import { shortenAddress } from '../utils/address.utils';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { QubicStaticService } from '../services/apis/static/qubic-static.service';
+import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
 
+// Interfaces for asset grouping
+interface GroupedAsset {
+  publicId: string;
+  assetName: string;
+  issuerIdentity: string;
+  totalAmount: number;
+  managingContracts: ManagingContract[];
+}
+import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+
+interface ManagingContract {
+  contractName: string;
+  contractIndex: number;
+  asset: QubicAsset;
+}
+
+/**
+ * Validator to check if the address is all uppercase
+ * Qubic addresses must be uppercase letters only
+ */
+function uppercaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null; // Don't validate empty values (required validator handles that)
+    }
+    const value = control.value as string;
+    const isUppercase = value === value.toUpperCase();
+    return isUppercase ? null : { notUppercase: true };
+  };
+}
 
 @Component({
   selector: 'app-assets',
@@ -28,11 +63,24 @@ import { ApiLiveService } from '../services/apis/live/api.live.service';
 })
 
 
-export class AssetsComponent implements OnInit {
-  displayedColumns: string[] = ['publicId', 'contractName', 'ownedAmount', 'tick', 'actions'];
+export class AssetsComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
+  shortenAddress = shortenAddress;
+  displayedColumns: string[] = ['publicId', 'ownedAmount', 'managedBy', 'tick', 'actions'];
   public assets: QubicAsset[] = [];
+  public groupedAssets: GroupedAsset[] = [];
+  public isExpanded: Map<string, boolean> = new Map();
   public currentTick = 0;
   public tickOverwrite = false;
+
+  // Asset transfer fee constant
+  public readonly assetTransferFee = ASSET_TRANSFER_FEE;
+
+  // Cache for smart contract lookups to avoid repeated array searches
+  private smartContractsMap: Map<number, StaticSmartContract> = new Map();
+  // Track whether smart contracts data has been loaded to prevent flickering
+  public smartContractsLoaded: boolean = false;
 
   sendForm: FormGroup;
   isAssetsLoading: boolean = false;
@@ -43,7 +91,13 @@ export class AssetsComponent implements OnInit {
   public selectedAccountId = false;
   private selectedDestinationId: any;
 
-  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+  private destinationValidators = [Validators.required, uppercaseValidator(), Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
+
+  // Template transaction data for repeating transactions
+  private txTemplate: any;
+  private txAssetData: AssetTransfer | null = null;
+  private txSourceId: string | null = null;
+  private txDestId: string | null = null;
 
   @ViewChild('selectedDestinationId', {
     static: false
@@ -64,7 +118,8 @@ export class AssetsComponent implements OnInit {
     private router: Router,
     private decimalPipe: DecimalPipe,
     private changeDetectorRef: ChangeDetectorRef,
-    private apiLiveService: ApiLiveService
+    private apiLiveService: ApiLiveService,
+    private qubicStaticService: QubicStaticService
   ) {
 
     if (!this.walletService.isWalletReady) {
@@ -74,6 +129,16 @@ export class AssetsComponent implements OnInit {
     var dashBoardStyle = localStorage.getItem("asset-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
 
+    // Check if we're repeating an asset transfer transaction
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state && state['template']) {
+      // We have a template transaction to repeat
+      this.txTemplate = state['template'];
+      this.txAssetData = state['assetData'];
+      this.txSourceId = state['sourceId'];
+      this.txDestId = state['destId'];
+    }
+
     this.sendForm = new FormGroup({
       destinationAddress: new FormControl('', this.destinationValidators),
       selectedDestinationId: new FormControl(''),
@@ -82,10 +147,33 @@ export class AssetsComponent implements OnInit {
       assetSelect: new FormControl('', Validators.required),
     });
 
-    // subscribe to config changes to receive asset updates
-    this.walletService.onConfig.subscribe(c => {
-      this.assets = this.walletService.getSeeds().filter(p => !p.isOnlyWatch).flatMap(m => m.assets).filter(f => f).map(m => <QubicAsset>m);
-    });
+    // Use combineLatest to wait for BOTH smart contracts AND wallet config
+    combineLatest([
+      this.qubicStaticService.smartContracts$.pipe(
+        filter(contracts => contracts !== null && contracts.length > 0)
+      ),
+      this.walletService.onConfig
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([contracts, config]) => {
+        // Build smart contracts lookup map (only once per update)
+        this.smartContractsMap.clear();
+        contracts!.forEach(contract => {
+          this.smartContractsMap.set(contract.contractIndex, contract);
+        });
+        this.smartContractsLoaded = true;
+
+        // Update assets from wallet
+        const seeds = this.walletService.getSeeds().filter(p => !p.isOnlyWatch);
+
+        this.assets = seeds
+          .flatMap(m => m.assets)
+          .filter(f => f)
+          .map(m => <QubicAsset>m);
+
+        // Compute grouped assets only ONCE when both are ready
+        this.computeGroupedAssets();
+      });
 
     // const amountControl = this.sendForm.get('amount');
     const assetSelectControl = this.sendForm.get('assetSelect');
@@ -100,59 +188,59 @@ export class AssetsComponent implements OnInit {
     // }
 
     if (assetSelectControl) {
-      assetSelectControl.valueChanges.subscribe(() => {
-        this.updateAmountValidator();
-      });
+      assetSelectControl.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.updateAmountValidator();
+        });
     }
   }
 
   ngOnInit() {
     this.loadAssets();
 
-    this.updaterService.currentTick.subscribe(tick => {
-      this.currentTick = tick;
-      this.sendForm.controls['tick'].addValidators(Validators.min(tick));
-      if (!this.tickOverwrite) {
-        this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
-      }
-    })
-
-    this.sendForm.get('assetSelect')?.valueChanges.subscribe(s => {
-      if (s) {
-        if (this.sendForm.get('selectedDestinationId') == this.sendForm.get('assetSelect')) {
-          this.sendForm.controls['selectedDestinationId'].setValue(null);
+    this.updaterService.currentTick
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tick => {
+        this.currentTick = tick;
+        this.sendForm.controls['tick'].addValidators(Validators.min(tick));
+        if (!this.tickOverwrite) {
+          this.sendForm.controls['tick'].setValue(tick + this.walletService.getSettings().tickAddition);
         }
-      }
-    });
+      });
 
-    this.sendForm.get('selectedDestinationId')?.valueChanges.subscribe(s => {
-      if (s) {
-        if (!this.selectedAccountId) {
-          this.sendForm.controls['destinationAddress'].setValue(null);
-        } else {
-          this.sendForm.controls['destinationAddress'].setValue(s);
+    this.sendForm.get('assetSelect')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          if (this.sendForm.get('selectedDestinationId') == this.sendForm.get('assetSelect')) {
+            this.sendForm.controls['selectedDestinationId'].setValue(null);
+          }
         }
-      }
-    });
+      });
+
+    this.sendForm.get('selectedDestinationId')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          if (!this.selectedAccountId) {
+            this.sendForm.controls['destinationAddress'].setValue(null);
+          } else {
+            this.sendForm.controls['destinationAddress'].setValue(s);
+          }
+        }
+      });
+
+    // Handle template transaction for repeating asset transfers
+    if (this.txTemplate) {
+      this.handleRepeatTransaction();
+    }
   }
 
 
   toggleTableView(event: MatSlideToggleChange) {
-    this.isTable = !this.isTable;
-    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
     this.isTable = event.checked;
-    window.location.reload();
-  }
-
-  displayPublicId(input: string): string {
-    if (input.length <= 10) {
-      return input;
-    }
-
-    const start = input.slice(0, 5);
-    const end = input.slice(-5);
-
-    return `${start}...${end}`;
+    localStorage.setItem("asset-grid", this.isTable ? '0' : '1');
   }
 
   updateAmountValidator(): void {
@@ -204,13 +292,12 @@ export class AssetsComponent implements OnInit {
   }
 
   openIssuerIdentity(issuerIdentity: string): void {
-    const url = `https://explorer.qubic.org/network/address/${issuerIdentity}`;
-    window.open(url, '_blank');
+    window.open(ExplorerUrlHelper.getAddressUrl(issuerIdentity), '_blank');
   }
 
   getBalanceAfterFees(): number {
     var balanceOfSelectedId = this.walletService.getSeed((<QubicAsset>this.sendForm.controls['assetSelect']?.value)?.publicId)?.balance ?? 0;
-    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(environment.assetsFees);
+    const balanceAfterFees = BigInt(balanceOfSelectedId) - BigInt(this.assetTransferFee);
     return Number(balanceAfterFees);
   }
 
@@ -229,6 +316,63 @@ export class AssetsComponent implements OnInit {
         assetSelectControl.setValue(this.assets[0]);
       }
       this.updateAmountValidator();
+    }
+  }
+
+  /**
+   * Handle repeating an asset transfer transaction
+   * Pre-fills the send form with data from the template transaction
+   */
+  handleRepeatTransaction(): void {
+    if (!this.txAssetData) {
+      // If we don't have parsed asset data (for non-archiver transactions),
+      // just open the form and let user fill it manually
+      this.openSendForm();
+      return;
+    }
+
+    // Find the matching asset from the user's assets
+    const assetName = this.txAssetData.assetName;
+    const sourceId = this.txSourceId;
+
+    const matchingAsset = this.assets.find(asset =>
+      asset.assetName === assetName && asset.publicId === sourceId
+    );
+
+    if (!matchingAsset) {
+      // Asset not found, show error message
+      this._snackBar.open(
+        this.t.translate('assetsComponent.messages.assetNotFound'),
+        this.t.translate('general.close'),
+        { duration: 5000, panelClass: 'error' }
+      );
+      return;
+    }
+
+    // Open the send form with the matching asset
+    this.openSendForm(matchingAsset);
+
+    // Pre-fill the destination address and amount
+    if (this.txDestId) {
+      // Check if destination is one of the wallet's addresses
+      const destinationSeed = this.walletService.getSeeds().find(s => s.publicId === this.txDestId);
+
+      if (destinationSeed) {
+        // Destination is in the wallet - use address book mode
+        this.selectedAccountId = true;
+        this.sendForm.controls['selectedDestinationId'].addValidators([Validators.required]);
+        this.sendForm.controls['destinationAddress'].clearValidators();
+        this.sendForm.controls['destinationAddress'].updateValueAndValidity();
+        this.sendForm.controls['selectedDestinationId'].setValue(this.txDestId);
+        this.sendForm.controls['selectedDestinationId'].updateValueAndValidity();
+      } else {
+        // Destination is external - use manual entry mode
+        this.sendForm.controls['destinationAddress'].setValue(this.txDestId);
+      }
+    }
+
+    if (this.txAssetData.units) {
+      this.sendForm.controls['amount'].setValue(parseInt(this.txAssetData.units));
     }
   }
 
@@ -276,10 +420,8 @@ export class AssetsComponent implements OnInit {
 
     // verify target address
     if (!(await targetAddress.verifyIdentity())) {
-      this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
-        duration: 10000,
-        panelClass: "error"
-      });
+      destinationAddressControl.setErrors({ invalidAddress: true });
+      this.isSending = false;
       return;
     }
 
@@ -335,6 +477,23 @@ export class AssetsComponent implements OnInit {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.sendForm.get('assetSelect')?.value?.publicId));
   }
 
+  /**
+   * Compare function for mat-select to properly match assets by identity
+   * instead of object reference
+   */
+  compareAssets(asset1: QubicAsset, asset2: QubicAsset): boolean {
+    return asset1 && asset2 && asset1.assetName === asset2.assetName && asset1.publicId === asset2.publicId;
+  }
+
+  getSelectedDestinationSeed() {
+    const publicId = this.sendForm.controls['selectedDestinationId'].value;
+    return this.getSeeds(true).find(s => s.publicId === publicId);
+  }
+
+  getSelectedAsset() {
+    return this.sendForm.controls['assetSelect'].value;
+  }
+
   toggleDestinationSelect() {
     this.selectedAccountId = !this.selectedAccountId;
     this.changeDetectorRef?.detectChanges();
@@ -351,5 +510,163 @@ export class AssetsComponent implements OnInit {
       this.sendForm.get('selectedDestinationId')?.updateValueAndValidity();
     }
     this.changeDetectorRef?.detectChanges();
+  }
+
+  /**
+   * Compute grouped assets by publicId + assetName + issuerIdentity
+   * Optimized with cached smart contract lookups
+   * Only computes if smart contracts data is loaded to prevent flickering
+   */
+  computeGroupedAssets(): void {
+    // Wait for smart contracts to load before computing groups to prevent flickering
+    if (!this.smartContractsLoaded) {
+      this.groupedAssets = [];
+      return;
+    }
+
+    const grouped = new Map<string, GroupedAsset>();
+
+    this.assets.forEach(asset => {
+      // Create unique key for grouping: publicId + assetName + issuerIdentity
+      const key = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}`;
+
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          publicId: asset.publicId,
+          assetName: asset.assetName,
+          issuerIdentity: asset.issuerIdentity,
+          totalAmount: 0,
+          managingContracts: []
+        });
+      }
+
+      const group = grouped.get(key)!;
+      group.totalAmount += asset.ownedAmount || 0;
+
+      // Group by contract - use cached Map lookup instead of array find
+      const contractIndex = asset.contractIndex || 0;
+      let managingContract = group.managingContracts.find((c: ManagingContract) => c.contractIndex === contractIndex);
+
+      if (!managingContract) {
+        // Fast O(1) lookup from the cached Map instead of O(n) array search
+        const smartContract = this.smartContractsMap.get(contractIndex);
+        // Use contract label if found, otherwise show index to indicate unknown contract
+        const contractName = smartContract?.label || (contractIndex > 0 ? `Contract ${contractIndex}` : '');
+
+        managingContract = {
+          contractName: contractName,
+          contractIndex: contractIndex,
+          asset: asset
+        };
+        group.managingContracts.push(managingContract);
+      }
+    });
+
+    this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
+      a.assetName.localeCompare(b.assetName, undefined, { sensitivity: 'base' })
+    );
+  }
+
+  /**
+   * Toggle the expanded state for a specific grouped asset
+   */
+  toggleExpanded(groupKey: string): void {
+    const currentState = this.isExpanded.get(groupKey) || false;
+    this.isExpanded.set(groupKey, !currentState);
+  }
+
+  /**
+   * Check if a specific grouped asset is expanded
+   */
+  isGroupExpanded(groupKey: string): boolean {
+    return this.isExpanded.get(groupKey) || false;
+  }
+
+  /**
+   * Get the unique key for a grouped asset
+   */
+  getGroupKey(group: GroupedAsset): string {
+    return `${group.publicId}-${group.assetName}-${group.issuerIdentity}`;
+  }
+
+  /**
+   * Check if any managing contract in the group has a valid contract name
+   */
+  hasContractNames(managingContracts: ManagingContract[]): boolean {
+    return managingContracts.some(mc => mc.contractName && mc.contractName.trim() !== '');
+  }
+
+  /**
+   * Calculate total owned amount across all managing contracts for a grouped asset
+   */
+  getTotalOwnedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.managingContracts.forEach((mc: ManagingContract) => {
+      const asset = mc.asset;
+      if (asset.ownedAmount !== undefined && asset.ownedAmount !== null) {
+        total += asset.ownedAmount;
+      }
+    });
+    return total;
+  }
+
+  /**
+   * Calculate total possessed amount across all managing contracts for a grouped asset
+   */
+  getTotalPossessedAmount(group: GroupedAsset): number {
+    let total = 0;
+    group.managingContracts.forEach((mc: ManagingContract) => {
+      const asset = mc.asset;
+      if (asset.possessedAmount !== undefined && asset.possessedAmount !== null) {
+        total += asset.possessedAmount;
+      }
+    });
+    return total;
+  }
+
+  /**
+   * Check if user can send this asset
+   * Only QX-managed assets can be transferred
+   * Balance validation is handled in the send form
+   */
+  canSendAsset(asset: QubicAsset): boolean {
+    // Find contract by index and check if it's QX by comparing address
+    const contract = this.smartContractsMap.get(asset.contractIndex);
+    return contract?.address === QubicDefinitions.QX_ADDRESS;
+  }
+
+  /**
+   * Get only QX-managed assets that can be sent
+   */
+  getQxAssets(): QubicAsset[] {
+    return this.assets.filter(asset => this.canSendAsset(asset));
+  }
+
+  /**
+   * Check if a grouped asset has any sendable assets
+   * (at least one asset in the group is QX-managed)
+   */
+  canSendGroupedAsset(group: GroupedAsset): boolean {
+    // Check if any managing contract in this group can be sent
+    return group.managingContracts.some((mc: ManagingContract) =>
+      this.canSendAsset(mc.asset)
+    );
+  }
+
+  /**
+   * Get the QX-managed asset from a grouped asset
+   * Returns the asset managed by QX contract, or null if none found
+   */
+  getQxManagedAsset(group: GroupedAsset): QubicAsset | null {
+    const qxContract = group.managingContracts.find((mc: ManagingContract) => {
+      const contract = this.smartContractsMap.get(mc.contractIndex);
+      return contract?.address === QubicDefinitions.QX_ADDRESS;
+    });
+    return qxContract?.asset ?? null;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

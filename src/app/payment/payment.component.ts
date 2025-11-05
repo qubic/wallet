@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
@@ -9,21 +9,41 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
 import { CurrentTickResponse, Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
-import { concatMap, lastValueFrom, of } from 'rxjs';
+import { concatMap, lastValueFrom, of, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { TransactionService } from '../services/transaction.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
+import { shortenAddress } from '../utils/address.utils';
+import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+
+/**
+ * Validator to check if the address is all uppercase
+ * Qubic addresses must be uppercase letters only
+ */
+function uppercaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null; // Don't validate empty values (required validator handles that)
+    }
+    const value = control.value as string;
+    const isUppercase = value === value.toUpperCase();
+    return isUppercase ? null : { notUppercase: true };
+  };
+}
 
 @Component({
   selector: 'app-wallet',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
 
+  private destroy$ = new Subject<void>();
 
+  shortenAddress = shortenAddress;
   private selectedDestinationId: any;
   public maxAmount: number = 0;
   public currentTick = 0;
@@ -40,7 +60,7 @@ export class PaymentComponent implements OnInit {
   public tickOverwrite = false;
   public selectedAccountId = false;
 
-  private destinationValidators = [Validators.required, Validators.minLength(60), Validators.maxLength(60)];
+  private destinationValidators = [Validators.required, uppercaseValidator(), Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH)];
   private txTemplate: Transaction | undefined;
 
   transferForm = this.fb.group({
@@ -70,33 +90,41 @@ export class PaymentComponent implements OnInit {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
 
-    this.us.currentTick.subscribe(tick => {
-      this.currentTick = tick;
-      this.transferForm.controls.tick.addValidators(Validators.min(tick));
-      if (!this.tickOverwrite) {
-        this.transferForm.controls.tick.setValue(tick + this.walletService.getSettings().tickAddition);
-      }
-    })
-    this.transferForm.controls.sourceId.valueChanges.subscribe(s => {
-      if (s) {
-        // try to get max amount
-        this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
-        if (this.transferForm.controls.selectedDestinationId.value == this.transferForm.controls.sourceId.value) {
-          this.transferForm.controls.selectedDestinationId.setValue(null);
+    this.us.currentTick
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tick => {
+        this.currentTick = tick;
+        this.transferForm.controls.tick.addValidators(Validators.min(tick));
+        if (!this.tickOverwrite) {
+          this.transferForm.controls.tick.setValue(tick + this.walletService.getSettings().tickAddition);
         }
-      }
-    });
+      });
+    this.transferForm.controls.sourceId.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(s => {
+        if (s) {
+          // try to get max amount
+          this.maxAmount = this.walletService.getSeed(s)?.balance ?? 0;
+          if (this.transferForm.controls.selectedDestinationId.value == this.transferForm.controls.sourceId.value) {
+            this.transferForm.controls.selectedDestinationId.setValue(null);
+          }
+        }
+      });
 
-    this.route.queryParams.subscribe(params => {
-      if (params['publicId']) {
-        const publicId = params['publicId'];
-        this.transferForm.controls.sourceId.setValue(publicId);
-      }
-    });
-    this.route.params.subscribe(params => {
-      if (params['receiverId']) {
-        const publicId = params['receiverId'];
-        this.transferForm.controls.destinationId.setValue(publicId);
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['publicId']) {
+          const publicId = params['publicId'];
+          this.transferForm.controls.sourceId.setValue(publicId);
+        }
+      });
+    this.route.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        if (params['receiverId']) {
+          const publicId = params['receiverId'];
+          this.transferForm.controls.destinationId.setValue(publicId);
       }
       if (params['amount']) {
         const amount = params['amount'];
@@ -112,7 +140,22 @@ export class PaymentComponent implements OnInit {
   fillFromTemplate(tx: Transaction) {
     this.transferForm.controls.amount.setValue(tx.amount);
     this.transferForm.controls.sourceId.setValue(tx.sourceId);
-    this.transferForm.controls.destinationId.setValue(tx.destId);
+
+    // Check if destination is one of the wallet's addresses
+    const destinationSeed = this.walletService.getSeeds().find(s => s.publicId === tx.destId);
+
+    if (destinationSeed) {
+      // Destination is in the wallet - use address book mode
+      this.selectedAccountId = true;
+      this.transferForm.controls.selectedDestinationId.addValidators([Validators.required]);
+      this.transferForm.controls.destinationId.clearValidators();
+      this.transferForm.controls.destinationId.updateValueAndValidity();
+      this.transferForm.controls.selectedDestinationId.setValue(tx.destId);
+      this.transferForm.controls.selectedDestinationId.updateValueAndValidity();
+    } else {
+      // Destination is external - use manual entry mode
+      this.transferForm.controls.destinationId.setValue(tx.destId);
+    }
   }
 
   setAmounToMax(addAmount: number = 0) {
@@ -148,11 +191,8 @@ export class PaymentComponent implements OnInit {
 
       // verify target address
       if (!(await targetAddress.verifyIdentity())) {
-        this._snackBar.open("INVALID RECEIVER ADDRESSS", this.t.translate('general.close'), {
-          duration: 10000,
-          panelClass: "error"
-        });
-
+        this.transferForm.controls.destinationId.setErrors({ invalidAddress: true });
+        this.isBroadcasting = false;
         return;
       }
 
@@ -225,8 +265,23 @@ export class PaymentComponent implements OnInit {
     return this.walletService.getSeeds().filter(f => !f.isOnlyWatch && (!isDestination || f.publicId != this.transferForm.controls.sourceId.value))
   }
 
+  getSelectedSourceSeed() {
+    const publicId = this.transferForm.controls.sourceId.value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
+  getSelectedDestinationSeed() {
+    const publicId = this.transferForm.controls.selectedDestinationId.value;
+    return this.getSeeds(true).find(s => s.publicId === publicId);
+  }
+
   loadKey() {
     const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 

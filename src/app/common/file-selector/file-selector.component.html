@@ -3,14 +3,14 @@
   <input
     #inputfileid
     type="file"
-    id="input-file-id"
+    [id]="uniqueId"
     class="file-input"
     (change)="onFileSelected($event)"
   />
   <mat-error *ngIf="!selectedFile" (click)="inputfileid.click()">
     {{ requredText }}
   </mat-error>
-  <label for="input-file-id">
+  <label [attr.for]="uniqueId">
     <button
       mat-button
       type="button"

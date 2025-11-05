@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
@@ -9,7 +9,8 @@ import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiArchiverService } from 'src/app/services/api.archiver.service';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
 import { QearnComponent } from '../qearn.component';
 import { ISeed } from 'src/app/model/seed';
@@ -20,7 +21,7 @@ import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
   templateUrl: './staking.component.html',
   styleUrls: ['./staking.component.scss'],
 })
-export class StakingComponent implements OnInit {
+export class StakingComponent implements OnInit, OnDestroy {
   public maxAmount = 0;
   public remainingTime = { days: 0, hours: 0, minutes: 0 };
   public stakeForm = this.fb.group({
@@ -29,6 +30,7 @@ export class StakingComponent implements OnInit {
   });
   public seeds: ISeed[] = [];
   public isChecking = false;
+  private destroy$ = new Subject<void>();
 
   get isStakePending(): boolean | null {
     const pendingStake = this.qearnService.pendingStake;
@@ -64,6 +66,11 @@ export class StakingComponent implements OnInit {
     this.subscribeTxSuccess();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   trackBySeed = (index: number, seed: ISeed): string => seed.publicId;
 
   private loadSeeds(): void {
@@ -77,19 +84,19 @@ export class StakingComponent implements OnInit {
   }
 
   private setupSourceIdValueChange(): void {
-    this.stakeForm.get('sourceId')?.valueChanges.subscribe((s) => {
+    this.stakeForm.get('sourceId')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((s) => {
       this.maxAmount = s ? this.walletService.getSeed(s)?.balance ?? 0 : 0;
     });
   }
 
   private subscribeToTimeUpdates(): void {
-    this.timeService.getTimeToNewEpoch().subscribe((time) => {
+    this.timeService.getTimeToNewEpoch().pipe(takeUntil(this.destroy$)).subscribe((time) => {
       this.remainingTime = time;
     });
   }
 
   private subscribeTxSuccess(): void {
-    this.qearnService.txSuccessSubject.subscribe((d) => {
+    this.qearnService.txSuccessSubject.pipe(takeUntil(this.destroy$)).subscribe((d) => {
       if (d?.publicId) {
         this.qearnComponent.selectHistoryTabAndAddress(d.publicId);
         this.stakeForm.get('amount')?.setValue(0);
@@ -209,6 +216,11 @@ export class StakingComponent implements OnInit {
 
   getSeeds() {
     return this.walletService.getSeeds().filter((s) => !s.isOnlyWatch);
+  }
+
+  getSelectedSeed() {
+    const publicId = this.stakeForm.controls['sourceId'].value;
+    return this.getSeeds().find(s => s.publicId === publicId);
   }
 
 }
