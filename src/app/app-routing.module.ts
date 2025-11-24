@@ -10,6 +10,7 @@ import { VotingCreateComponent } from './voting/create/voting-create.component';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { AssetsComponent } from './assets/assets.component';
+import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { WelcomeComponent } from './public/welcome/welcome.component';
 import { CreateVaultComponent } from './public/create-vault/create-vault.component';
@@ -91,6 +92,10 @@ const routes: Routes = [
   {
     path     : 'assets-area',
     component: AssetsComponent
+  },
+  {
+    path     : 'assets-area/transfer-rights',
+    component: TransferRightsComponent
   },
 ];
 

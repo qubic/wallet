@@ -23,7 +23,7 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
-import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
+import { ASSET_TRANSFER_FEE, TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE } from '../constants/qubic.constants';
 
 // Interfaces for asset grouping
 interface GroupedAsset {
@@ -663,6 +663,76 @@ export class AssetsComponent implements OnInit, OnDestroy {
       return contract?.address === QubicDefinitions.QX_ADDRESS;
     });
     return qxContract?.asset ?? null;
+  }
+
+  /**
+   * Check if a grouped asset supports transfer rights
+   * Transfer rights are available for assets with balance > 0 in contracts that support it
+   * Dynamically checks based on procedure name from backend
+   */
+  canTransferRights(group: GroupedAsset): boolean {
+    // Check if any managing contract in this group supports transfer rights
+    return group.managingContracts.some((mc: ManagingContract) => {
+      const contract = this.smartContractsMap.get(mc.contractIndex);
+      if (!contract) return false;
+
+      // Dynamically check if contract has the transfer rights procedure
+      const hasProcedure = contract.procedures.some(
+        p => p.name === TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE
+      );
+
+      // Must have procedure and positive balance
+      return hasProcedure && mc.asset.ownedAmount > 0;
+    });
+  }
+
+  /**
+   * Navigate to Transfer Rights form with first managing contract pre-selected
+   */
+  openTransferRightsForm(group: GroupedAsset): void {
+    // Get the first managing contract
+    const firstContract = group.managingContracts[0];
+
+    if (firstContract) {
+      this.router.navigate(['/assets-area/transfer-rights'], {
+        queryParams: {
+          publicId: group.publicId,
+          assetName: group.assetName,
+          issuerIdentity: group.issuerIdentity,
+          contractIndex: firstContract.contractIndex
+        }
+      });
+    } else {
+      // Fallback if no managing contracts
+      this.router.navigate(['/assets-area/transfer-rights']);
+    }
+  }
+
+  /**
+   * Check if a specific managing contract supports transfer rights and has balance
+   */
+  canTransferRightsForContract(managingContract: ManagingContract): boolean {
+    // Must have a contract name
+    if (!managingContract.contractName) {
+      return false;
+    }
+
+    // Must have positive balance
+    if (managingContract.asset.ownedAmount <= 0) {
+      return false;
+    }
+
+    // Check if contract supports transfer rights procedure
+    const contract = this.smartContractsMap.get(managingContract.contractIndex);
+    if (!contract) {
+      return false;
+    }
+
+    const hasProcedure = contract.procedures?.some(
+      p => p.name === TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE
+    ) ?? false;
+
+    return hasProcedure;
   }
 
   ngOnDestroy(): void {
