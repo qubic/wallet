@@ -708,33 +708,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Check if a specific managing contract supports transfer rights and has balance
-   */
-  canTransferRightsForContract(managingContract: ManagingContract): boolean {
-    // Must have a contract name
-    if (!managingContract.contractName) {
-      return false;
-    }
-
-    // Must have positive balance
-    if (managingContract.asset.ownedAmount <= 0) {
-      return false;
-    }
-
-    // Check if contract supports transfer rights procedure
-    const contract = this.smartContractsMap.get(managingContract.contractIndex);
-    if (!contract) {
-      return false;
-    }
-
-    const hasProcedure = contract.procedures?.some(
-      p => p.name === TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE
-    ) ?? false;
-
-    return hasProcedure;
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
