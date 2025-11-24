@@ -9,6 +9,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { DecimalPipe } from '@angular/common';
 
 import { UnLockComponent } from '../../lock/unlock/unlock.component';
+import { ConfirmDialog } from '../../core/confirm-dialog/confirm-dialog.component';
 
 import { QubicAsset } from '../../services/api.model';
 import { WalletService } from '../../services/wallet.service';
@@ -66,6 +67,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   // Smart contracts data
   private smartContractsMap: Map<number, StaticSmartContract> = new Map();
   public smartContractsLoaded: boolean = false;
+  private isLoadingAssets: boolean = false;
 
   // Asset and contract options
   public sourceContracts: SourceContractOption[] = [];
@@ -143,7 +145,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(tick => {
         this.currentTick = tick;
-        this.transferRightsForm.controls['tick'].addValidators(Validators.min(tick));
+        // Replace validators instead of adding to prevent accumulation
+        this.transferRightsForm.controls['tick'].setValidators([Validators.required, Validators.min(tick)]);
+        this.transferRightsForm.controls['tick'].updateValueAndValidity({ emitEvent: false });
         if (!this.tickOverwrite) {
           const tickAddition = this.walletService.getSettings().tickAddition;
           this.transferRightsForm.controls['tick'].setValue(tick + tickAddition);
@@ -200,6 +204,12 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Prevent race condition: only allow one loadAssets call at a time
+    if (this.isLoadingAssets) {
+      return;
+    }
+
+    this.isLoadingAssets = true;
     this.isLoading = true;
 
     try {
@@ -226,6 +236,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       );
     } finally {
       this.isLoading = false;
+      this.isLoadingAssets = false;
     }
   }
 
@@ -252,6 +263,12 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         continue;
       }
 
+      // Validate procedure fee exists and is valid
+      if (procedure.fee === undefined || procedure.fee === null || procedure.fee < 0) {
+        console.warn(`Contract ${contract.name} has invalid procedure fee:`, procedure.fee);
+        continue;
+      }
+
       // Create unique key for this asset+contract combination
       const key = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}-${asset.contractIndex}`;
 
@@ -261,7 +278,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           contractName: contract.label || contract.name,
           address: contract.address,
           procedureId: procedure.id,
-          procedureFee: procedure.fee ?? 0,
+          procedureFee: procedure.fee,
           availableBalance: asset.ownedAmount,
           asset: asset
         });
@@ -305,12 +322,18 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       const procedure = this.findTransferRightsProcedure(contract);
 
       if (procedure) {
+        // Validate procedure fee exists and is valid
+        if (procedure.fee === undefined || procedure.fee === null || procedure.fee < 0) {
+          console.warn(`Contract ${contract.name} has invalid procedure fee:`, procedure.fee);
+          continue;
+        }
+
         contracts.push({
           contractIndex: contractIndex,
           contractName: contract.label || contract.name,
           address: contract.address,
           procedureId: procedure.id,
-          procedureFee: procedure.fee ?? 0,
+          procedureFee: procedure.fee,
           availableBalance: 0 // Not applicable for destination
         });
       }
@@ -470,6 +493,30 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Show confirmation dialog before submitting transaction
+   */
+  private async showConfirmationDialog(): Promise<boolean> {
+    const numberOfShares = this.transferRightsForm.get('numberOfShares')?.value;
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      restoreFocus: false,
+      data: {
+        title: this.translocoService.translate('transferRights.confirmDialog.title'),
+        message: this.translocoService.translate('transferRights.confirmDialog.message', {
+          shares: this.decimalPipe.transform(numberOfShares, '1.0-0'),
+          assetName: this.selectedSourceContract?.asset.assetName,
+          sourceContract: this.selectedSourceContract?.contractName,
+          destinationContract: this.selectedDestinationContract?.contractName,
+          fee: this.decimalPipe.transform(this.getTransactionFee(), '1.0-0')
+        }),
+        confirm: this.translocoService.translate('confirmDialog.buttons.confirm'),
+        cancel: this.translocoService.translate('confirmDialog.buttons.cancel')
+      }
+    });
+
+    return await lastValueFrom(dialogRef.afterClosed());
+  }
+
+  /**
    * Submit the transfer rights transaction
    */
   public async submitTransferRights(): Promise<void> {
@@ -491,8 +538,15 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Show confirmation dialog
+    const confirmed = await this.showConfirmationDialog();
+    if (!confirmed) {
+      return;
+    }
+
     this.isSubmitting = true;
 
+    let signSeed: string | undefined;
     try {
       const asset = this.selectedSourceContract.asset;
       const numberOfShares = this.transferRightsForm.get('numberOfShares')?.value;
@@ -505,7 +559,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       }
 
       // Reveal seed for signing
-      const signSeed = await this.walletService.revealSeed(asset.publicId);
+      signSeed = await this.walletService.revealSeed(asset.publicId);
 
       // Build payload (52 bytes total)
       // Asset: issuer (32 bytes) + assetName (8 bytes) = 40 bytes
@@ -579,6 +633,10 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         { duration: 5000 }
       );
     } finally {
+      // Clear sensitive seed data from memory
+      if (signSeed) {
+        signSeed = undefined;
+      }
       this.isSubmitting = false;
     }
   }
