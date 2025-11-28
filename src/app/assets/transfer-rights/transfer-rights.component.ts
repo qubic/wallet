@@ -365,8 +365,8 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       this.updateSharesValidation();
 
       // Auto-select QX as destination if not managed by QX
-      if (sourceContract.contractName !== 'QX' && !this.transferRightsForm.get('destinationContract')?.value) {
-        const qxContract = this.destinationContracts.find(c => c.contractName === 'QX');
+      if (sourceContract.address !== QubicDefinitions.QX_ADDRESS && !this.transferRightsForm.get('destinationContract')?.value) {
+        const qxContract = this.destinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
         if (qxContract) {
           this.transferRightsForm.patchValue({
             destinationContract: qxContract
