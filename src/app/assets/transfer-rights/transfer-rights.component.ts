@@ -425,19 +425,6 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggle tick overwrite mode
-   */
-  public toggleTickOverwrite(): void {
-    this.tickOverwrite = !this.tickOverwrite;
-    if (!this.tickOverwrite) {
-      const tickAddition = this.walletService.getSettings().tickAddition;
-      this.transferRightsForm.patchValue({
-        tick: this.currentTick + tickAddition
-      });
-    }
-  }
-
-  /**
    * Get the current transaction fee
    */
   public getTransactionFee(): number {
