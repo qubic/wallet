@@ -160,7 +160,9 @@
       "contractsEqual": "Source and destination contracts must be different",
       "sharesRequired": "Number of shares is required",
       "sharesMin": "Number of shares must be at least 1",
+      "sharesMax": "Number of shares cannot exceed {{max}}",
       "tickRequired": "Tick is required",
+      "tickMin": "Tick must be at least {{min}}",
       "insufficientFees": "Insufficient balance to pay transaction fees",
       "insufficientBalance": "Warning: Insufficient balance for fees",
       "loadFailed": "Failed to load assets",
@@ -169,6 +171,10 @@
     },
     "messages": {
       "success": "Transfer rights transaction submitted successfully for tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirm Transfer Rights",
+      "message": "You are about to transfer {{shares}} shares of {{assetName}} from {{sourceContract}} to {{destinationContract}}. The procedure fee is {{fee}} QUBIC. Do you want to proceed?"
     }
   },
   "qrReceiveComponent": {
