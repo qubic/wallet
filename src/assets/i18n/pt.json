@@ -136,6 +136,47 @@
     },
     "noAssets": "No assets available"
   },
+  "transferRights": {
+    "title": "Transferir Direitos de Gestão",
+    "loading": "Carregando ativos...",
+    "noAssets": {
+      "title": "Nenhum ativo disponível",
+      "message": "Você não possui ativos com direitos de gestão transferíveis. Os ativos devem ter um saldo maior que zero e ser gerenciados por um contrato que suporte transferência de direitos.",
+      "backButton": "Voltar aos Ativos"
+    },
+    "form": {
+      "sourceContract": "Contrato de Origem",
+      "destinationContract": "Contrato de Destino",
+      "numberOfShares": "Número de Ações",
+      "procedureFee": "Taxa de Procedimento",
+      "tick": "Tick",
+      "tickOverwrite": "Substituição Manual de Tick",
+      "maxButton": "Máx",
+      "submit": "Transferir Direitos"
+    },
+    "errors": {
+      "sourceRequired": "O contrato de origem é obrigatório",
+      "destinationRequired": "O contrato de destino é obrigatório",
+      "contractsEqual": "Os contratos de origem e destino devem ser diferentes",
+      "sharesRequired": "O número de ações é obrigatório",
+      "sharesMin": "O número de ações deve ser pelo menos 1",
+      "sharesMax": "O número de ações não pode exceder {{max}}",
+      "tickRequired": "O tick é obrigatório",
+      "tickMin": "O tick deve ser pelo menos {{min}}",
+      "insufficientFees": "Saldo insuficiente para pagar as taxas de transação",
+      "insufficientBalance": "Aviso: Saldo insuficiente para taxas",
+      "loadFailed": "Falha ao carregar os ativos",
+      "submitFailed": "Falha ao enviar a transação de transferência de direitos",
+      "publishFailed": "Falha ao publicar a transação"
+    },
+    "messages": {
+      "success": "Transação de transferência de direitos enviada com sucesso para o tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirmar Transferência de Direitos",
+      "message": "Você está prestes a transferir {{shares}} ações de {{assetName}} de {{sourceContract}} para {{destinationContract}}. A taxa de procedimento é {{fee}} QUBIC. Deseja continuar?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Receber um Pagamento",
     "downloadLink": "Baixar",

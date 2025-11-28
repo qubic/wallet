@@ -136,6 +136,47 @@
     },
     "noAssets": "No assets available"
   },
+  "transferRights": {
+    "title": "Beheerrechten Overdragen",
+    "loading": "Activa laden...",
+    "noAssets": {
+      "title": "Geen activa beschikbaar",
+      "message": "U heeft geen activa met overdraagbare beheerrechten. Activa moeten een saldo groter dan nul hebben en worden beheerd door een contract dat overdracht van rechten ondersteunt.",
+      "backButton": "Terug naar Activa"
+    },
+    "form": {
+      "sourceContract": "Broncontract",
+      "destinationContract": "Bestemmingscontract",
+      "numberOfShares": "Aantal Aandelen",
+      "procedureFee": "Procedurekosten",
+      "tick": "Tick",
+      "tickOverwrite": "Handmatige Tick Overschrijving",
+      "maxButton": "Max",
+      "submit": "Rechten Overdragen"
+    },
+    "errors": {
+      "sourceRequired": "Broncontract is verplicht",
+      "destinationRequired": "Bestemmingscontract is verplicht",
+      "contractsEqual": "Bron- en bestemmingscontracten moeten verschillend zijn",
+      "sharesRequired": "Aantal aandelen is verplicht",
+      "sharesMin": "Aantal aandelen moet minimaal 1 zijn",
+      "sharesMax": "Aantal aandelen mag niet meer zijn dan {{max}}",
+      "tickRequired": "Tick is verplicht",
+      "tickMin": "Tick moet minimaal {{min}} zijn",
+      "insufficientFees": "Onvoldoende saldo om transactiekosten te betalen",
+      "insufficientBalance": "Waarschuwing: Onvoldoende saldo voor kosten",
+      "loadFailed": "Laden van activa mislukt",
+      "submitFailed": "Indienen van overdracht van rechten transactie mislukt",
+      "publishFailed": "Publiceren van transactie mislukt"
+    },
+    "messages": {
+      "success": "Overdracht van rechten transactie succesvol ingediend voor tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Overdracht van Rechten Bevestigen",
+      "message": "U staat op het punt om {{shares}} aandelen van {{assetName}} over te dragen van {{sourceContract}} naar {{destinationContract}}. De procedurekosten bedragen {{fee}} QUBIC. Wilt u doorgaan?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Betaling ontvangen",
     "downloadLink": "Download",

@@ -136,6 +136,47 @@
     },
     "noAssets": "Keine Vermögenswerte verfügbar"
   },
+  "transferRights": {
+    "title": "Verwaltungsrechte übertragen",
+    "loading": "Lade Vermögenswerte...",
+    "noAssets": {
+      "title": "Keine Vermögenswerte verfügbar",
+      "message": "Sie haben keine Vermögenswerte mit übertragbaren Verwaltungsrechten. Vermögenswerte müssen einen Saldo größer als Null haben und von einem Vertrag verwaltet werden, der die Übertragung von Rechten unterstützt.",
+      "backButton": "Zurück zu Vermögenswerten"
+    },
+    "form": {
+      "sourceContract": "Quellvertrag",
+      "destinationContract": "Zielvertrag",
+      "numberOfShares": "Anzahl der Anteile",
+      "procedureFee": "Verfahrensgebühr",
+      "tick": "Tick",
+      "tickOverwrite": "Manuelles Tick-Override",
+      "maxButton": "Max",
+      "submit": "Rechte übertragen"
+    },
+    "errors": {
+      "sourceRequired": "Quellvertrag ist erforderlich",
+      "destinationRequired": "Zielvertrag ist erforderlich",
+      "contractsEqual": "Quell- und Zielverträge müssen unterschiedlich sein",
+      "sharesRequired": "Anzahl der Anteile ist erforderlich",
+      "sharesMin": "Anzahl der Anteile muss mindestens 1 sein",
+      "sharesMax": "Anzahl der Anteile darf {{max}} nicht überschreiten",
+      "tickRequired": "Tick ist erforderlich",
+      "tickMin": "Tick muss mindestens {{min}} sein",
+      "insufficientFees": "Unzureichendes Guthaben zur Zahlung der Transaktionsgebühren",
+      "insufficientBalance": "Warnung: Unzureichendes Guthaben für Gebühren",
+      "loadFailed": "Vermögenswerte konnten nicht geladen werden",
+      "submitFailed": "Übertragung der Verwaltungsrechte-Transaktion fehlgeschlagen",
+      "publishFailed": "Veröffentlichung der Transaktion fehlgeschlagen"
+    },
+    "messages": {
+      "success": "Übertragung der Verwaltungsrechte erfolgreich für Tick {{tick}} übermittelt"
+    },
+    "confirmDialog": {
+      "title": "Übertragung der Verwaltungsrechte bestätigen",
+      "message": "Sie sind dabei, {{shares}} Anteile von {{assetName}} von {{sourceContract}} an {{destinationContract}} zu übertragen. Die Verfahrensgebühr beträgt {{fee}} QUBIC. Möchten Sie fortfahren?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Zahlung empfangen",
     "downloadLink": "Download",

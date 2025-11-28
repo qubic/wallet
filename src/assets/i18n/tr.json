@@ -136,6 +136,47 @@
     },
     "noAssets": "Kullanılabilir Varlık Bulunamadı"
   },
+  "transferRights": {
+    "title": "Yönetim Haklarını Aktar",
+    "loading": "Varlıklar yükleniyor...",
+    "noAssets": {
+      "title": "Kullanılabilir Varlık Yok",
+      "message": "Transfer edilebilir yönetim haklarına sahip varlığınız yok. Varlıkların sıfırdan büyük bir bakiyeye sahip olması ve hak transferini destekleyen bir sözleşme tarafından yönetilmesi gerekir.",
+      "backButton": "Varlıklara Dön"
+    },
+    "form": {
+      "sourceContract": "Kaynak Sözleşme",
+      "destinationContract": "Hedef Sözleşme",
+      "numberOfShares": "Hisse Sayısı",
+      "procedureFee": "İşlem Ücreti",
+      "tick": "Tick",
+      "tickOverwrite": "Manuel Tick Geçersiz Kılma",
+      "maxButton": "Maks",
+      "submit": "Hakları Aktar"
+    },
+    "errors": {
+      "sourceRequired": "Kaynak sözleşme gerekli",
+      "destinationRequired": "Hedef sözleşme gerekli",
+      "contractsEqual": "Kaynak ve hedef sözleşmeler farklı olmalıdır",
+      "sharesRequired": "Hisse sayısı gerekli",
+      "sharesMin": "Hisse sayısı en az 1 olmalıdır",
+      "sharesMax": "Hisse sayısı {{max}} değerini aşamaz",
+      "tickRequired": "Tick gerekli",
+      "tickMin": "Tick en az {{min}} olmalıdır",
+      "insufficientFees": "İşlem ücretlerini ödemek için yetersiz bakiye",
+      "insufficientBalance": "Uyarı: Ücretler için yetersiz bakiye",
+      "loadFailed": "Varlıklar yüklenemedi",
+      "submitFailed": "Hak transfer işlemi gönderilemedi",
+      "publishFailed": "İşlem yayınlanamadı"
+    },
+    "messages": {
+      "success": "Hak transfer işlemi tick {{tick}} için başarıyla gönderildi"
+    },
+    "confirmDialog": {
+      "title": "Hak Transferini Onayla",
+      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{assetName}} varlığının {{shares}} hissesini transfer etmek üzeresiniz. İşlem ücreti {{fee}} QUBIC'dir. Devam etmek istiyor musunuz?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Ödeme Al",
     "downloadLink": "İndir",

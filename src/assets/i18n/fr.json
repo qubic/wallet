@@ -136,6 +136,47 @@
     },
     "noAssets": "Aucun actif disponible"
   },
+  "transferRights": {
+    "title": "Transférer les Droits de Gestion",
+    "loading": "Chargement des actifs...",
+    "noAssets": {
+      "title": "Aucun actif disponible",
+      "message": "Vous n'avez aucun actif avec des droits de gestion transférables. Les actifs doivent avoir un solde supérieur à zéro et être gérés par un contrat qui prend en charge le transfert de droits.",
+      "backButton": "Retour aux Actifs"
+    },
+    "form": {
+      "sourceContract": "Contrat Source",
+      "destinationContract": "Contrat de Destination",
+      "numberOfShares": "Nombre d'Actions",
+      "procedureFee": "Frais de Procédure",
+      "tick": "Tick",
+      "tickOverwrite": "Remplacement Manuel du Tick",
+      "maxButton": "Max",
+      "submit": "Transférer les Droits"
+    },
+    "errors": {
+      "sourceRequired": "Le contrat source est requis",
+      "destinationRequired": "Le contrat de destination est requis",
+      "contractsEqual": "Les contrats source et de destination doivent être différents",
+      "sharesRequired": "Le nombre d'actions est requis",
+      "sharesMin": "Le nombre d'actions doit être d'au moins 1",
+      "sharesMax": "Le nombre d'actions ne peut pas dépasser {{max}}",
+      "tickRequired": "Le tick est requis",
+      "tickMin": "Le tick doit être au moins {{min}}",
+      "insufficientFees": "Solde insuffisant pour payer les frais de transaction",
+      "insufficientBalance": "Avertissement : Solde insuffisant pour les frais",
+      "loadFailed": "Échec du chargement des actifs",
+      "submitFailed": "Échec de la soumission de la transaction de transfert de droits",
+      "publishFailed": "Échec de la publication de la transaction"
+    },
+    "messages": {
+      "success": "Transaction de transfert de droits soumise avec succès pour le tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirmer le Transfert de Droits",
+      "message": "Vous êtes sur le point de transférer {{shares}} actions de {{assetName}} de {{sourceContract}} à {{destinationContract}}. Les frais de procédure sont de {{fee}} QUBIC. Voulez-vous continuer ?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Recevoir un paiement",
     "downloadLink": "Télécharger",
