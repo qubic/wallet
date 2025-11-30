@@ -1,0 +1,163 @@
+<ng-container *transloco="let t">
+  <div class="content_container">
+    <h1>{{ t("assetsComponent.title") }}</h1>
+    <mat-card class="transfer-rights-card">
+      <mat-card-content>
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>{{ t("transferRights.loading") }}</p>
+      </div>
+
+      <!-- No Assets Message -->
+      <div *ngIf="!isLoading && sourceContracts.length === 0" class="no-assets-message">
+        <mat-icon class="large-icon">info</mat-icon>
+        <h3>{{ t("transferRights.noAssets.title") }}</h3>
+        <p>{{ t("transferRights.noAssets.message") }}</p>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          {{ t("transferRights.noAssets.backButton") }}
+        </button>
+      </div>
+
+      <!-- Transfer Rights Form -->
+      <form *ngIf="!isLoading && sourceContracts.length > 0" [formGroup]="transferRightsForm"
+        (ngSubmit)="submitTransferRights()">
+
+        <h2>{{ t("transferRights.title") }}</h2>
+        <!-- Fee Information at the top -->
+        <div class="transaction-fee" *ngIf="selectedSourceContract">
+          {{ t("transferRights.form.procedureFee") }}: {{ getTransactionFee() | number: '1.0-0' }} QUBIC
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- Source Contract Selection -->
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("transferRights.form.sourceContract") }}</mat-label>
+              <mat-select formControlName="sourceContract" [compareWith]="compareContracts">
+                <mat-select-trigger *ngIf="selectedSourceContract">
+                  <div class="contract-trigger">
+                    <span class="contract-name">{{ selectedSourceContract.contractName }}</span>
+                    <span class="asset-info">
+                      {{ selectedSourceContract.availableBalance | number: '1.0-0' }}
+                      {{ selectedSourceContract.asset.assetName }}
+                    </span>
+                    <span class="owner-info">
+                      {{ getSeedAlias(selectedSourceContract.asset.publicId) }}
+                      ({{ shortenAddress(selectedSourceContract.asset.publicId) }})
+                    </span>
+                  </div>
+                </mat-select-trigger>
+                <mat-option *ngFor="let contract of sourceContracts" [value]="contract">
+                  <div class="contract-option">
+                    <strong>{{ contract.contractName }}</strong>
+                    <br>
+                    <small>
+                      {{ contract.availableBalance | number: '1.0-0' }} {{ contract.asset.assetName }} |
+                      {{ getSeedAlias(contract.asset.publicId) }} ({{ shortenAddress(contract.asset.publicId) }})
+                    </small>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="transferRightsForm.get('sourceContract')?.hasError('required')">
+                {{ t("transferRights.errors.sourceRequired") }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- Destination Contract Selection -->
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("transferRights.form.destinationContract") }}</mat-label>
+              <mat-select formControlName="destinationContract" [compareWith]="compareContracts">
+                <mat-option *ngFor="let contract of destinationContracts" [value]="contract">
+                  <div class="contract-option">
+                    <strong>{{ contract.contractName }}</strong>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="transferRightsForm.get('destinationContract')?.hasError('required')">
+                {{ t("transferRights.errors.destinationRequired") }}
+              </mat-error>
+              <mat-error *ngIf="transferRightsForm.hasError('contractsEqual')">
+                {{ t("transferRights.errors.contractsEqual") }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- Number of Shares (equivalent to Amount field) -->
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("transferRights.form.numberOfShares") }}</mat-label>
+              <input matInput type="number" formControlName="numberOfShares" min="1">
+              <button *ngIf="transferRightsForm.controls['numberOfShares'].value" matSuffix mat-icon-button
+                aria-label="Clear" (click)="transferRightsForm.controls['numberOfShares'].setValue(null)" type="button">
+                <mat-icon>close</mat-icon>
+              </button>
+              <button *ngIf="selectedSourceContract && selectedSourceContract.availableBalance > 0" matSuffix
+                mat-icon-button matTooltip="{{ t('transferRights.form.maxButton') }}" (click)="setMaxShares()"
+                type="button">
+                <mat-icon>all_inclusive</mat-icon>
+              </button>
+              <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('required')">
+                {{ t("transferRights.errors.sharesRequired") }}
+              </mat-error>
+              <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('min')">
+                {{ t("transferRights.errors.sharesMin") }}
+              </mat-error>
+              <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('max')">
+                {{ t("transferRights.errors.sharesMax", { max: selectedSourceContract?.availableBalance }) }}
+              </mat-error>
+              <mat-hint *ngIf="selectedSourceContract" align="end">{{
+                transferRightsForm.controls['numberOfShares'].value | number: '1.0-0' }} /
+                {{ selectedSourceContract.availableBalance | number: '1.0-0' }} shares</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <!-- Tick (matching Send Assets layout) -->
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("transferRights.form.tick") }}</mat-label>
+              <input matInput type="number" formControlName="tick" [readonly]="!tickOverwrite">
+              <button matSuffix mat-icon-button matTooltip="{{ t('transferRights.form.tickOverwrite') }}"
+                (click)="tickOverwrite = !tickOverwrite" type="button" [class]="{tickOverwrite: tickOverwrite}">
+                <mat-icon>tune</mat-icon>
+              </button>
+              <mat-error *ngIf="transferRightsForm.get('tick')?.hasError('required')">
+                {{ t("transferRights.errors.tickRequired") }}
+              </mat-error>
+              <mat-error *ngIf="transferRightsForm.get('tick')?.hasError('min')">
+                {{ t("transferRights.errors.tickMin", { min: currentTick }) }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Balance after fees warning -->
+        <div *ngIf="selectedSourceContract && !canPayFees()" class="error-message">
+          {{ t("transferRights.errors.insufficientBalance") }}
+        </div>
+
+        <!-- Form Actions -->
+        <mat-card-actions class="padding">
+          <button mat-raised-button type="button" (click)="goBack()" [disabled]="isSubmitting">
+            {{ t("assetsComponent.form.buttons.cancel") }}
+          </button>
+          <button *ngIf="!walletService.privateKey" mat-raised-button color="primary" type="button" (click)="loadKey()">
+            {{ t("paymentComponent.buttons.loadPrivateKey") }}
+          </button>
+          <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
+            [disabled]="!transferRightsForm.valid || isSubmitting || !canPayFees()">
+            <span *ngIf="!isSubmitting">{{ t("transferRights.form.submit") }}</span>
+            <mat-progress-spinner *ngIf="isSubmitting" mode="indeterminate" [diameter]="20">
+            </mat-progress-spinner>
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  </div>
+</ng-container>

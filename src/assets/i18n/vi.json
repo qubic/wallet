@@ -135,6 +135,47 @@
     },
     "noAssets": "Không có tài sản"
   },
+  "transferRights": {
+    "title": "Chuyển Quyền Quản Lý",
+    "loading": "Đang tải tài sản...",
+    "noAssets": {
+      "title": "Không có tài sản",
+      "message": "Bạn không có tài sản nào với quyền quản lý có thể chuyển nhượng. Tài sản phải có số dư lớn hơn 0 và được quản lý bởi hợp đồng hỗ trợ chuyển quyền.",
+      "backButton": "Quay lại Tài sản"
+    },
+    "form": {
+      "sourceContract": "Hợp đồng Nguồn",
+      "destinationContract": "Hợp đồng Đích",
+      "numberOfShares": "Số lượng Cổ phiếu",
+      "procedureFee": "Phí Thủ tục",
+      "tick": "Tick",
+      "tickOverwrite": "Ghi đè Tick Thủ công",
+      "maxButton": "Tối đa",
+      "submit": "Chuyển Quyền"
+    },
+    "errors": {
+      "sourceRequired": "Hợp đồng nguồn là bắt buộc",
+      "destinationRequired": "Hợp đồng đích là bắt buộc",
+      "contractsEqual": "Hợp đồng nguồn và đích phải khác nhau",
+      "sharesRequired": "Số lượng cổ phiếu là bắt buộc",
+      "sharesMin": "Số lượng cổ phiếu phải ít nhất là 1",
+      "sharesMax": "Số lượng cổ phiếu không được vượt quá {{max}}",
+      "tickRequired": "Tick là bắt buộc",
+      "tickMin": "Tick phải ít nhất là {{min}}",
+      "insufficientFees": "Số dư không đủ để thanh toán phí giao dịch",
+      "insufficientBalance": "Cảnh báo: Số dư không đủ cho phí",
+      "loadFailed": "Không thể tải tài sản",
+      "submitFailed": "Không thể gửi giao dịch chuyển quyền",
+      "publishFailed": "Không thể xuất bản giao dịch"
+    },
+    "messages": {
+      "success": "Giao dịch chuyển quyền đã được gửi thành công cho tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Xác nhận Chuyển Quyền",
+      "message": "Bạn sắp chuyển {{shares}} cổ phiếu của {{assetName}} từ {{sourceContract}} sang {{destinationContract}}. Phí thủ tục là {{fee}} QUBIC. Bạn có muốn tiếp tục không?"
+    }
+  },
   "qrReceiveComponent": {
     "title": "Nhận thanh toán",
     "downloadLink": "Tải xuống",

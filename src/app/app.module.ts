@@ -95,6 +95,7 @@ import { BalanceHiddenComponent } from './core/balance-hidden/balance-hidden.com
 import { SeedDisplayPipe } from './pipes/seed-display.pipe';
 import { SeedFirstLinePipe, SeedSecondLinePipe } from './pipes/seed-display-line.pipe';
 import { DateTimePipe } from './pipes/date-time.pipe';
+import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -147,7 +148,8 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     SeedDisplayPipe,
     SeedFirstLinePipe,
     DateTimePipe,
-    SeedSecondLinePipe
+    SeedSecondLinePipe,
+    TransferRightsComponent
   ],
   imports: [
     BrowserModule,

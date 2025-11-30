@@ -136,6 +136,47 @@
     },
     "noAssets": "利用可能な資産がありません"
   },
+  "transferRights": {
+    "title": "管理権限の譲渡",
+    "loading": "資産を読み込んでいます...",
+    "noAssets": {
+      "title": "利用可能な資産がありません",
+      "message": "譲渡可能な管理権限を持つ資産がありません。資産は残高がゼロより大きく、権利の譲渡をサポートする契約によって管理されている必要があります。",
+      "backButton": "資産に戻る"
+    },
+    "form": {
+      "sourceContract": "ソース契約",
+      "destinationContract": "宛先契約",
+      "numberOfShares": "株式数",
+      "procedureFee": "手続き手数料",
+      "tick": "ティック",
+      "tickOverwrite": "手動ティックオーバーライド",
+      "maxButton": "最大",
+      "submit": "権利を譲渡"
+    },
+    "errors": {
+      "sourceRequired": "ソース契約が必要です",
+      "destinationRequired": "宛先契約が必要です",
+      "contractsEqual": "ソース契約と宛先契約は異なる必要があります",
+      "sharesRequired": "株式数が必要です",
+      "sharesMin": "株式数は少なくとも1である必要があります",
+      "sharesMax": "株式数は {{max}} を超えることはできません",
+      "tickRequired": "ティックが必要です",
+      "tickMin": "ティックは少なくとも {{min}} である必要があります",
+      "insufficientFees": "取引手数料を支払うための残高が不足しています",
+      "insufficientBalance": "警告：手数料のための残高が不足しています",
+      "loadFailed": "資産の読み込みに失敗しました",
+      "submitFailed": "権利譲渡トランザクションの送信に失敗しました",
+      "publishFailed": "トランザクションの公開に失敗しました"
+    },
+    "messages": {
+      "success": "ティック {{tick}} の権利譲渡トランザクションが正常に送信されました"
+    },
+    "confirmDialog": {
+      "title": "権利譲渡の確認",
+      "message": "{{sourceContract}} から {{destinationContract}} へ {{assetName}} の {{shares}} 株を譲渡しようとしています。手続き手数料は {{fee}} QUBIC です。続行しますか？"
+    }
+  },
   "qrReceiveComponent": {
     "title": "支払いを受け取る",
     "downloadLink": "ダウンロード",

@@ -108,7 +108,8 @@
     "buttons": {
       "close": "Close",
       "refresh": "Refresh",
-      "send": "Transfer Assets"
+      "send": "Transfer Assets",
+      "transferRights": "Transfer Management Rights"
     },
     "form": {
       "info": "Send Assets",
@@ -134,6 +135,47 @@
       }
     },
     "noAssets": "No assets available"
+  },
+  "transferRights": {
+    "title": "Transfer Management Rights",
+    "loading": "Loading assets...",
+    "noAssets": {
+      "title": "No Assets Available",
+      "message": "You don't have any assets with transferable management rights. Assets must have a balance greater than zero and be managed by a contract that supports transfer rights.",
+      "backButton": "Back to Assets"
+    },
+    "form": {
+      "sourceContract": "Source Contract",
+      "destinationContract": "Destination Contract",
+      "numberOfShares": "Number of Shares",
+      "procedureFee": "Procedure Fee",
+      "tick": "Tick",
+      "tickOverwrite": "Manual Tick Override",
+      "maxButton": "Max",
+      "submit": "Transfer Rights"
+    },
+    "errors": {
+      "sourceRequired": "Source contract is required",
+      "destinationRequired": "Destination contract is required",
+      "contractsEqual": "Source and destination contracts must be different",
+      "sharesRequired": "Number of shares is required",
+      "sharesMin": "Number of shares must be at least 1",
+      "sharesMax": "Number of shares cannot exceed {{max}}",
+      "tickRequired": "Tick is required",
+      "tickMin": "Tick must be at least {{min}}",
+      "insufficientFees": "Insufficient balance to pay transaction fees",
+      "insufficientBalance": "Warning: Insufficient balance for fees",
+      "loadFailed": "Failed to load assets",
+      "submitFailed": "Failed to submit transfer rights transaction",
+      "publishFailed": "Failed to publish transaction"
+    },
+    "messages": {
+      "success": "Transfer rights transaction submitted successfully for tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirm Transfer Rights",
+      "message": "You are about to transfer {{shares}} shares of {{assetName}} from {{sourceContract}} to {{destinationContract}}. The procedure fee is {{fee}} QUBIC. Do you want to proceed?"
+    }
   },
   "qrReceiveComponent": {
     "title": "Receive payment",

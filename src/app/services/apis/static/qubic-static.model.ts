@@ -6,6 +6,7 @@
 export interface SmartContractProcedure {
   id: number;
   name: string;
+  fee?: number;
 }
 
 export interface StaticSmartContract {
