@@ -24,9 +24,31 @@
         (ngSubmit)="submitTransferRights()">
 
         <h2>{{ t("transferRights.title") }}</h2>
-        <!-- Fee Information at the top -->
-        <div class="transaction-fee" *ngIf="selectedSourceContract">
-          {{ t("transferRights.form.procedureFee") }}: {{ getTransactionFee() | number: '1.0-0' }} QUBIC
+
+        <div class="row">
+          <div class="col">
+            <!-- Asset Selection -->
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("transferRights.form.selectAsset") }}</mat-label>
+              <mat-select formControlName="selectedAsset" [compareWith]="compareAssets">
+                <mat-select-trigger>
+                  <span *ngIf="selectedAsset">
+                    {{ getSeedAlias(selectedAsset.asset.publicId) }}
+                    ({{ shortenAddress(selectedAsset.asset.publicId) }}) -
+                    {{ selectedAsset.totalAvailableBalance | number: '1.0-0' }}
+                    {{ selectedAsset.asset.assetName }}
+                  </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let assetOption of assets" [value]="assetOption">
+                  {{ getSeedAlias(assetOption.asset.publicId) }} ({{ shortenAddress(assetOption.asset.publicId) }})<br />
+                  {{ assetOption.totalAvailableBalance | number: '1.0-0' }} {{ assetOption.asset.assetName }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="transferRightsForm.get('selectedAsset')?.hasError('required')">
+                {{ t("transferRights.errors.assetRequired") }}
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
         <div class="row">
@@ -34,29 +56,16 @@
             <!-- Source Contract Selection -->
             <mat-form-field appearance="fill" class="full-width">
               <mat-label>{{ t("transferRights.form.sourceContract") }}</mat-label>
-              <mat-select formControlName="sourceContract" [compareWith]="compareContracts">
-                <mat-select-trigger *ngIf="selectedSourceContract">
-                  <div class="contract-trigger">
-                    <span class="contract-name">{{ selectedSourceContract.contractName }}</span>
-                    <span class="asset-info">
-                      {{ selectedSourceContract.availableBalance | number: '1.0-0' }}
-                      {{ selectedSourceContract.asset.assetName }}
-                    </span>
-                    <span class="owner-info">
-                      {{ getSeedAlias(selectedSourceContract.asset.publicId) }}
-                      ({{ shortenAddress(selectedSourceContract.asset.publicId) }})
-                    </span>
-                  </div>
+              <mat-select formControlName="sourceContract" [compareWith]="compareContracts"
+                          [disabled]="!selectedAsset">
+                <mat-select-trigger>
+                  <span *ngIf="selectedSourceContract">
+                    {{ selectedSourceContract.contractName }} ({{ selectedSourceContract.availableBalance | number: '1.0-0' }} {{ selectedSourceContract.asset.assetName }})
+                  </span>
                 </mat-select-trigger>
-                <mat-option *ngFor="let contract of sourceContracts" [value]="contract">
-                  <div class="contract-option">
-                    <strong>{{ contract.contractName }}</strong>
-                    <br>
-                    <small>
-                      {{ contract.availableBalance | number: '1.0-0' }} {{ contract.asset.assetName }} |
-                      {{ getSeedAlias(contract.asset.publicId) }} ({{ shortenAddress(contract.asset.publicId) }})
-                    </small>
-                  </div>
+                <mat-option *ngFor="let contract of filteredSourceContracts" [value]="contract">
+                  <strong>{{ contract.contractName }}</strong><br />
+                  <small>{{ contract.availableBalance | number: '1.0-0' }} {{ contract.asset.assetName }}</small>
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="transferRightsForm.get('sourceContract')?.hasError('required')">
@@ -112,9 +121,6 @@
               <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('max')">
                 {{ t("transferRights.errors.sharesMax", { max: selectedSourceContract?.availableBalance }) }}
               </mat-error>
-              <mat-hint *ngIf="selectedSourceContract" align="end">{{
-                transferRightsForm.controls['numberOfShares'].value | number: '1.0-0' }} /
-                {{ selectedSourceContract.availableBalance | number: '1.0-0' }} shares</mat-hint>
             </mat-form-field>
           </div>
           <div class="col">
@@ -139,6 +145,11 @@
         <!-- Balance after fees warning -->
         <div *ngIf="selectedSourceContract && !canPayFees()" class="error-message">
           {{ t("transferRights.errors.insufficientBalance") }}
+        </div>
+
+        <!-- Procedure Fee Information -->
+        <div class="transaction-fee" *ngIf="selectedSourceContract">
+          {{ t("transferRights.form.procedureFee") }}: {{ getTransactionFee() | number: '1.0-0' }} QUBIC
         </div>
 
         <!-- Form Actions -->
