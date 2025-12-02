@@ -145,9 +145,10 @@
       "backButton": "資産に戻る"
     },
     "form": {
+      "selectAsset": "資産を選択",
       "sourceContract": "ソース契約",
       "destinationContract": "宛先契約",
-      "numberOfShares": "株式数",
+      "numberOfShares": "数量",
       "procedureFee": "手続き手数料",
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",
@@ -155,12 +156,13 @@
       "submit": "権利を譲渡"
     },
     "errors": {
+      "assetRequired": "資産の選択が必要です",
       "sourceRequired": "ソース契約が必要です",
       "destinationRequired": "宛先契約が必要です",
       "contractsEqual": "ソース契約と宛先契約は異なる必要があります",
-      "sharesRequired": "株式数が必要です",
-      "sharesMin": "株式数は少なくとも1である必要があります",
-      "sharesMax": "株式数は {{max}} を超えることはできません",
+      "amount": "数量が必要です",
+      "amountMin": "数量は少なくとも1である必要があります",
+      "amountMax": "数量は {{max}} を超えることはできません",
       "tickRequired": "ティックが必要です",
       "tickMin": "ティックは少なくとも {{min}} である必要があります",
       "insufficientFees": "取引手数料を支払うための残高が不足しています",
