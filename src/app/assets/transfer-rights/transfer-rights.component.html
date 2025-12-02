@@ -113,13 +113,13 @@
                 <mat-icon>all_inclusive</mat-icon>
               </button>
               <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('required')">
-                {{ t("transferRights.errors.sharesRequired") }}
+                {{ t("transferRights.errors.amount") }}
               </mat-error>
               <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('min')">
-                {{ t("transferRights.errors.sharesMin") }}
+                {{ t("transferRights.errors.amountMin") }}
               </mat-error>
               <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('max')">
-                {{ t("transferRights.errors.sharesMax", { max: selectedSourceContract?.availableBalance }) }}
+                {{ t("transferRights.errors.amountMax", { max: selectedSourceContract?.availableBalance }) }}
               </mat-error>
             </mat-form-field>
           </div>

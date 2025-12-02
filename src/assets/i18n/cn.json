@@ -145,9 +145,10 @@
       "backButton": "返回资产"
     },
     "form": {
+      "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
-      "numberOfShares": "份额数量",
+      "numberOfShares": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
@@ -155,12 +156,13 @@
       "submit": "转移权利"
     },
     "errors": {
+      "assetRequired": "需要选择资产",
       "sourceRequired": "需要源合约",
       "destinationRequired": "需要目标合约",
       "contractsEqual": "源合约和目标合约必须不同",
-      "sharesRequired": "需要份额数量",
-      "sharesMin": "份额数量必须至少为1",
-      "sharesMax": "份额数量不能超过 {{max}}",
+      "amount": "需要数量",
+      "amountMin": "数量必须至少为1",
+      "amountMax": "数量不能超过 {{max}}",
       "tickRequired": "需要刻度",
       "tickMin": "刻度必须至少为 {{min}}",
       "insufficientFees": "余额不足以支付交易费用",

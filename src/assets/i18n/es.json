@@ -145,9 +145,10 @@
       "backButton": "Volver a Activos"
     },
     "form": {
+      "selectAsset": "Seleccionar Activo",
       "sourceContract": "Contrato de Origen",
       "destinationContract": "Contrato de Destino",
-      "numberOfShares": "Número de Acciones",
+      "numberOfShares": "Cantidad",
       "procedureFee": "Tarifa del Procedimiento",
       "tick": "Tick",
       "tickOverwrite": "Anulación Manual de Tick",
@@ -155,12 +156,13 @@
       "submit": "Transferir Derechos"
     },
     "errors": {
+      "assetRequired": "La selección de activo es obligatoria",
       "sourceRequired": "El contrato de origen es obligatorio",
       "destinationRequired": "El contrato de destino es obligatorio",
       "contractsEqual": "Los contratos de origen y destino deben ser diferentes",
-      "sharesRequired": "El número de acciones es obligatorio",
-      "sharesMin": "El número de acciones debe ser al menos 1",
-      "sharesMax": "El número de acciones no puede exceder {{max}}",
+      "amount": "La cantidad es obligatoria",
+      "amountMin": "La cantidad debe ser al menos 1",
+      "amountMax": "La cantidad no puede exceder {{max}}",
       "tickRequired": "El tick es obligatorio",
       "tickMin": "El tick debe ser al menos {{min}}",
       "insufficientFees": "Saldo insuficiente para pagar las tarifas de transacción",
