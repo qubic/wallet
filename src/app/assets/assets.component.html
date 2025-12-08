@@ -171,14 +171,20 @@
     </div>
 
     <ng-template #actions let-group="group" let-issuerIdentity="issuerIdentity">
-      <button *ngIf="canSendGroupedAsset(group)" mat-icon-button class="icon-color-link" (click)="openSendForm(getQxManagedAsset(group)!)"
-        title='{{ t("assetsComponent.buttons.send") }}'>
-        <mat-icon>send</mat-icon>
-      </button>
-      <button mat-icon-button class="icon-color-link" (click)="openIssuerIdentity(issuerIdentity)"
-        title='{{ t("assetsComponent.table.issuerIdentity") }}'>
-        <mat-icon>explore</mat-icon>
-      </button>
+      <div class="actions-container">
+        <button *ngIf="canSendGroupedAsset(group)" mat-icon-button class="icon-color-link" (click)="openSendForm(getQxManagedAsset(group)!)"
+          title='{{ t("assetsComponent.buttons.send") }}'>
+          <mat-icon>send</mat-icon>
+        </button>
+        <button *ngIf="canTransferRights(group)" mat-icon-button class="icon-color-link" (click)="openTransferRightsForm(group)"
+          title='{{ t("assetsComponent.buttons.transferRights") }}'>
+          <mat-icon>swap_horiz</mat-icon>
+        </button>
+        <button mat-icon-button class="icon-color-link" (click)="openIssuerIdentity(issuerIdentity)"
+          title='{{ t("assetsComponent.table.issuerIdentity") }}'>
+          <mat-icon>explore</mat-icon>
+        </button>
+      </div>
     </ng-template>
     <!-- showSendForm -->
     <ng-container *ngIf="showSendForm">

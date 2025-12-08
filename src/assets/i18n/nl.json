@@ -136,6 +136,49 @@
     },
     "noAssets": "No assets available"
   },
+  "transferRights": {
+    "title": "Beheerrechten Overdragen",
+    "loading": "Activa laden...",
+    "noAssets": {
+      "title": "Geen activa beschikbaar",
+      "message": "U heeft geen activa met overdraagbare beheerrechten. Activa moeten een saldo groter dan nul hebben en worden beheerd door een contract dat overdracht van rechten ondersteunt.",
+      "backButton": "Terug naar Activa"
+    },
+    "form": {
+      "selectAsset": "Activa Selecteren",
+      "sourceContract": "Broncontract",
+      "destinationContract": "Bestemmingscontract",
+      "amount": "Hoeveelheid",
+      "procedureFee": "Procedurekosten",
+      "tick": "Tick",
+      "tickOverwrite": "Handmatige Tick Overschrijving",
+      "maxButton": "Max",
+      "submit": "Rechten Overdragen"
+    },
+    "errors": {
+      "assetRequired": "Activa selectie is verplicht",
+      "sourceRequired": "Broncontract is verplicht",
+      "destinationRequired": "Bestemmingscontract is verplicht",
+      "contractsEqual": "Bron- en bestemmingscontracten moeten verschillend zijn",
+      "amount": "Hoeveelheid is verplicht",
+      "amountMin": "Hoeveelheid moet minimaal 1 zijn",
+      "amountMax": "Hoeveelheid mag niet meer zijn dan {{max}}",
+      "tickRequired": "Tick is verplicht",
+      "tickMin": "Tick moet minimaal {{min}} zijn",
+      "insufficientFees": "Onvoldoende saldo om transactiekosten te betalen",
+      "insufficientBalance": "Waarschuwing: Onvoldoende saldo voor kosten",
+      "loadFailed": "Laden van activa mislukt",
+      "submitFailed": "Indienen van overdracht van rechten transactie mislukt",
+      "publishFailed": "Publiceren van transactie mislukt"
+    },
+    "messages": {
+      "success": "Overdracht van beheerrechten transactie succesvol ingediend voor tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Overdracht van Rechten Bevestigen",
+      "message": "U staat op het punt om de beheerrechten van {{shares}} {{assetName}} over te dragen van {{sourceContract}} naar {{destinationContract}}. De kosten bedragen {{fee}} QUBIC."
+    }
+  },
   "qrReceiveComponent": {
     "title": "Betaling ontvangen",
     "downloadLink": "Download",

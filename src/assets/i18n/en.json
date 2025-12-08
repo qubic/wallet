@@ -108,7 +108,8 @@
     "buttons": {
       "close": "Close",
       "refresh": "Refresh",
-      "send": "Transfer Assets"
+      "send": "Transfer Assets",
+      "transferRights": "Transfer Management Rights"
     },
     "form": {
       "info": "Send Assets",
@@ -134,6 +135,49 @@
       }
     },
     "noAssets": "No assets available"
+  },
+  "transferRights": {
+    "title": "Transfer Management Rights",
+    "loading": "Loading assets...",
+    "noAssets": {
+      "title": "No Assets Available",
+      "message": "You don't have any assets with transferable management rights. Assets must have a balance greater than zero and be managed by a contract that supports transfer rights.",
+      "backButton": "Back to Assets"
+    },
+    "form": {
+      "selectAsset": "Select Asset",
+      "sourceContract": "Source Contract",
+      "destinationContract": "Destination Contract",
+      "amount": "Amount",
+      "balance": "Your balance after deducting transfer fees ({{fee}} Qubic) will be:",
+      "tick": "Tick",
+      "tickOverwrite": "Manual Tick Override",
+      "maxButton": "Max",
+      "submit": "Transfer Rights"
+    },
+    "errors": {
+      "assetRequired": "Asset selection is required",
+      "sourceRequired": "Source contract is required",
+      "destinationRequired": "Destination contract is required",
+      "contractsEqual": "Source and destination contracts must be different",
+      "amountRequired": "Amount is required",
+      "amountMin": "Amount must be at least 1",
+      "amountMax": "Amount cannot exceed {{max}}",
+      "tickRequired": "Tick is required",
+      "tickMin": "Tick must be at least {{min}}",
+      "insufficientFees": "Insufficient balance to pay transaction fees",
+      "insufficientBalance": "Insufficient balance to pay transaction fees ({{fee}} QUBIC)",
+      "loadFailed": "Failed to load assets",
+      "submitFailed": "Failed to submit transfer rights transaction",
+      "publishFailed": "Failed to publish transaction"
+    },
+    "messages": {
+      "success": "Transfer management rights transaction submitted successfully for tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirm Transfer Rights",
+      "message": "You are about to transfer the management rights for {{shares}} {{assetName}} from {{sourceContract}} to {{destinationContract}}. The fee is {{fee}} QUBIC."
+    }
   },
   "qrReceiveComponent": {
     "title": "Receive payment",

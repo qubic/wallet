@@ -22,3 +22,9 @@ export const MAX_WALLET_ACCOUNTS = 15;
  * Sourced from QubicDefinitions.QX_TRANSFER_ASSET_FEE
  */
 export const ASSET_TRANSFER_FEE = QubicDefinitions.QX_TRANSFER_ASSET_FEE;
+
+/**
+ * Procedure name for Transfer Share Management Rights
+ * Used to dynamically find this procedure in smart contracts JSON
+ */
+export const TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE = 'Transfer Share Management Rights';

@@ -1,0 +1,115 @@
+@import "../../../vars.scss";
+
+.transfer-rights-card {
+  min-width: 385px;
+  margin-bottom: 20px;
+
+  // Row and column layout matching Send Assets
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .col {
+    flex: 1;
+    margin-right: 20px;
+    margin-bottom: 15px;
+  }
+
+  .col:last-child {
+    margin-right: 0;
+  }
+
+  // Transaction fee styling matching Send Assets
+  .transaction-fee {
+    margin-bottom: 20px;
+  }
+
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .contract-trigger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .contract-name {
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .asset-info {
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+
+  .contract-option {
+    padding: 4px 0;
+
+    strong {
+      font-weight: 500;
+    }
+
+    small {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  // Padding for action buttons
+  .padding button {
+    margin: 10px;
+  }
+
+  // tickOverwrite class for the tune button
+  .tickOverwrite {
+    color: $mainColor
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+
+  mat-spinner {
+    margin-bottom: 20px;
+  }
+}
+
+.no-assets-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+
+  .large-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: rgba(0, 0, 0, 0.38);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 16px 0 8px;
+    font-weight: 500;
+  }
+
+  p {
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

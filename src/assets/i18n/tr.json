@@ -136,6 +136,49 @@
     },
     "noAssets": "Kullanılabilir Varlık Bulunamadı"
   },
+  "transferRights": {
+    "title": "Yönetim Haklarını Aktar",
+    "loading": "Varlıklar yükleniyor...",
+    "noAssets": {
+      "title": "Kullanılabilir Varlık Yok",
+      "message": "Transfer edilebilir yönetim haklarına sahip varlığınız yok. Varlıkların sıfırdan büyük bir bakiyeye sahip olması ve hak transferini destekleyen bir sözleşme tarafından yönetilmesi gerekir.",
+      "backButton": "Varlıklara Dön"
+    },
+    "form": {
+      "selectAsset": "Varlık Seç",
+      "sourceContract": "Kaynak Sözleşme",
+      "destinationContract": "Hedef Sözleşme",
+      "amount": "Miktar",
+      "procedureFee": "İşlem Ücreti",
+      "tick": "Tick",
+      "tickOverwrite": "Manuel Tick Geçersiz Kılma",
+      "maxButton": "Maks",
+      "submit": "Hakları Aktar"
+    },
+    "errors": {
+      "assetRequired": "Varlık seçimi gerekli",
+      "sourceRequired": "Kaynak sözleşme gerekli",
+      "destinationRequired": "Hedef sözleşme gerekli",
+      "contractsEqual": "Kaynak ve hedef sözleşmeler farklı olmalıdır",
+      "amount": "Miktar gerekli",
+      "amountMin": "Miktar en az 1 olmalıdır",
+      "amountMax": "Miktar {{max}} değerini aşamaz",
+      "tickRequired": "Tick gerekli",
+      "tickMin": "Tick en az {{min}} olmalıdır",
+      "insufficientFees": "İşlem ücretlerini ödemek için yetersiz bakiye",
+      "insufficientBalance": "Uyarı: Ücretler için yetersiz bakiye",
+      "loadFailed": "Varlıklar yüklenemedi",
+      "submitFailed": "Hak transfer işlemi gönderilemedi",
+      "publishFailed": "İşlem yayınlanamadı"
+    },
+    "messages": {
+      "success": "Yönetim hakları transfer işlemi tick {{tick}} için başarıyla gönderildi"
+    },
+    "confirmDialog": {
+      "title": "Hak Transferini Onayla",
+      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{shares}} {{assetName}} için yönetim haklarını transfer etmek üzeresiniz. Ücret {{fee}} QUBIC'dir."
+    }
+  },
   "qrReceiveComponent": {
     "title": "Ödeme Al",
     "downloadLink": "İndir",
