@@ -1,6 +1,6 @@
 {
   "name": "qubic-wallet",
-  "version": "4.22.0-rc.1",
+  "version": "4.22.0",
   "main": "app.js",
   "author": "qubic",
   "description": "Qubic - Wallet - Send Qu's around the globe.",
