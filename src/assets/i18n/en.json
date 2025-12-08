@@ -149,7 +149,7 @@
       "sourceContract": "Source Contract",
       "destinationContract": "Destination Contract",
       "numberOfShares": "Amount",
-      "procedureFee": "Procedure Fee",
+      "balance": "Your balance after deducting transfer fees ({{fee}} Qubic) will be:",
       "tick": "Tick",
       "tickOverwrite": "Manual Tick Override",
       "maxButton": "Max",
@@ -166,7 +166,7 @@
       "tickRequired": "Tick is required",
       "tickMin": "Tick must be at least {{min}}",
       "insufficientFees": "Insufficient balance to pay transaction fees",
-      "insufficientBalance": "Warning: Insufficient balance for fees",
+      "insufficientBalance": "Insufficient balance to pay transaction fees ({{fee}} QUBIC)",
       "loadFailed": "Failed to load assets",
       "submitFailed": "Failed to submit transfer rights transaction",
       "publishFailed": "Failed to publish transaction"

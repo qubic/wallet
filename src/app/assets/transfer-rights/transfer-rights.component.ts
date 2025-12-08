@@ -547,6 +547,24 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Get balance after deducting transaction fees
+   * Follows Asset Transfer pattern for consistency
+   */
+  public getBalanceAfterFees(): number {
+    if (!this.selectedSourceContract) {
+      return 0;
+    }
+
+    const seed = this.walletService.getSeed(this.selectedSourceContract.asset.publicId);
+    if (!seed) {
+      return 0;
+    }
+
+    const balanceAfterFees = BigInt(seed.balance) - BigInt(this.getTransactionFee());
+    return Number(balanceAfterFees);
+  }
+
+  /**
    * Get seed alias for display
    */
   public getSeedAlias(publicId: string): string {
