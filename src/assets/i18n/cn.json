@@ -136,6 +136,49 @@
     },
     "noAssets": "无可用资产"
   },
+  "transferRights": {
+    "title": "转移管理权",
+    "loading": "正在加载资产...",
+    "noAssets": {
+      "title": "无可用资产",
+      "message": "您没有任何具有可转移管理权的资产。资产必须具有大于零的余额，并由支持权利转移的合约管理。",
+      "backButton": "返回资产"
+    },
+    "form": {
+      "selectAsset": "选择资产",
+      "sourceContract": "源合约",
+      "destinationContract": "目标合约",
+      "amount": "数量",
+      "procedureFee": "程序费用",
+      "tick": "刻度",
+      "tickOverwrite": "手动刻度覆盖",
+      "maxButton": "最大",
+      "submit": "转移权利"
+    },
+    "errors": {
+      "assetRequired": "需要选择资产",
+      "sourceRequired": "需要源合约",
+      "destinationRequired": "需要目标合约",
+      "contractsEqual": "源合约和目标合约必须不同",
+      "amount": "需要数量",
+      "amountMin": "数量必须至少为1",
+      "amountMax": "数量不能超过 {{max}}",
+      "tickRequired": "需要刻度",
+      "tickMin": "刻度必须至少为 {{min}}",
+      "insufficientFees": "余额不足以支付交易费用",
+      "insufficientBalance": "警告：余额不足以支付费用",
+      "loadFailed": "加载资产失败",
+      "submitFailed": "提交转移权利交易失败",
+      "publishFailed": "发布交易失败"
+    },
+    "messages": {
+      "success": "成功提交刻度 {{tick}} 的转移管理权交易"
+    },
+    "confirmDialog": {
+      "title": "确认转移权利",
+      "message": "您即将将 {{shares}} {{assetName}} 的管理权从 {{sourceContract}} 转移到 {{destinationContract}}。费用为 {{fee}} QUBIC。"
+    }
+  },
   "qrReceiveComponent": {
     "title": "接收付款",
     "downloadLink": "下载",

@@ -136,6 +136,49 @@
     },
     "noAssets": "No hay activos disponibles"
   },
+  "transferRights": {
+    "title": "Transferir Derechos de Gestión",
+    "loading": "Cargando activos...",
+    "noAssets": {
+      "title": "No hay activos disponibles",
+      "message": "No tienes activos con derechos de gestión transferibles. Los activos deben tener un saldo mayor que cero y ser gestionados por un contrato que admita la transferencia de derechos.",
+      "backButton": "Volver a Activos"
+    },
+    "form": {
+      "selectAsset": "Seleccionar Activo",
+      "sourceContract": "Contrato de Origen",
+      "destinationContract": "Contrato de Destino",
+      "amount": "Cantidad",
+      "procedureFee": "Tarifa del Procedimiento",
+      "tick": "Tick",
+      "tickOverwrite": "Anulación Manual de Tick",
+      "maxButton": "Máx",
+      "submit": "Transferir Derechos"
+    },
+    "errors": {
+      "assetRequired": "La selección de activo es obligatoria",
+      "sourceRequired": "El contrato de origen es obligatorio",
+      "destinationRequired": "El contrato de destino es obligatorio",
+      "contractsEqual": "Los contratos de origen y destino deben ser diferentes",
+      "amount": "La cantidad es obligatoria",
+      "amountMin": "La cantidad debe ser al menos 1",
+      "amountMax": "La cantidad no puede exceder {{max}}",
+      "tickRequired": "El tick es obligatorio",
+      "tickMin": "El tick debe ser al menos {{min}}",
+      "insufficientFees": "Saldo insuficiente para pagar las tarifas de transacción",
+      "insufficientBalance": "Advertencia: Saldo insuficiente para tarifas",
+      "loadFailed": "Error al cargar los activos",
+      "submitFailed": "Error al enviar la transacción de transferencia de derechos",
+      "publishFailed": "Error al publicar la transacción"
+    },
+    "messages": {
+      "success": "Transacción de transferencia de derechos de gestión enviada exitosamente para el tick {{tick}}"
+    },
+    "confirmDialog": {
+      "title": "Confirmar Transferencia de Derechos",
+      "message": "Estás a punto de transferir los derechos de gestión de {{shares}} {{assetName}} de {{sourceContract}} a {{destinationContract}}. La tarifa es {{fee}} QUBIC."
+    }
+  },
   "qrReceiveComponent": {
     "title": "Recibir un pago",
     "downloadLink": "Descargar",
