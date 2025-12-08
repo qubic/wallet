@@ -116,7 +116,7 @@
                   <mat-icon>all_inclusive</mat-icon>
                 </button>
                 <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('required')">
-                  {{ t("transferRights.errors.amount") }}
+                  {{ t("transferRights.errors.amountRequired") }}
                 </mat-error>
                 <mat-error *ngIf="transferRightsForm.get('numberOfShares')?.hasError('min')">
                   {{ t("transferRights.errors.amountMin") }}

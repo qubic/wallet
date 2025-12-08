@@ -160,7 +160,7 @@
       "sourceRequired": "Source contract is required",
       "destinationRequired": "Destination contract is required",
       "contractsEqual": "Source and destination contracts must be different",
-      "amount": "Amount is required",
+      "amountRequired": "Amount is required",
       "amountMin": "Amount must be at least 1",
       "amountMax": "Amount cannot exceed {{max}}",
       "tickRequired": "Tick is required",
