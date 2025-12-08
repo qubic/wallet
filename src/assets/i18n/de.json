@@ -148,7 +148,7 @@
       "selectAsset": "Asset auswählen",
       "sourceContract": "Quellvertrag",
       "destinationContract": "Zielvertrag",
-      "numberOfShares": "Menge",
+      "amount": "Menge",
       "procedureFee": "Verfahrensgebühr",
       "tick": "Tick",
       "tickOverwrite": "Manuelles Tick-Override",

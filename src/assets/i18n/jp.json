@@ -148,7 +148,7 @@
       "selectAsset": "資産を選択",
       "sourceContract": "ソース契約",
       "destinationContract": "宛先契約",
-      "numberOfShares": "数量",
+      "amount": "数量",
       "procedureFee": "手続き手数料",
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",

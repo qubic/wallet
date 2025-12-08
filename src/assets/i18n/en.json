@@ -148,7 +148,7 @@
       "selectAsset": "Select Asset",
       "sourceContract": "Source Contract",
       "destinationContract": "Destination Contract",
-      "numberOfShares": "Amount",
+      "amount": "Amount",
       "balance": "Your balance after deducting transfer fees ({{fee}} Qubic) will be:",
       "tick": "Tick",
       "tickOverwrite": "Manual Tick Override",

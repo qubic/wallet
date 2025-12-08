@@ -103,7 +103,7 @@
             <div class="col">
               <!-- Number of Shares (equivalent to Amount field) -->
               <mat-form-field appearance="fill" class="full-width">
-                <mat-label>{{ t("transferRights.form.numberOfShares") }}</mat-label>
+                <mat-label>{{ t("transferRights.form.amount") }}</mat-label>
                 <input matInput type="number" formControlName="numberOfShares" min="1">
                 <button *ngIf="transferRightsForm.controls['numberOfShares'].value" matSuffix mat-icon-button
                   aria-label="Clear" (click)="transferRightsForm.controls['numberOfShares'].setValue(null)"

@@ -148,7 +148,7 @@
       "selectAsset": "Varlık Seç",
       "sourceContract": "Kaynak Sözleşme",
       "destinationContract": "Hedef Sözleşme",
-      "numberOfShares": "Miktar",
+      "amount": "Miktar",
       "procedureFee": "İşlem Ücreti",
       "tick": "Tick",
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",

@@ -147,7 +147,7 @@
       "selectAsset": "Chọn Tài sản",
       "sourceContract": "Hợp đồng Nguồn",
       "destinationContract": "Hợp đồng Đích",
-      "numberOfShares": "Số lượng",
+      "amount": "Số lượng",
       "procedureFee": "Phí Thủ tục",
       "tick": "Tick",
       "tickOverwrite": "Ghi đè Tick Thủ công",

@@ -148,7 +148,7 @@
       "selectAsset": "Sélectionner un Actif",
       "sourceContract": "Contrat Source",
       "destinationContract": "Contrat de Destination",
-      "numberOfShares": "Quantité",
+      "amount": "Quantité",
       "procedureFee": "Frais de Procédure",
       "tick": "Tick",
       "tickOverwrite": "Remplacement Manuel du Tick",

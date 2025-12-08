@@ -148,7 +148,7 @@
       "selectAsset": "Выбрать Актив",
       "sourceContract": "Исходный Контракт",
       "destinationContract": "Целевой Контракт",
-      "numberOfShares": "Количество",
+      "amount": "Количество",
       "procedureFee": "Комиссия за Процедуру",
       "tick": "Тик",
       "tickOverwrite": "Ручная Замена Тика",

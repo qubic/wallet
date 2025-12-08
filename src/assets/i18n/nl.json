@@ -148,7 +148,7 @@
       "selectAsset": "Activa Selecteren",
       "sourceContract": "Broncontract",
       "destinationContract": "Bestemmingscontract",
-      "numberOfShares": "Hoeveelheid",
+      "amount": "Hoeveelheid",
       "procedureFee": "Procedurekosten",
       "tick": "Tick",
       "tickOverwrite": "Handmatige Tick Overschrijving",

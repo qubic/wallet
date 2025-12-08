@@ -148,7 +148,7 @@
       "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
-      "numberOfShares": "数量",
+      "amount": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
