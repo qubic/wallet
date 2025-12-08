@@ -145,9 +145,10 @@
       "backButton": "Zurück zu Vermögenswerten"
     },
     "form": {
+      "selectAsset": "Asset auswählen",
       "sourceContract": "Quellvertrag",
       "destinationContract": "Zielvertrag",
-      "numberOfShares": "Anzahl der Anteile",
+      "amount": "Menge",
       "procedureFee": "Verfahrensgebühr",
       "tick": "Tick",
       "tickOverwrite": "Manuelles Tick-Override",
@@ -155,12 +156,13 @@
       "submit": "Rechte übertragen"
     },
     "errors": {
+      "assetRequired": "Asset-Auswahl ist erforderlich",
       "sourceRequired": "Quellvertrag ist erforderlich",
       "destinationRequired": "Zielvertrag ist erforderlich",
       "contractsEqual": "Quell- und Zielverträge müssen unterschiedlich sein",
-      "sharesRequired": "Anzahl der Anteile ist erforderlich",
-      "sharesMin": "Anzahl der Anteile muss mindestens 1 sein",
-      "sharesMax": "Anzahl der Anteile darf {{max}} nicht überschreiten",
+      "amount": "Menge ist erforderlich",
+      "amountMin": "Menge muss mindestens 1 sein",
+      "amountMax": "Menge darf {{max}} nicht überschreiten",
       "tickRequired": "Tick ist erforderlich",
       "tickMin": "Tick muss mindestens {{min}} sein",
       "insufficientFees": "Unzureichendes Guthaben zur Zahlung der Transaktionsgebühren",
@@ -170,11 +172,11 @@
       "publishFailed": "Veröffentlichung der Transaktion fehlgeschlagen"
     },
     "messages": {
-      "success": "Übertragung der Verwaltungsrechte erfolgreich für Tick {{tick}} übermittelt"
+      "success": "Transaktion zur Übertragung der Verwaltungsrechte erfolgreich für Tick {{tick}} übermittelt"
     },
     "confirmDialog": {
       "title": "Übertragung der Verwaltungsrechte bestätigen",
-      "message": "Sie sind dabei, {{shares}} Anteile von {{assetName}} von {{sourceContract}} an {{destinationContract}} zu übertragen. Die Verfahrensgebühr beträgt {{fee}} QUBIC. Möchten Sie fortfahren?"
+      "message": "Sie sind dabei, die Verwaltungsrechte für {{shares}} {{assetName}} von {{sourceContract}} an {{destinationContract}} zu übertragen. Die Gebühr beträgt {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

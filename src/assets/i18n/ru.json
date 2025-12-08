@@ -145,9 +145,10 @@
       "backButton": "Вернуться к Активам"
     },
     "form": {
+      "selectAsset": "Выбрать Актив",
       "sourceContract": "Исходный Контракт",
       "destinationContract": "Целевой Контракт",
-      "numberOfShares": "Количество Акций",
+      "amount": "Количество",
       "procedureFee": "Комиссия за Процедуру",
       "tick": "Тик",
       "tickOverwrite": "Ручная Замена Тика",
@@ -155,12 +156,13 @@
       "submit": "Передать Права"
     },
     "errors": {
+      "assetRequired": "Требуется выбор актива",
       "sourceRequired": "Требуется исходный контракт",
       "destinationRequired": "Требуется целевой контракт",
       "contractsEqual": "Исходный и целевой контракты должны быть разными",
-      "sharesRequired": "Требуется количество акций",
-      "sharesMin": "Количество акций должно быть не менее 1",
-      "sharesMax": "Количество акций не может превышать {{max}}",
+      "amount": "Требуется количество",
+      "amountMin": "Количество должно быть не менее 1",
+      "amountMax": "Количество не может превышать {{max}}",
       "tickRequired": "Требуется тик",
       "tickMin": "Тик должен быть не менее {{min}}",
       "insufficientFees": "Недостаточно средств для оплаты комиссии за транзакцию",
@@ -170,11 +172,11 @@
       "publishFailed": "Не удалось опубликовать транзакцию"
     },
     "messages": {
-      "success": "Транзакция передачи прав успешно отправлена для тика {{tick}}"
+      "success": "Транзакция передачи прав управления успешно отправлена для тика {{tick}}"
     },
     "confirmDialog": {
       "title": "Подтвердить Передачу Прав",
-      "message": "Вы собираетесь передать {{shares}} акций {{assetName}} из {{sourceContract}} в {{destinationContract}}. Комиссия за процедуру составляет {{fee}} QUBIC. Продолжить?"
+      "message": "Вы собираетесь передать права управления на {{shares}} {{assetName}} из {{sourceContract}} в {{destinationContract}}. Комиссия составляет {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

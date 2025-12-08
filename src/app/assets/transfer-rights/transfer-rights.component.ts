@@ -46,6 +46,15 @@ interface SourceContractOption extends ManagingContractOption {
   asset: QubicAsset;
 }
 
+/**
+ * Interface for asset selection dropdown
+ */
+interface AssetOption {
+  asset: QubicAsset;
+  totalAvailableBalance: number;
+  owningContracts: SourceContractOption[];
+}
+
 @Component({
   selector: 'app-transfer-rights',
   templateUrl: './transfer-rights.component.html',
@@ -70,10 +79,14 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   private isLoadingAssets: boolean = false;
 
   // Asset and contract options
+  public assets: AssetOption[] = [];
   public sourceContracts: SourceContractOption[] = [];
+  public filteredSourceContracts: SourceContractOption[] = [];
   public destinationContracts: ManagingContractOption[] = [];
+  public filteredDestinationContracts: ManagingContractOption[] = [];
 
   // Selected values for dynamic updates
+  public selectedAsset: AssetOption | null = null;
   public selectedSourceContract: SourceContractOption | null = null;
   public selectedDestinationContract: ManagingContractOption | null = null;
 
@@ -96,6 +109,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   ) {
     // Initialize form
     this.transferRightsForm = this.fb.group({
+      selectedAsset: ['', Validators.required],
       sourceContract: ['', Validators.required],
       destinationContract: ['', Validators.required],
       numberOfShares: ['', [Validators.required, Validators.min(1)]],
@@ -155,6 +169,12 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       });
 
     // Subscribe to form changes for dynamic updates
+    this.transferRightsForm.get('selectedAsset')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(value => {
+        this.onAssetChange(value);
+      });
+
     this.transferRightsForm.get('sourceContract')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(value => {
@@ -246,7 +266,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
    */
   private buildSourceContractOptions(assets: QubicAsset[]): void {
     const contractMap = new Map<string, SourceContractOption>();
+    const assetMap = new Map<string, AssetOption>();
 
+    // First pass: Build source contracts map (existing logic)
     for (const asset of assets) {
       if (asset.ownedAmount <= 0) {
         continue;
@@ -270,10 +292,10 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       }
 
       // Create unique key for this asset+contract combination
-      const key = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}-${asset.contractIndex}`;
+      const contractKey = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}-${asset.contractIndex}`;
 
-      if (!contractMap.has(key)) {
-        contractMap.set(key, {
+      if (!contractMap.has(contractKey)) {
+        const sourceContract: SourceContractOption = {
           contractIndex: asset.contractIndex,
           contractName: contract.label || contract.name,
           address: contract.address,
@@ -281,29 +303,63 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           procedureFee: procedure.fee,
           availableBalance: asset.ownedAmount,
           asset: asset
-        });
+        };
+        contractMap.set(contractKey, sourceContract);
+
+        // Group by asset (without contractIndex)
+        const assetKey = `${asset.publicId}-${asset.assetName}-${asset.issuerIdentity}`;
+
+        if (!assetMap.has(assetKey)) {
+          assetMap.set(assetKey, {
+            asset: asset,
+            totalAvailableBalance: 0,
+            owningContracts: []
+          });
+        }
+
+        const assetOption = assetMap.get(assetKey)!;
+        assetOption.owningContracts.push(sourceContract);
+        assetOption.totalAvailableBalance += asset.ownedAmount;
       }
     }
 
-    // Convert to array and sort alphabetically
+    // Convert to arrays and sort alphabetically
     this.sourceContracts = Array.from(contractMap.values())
       .sort((a, b) => a.contractName.localeCompare(b.contractName, undefined, { sensitivity: 'base' }));
 
-    // Pre-select contract if we have pre-selected asset info
-    if (this.preSelectedAsset && this.sourceContracts.length > 0) {
-      const matchingContract = this.sourceContracts.find(c =>
-        c.asset.publicId === this.preSelectedAsset!.publicId &&
-        c.asset.assetName === this.preSelectedAsset!.assetName &&
-        c.asset.issuerIdentity === this.preSelectedAsset!.issuerIdentity &&
-        c.contractIndex === this.preSelectedAsset!.contractIndex
+    this.assets = Array.from(assetMap.values())
+      .sort((a, b) => {
+        const nameCompare = a.asset.assetName.localeCompare(b.asset.assetName, undefined, { sensitivity: 'base' });
+        if (nameCompare !== 0) return nameCompare;
+        return a.asset.publicId.localeCompare(b.asset.publicId, undefined, { sensitivity: 'base' });
+      });
+
+    // Pre-select asset and contract if we have pre-selected asset info
+    if (this.preSelectedAsset && this.assets.length > 0) {
+      const matchingAsset = this.assets.find(a =>
+        a.asset.publicId === this.preSelectedAsset!.publicId &&
+        a.asset.assetName === this.preSelectedAsset!.assetName &&
+        a.asset.issuerIdentity === this.preSelectedAsset!.issuerIdentity
       );
 
-      if (matchingContract) {
-        // Use setTimeout to ensure the form is ready (same pattern as Send Assets)
+      if (matchingAsset) {
+        // Use setTimeout to ensure the form is ready
         setTimeout(() => {
+          // First select the asset
           this.transferRightsForm.patchValue({
-            sourceContract: matchingContract
+            selectedAsset: matchingAsset
           });
+
+          // Then find and select the matching contract
+          const matchingContract = matchingAsset.owningContracts.find(c =>
+            c.contractIndex === this.preSelectedAsset!.contractIndex
+          );
+
+          if (matchingContract) {
+            this.transferRightsForm.patchValue({
+              sourceContract: matchingContract
+            });
+          }
         });
       }
     }
@@ -342,6 +398,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     // Sort alphabetically
     this.destinationContracts = contracts
       .sort((a, b) => a.contractName.localeCompare(b.contractName, undefined, { sensitivity: 'base' }));
+
+    // Initialize filtered list (will be filtered when source contract is selected)
+    this.filteredDestinationContracts = this.destinationContracts;
   }
 
   /**
@@ -361,12 +420,17 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     this.selectedSourceContract = sourceContract;
 
     if (sourceContract) {
+      // Filter destination contracts to exclude the source contract
+      this.filteredDestinationContracts = this.destinationContracts.filter(
+        dest => dest.contractIndex !== sourceContract.contractIndex
+      );
+
       // Update shares validation based on available balance
       this.updateSharesValidation();
 
       // Auto-select QX as destination if not managed by QX
       if (sourceContract.address !== QubicDefinitions.QX_ADDRESS && !this.transferRightsForm.get('destinationContract')?.value) {
-        const qxContract = this.destinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
+        const qxContract = this.filteredDestinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
         if (qxContract) {
           this.transferRightsForm.patchValue({
             destinationContract: qxContract
@@ -374,7 +438,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Clear destination if same as source
+      // Clear destination if same as source (shouldn't happen with filtering, but keep as safety)
       const destContract = this.transferRightsForm.get('destinationContract')?.value;
       if (destContract && destContract.contractIndex === sourceContract.contractIndex) {
         this.transferRightsForm.patchValue({
@@ -382,6 +446,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         });
       }
     } else {
+      // Reset filtered destination contracts to show all
+      this.filteredDestinationContracts = this.destinationContracts;
+
       this.transferRightsForm.get('numberOfShares')?.clearValidators();
       this.transferRightsForm.get('numberOfShares')?.addValidators([Validators.required, Validators.min(1)]);
       this.transferRightsForm.get('numberOfShares')?.updateValueAndValidity();
@@ -396,6 +463,53 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
 
     // Trigger form validation to check if source and destination are equal
     this.transferRightsForm.updateValueAndValidity();
+  }
+
+  /**
+   * Handle asset selection change
+   */
+  private onAssetChange(asset: AssetOption | null): void {
+    this.selectedAsset = asset;
+
+    if (asset) {
+      // Filter source contracts to only show contracts managing this asset
+      this.filteredSourceContracts = asset.owningContracts;
+
+      // Reset numberOfShares when asset changes
+      this.transferRightsForm.patchValue({
+        numberOfShares: null
+      });
+
+      // Auto-select first contract if only one option
+      if (this.filteredSourceContracts.length === 1) {
+        this.transferRightsForm.patchValue({
+          sourceContract: this.filteredSourceContracts[0]
+        });
+      } else {
+        // Clear source contract selection
+        this.transferRightsForm.patchValue({
+          sourceContract: ''
+        });
+      }
+    } else {
+      this.filteredSourceContracts = [];
+      this.transferRightsForm.patchValue({
+        sourceContract: '',
+        numberOfShares: null
+      });
+    }
+  }
+
+  /**
+   * Compare two assets for mat-select equality
+   */
+  public compareAssets(a1: AssetOption | null, a2: AssetOption | null): boolean {
+    if (!a1 || !a2) {
+      return a1 === a2;
+    }
+    return a1.asset.assetName === a2.asset.assetName &&
+      a1.asset.issuerIdentity === a2.asset.issuerIdentity &&
+      a1.asset.publicId === a2.asset.publicId;
   }
 
   /**
@@ -448,6 +562,24 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     }
 
     return seed.balance >= this.getTransactionFee();
+  }
+
+  /**
+   * Get balance after deducting transaction fees
+   * Follows Asset Transfer pattern for consistency
+   */
+  public getBalanceAfterFees(): number {
+    if (!this.selectedSourceContract) {
+      return 0;
+    }
+
+    const seed = this.walletService.getSeed(this.selectedSourceContract.asset.publicId);
+    if (!seed) {
+      return 0;
+    }
+
+    const balanceAfterFees = BigInt(seed.balance) - BigInt(this.getTransactionFee());
+    return Number(balanceAfterFees);
   }
 
   /**

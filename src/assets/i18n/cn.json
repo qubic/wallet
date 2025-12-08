@@ -145,9 +145,10 @@
       "backButton": "返回资产"
     },
     "form": {
+      "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
-      "numberOfShares": "份额数量",
+      "amount": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
@@ -155,12 +156,13 @@
       "submit": "转移权利"
     },
     "errors": {
+      "assetRequired": "需要选择资产",
       "sourceRequired": "需要源合约",
       "destinationRequired": "需要目标合约",
       "contractsEqual": "源合约和目标合约必须不同",
-      "sharesRequired": "需要份额数量",
-      "sharesMin": "份额数量必须至少为1",
-      "sharesMax": "份额数量不能超过 {{max}}",
+      "amount": "需要数量",
+      "amountMin": "数量必须至少为1",
+      "amountMax": "数量不能超过 {{max}}",
       "tickRequired": "需要刻度",
       "tickMin": "刻度必须至少为 {{min}}",
       "insufficientFees": "余额不足以支付交易费用",
@@ -170,11 +172,11 @@
       "publishFailed": "发布交易失败"
     },
     "messages": {
-      "success": "成功提交刻度 {{tick}} 的转移权利交易"
+      "success": "成功提交刻度 {{tick}} 的转移管理权交易"
     },
     "confirmDialog": {
       "title": "确认转移权利",
-      "message": "您即将将 {{shares}} 份 {{assetName}} 从 {{sourceContract}} 转移到 {{destinationContract}}。程序费用为 {{fee}} QUBIC。您要继续吗？"
+      "message": "您即将将 {{shares}} {{assetName}} 的管理权从 {{sourceContract}} 转移到 {{destinationContract}}。费用为 {{fee}} QUBIC。"
     }
   },
   "qrReceiveComponent": {

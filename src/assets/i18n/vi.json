@@ -144,9 +144,10 @@
       "backButton": "Quay lại Tài sản"
     },
     "form": {
+      "selectAsset": "Chọn Tài sản",
       "sourceContract": "Hợp đồng Nguồn",
       "destinationContract": "Hợp đồng Đích",
-      "numberOfShares": "Số lượng Cổ phiếu",
+      "amount": "Số lượng",
       "procedureFee": "Phí Thủ tục",
       "tick": "Tick",
       "tickOverwrite": "Ghi đè Tick Thủ công",
@@ -154,12 +155,13 @@
       "submit": "Chuyển Quyền"
     },
     "errors": {
+      "assetRequired": "Lựa chọn tài sản là bắt buộc",
       "sourceRequired": "Hợp đồng nguồn là bắt buộc",
       "destinationRequired": "Hợp đồng đích là bắt buộc",
       "contractsEqual": "Hợp đồng nguồn và đích phải khác nhau",
-      "sharesRequired": "Số lượng cổ phiếu là bắt buộc",
-      "sharesMin": "Số lượng cổ phiếu phải ít nhất là 1",
-      "sharesMax": "Số lượng cổ phiếu không được vượt quá {{max}}",
+      "amount": "Số lượng là bắt buộc",
+      "amountMin": "Số lượng phải ít nhất là 1",
+      "amountMax": "Số lượng không được vượt quá {{max}}",
       "tickRequired": "Tick là bắt buộc",
       "tickMin": "Tick phải ít nhất là {{min}}",
       "insufficientFees": "Số dư không đủ để thanh toán phí giao dịch",
@@ -169,11 +171,11 @@
       "publishFailed": "Không thể xuất bản giao dịch"
     },
     "messages": {
-      "success": "Giao dịch chuyển quyền đã được gửi thành công cho tick {{tick}}"
+      "success": "Giao dịch chuyển quyền quản lý đã được gửi thành công cho tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Xác nhận Chuyển Quyền",
-      "message": "Bạn sắp chuyển {{shares}} cổ phiếu của {{assetName}} từ {{sourceContract}} sang {{destinationContract}}. Phí thủ tục là {{fee}} QUBIC. Bạn có muốn tiếp tục không?"
+      "message": "Bạn sắp chuyển quyền quản lý cho {{shares}} {{assetName}} từ {{sourceContract}} sang {{destinationContract}}. Phí là {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

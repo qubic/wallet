@@ -145,9 +145,10 @@
       "backButton": "Varlıklara Dön"
     },
     "form": {
+      "selectAsset": "Varlık Seç",
       "sourceContract": "Kaynak Sözleşme",
       "destinationContract": "Hedef Sözleşme",
-      "numberOfShares": "Hisse Sayısı",
+      "amount": "Miktar",
       "procedureFee": "İşlem Ücreti",
       "tick": "Tick",
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",
@@ -155,12 +156,13 @@
       "submit": "Hakları Aktar"
     },
     "errors": {
+      "assetRequired": "Varlık seçimi gerekli",
       "sourceRequired": "Kaynak sözleşme gerekli",
       "destinationRequired": "Hedef sözleşme gerekli",
       "contractsEqual": "Kaynak ve hedef sözleşmeler farklı olmalıdır",
-      "sharesRequired": "Hisse sayısı gerekli",
-      "sharesMin": "Hisse sayısı en az 1 olmalıdır",
-      "sharesMax": "Hisse sayısı {{max}} değerini aşamaz",
+      "amount": "Miktar gerekli",
+      "amountMin": "Miktar en az 1 olmalıdır",
+      "amountMax": "Miktar {{max}} değerini aşamaz",
       "tickRequired": "Tick gerekli",
       "tickMin": "Tick en az {{min}} olmalıdır",
       "insufficientFees": "İşlem ücretlerini ödemek için yetersiz bakiye",
@@ -170,11 +172,11 @@
       "publishFailed": "İşlem yayınlanamadı"
     },
     "messages": {
-      "success": "Hak transfer işlemi tick {{tick}} için başarıyla gönderildi"
+      "success": "Yönetim hakları transfer işlemi tick {{tick}} için başarıyla gönderildi"
     },
     "confirmDialog": {
       "title": "Hak Transferini Onayla",
-      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{assetName}} varlığının {{shares}} hissesini transfer etmek üzeresiniz. İşlem ücreti {{fee}} QUBIC'dir. Devam etmek istiyor musunuz?"
+      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{shares}} {{assetName}} için yönetim haklarını transfer etmek üzeresiniz. Ücret {{fee}} QUBIC'dir."
     }
   },
   "qrReceiveComponent": {

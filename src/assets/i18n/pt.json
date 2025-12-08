@@ -145,9 +145,10 @@
       "backButton": "Voltar aos Ativos"
     },
     "form": {
+      "selectAsset": "Selecionar Ativo",
       "sourceContract": "Contrato de Origem",
       "destinationContract": "Contrato de Destino",
-      "numberOfShares": "Número de Ações",
+      "amount": "Quantidade",
       "procedureFee": "Taxa de Procedimento",
       "tick": "Tick",
       "tickOverwrite": "Substituição Manual de Tick",
@@ -155,12 +156,13 @@
       "submit": "Transferir Direitos"
     },
     "errors": {
+      "assetRequired": "A seleção de ativo é obrigatória",
       "sourceRequired": "O contrato de origem é obrigatório",
       "destinationRequired": "O contrato de destino é obrigatório",
       "contractsEqual": "Os contratos de origem e destino devem ser diferentes",
-      "sharesRequired": "O número de ações é obrigatório",
-      "sharesMin": "O número de ações deve ser pelo menos 1",
-      "sharesMax": "O número de ações não pode exceder {{max}}",
+      "amount": "A quantidade é obrigatória",
+      "amountMin": "A quantidade deve ser pelo menos 1",
+      "amountMax": "A quantidade não pode exceder {{max}}",
       "tickRequired": "O tick é obrigatório",
       "tickMin": "O tick deve ser pelo menos {{min}}",
       "insufficientFees": "Saldo insuficiente para pagar as taxas de transação",
@@ -170,11 +172,11 @@
       "publishFailed": "Falha ao publicar a transação"
     },
     "messages": {
-      "success": "Transação de transferência de direitos enviada com sucesso para o tick {{tick}}"
+      "success": "Transação de transferência de direitos de gestão enviada com sucesso para o tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Confirmar Transferência de Direitos",
-      "message": "Você está prestes a transferir {{shares}} ações de {{assetName}} de {{sourceContract}} para {{destinationContract}}. A taxa de procedimento é {{fee}} QUBIC. Deseja continuar?"
+      "message": "Você está prestes a transferir os direitos de gestão de {{shares}} {{assetName}} de {{sourceContract}} para {{destinationContract}}. A taxa é {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {
