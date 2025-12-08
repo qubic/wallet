@@ -83,7 +83,7 @@
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("transferRights.form.destinationContract") }}</mat-label>
                 <mat-select formControlName="destinationContract" [compareWith]="compareContracts">
-                  <mat-option *ngFor="let contract of destinationContracts" [value]="contract">
+                  <mat-option *ngFor="let contract of filteredDestinationContracts" [value]="contract">
                     <div class="contract-option">
                       <strong>{{ contract.contractName }}</strong>
                     </div>

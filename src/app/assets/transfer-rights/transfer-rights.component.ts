@@ -83,6 +83,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   public sourceContracts: SourceContractOption[] = [];
   public filteredSourceContracts: SourceContractOption[] = [];
   public destinationContracts: ManagingContractOption[] = [];
+  public filteredDestinationContracts: ManagingContractOption[] = [];
 
   // Selected values for dynamic updates
   public selectedAsset: AssetOption | null = null;
@@ -397,6 +398,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     // Sort alphabetically
     this.destinationContracts = contracts
       .sort((a, b) => a.contractName.localeCompare(b.contractName, undefined, { sensitivity: 'base' }));
+
+    // Initialize filtered list (will be filtered when source contract is selected)
+    this.filteredDestinationContracts = this.destinationContracts;
   }
 
   /**
@@ -416,12 +420,17 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     this.selectedSourceContract = sourceContract;
 
     if (sourceContract) {
+      // Filter destination contracts to exclude the source contract
+      this.filteredDestinationContracts = this.destinationContracts.filter(
+        dest => dest.contractIndex !== sourceContract.contractIndex
+      );
+
       // Update shares validation based on available balance
       this.updateSharesValidation();
 
       // Auto-select QX as destination if not managed by QX
       if (sourceContract.address !== QubicDefinitions.QX_ADDRESS && !this.transferRightsForm.get('destinationContract')?.value) {
-        const qxContract = this.destinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
+        const qxContract = this.filteredDestinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
         if (qxContract) {
           this.transferRightsForm.patchValue({
             destinationContract: qxContract
@@ -429,7 +438,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Clear destination if same as source
+      // Clear destination if same as source (shouldn't happen with filtering, but keep as safety)
       const destContract = this.transferRightsForm.get('destinationContract')?.value;
       if (destContract && destContract.contractIndex === sourceContract.contractIndex) {
         this.transferRightsForm.patchValue({
@@ -437,6 +446,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         });
       }
     } else {
+      // Reset filtered destination contracts to show all
+      this.filteredDestinationContracts = this.destinationContracts;
+
       this.transferRightsForm.get('numberOfShares')?.clearValidators();
       this.transferRightsForm.get('numberOfShares')?.addValidators([Validators.required, Validators.min(1)]);
       this.transferRightsForm.get('numberOfShares')?.updateValueAndValidity();
