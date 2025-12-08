@@ -172,11 +172,11 @@
       "publishFailed": "トランザクションの公開に失敗しました"
     },
     "messages": {
-      "success": "ティック {{tick}} の権利譲渡トランザクションが正常に送信されました"
+      "success": "ティック {{tick}} の管理権譲渡トランザクションが正常に送信されました"
     },
     "confirmDialog": {
       "title": "権利譲渡の確認",
-      "message": "{{sourceContract}} から {{destinationContract}} へ {{assetName}} の {{shares}} 株を譲渡しようとしています。手続き手数料は {{fee}} QUBIC です。続行しますか？"
+      "message": "{{sourceContract}} から {{destinationContract}} へ {{shares}} {{assetName}} の管理権を譲渡しようとしています。手数料は {{fee}} QUBIC です。"
     }
   },
   "qrReceiveComponent": {

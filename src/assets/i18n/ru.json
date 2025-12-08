@@ -172,11 +172,11 @@
       "publishFailed": "Не удалось опубликовать транзакцию"
     },
     "messages": {
-      "success": "Транзакция передачи прав успешно отправлена для тика {{tick}}"
+      "success": "Транзакция передачи прав управления успешно отправлена для тика {{tick}}"
     },
     "confirmDialog": {
       "title": "Подтвердить Передачу Прав",
-      "message": "Вы собираетесь передать {{shares}} акций {{assetName}} из {{sourceContract}} в {{destinationContract}}. Комиссия за процедуру составляет {{fee}} QUBIC. Продолжить?"
+      "message": "Вы собираетесь передать права управления на {{shares}} {{assetName}} из {{sourceContract}} в {{destinationContract}}. Комиссия составляет {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

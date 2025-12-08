@@ -172,11 +172,11 @@
       "publishFailed": "发布交易失败"
     },
     "messages": {
-      "success": "成功提交刻度 {{tick}} 的转移权利交易"
+      "success": "成功提交刻度 {{tick}} 的转移管理权交易"
     },
     "confirmDialog": {
       "title": "确认转移权利",
-      "message": "您即将将 {{shares}} 份 {{assetName}} 从 {{sourceContract}} 转移到 {{destinationContract}}。程序费用为 {{fee}} QUBIC。您要继续吗？"
+      "message": "您即将将 {{shares}} {{assetName}} 的管理权从 {{sourceContract}} 转移到 {{destinationContract}}。费用为 {{fee}} QUBIC。"
     }
   },
   "qrReceiveComponent": {

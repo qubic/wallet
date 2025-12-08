@@ -172,11 +172,11 @@
       "publishFailed": "İşlem yayınlanamadı"
     },
     "messages": {
-      "success": "Hak transfer işlemi tick {{tick}} için başarıyla gönderildi"
+      "success": "Yönetim hakları transfer işlemi tick {{tick}} için başarıyla gönderildi"
     },
     "confirmDialog": {
       "title": "Hak Transferini Onayla",
-      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{assetName}} varlığının {{shares}} hissesini transfer etmek üzeresiniz. İşlem ücreti {{fee}} QUBIC'dir. Devam etmek istiyor musunuz?"
+      "message": "{{sourceContract}} sözleşmesinden {{destinationContract}} sözleşmesine {{shares}} {{assetName}} için yönetim haklarını transfer etmek üzeresiniz. Ücret {{fee}} QUBIC'dir."
     }
   },
   "qrReceiveComponent": {

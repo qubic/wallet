@@ -171,11 +171,11 @@
       "publishFailed": "Không thể xuất bản giao dịch"
     },
     "messages": {
-      "success": "Giao dịch chuyển quyền đã được gửi thành công cho tick {{tick}}"
+      "success": "Giao dịch chuyển quyền quản lý đã được gửi thành công cho tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Xác nhận Chuyển Quyền",
-      "message": "Bạn sắp chuyển {{shares}} cổ phiếu của {{assetName}} từ {{sourceContract}} sang {{destinationContract}}. Phí thủ tục là {{fee}} QUBIC. Bạn có muốn tiếp tục không?"
+      "message": "Bạn sắp chuyển quyền quản lý cho {{shares}} {{assetName}} từ {{sourceContract}} sang {{destinationContract}}. Phí là {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

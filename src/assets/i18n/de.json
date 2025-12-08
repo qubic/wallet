@@ -172,11 +172,11 @@
       "publishFailed": "Veröffentlichung der Transaktion fehlgeschlagen"
     },
     "messages": {
-      "success": "Übertragung der Verwaltungsrechte erfolgreich für Tick {{tick}} übermittelt"
+      "success": "Transaktion zur Übertragung der Verwaltungsrechte erfolgreich für Tick {{tick}} übermittelt"
     },
     "confirmDialog": {
       "title": "Übertragung der Verwaltungsrechte bestätigen",
-      "message": "Sie sind dabei, {{shares}} Anteile von {{assetName}} von {{sourceContract}} an {{destinationContract}} zu übertragen. Die Verfahrensgebühr beträgt {{fee}} QUBIC. Möchten Sie fortfahren?"
+      "message": "Sie sind dabei, die Verwaltungsrechte für {{shares}} {{assetName}} von {{sourceContract}} an {{destinationContract}} zu übertragen. Die Gebühr beträgt {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

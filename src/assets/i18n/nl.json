@@ -172,11 +172,11 @@
       "publishFailed": "Publiceren van transactie mislukt"
     },
     "messages": {
-      "success": "Overdracht van rechten transactie succesvol ingediend voor tick {{tick}}"
+      "success": "Overdracht van beheerrechten transactie succesvol ingediend voor tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Overdracht van Rechten Bevestigen",
-      "message": "U staat op het punt om {{shares}} aandelen van {{assetName}} over te dragen van {{sourceContract}} naar {{destinationContract}}. De procedurekosten bedragen {{fee}} QUBIC. Wilt u doorgaan?"
+      "message": "U staat op het punt om de beheerrechten van {{shares}} {{assetName}} over te dragen van {{sourceContract}} naar {{destinationContract}}. De kosten bedragen {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

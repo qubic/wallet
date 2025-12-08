@@ -172,11 +172,11 @@
       "publishFailed": "Error al publicar la transacción"
     },
     "messages": {
-      "success": "Transacción de transferencia de derechos enviada exitosamente para el tick {{tick}}"
+      "success": "Transacción de transferencia de derechos de gestión enviada exitosamente para el tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Confirmar Transferencia de Derechos",
-      "message": "Estás a punto de transferir {{shares}} acciones de {{assetName}} de {{sourceContract}} a {{destinationContract}}. La tarifa del procedimiento es {{fee}} QUBIC. ¿Deseas continuar?"
+      "message": "Estás a punto de transferir los derechos de gestión de {{shares}} {{assetName}} de {{sourceContract}} a {{destinationContract}}. La tarifa es {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {

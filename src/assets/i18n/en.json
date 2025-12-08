@@ -172,11 +172,11 @@
       "publishFailed": "Failed to publish transaction"
     },
     "messages": {
-      "success": "Transfer rights transaction submitted successfully for tick {{tick}}"
+      "success": "Transfer management rights transaction submitted successfully for tick {{tick}}"
     },
     "confirmDialog": {
       "title": "Confirm Transfer Rights",
-      "message": "You are about to transfer {{shares}} shares of {{assetName}} from {{sourceContract}} to {{destinationContract}}. The procedure fee is {{fee}} QUBIC. Do you want to proceed?"
+      "message": "You are about to transfer the management rights for {{shares}} {{assetName}} from {{sourceContract}} to {{destinationContract}}. The fee is {{fee}} QUBIC."
     }
   },
   "qrReceiveComponent": {
