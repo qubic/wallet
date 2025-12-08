@@ -1,3 +1,16 @@
+# [4.22.0-rc.1](https://github.com/qubic/wallet/compare/v4.21.0...v4.22.0-rc.1) (2025-12-08)
+
+
+### Bug Fixes
+
+* remove reseting number of shares on asset change in transfer rights component ([3d8fef3](https://github.com/qubic/wallet/commit/3d8fef3f4dab68131eab0ccb168f75209c55cf6f))
+
+
+### Features
+
+* 184 enable release transfer rights for assets ([#185](https://github.com/qubic/wallet/issues/185)) ([103d6b6](https://github.com/qubic/wallet/commit/103d6b65303d19d0933d2edc82792e6d67863e10))
+* enable transfer rights enhancement ([#186](https://github.com/qubic/wallet/issues/186)) ([4b68ba5](https://github.com/qubic/wallet/commit/4b68ba594e955f82b0e191bd19bd505ecf70648c))
+
 # [4.21.0](https://github.com/qubic/wallet/compare/v4.20.1...v4.21.0) (2025-11-05)
 
 
