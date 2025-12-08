@@ -1,5 +1,5 @@
 export const environment = {
-  version: '4.21.0',
+  version: '4.22.0',
   production: true,
   apiQliUrl: 'https://api.qubic.li',
   apiUrl: 'https://rpc.qubic.org',
