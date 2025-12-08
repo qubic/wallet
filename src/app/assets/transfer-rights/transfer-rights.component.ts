@@ -475,11 +475,6 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       // Filter source contracts to only show contracts managing this asset
       this.filteredSourceContracts = asset.owningContracts;
 
-      // Reset numberOfShares when asset changes
-      this.transferRightsForm.patchValue({
-        numberOfShares: null
-      });
-
       // Auto-select first contract if only one option
       if (this.filteredSourceContracts.length === 1) {
         this.transferRightsForm.patchValue({
