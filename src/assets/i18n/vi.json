@@ -81,8 +81,12 @@
     "title": "Thông tin địa chỉ",
     "publicId": "ID địa chỉ",
     "privateId": "Seed 55 ký tự",
+    "privateSeedLabel": "Seed Riêng tư 55 ký tự",
+    "revealSeedWarningTitle": "Không chia sẻ Seed riêng tư của bạn!",
+    "revealSeedWarningDescription": "Nếu ai đó có seed riêng tư của bạn, họ sẽ có toàn quyền kiểm soát tài khoản của bạn.",
     "buttons": {
-      "close": "Đóng"
+      "reveal": "Hiển thị",
+      "hide": "Ẩn"
     }
   },
   "assetsComponent": {

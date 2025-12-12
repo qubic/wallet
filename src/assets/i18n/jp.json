@@ -81,8 +81,12 @@
     "title": "アドレス情報",
     "publicId": "アドレスID",
     "privateId": "55文字のシード",
+    "privateSeedLabel": "55文字のプライベートシード",
+    "revealSeedWarningTitle": "プライベートシードを共有しないでください！",
+    "revealSeedWarningDescription": "誰かがあなたのプライベートシードを持っていると、あなたのアカウントを完全に制御できます。",
     "buttons": {
-      "close": "閉じる"
+      "reveal": "表示",
+      "hide": "非表示"
     }
   },
   "assetsComponent": {

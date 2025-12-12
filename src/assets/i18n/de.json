@@ -81,8 +81,12 @@
     "title": "Kontoinformationen",
     "publicId": "Konto-ID",
     "privateId": "Konto-Passwort",
+    "privateSeedLabel": "55-Zeichen Privater Seed",
+    "revealSeedWarningTitle": "Teilen Sie Ihren privaten Seed nicht!",
+    "revealSeedWarningDescription": "Wenn jemand Ihren privaten Seed hat, hat er die volle Kontrolle über Ihr Konto.",
     "buttons": {
-      "close": "Schließen"
+      "reveal": "Anzeigen",
+      "hide": "Ausblenden"
     }
   },
   "assetsComponent": {

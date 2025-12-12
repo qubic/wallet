@@ -81,8 +81,12 @@
     "title": "Account Informatie",
     "publicId": "Account ID",
     "privateId": "Account Wachtwoord",
+    "privateSeedLabel": "55-tekens Privé Seed",
+    "revealSeedWarningTitle": "Deel uw privé Seed niet!",
+    "revealSeedWarningDescription": "Als iemand uw privé seed heeft, heeft diegene volledige controle over uw account.",
     "buttons": {
-      "close": "Sluiten"
+      "reveal": "Tonen",
+      "hide": "Verbergen"
     }
   },
   "assetsComponent": {

@@ -81,8 +81,12 @@
     "title": "Address Information",
     "publicId": "Address ID",
     "privateId": "55-char Seed",
+    "privateSeedLabel": "55-char Private Seed",
+    "revealSeedWarningTitle": "Do not share your Private Seed!",
+    "revealSeedWarningDescription": "If someone has your private seed, they will have full control of your account.",
     "buttons": {
-      "close": "Close"
+      "reveal": "Reveal",
+      "hide": "Hide"
     }
   },
   "assetsComponent": {

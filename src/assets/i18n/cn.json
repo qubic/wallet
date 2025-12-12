@@ -81,8 +81,12 @@
     "title": "地址信息",
     "publicId": "地址ID",
     "privateId": "55 位字符种子",
+    "privateSeedLabel": "55 字符私有种子",
+    "revealSeedWarningTitle": "请勿分享您的私有种子！",
+    "revealSeedWarningDescription": "如果有人获得您的私有种子，他们将完全控制您的账户。",
     "buttons": {
-      "close": "关闭"
+      "reveal": "显示",
+      "hide": "隐藏"
     }
   },
   "assetsComponent": {
