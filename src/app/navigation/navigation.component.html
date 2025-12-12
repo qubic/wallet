@@ -91,7 +91,7 @@
           <!-- <a mat-list-item routerLink="voting" (click)="checkMobileToggle()" [class.selected-nav]="isVotingSelected"><mat-icon
               class="icon-color-link icon">how_to_vote</mat-icon>{{ t("general.navigation.voting") }}</a> -->
           <a mat-list-item routerLink="ipo" (click)="checkMobileToggle()" [class.selected-nav]="isIpoSelected"><mat-icon
-              class="icon-color-link icon">multiline_chart</mat-icon>{{ t("general.navigation.ipo") }}</a>
+              class="icon-color-link icon">multiline_chart</mat-icon>{{ t("general.navigation.ipo") }}<span *ngIf="activeIpoCount > 0" class="nav-badge">{{ activeIpoCount }}</span></a>
           <a mat-list-item routerLink="settings" (click)="checkMobileToggle()" [class.selected-nav]="isSettingsSelected"><mat-icon
               class="icon-color-link icon">settings</mat-icon>{{ t("general.navigation.settings") }}</a>         
         </mat-nav-list>

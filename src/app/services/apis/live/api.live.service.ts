@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import {
+    ActiveIpo,
+    ActiveIposResponse,
     AssetsIssuedResponse,
     AssetsOwnedResponse,
     AssetsPossessedResponse,
@@ -32,7 +34,9 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl + "/v1";
+    private basePath = environment.apiUrl + "/live/v1";
+
+    public activeIpos$: BehaviorSubject<ActiveIpo[] | null> = new BehaviorSubject<ActiveIpo[] | null>(null);
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
@@ -202,6 +206,23 @@ export class ApiLiveService {
                 } else {
                     throw new Error('Invalid response format');
                 }
+            })
+        );
+    }
+
+
+    public getActiveIpos() {
+        let localVarPath = `/ipos/active`;
+        return this.httpClient.request<ActiveIposResponse>('get', `${this.basePath}${localVarPath}`,
+            {
+                context: new HttpContext(),
+                responseType: 'json'
+            }
+        ).pipe(
+            map((response: ActiveIposResponse) => {
+                const ipos = response?.ipos || [];
+                this.activeIpos$.next(ipos);
+                return ipos;
             })
         );
     }
