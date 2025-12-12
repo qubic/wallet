@@ -28,7 +28,7 @@ function createProxy(targetURL, port) {
             request({ url: targetURL + req.url, method: req.method, json: req.body, headers: {'Authorization': req.header('Authorization')} },
                 function (error, response, body) {
                     if (error) {
-                        console.error('error: ' + response.statusCode);
+                        console.error('error: ' + (response ? response.statusCode : error.message));
                     }
                 }).pipe(res);
         }
