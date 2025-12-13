@@ -47,7 +47,7 @@
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                <tx-status [transaction]="transaction" [lastArchivedTick]="us.archiverLatestTick | async"></tx-status>
+                                <tx-status [transaction]="transaction" [lastArchivedTick]="(us.archiverLatestTick | async) ?? undefined"></tx-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
                                     <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
