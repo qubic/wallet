@@ -415,6 +415,9 @@
       "type": "Typ",
       "timestamp": "Zeitstempel",
       "fee": "Gebühr",
+      "amount": "Betrag",
+      "showTransfers": "Überweisungen anzeigen",
+      "hideTransfers": "Überweisungen ausblenden",
       "assetTransferWarning": "Diese Transaktion ist nur in der Transaktionsliste der Quelladresse sichtbar. Die Anzeige in der Transaktionsliste der Zieladresse wird in der aktuellen Version noch nicht unterstützt."
     },
     "epoch": "Epoche",

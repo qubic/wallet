@@ -414,6 +414,9 @@
       "tick": "Tick",
       "type": "Loại",
       "fee": "Phí",
+      "amount": "Số tiền",
+      "showTransfers": "Hiển thị Chuyển khoản",
+      "hideTransfers": "Ẩn Chuyển khoản",
       "assetTransferWarning": "Giao dịch này chỉ hiển thị trong danh sách giao dịch của địa chỉ nguồn. Việc hiển thị nó trong danh sách giao dịch của địa chỉ đích chưa được hỗ trợ trong phiên bản hiện tại.",
       "timestamp": "Dấu thời gian"
     },

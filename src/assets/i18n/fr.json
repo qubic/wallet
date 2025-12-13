@@ -414,6 +414,9 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Frais",
+      "amount": "Montant",
+      "showTransfers": "Afficher Transferts",
+      "hideTransfers": "Masquer Transferts",
       "assetTransferWarning": "Cette transaction est visible uniquement dans la liste des transactions de l'adresse source. L'afficher dans la liste des transactions de l'adresse de destination n'est pas encore pris en charge dans la version actuelle.",
       "timestamp": "Horodatage"
     },

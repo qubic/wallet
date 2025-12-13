@@ -13,7 +13,8 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
-import { AssetTransfer } from '../services/api.model';
+import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
+import { AssetTransfer, SendManyTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
@@ -51,7 +52,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
-
+  public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
+  public sendManyExpanded: { [key: string]: boolean } = {};
 
   constructor(
     private router: Router,
@@ -252,9 +254,9 @@ export class BalanceComponent implements OnInit, OnDestroy {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
         }
 
-        await Promise.all(this.transactionsRecord.map(transaction =>
-          this.checkAndParseAssetTransfer(transaction)
-        ));
+        await Promise.all(this.transactionsRecord.map(async transaction => {
+          await this.checkAndParseAssetTransfer(transaction);
+        }));
 
         this.sortTransactions();
       }
@@ -327,6 +329,65 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   getAssetTransfer(txId: string): AssetTransfer | null {
     return this.assetTransferData[txId] || null;
+  }
+
+  /**
+   * Check if transaction is a SendMany transaction (inputType 1 to QUTIL smart contract)
+   */
+  isSendManyTransaction(destId: string, inputType: number): boolean {
+    return destId === QubicDefinitions.QUTIL_ADDRESS && inputType === QubicDefinitions.QUTIL_SENDMANY_INPUT_TYPE;
+  }
+
+  /**
+   * Parse SendMany payload to extract all transfers
+   */
+  getSendManyTransfers = async (data: string): Promise<SendManyTransfer[]> => {
+    const binaryData = new Uint8Array(data.match(/.{1,2}/g)?.map((pair) => parseInt(pair, 16)) ?? []);
+
+    const parsedPayload = await new QubicTransferSendManyPayload().parse(binaryData);
+    const transfers = parsedPayload.getTransfers();
+
+    return transfers.map((item: any) => ({
+      destId: item.destId.getIdentityAsSring() ?? '',
+      amount: item.amount.getNumber().toString()
+    }));
+  }
+
+  async checkAndParseSendManyTransfer(transaction: any): Promise<void> {
+    const txId = transaction.transactions[0].transaction.txId;
+
+    if (this.isSendManyTransaction(
+      transaction.transactions[0].transaction.destId,
+      transaction.transactions[0].transaction.inputType
+    )) {
+      try {
+        const transfers = await this.getSendManyTransfers(transaction.transactions[0].transaction.inputHex);
+        if (transfers && transfers.length > 0) {
+          this.sendManyTransferData[txId] = transfers;
+        }
+      } catch (error) {
+        console.error('Error parsing sendmany transfer:', error);
+      }
+    }
+  }
+
+  getSendManyTransfer(txId: string): SendManyTransfer[] | null {
+    return this.sendManyTransferData[txId] || null;
+  }
+
+  async toggleSendManyExpanded(transaction: any): Promise<void> {
+    const txId = transaction.transactions[0].transaction.txId;
+
+    // Parse on first expand if not already parsed
+    if (!this.sendManyTransferData[txId]) {
+      await this.checkAndParseSendManyTransfer(transaction);
+    }
+
+    this.sendManyExpanded[txId] = !this.sendManyExpanded[txId];
+  }
+
+  isSendManyExpanded(txId: string): boolean {
+    return this.sendManyExpanded[txId] || false;
   }
 
   private updateTransactionsRecord(): void {

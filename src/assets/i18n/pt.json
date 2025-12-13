@@ -413,6 +413,9 @@
       "tick": "Tick",
       "type": "Tipo",
       "fee": "Taxa",
+      "amount": "Valor",
+      "showTransfers": "Mostrar Transferências",
+      "hideTransfers": "Ocultar Transferências",
       "assetTransferWarning": "Esta transação está visível apenas na lista de transações do endereço de origem. Exibi-la na lista de transações do endereço de destino ainda não é suportado na versão atual.",
       "timestamp": "Carimbo de tempo"
     },

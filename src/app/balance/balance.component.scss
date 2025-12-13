@@ -1,6 +1,5 @@
 @import "../../vars.scss";
 
-
 .full-width {
     width: 100%;
 }
@@ -9,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0px 20px 0px;
+    padding: 20px 0;
 }
 
 .eye {
@@ -23,8 +22,6 @@
     }
 }
 
-
-
 .transaction-list-compact {
     display: flex;
     flex-direction: row;
@@ -34,7 +31,6 @@
     column-gap: 10px;
 
     .col-title {
-        // font-weight: bold;
         min-width: 180px;
         display: flex;
     }
@@ -44,9 +40,8 @@
         font-family: "Space Mono";
     }
 
-
     .responsive-card {
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .row {
@@ -105,7 +100,6 @@
     }
 }
 
-
 .mat-accordion .mat-expansion-panel:first-of-type {
     margin-bottom: 10px;
 }
@@ -119,11 +113,9 @@
 
 .mat-expansion-panel-header-description {
     text-align: right;
-    // font-family: "Space Mono";
     flex-grow: initial;
     margin-right: 1px;
 }
-
 
 mat-card {
     width: 100%;
@@ -137,7 +129,6 @@ mat-card {
     padding: 15px;
 }
 
-
 .icon-color-link {
     color: var(--mat-expansion-header-description-color);
 }
@@ -148,7 +139,6 @@ mat-card {
 
 .icon {
     transform: scale(0.8);
-    /* Optional: Adjust the vertical alignment if needed */
     vertical-align: middle;
     cursor: pointer;
 }
@@ -200,7 +190,6 @@ mat-card {
         }
     }
 }
-
 
 .ticks {
     font-size: 1.2em;
@@ -288,3 +277,11 @@ mat-card {
         display: inline;
     }
 }
+
+.sendmany-list { display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,.03); border-radius: 8px; padding: 12px; margin-top: 16px; margin-bottom: 12px; }
+.sendmany-header { margin-bottom: 0; padding-bottom: 8px; }
+.sendmany-item { margin-bottom: 0; gap: 8px; }
+.sendmany-dest { display: flex; align-items: center; gap: 4px; word-break: break-all; }
+.sendmany-amount { white-space: nowrap; }
+.sendmany-toggle { font-size: 1em; }
+@media (max-width: 600px) { .sendmany-item { flex-direction: column; align-items: flex-start; } .sendmany-amount-header { display: none; } }

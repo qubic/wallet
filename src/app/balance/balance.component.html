@@ -398,6 +398,36 @@
                                         </span>
                                     </div>
                                 </div>
+                                <!-- SendMany transfers list (lazy loaded on expand) -->
+                                <ng-container *ngIf="isSendManyTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType)">
+                                    <ng-container *ngIf="getSendManyTransfer(transaction.transactions[0].transaction.txId) as transfers">
+                                        <div class="sendmany-list" *ngIf="isSendManyExpanded(transaction.transactions[0].transaction.txId)">
+                                            <div class="row sendmany-header">
+                                                <span class="label">{{ t("balanceComponent.transaction.destination") }}</span>
+                                                <span class="label sendmany-amount-header">{{ t("balanceComponent.transaction.amount") }}</span>
+                                            </div>
+                                            <div class="row sendmany-item" *ngFor="let transfer of transfers">
+                                                <div class="sendmany-dest disable-area">
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transfer.destId)" target="_blank">
+                                                        {{ getAddressDisplayName(transfer.destId) }}
+                                                    </a>
+                                                    <mat-icon class="icon-color-link icon"
+                                                        matTooltip="{{ t('general.copy.tooltip') }}"
+                                                        [cdkCopyToClipboard]="transfer.destId">content_copy</mat-icon>
+                                                </div>
+                                                <div class="sendmany-amount secondary">
+                                                    {{ transfer.amount | number: '1.0-0' }}&nbsp;{{ t("general.currency") }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div style="text-align: center;">
+                                        <button mat-button class="sendmany-toggle secondary" (click)="toggleSendManyExpanded(transaction)">
+                                            <mat-icon>{{ isSendManyExpanded(transaction.transactions[0].transaction.txId) ? 'expand_less' : 'expand_more' }}</mat-icon>
+                                            {{ isSendManyExpanded(transaction.transactions[0].transaction.txId) ? t("balanceComponent.transaction.hideTransfers") : t("balanceComponent.transaction.showTransfers") }}
+                                        </button>
+                                    </div>
+                                </ng-container>
                             </mat-card-content>
                         </mat-card>
                     </div>

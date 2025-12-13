@@ -415,6 +415,9 @@
       "tick": "刻度",
       "type": "类型",
       "fee": "费用",
+      "amount": "金额",
+      "showTransfers": "显示转账",
+      "hideTransfers": "隐藏转账",
       "assetTransferWarning": "此交易仅在源地址的交易列表中可见。在当前版本中尚不支持在目标地址的交易列表中显示它。",
       "timestamp": "时间戳"
     },

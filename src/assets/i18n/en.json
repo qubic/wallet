@@ -416,6 +416,9 @@
       "type": "Type",
       "timestamp": "Timestamp",
       "fee": "Fee",
+      "amount": "Amount",
+      "showTransfers": "Show Transfers",
+      "hideTransfers": "Hide Transfers",
       "assetTransferWarning": "This transaction is visible only in the list of transactions for the source address. Displaying it in the destination address's list of transactions is not supported yet in the current version."
     },
     "epoch": "Epoch",
