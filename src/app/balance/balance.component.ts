@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
@@ -36,7 +36,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
   public numberLastEpoch = 0;
-  public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
@@ -62,10 +61,9 @@ export class BalanceComponent implements OnInit, OnDestroy {
     private apiArchiver: ApiArchiverService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private us: UpdaterService,
+    public us: UpdaterService,
     private addressNameService: AddressNameService
   ) {
-    this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
 
@@ -156,7 +154,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     if (element === 'element1') {
       this.isShowAllTransactions = false;
       this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.currentTickArchiver.value
+      this.lastProcessedTick = this.us.archiverLatestTick.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
       // Initialize tick range for the current epoch when switching to epochs view
@@ -222,17 +220,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
     }
   }
-
-
-  private getCurrentTickArchiver() {
-    this.apiArchiver.getLatestTick()
-      .subscribe(latestTick => {
-        if (latestTick) {
-          this.currentTickArchiver.next(latestTick);
-        }
-      });
-  }
-
 
   getAllTransactionByPublicId(publicId: string): void {
     if (!this.isShowAllTransactions) {

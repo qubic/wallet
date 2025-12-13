@@ -1,15 +1,42 @@
-mat-form-field {
-    width: 100px;
+:host {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
 }
 
-.loading-btn{
-    width: 20px;
-    height: 20px;
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    padding-left: 6px;
+    padding-right: 2px;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 1;
+    }
 }
 
-.status-buttons .loading-btn-wrapper {
-    display: inline-block;
-    width: 25px; 
-    height: 0px; 
-    text-align: center;
+.trx-pending {
+    color: #f5a623; // Yellow/amber for pending
 }
+
+.transfer-success {
+    color: #4caf50; // Green for success
+}
+
+.transfer-failed {
+    color: #f44336; // Red for failure
+}
+
+.trx-not-executed {
+    color: #f44336; // Red for not executed
+}
+
+.trx-executed {
+    color: #4caf50; // Green for executed
+}
+
