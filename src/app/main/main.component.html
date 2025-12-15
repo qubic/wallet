@@ -80,7 +80,7 @@
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
             </div>
             <div class="text-center">
-              <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
+              <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: address.publicId, isOnlyWatch: address.isOnlyWatch }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -118,7 +118,7 @@
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
             </div>
             <div class="text-center">
-              <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
+              <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: address.publicId, isOnlyWatch: address.isOnlyWatch }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -193,7 +193,7 @@
           {{ t("seedOverviewComponent.table.actions.title") }}
         </th>
         <td mat-cell *matCellDef="let seed" class="tableActionLine alignRight">
-          <ng-container *ngTemplateOutlet="actions; context: seed"></ng-container>
+          <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: seed.publicId, isOnlyWatch: seed.isOnlyWatch }"></ng-container>
         </td>
       </ng-container>
 
@@ -207,7 +207,7 @@
       </tr>
     </table>
   </div>
-  <ng-template #actions let-publicId="publicId">
+  <ng-template #actions let-publicId="publicId" let-isOnlyWatch="isOnlyWatch">
     <button *ngIf="isNotWatchOnly(publicId) && hasAssets(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
@@ -229,7 +229,7 @@
       <mat-icon>explore</mat-icon>
     </button>
     <br *ngIf="walletService.privateKey && !isTable">
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
+    <button *ngIf="!isOnlyWatch" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
       (click)="reveal(publicId)">
       <mat-icon svgIcon="key_vertical"></mat-icon>
     </button>

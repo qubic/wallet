@@ -81,8 +81,12 @@
     "title": "Adres Bilgisi",
     "publicId": "Adres Kimliği",
     "privateId": "55 karakterlik Özel Anahtar",
+    "privateSeedLabel": "55 karakterlik Özel Seed",
+    "revealSeedWarningTitle": "Özel Seed'inizi paylaşmayın!",
+    "revealSeedWarningDescription": "Birisi özel seed'inize sahip olursa, hesabınız üzerinde tam kontrole sahip olur.",
     "buttons": {
-      "close": "Kapat"
+      "reveal": "Göster",
+      "hide": "Gizle"
     }
   },
   "assetsComponent": {

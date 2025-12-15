@@ -1,21 +1,49 @@
 <ng-container *transloco="let t">
   <h2 mat-dialog-title>{{ t("revealSeedComponent.title") }} - {{addressAlias}}</h2>
-  <mat-dialog-content>
-    <div class="seedInput">
-      <strong>{{ t("revealSeedComponent.publicId") }}</strong>
-      <div class="copy" [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="data.publicId">
-        {{ data.publicId }}
-      </div>
-      <strong *ngIf="!data.isOnlyWatch">{{ t("revealSeedComponent.privateId") }}</strong>
-      <div class="copy" [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="s">
-        {{ s }}
+  <mat-dialog-content class="dialog-content-wrapper">
+    <div class="warning">
+      <mat-icon>warning</mat-icon>
+      <div class="warning-content">
+        <strong>{{ t("revealSeedComponent.revealSeedWarningTitle") }}</strong>
+        <p>{{ t("revealSeedComponent.revealSeedWarningDescription") }}</p>
       </div>
     </div>
-    <br>
+    <div class="seedInput">
+      <strong *ngIf="!data.isOnlyWatch">{{ t("revealSeedComponent.privateSeedLabel") }}</strong>
+      <!-- Hidden state: show fake seed with blur (secure - no actual data) -->
+      <div *ngIf="!isRevealed" class="seed-row hidden-seed">
+        <div class="copy">
+          {{ fakeSeed }}
+        </div>
+        <button mat-icon-button disabled>
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      <!-- Revealed state: show actual seed -->
+      <div *ngIf="isRevealed" class="seed-row">
+        <div class="copy" [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="s">
+          {{ s }}
+        </div>
+        <button mat-icon-button [matTooltip]="t('general.copy.tooltip')" [cdkCopyToClipboard]="s">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+    </div>
+    <!-- QR code section -->
+    <div class="qrcode-container">
+      <qrcode *ngIf="isRevealed && s" [qrdata]="s" [width]="qrCodeSize" [errorCorrectionLevel]="'M'"></qrcode>
+      <div *ngIf="!isRevealed" class="qr-placeholder">
+        <qrcode [qrdata]="fakeSeed" [width]="qrCodeSize" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+    </div>
+    <button mat-stroked-button (click)="toggleReveal()" class="reveal-btn">
+      <mat-icon>{{ isRevealed ? 'visibility_off' : 'visibility' }}</mat-icon>
+      {{ isRevealed ? t("revealSeedComponent.buttons.hide") : t("revealSeedComponent.buttons.reveal") }}
+    </button>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>
-      {{ t("revealSeedComponent.buttons.close") }}
+      {{ t("general.buttons.close") }}
     </button>
   </mat-dialog-actions>
 </ng-container>

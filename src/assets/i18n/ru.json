@@ -81,8 +81,12 @@
     "title": "Информация о счете",
     "publicId": "ID счета",
     "privateId": "Пароль счета",
+    "privateSeedLabel": "55-символьный приватный Seed",
+    "revealSeedWarningTitle": "Не делитесь своим приватным Seed!",
+    "revealSeedWarningDescription": "Если кто-то получит ваш приватный seed, он получит полный контроль над вашим счетом.",
     "buttons": {
-      "close": "Закрыть"
+      "reveal": "Показать",
+      "hide": "Скрыть"
     }
   },
   "assetsComponent": {
