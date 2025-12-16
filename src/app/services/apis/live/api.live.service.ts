@@ -32,7 +32,7 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl + "/v1";
+    private basePath = environment.apiUrl + "/live/v1";
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }

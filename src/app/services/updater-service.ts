@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, NetworkBalance, QubicAsset, Transaction } from './api.model';
-import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';
-import { ApiArchiverService } from './api.archiver.service';
+import { ApiQueryService } from './apis/query/api.query.service';
+import { EpochTickInterval, TransactionRecord } from './apis/query/api.query.model';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -45,16 +45,17 @@ export class UpdaterService {
   private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
-  public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
-  private status!: StatusArchiver;
+  public transactionsArray: BehaviorSubject<TransactionRecord[]> = new BehaviorSubject<TransactionRecord[]>([]);
+  private epochIntervals: EpochTickInterval[] = [];
+  private currentEpoch: number = 0;
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiQuery: ApiQueryService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
     this.init();
   }
 
   private init(): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    this.getStatusArchiver();
+    this.getArchiveStatus();
     this.getCurrentTickArchiver();
     this.getTickInfo();
     this.getCurrentBalance();
@@ -64,7 +65,7 @@ export class UpdaterService {
     this.getTransactionsArchiver();
     // every 30 seconds
     setInterval(() => {
-      this.getStatusArchiver();
+      this.getArchiveStatus();
       this.getCurrentTickArchiver();
       this.getTickInfo();
     }, 30000);
@@ -166,15 +167,20 @@ export class UpdaterService {
 
   //#region 
 
-  //**  new Archiver Api */
+  //**  Query API */
 
-  private getStatusArchiver() {
-    this.apiArchiver.getStatus().subscribe(s => {
-      if (s) {
-        this.status = s;
+  private getArchiveStatus() {
+    forkJoin({
+      lastTick: this.apiQuery.getLastProcessedTick(),
+      intervals: this.apiQuery.getProcessedTickIntervals()
+    }).subscribe({
+      next: ({ lastTick, intervals }) => {
+        this.epochIntervals = intervals;
+        this.currentEpoch = lastTick.epoch;
+      },
+      error: (errorResponse) => {
+        this.processError(errorResponse, false);
       }
-    }, errorResponse => {
-      this.processError(errorResponse, false);
     });
   }
 
@@ -204,64 +210,112 @@ export class UpdaterService {
 
     this.tickLoading = true;
 
-    this.apiArchiver.getLatestTick().subscribe(latestTick => {
-      if (latestTick) {
-        this.archiverLatestTick.next(latestTick);
-        if (this.transactionsArray.getValue().length <= 0) {
-          this.getTransactionsArchiver();
+    this.apiQuery.getLastProcessedTick().subscribe({
+      next: (response) => {
+        if (response) {
+          this.archiverLatestTick.next(response.tickNumber);
+          if (this.transactionsArray.getValue().length <= 0) {
+            this.getTransactionsArchiver();
+          }
         }
+        this.tickLoading = false;
+      },
+      error: (errorResponse) => {
+        this.processError(errorResponse, false);
+        this.tickLoading = false;
       }
-      this.tickLoading = false;
-    }, errorResponse => {
-      this.processError(errorResponse, false);
-      this.tickLoading = false;
     });
   }
 
 
   private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || !this.status))
+    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || this.epochIntervals.length === 0))
       return;
 
     if (!publicIds)
       publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
 
-    let epoch = this.status.lastProcessedTick.epoch;
+    // Calculate the initial tick based on the target epoch
+    let targetEpoch = this.currentEpoch - this.numberLastEpoch;
     let initialTick = 0;
 
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
-
-    epoch = epoch - this.numberLastEpoch;
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
+    // Find the first tick of the target epoch
+    const targetEpochInterval = this.epochIntervals.find(e => e.epoch === targetEpoch);
+    if (targetEpochInterval) {
+      initialTick = targetEpochInterval.firstTick;
+    }
 
     this.transactionArchiverLoading = true;
 
-
     if (this.walletService.getSeeds().length > 0) {
-      const observables: Observable<TransactionsArchiver[]>[] = publicIds.map(publicId =>
-        this.apiArchiver.getTransactions(publicId, initialTick, this.currentTick.value)
+      const observables = publicIds.map(publicId =>
+        this.apiQuery.getTransactionsForIdentity({
+          identity: publicId,
+          ranges: {
+            tickNumber: {
+              gte: initialTick.toString(),
+              lte: this.currentTick.value.toString()
+            }
+          },
+          pagination: {
+            size: 250
+          }
+        })
       );
 
       // Combine all observables and collect results
-      forkJoin(observables).subscribe(results => {
-        // Combine all results into a single array
-        const allTransactions = results.flat();
+      forkJoin(observables).subscribe({
+        next: (results) => {
+          // Transform and combine all results into TransactionRecord[]
+          const allTransactions: TransactionRecord[] = [];
 
-        // Update BehaviorSubject with the combined results
-        this.transactionsArray.next(allTransactions);
-        this.transactionArchiverLoading = false;
-      }, errorResponse => {
-        console.error('errorResponse:', errorResponse);
-        this.transactionArchiverLoading = false;
+          results.forEach((response, index) => {
+            const publicId = publicIds![index];
+
+            // Group transactions by tick
+            const tickMap = new Map<number, TransactionRecord>();
+
+            response.transactions.forEach(tx => {
+              if (!tickMap.has(tx.tickNumber)) {
+                tickMap.set(tx.tickNumber, {
+                  tickNumber: tx.tickNumber,
+                  identity: publicId,
+                  transactions: []
+                });
+              }
+
+              tickMap.get(tx.tickNumber)!.transactions.push({
+                transaction: {
+                  sourceId: tx.source,
+                  destId: tx.destination,
+                  amount: tx.amount,
+                  tickNumber: tx.tickNumber,
+                  inputType: tx.inputType,
+                  inputSize: tx.inputSize,
+                  inputHex: tx.inputData || '',
+                  signatureHex: tx.signature || '',
+                  txId: tx.hash
+                },
+                timestamp: tx.timestamp,
+                moneyFlew: tx.moneyFlew
+              });
+            });
+
+            allTransactions.push(...Array.from(tickMap.values()));
+          });
+
+          // Sort by tick number descending (newest first)
+          allTransactions.sort((a, b) => b.tickNumber - a.tickNumber);
+
+          // Update BehaviorSubject with the combined results
+          this.transactionsArray.next(allTransactions);
+          this.transactionArchiverLoading = false;
+        },
+        error: (errorResponse) => {
+          console.error('errorResponse:', errorResponse);
+          this.transactionArchiverLoading = false;
+        }
       });
     }
   }
