@@ -194,3 +194,8 @@ export interface AssetTransfer {
   units: string
   newOwnerAndPossessor: string
 }
+
+export interface SendManyTransfer {
+  destId: string
+  amount: string
+}

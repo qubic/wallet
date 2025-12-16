@@ -781,6 +781,90 @@ h2 {
   }
 }
 
+// Mobile expansion panel header styles for balance component
+@media (max-width: 600px) {
+  app-balance {
+    // Override Angular Material height CSS variable
+    .mat-expansion-panel {
+      --mat-expansion-header-collapsed-state-height: auto;
+      --mat-expansion-header-expanded-state-height: auto;
+    }
+
+    .mat-expansion-panel-header {
+      flex-wrap: wrap !important;
+      height: auto !important;
+      min-height: 36px !important;
+      padding: 4px 28px 4px 4px !important;
+      position: relative !important;
+    }
+
+    .mat-expansion-panel-header .mat-content {
+      flex-wrap: wrap !important;
+      row-gap: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .mat-expansion-panel-header-title {
+      flex-basis: 100% !important;
+      flex-shrink: 1 !important;
+      flex-grow: 0 !important;
+      margin-right: 0 !important;
+      margin-bottom: 0 !important;
+      padding-left: 26px !important;
+      padding-right: 56px !important;
+      max-width: calc(100% - 56px) !important;
+    }
+
+    .mat-expansion-panel-header-title .display-publicid {
+      display: inline-block !important;
+      max-width: calc(100% - 38px) !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      vertical-align: middle !important;
+    }
+
+    .mat-expansion-panel-header-description {
+      flex-basis: 100% !important;
+      flex-grow: 0 !important;
+      text-align: left !important;
+      justify-content: flex-start !important;
+      margin: 0 !important;
+      margin-top: 0 !important;
+      padding-left: 34px !important;
+    }
+
+    // Status icons positioned on the left
+    qli-transfer-status,
+    .status-icon {
+      position: absolute !important;
+      left: 4px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+
+    // Repeat button positioned to the left of the arrow
+    .mat-expansion-panel-header-title button[mat-icon-button] {
+      position: absolute !important;
+      right: 32px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+
+    // Expand arrow positioned on the right
+    .mat-expansion-indicator {
+      position: absolute !important;
+      right: 10px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+
+    .mat-expanded .mat-expansion-indicator {
+      transform: translateY(-50%) rotate(180deg) !important;
+    }
+  }
+}
+
 /* balance page end */
 
 .is-mobile {
