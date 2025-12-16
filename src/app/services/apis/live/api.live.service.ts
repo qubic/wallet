@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import {
-    ActiveIpo,
     ActiveIposResponse,
     AssetsIssuedResponse,
     AssetsOwnedResponse,
@@ -16,7 +15,6 @@ import {
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { lastValueFrom, map, Observable, of } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { WalletService } from '../../wallet.service';
 import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from '@qubic-lib/qubic-ts-library/dist/crypto'
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
@@ -35,8 +33,6 @@ const qHelper = new QubicHelper();
 
 export class ApiLiveService {
     private basePath = environment.apiUrl + "/live/v1";
-
-    public activeIpos$: BehaviorSubject<ActiveIpo[] | null> = new BehaviorSubject<ActiveIpo[] | null>(null);
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
@@ -220,9 +216,7 @@ export class ApiLiveService {
             }
         ).pipe(
             map((response: ActiveIposResponse) => {
-                const ipos = response?.ipos || [];
-                this.activeIpos$.next(ipos);
-                return ipos;
+                return response?.ipos || [];
             })
         );
     }

@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { MatInputModule } from '@angular/material/input';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -158,7 +157,6 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatBadgeModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
