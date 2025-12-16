@@ -15,11 +15,6 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    .eye-icon {
-        cursor: pointer;
-        margin-left: 10px;
-    }
 }
 
 .transaction-list-compact {
@@ -29,16 +24,6 @@
     flex-wrap: wrap;
     align-items: center;
     column-gap: 10px;
-
-    .col-title {
-        min-width: 180px;
-        display: flex;
-    }
-
-    .copy {
-        width: inherit;
-        font-family: "Space Mono";
-    }
 
     .responsive-card {
         margin-bottom: 0;
@@ -75,6 +60,10 @@
             align-items: flex-start;
         }
 
+        .col-value {
+            text-align: left;
+        }
+
         .value {
             text-align: left;
             margin-top: 4px;
@@ -93,10 +82,6 @@
 
     .send {
         color: red;
-    }
-
-    .trans-date {
-        font-size: 0.9em;
     }
 }
 
@@ -280,8 +265,8 @@ mat-card {
 
 .sendmany-list { display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,.03); border-radius: 8px; padding: 12px; margin-top: 16px; margin-bottom: 12px; }
 .sendmany-header { margin-bottom: 0; padding-bottom: 8px; }
-.sendmany-item { margin-bottom: 0; gap: 8px; }
-.sendmany-dest { display: flex; align-items: center; gap: 4px; word-break: break-all; }
-.sendmany-amount { white-space: nowrap; }
+.sendmany-item { margin-bottom: 0; }
+.sendmany-dest { word-break: break-all; flex: 1; min-width: 0; }
+.sendmany-amount { white-space: nowrap; text-align: right; }
 .sendmany-toggle { font-size: 1em; }
-@media (max-width: 600px) { .sendmany-item { flex-direction: column; align-items: flex-start; } .sendmany-amount-header { display: none; } }
+@media (max-width: 600px) { .sendmany-item { flex-direction: column; align-items: flex-start; } .sendmany-amount { text-align: left; margin-top: 4px; } }
