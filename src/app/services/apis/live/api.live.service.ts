@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+    ActiveIposResponse,
     AssetsIssuedResponse,
     AssetsOwnedResponse,
     AssetsPossessedResponse,
@@ -14,7 +15,6 @@ import {
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { lastValueFrom, map, Observable, of } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { WalletService } from '../../wallet.service';
 import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from '@qubic-lib/qubic-ts-library/dist/crypto'
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
@@ -32,7 +32,7 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl + "/v1";
+    private basePath = environment.apiUrl + "/live/v1";
 
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
@@ -202,6 +202,21 @@ export class ApiLiveService {
                 } else {
                     throw new Error('Invalid response format');
                 }
+            })
+        );
+    }
+
+
+    public getActiveIpos() {
+        let localVarPath = `/ipos/active`;
+        return this.httpClient.request<ActiveIposResponse>('get', `${this.basePath}${localVarPath}`,
+            {
+                context: new HttpContext(),
+                responseType: 'json'
+            }
+        ).pipe(
+            map((response: ActiveIposResponse) => {
+                return response?.ipos || [];
             })
         );
     }
