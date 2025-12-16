@@ -30,8 +30,8 @@ export class TransferStatusComponent {
   get status(): ComputedTransactionStatus {
     // If archived transaction is provided, use it
     if (this.archivedTx) {
-      const { inputType, amount } = this.archivedTx.transaction;
-      return computeArchivedTransactionStatus(inputType, amount, this.archivedTx.moneyFlew);
+      const { inputType, amount, destId } = this.archivedTx.transaction;
+      return computeArchivedTransactionStatus(inputType, amount, this.archivedTx.moneyFlew, destId);
     }
 
     // Otherwise use the regular transaction object (qli - only pending/not-executed)

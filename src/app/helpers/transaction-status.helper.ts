@@ -3,6 +3,8 @@
  * Aligns with wallet-app and explorer-frontend logic.
  */
 
+import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
+
 export type ComputedTransactionStatus = 'trx-pending' | 'transfer-success' | 'transfer-failed' | 'trx-not-executed' | 'trx-executed';
 
 export interface TransactionStatusConfig {
@@ -47,18 +49,36 @@ export function getStatusConfig(status: ComputedTransactionStatus): TransactionS
 }
 
 /**
+ * Checks if a transaction is a SendMany transaction (QUTIL smart contract).
+ */
+export function isSendManyTransaction(destId: string | undefined, inputType: number): boolean {
+  return destId === QubicDefinitions.QUTIL_ADDRESS && inputType === QubicDefinitions.QUTIL_SENDMANY_INPUT_TYPE;
+}
+
+/**
+ * Checks if a transaction is a simple transfer (inputType 0 with amount > 0).
+ */
+export function isSimpleTransfer(inputType: number, amount: number): boolean {
+  return inputType === 0 && amount > 0;
+}
+
+/**
  * Determines the outcome of a confirmed transaction based on type and money flow.
  * Shared logic between regular and archived transaction status computation.
  */
 function determineConfirmedOutcome(
   inputType: number,
   amount: number,
-  moneyFlew: boolean
+  moneyFlew: boolean,
+  destId?: string
 ): ComputedTransactionStatus {
-  // Simple transfer: inputType=0 AND amount>0
-  if (inputType === 0 && amount > 0) {
+  const isSendMany = isSendManyTransaction(destId, inputType);
+
+  // Simple transfer or SendMany: show success/failure based on moneyFlew
+  if (isSimpleTransfer(inputType, amount) || isSendMany) {
     return moneyFlew ? 'transfer-success' : 'transfer-failed';
   }
+
   // SC call or 0-amount: always "executed"
   return 'trx-executed';
 }
@@ -95,13 +115,15 @@ export function computeTransactionStatus(
  * @param inputType - The transaction input type (0 = simple transfer)
  * @param amount - The transaction amount (as string from archiver)
  * @param moneyFlew - Whether the money actually moved
+ * @param destId - The destination address (used to identify SendMany transactions)
  * @returns The computed status
  */
 export function computeArchivedTransactionStatus(
   inputType: number,
   amount: string | number,
-  moneyFlew: boolean
+  moneyFlew: boolean,
+  destId?: string
 ): ComputedTransactionStatus {
   const amountNum = typeof amount === 'string' ? parseInt(amount, 10) : amount;
-  return determineConfirmedOutcome(inputType, amountNum, moneyFlew);
+  return determineConfirmedOutcome(inputType, amountNum, moneyFlew, destId);
 }

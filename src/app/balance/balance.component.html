@@ -60,7 +60,7 @@
                                     {{ transaction.created | dateTime }}
                                 </span>
                                 <button
-                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type)"
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                             </mat-panel-title>
@@ -251,7 +251,7 @@
                                 &nbsp;
                                 {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
-                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType)" mat-icon-button
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType, +transaction.transactions[0].transaction.amount)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>

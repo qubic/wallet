@@ -1,15 +1,13 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
+import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
@@ -18,8 +16,8 @@ import { AssetTransfer, SendManyTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
-import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { isSendManyTransaction, isSimpleTransfer } from '../helpers/transaction-status.helper';
 
 @Component({
   selector: 'app-balance',
@@ -31,6 +29,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   shortenAddress = shortenAddress;
+  isSendManyTransaction = isSendManyTransaction;
+  isSimpleTransfer = isSimpleTransfer;
   ExplorerUrlHelper = ExplorerUrlHelper;
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
@@ -57,7 +57,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private transloco: TranslocoService,
-    private api: ApiService,
     private apiArchiver: ApiArchiverService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
@@ -251,13 +250,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if transaction is a standard Qubic transfer (inputType 0)
-   */
-  isStandardQubicTransfer(inputType: number): boolean {
-    return inputType === 0;
-  }
-
-  /**
    * Check if transaction is a QX asset transfer (inputType 2 to QX smart contract)
    * This is the only type of asset transfer that should route to the assets component
    */
@@ -268,11 +260,11 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   /**
    * Check if transaction can be repeated in the wallet
-   * Only standard Qubic transfers (inputType 0) and QX asset transfers (inputType 2) are repeatable
+   * Only simple transfers (inputType 0 with amount > 0) and QX asset transfers (inputType 2) are repeatable
    * Other smart contract transactions should use their dedicated dapp frontend
    */
-  isRepeatableTransaction(destId: string, inputType: number): boolean {
-    return this.isStandardQubicTransfer(inputType) || this.isQxAssetTransfer(destId, inputType);
+  isRepeatableTransaction(destId: string, inputType: number, amount: number): boolean {
+    return isSimpleTransfer(inputType, amount) || this.isQxAssetTransfer(destId, inputType);
   }
 
   getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {
@@ -316,13 +308,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   getAssetTransfer(txId: string): AssetTransfer | null {
     return this.assetTransferData[txId] || null;
-  }
-
-  /**
-   * Check if transaction is a SendMany transaction (inputType 1 to QUTIL smart contract)
-   */
-  isSendManyTransaction(destId: string, inputType: number): boolean {
-    return destId === QubicDefinitions.QUTIL_ADDRESS && inputType === QubicDefinitions.QUTIL_SENDMANY_INPUT_TYPE;
   }
 
   /**
@@ -571,7 +556,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   repeat(transaction: Transaction) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.type)) {
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)) {
       console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
       return;
     }
@@ -596,7 +581,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   async repeatTransactionArchiver(transaction: TransactionDetails) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType)) {
+    const amount = parseInt(transaction.amount, 10);
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, amount)) {
       console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
       return;
     }
