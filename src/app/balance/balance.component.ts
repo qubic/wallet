@@ -288,15 +288,17 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async checkAndParseAssetTransfer(transaction: any): Promise<void> {
-    const txId = transaction.transactions[0].transaction.txId;
+  async checkAndParseAssetTransfer(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
 
-    if (this.isQxAssetTransfer(
-      transaction.transactions[0].transaction.destId,
-      transaction.transactions[0].transaction.inputType
-    )) {
+    const txId = firstTx.transaction.txId;
+
+    if (this.isQxAssetTransfer(firstTx.transaction.destId, firstTx.transaction.inputType)) {
       try {
-        const assetData = await this.getAssetsTransfers(transaction.transactions[0].transaction.inputHex);
+        const assetData = await this.getAssetsTransfers(firstTx.transaction.inputHex);
         if (assetData) {
           this.assetTransferData[txId] = assetData;
         }
@@ -325,15 +327,17 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }));
   }
 
-  async checkAndParseSendManyTransfer(transaction: any): Promise<void> {
-    const txId = transaction.transactions[0].transaction.txId;
+  async checkAndParseSendManyTransfer(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
 
-    if (this.isSendManyTransaction(
-      transaction.transactions[0].transaction.destId,
-      transaction.transactions[0].transaction.inputType
-    )) {
+    const txId = firstTx.transaction.txId;
+
+    if (this.isSendManyTransaction(firstTx.transaction.destId, firstTx.transaction.inputType)) {
       try {
-        const transfers = await this.getSendManyTransfers(transaction.transactions[0].transaction.inputHex);
+        const transfers = await this.getSendManyTransfers(firstTx.transaction.inputHex);
         if (transfers && transfers.length > 0) {
           this.sendManyTransferData[txId] = transfers;
         }
@@ -347,8 +351,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
     return this.sendManyTransferData[txId] || null;
   }
 
-  async toggleSendManyExpanded(transaction: any): Promise<void> {
-    const txId = transaction.transactions[0].transaction.txId;
+  async toggleSendManyExpanded(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
+
+    const txId = firstTx.transaction.txId;
 
     // Parse on first expand if not already parsed
     if (!this.sendManyTransferData[txId]) {

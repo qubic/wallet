@@ -1,3 +1,5 @@
+@import "../../../vars.scss";
+
 :host {
     display: inline-flex;
     align-items: center;
@@ -21,22 +23,22 @@
 }
 
 .trx-pending {
-    color: #f5a623; // Yellow/amber for pending
+    color: $trx-pending-color;
 }
 
 .transfer-success {
-    color: #4caf50; // Green for success
+    color: $trx-success-color;
 }
 
 .transfer-failed {
-    color: #f44336; // Red for failure
+    color: $trx-failure-color;
 }
 
 .trx-not-executed {
-    color: #f44336; // Red for not executed
+    color: $trx-failure-color;
 }
 
 .trx-executed {
-    color: #4caf50; // Green for executed
+    color: $trx-success-color;
 }
 
