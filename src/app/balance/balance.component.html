@@ -47,7 +47,7 @@
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
+                                <tx-status [transaction]="transaction" [lastArchivedTick]="(us.archiverLatestTick | async) ?? undefined"></tx-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
                                     <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
@@ -60,7 +60,7 @@
                                     {{ transaction.created | dateTime }}
                                 </span>
                                 <button
-                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type)"
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                             </mat-panel-title>
@@ -236,12 +236,7 @@
                 <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <span class="status-icon" *ngIf="+transaction.transactions[0].transaction.amount > 0">
-                                <mat-icon *ngIf="transaction.transactions[0].moneyFlew" style="color: yellowgreen;"
-                                    matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">done</mat-icon>
-                                <mat-icon *ngIf="!transaction.transactions[0].moneyFlew" style="color: red"
-                                    matTooltip="{{ t('balanceComponent.transactions.status.dismissed.tooltip') }}">clear</mat-icon>
-                            </span>
+                            <tx-status [archivedTx]="transaction.transactions[0]"></tx-status>
                             &nbsp;
                             <span class="display-publicid disable-area">
                                 <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.sourceId)"
@@ -256,7 +251,7 @@
                                 &nbsp;
                                 {{ transaction.transactions[0].timestamp | dateTime }}
                             </span>
-                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType)" mat-icon-button
+                            <button *ngIf="isOwnId(transaction.transactions[0].transaction.sourceId) && isRepeatableTransaction(transaction.transactions[0].transaction.destId, transaction.transactions[0].transaction.inputType, +transaction.transactions[0].transaction.amount)" mat-icon-button
                                 matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                 (click)="repeatTransactionArchiver(transaction.transactions[0].transaction)"><mat-icon>repeat</mat-icon></button>
                         </mat-panel-title>

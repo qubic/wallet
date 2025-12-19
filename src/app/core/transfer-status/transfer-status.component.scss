@@ -1,15 +1,44 @@
-mat-form-field {
-    width: 100px;
+@import "../../../vars.scss";
+
+:host {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
 }
 
-.loading-btn{
-    width: 20px;
-    height: 20px;
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    padding-left: 6px;
+    padding-right: 2px;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 1;
+    }
 }
 
-.status-buttons .loading-btn-wrapper {
-    display: inline-block;
-    width: 25px; 
-    height: 0px; 
-    text-align: center;
+.trx-pending {
+    color: $trx-pending-color;
 }
+
+.transfer-success {
+    color: $trx-success-color;
+}
+
+.transfer-failed {
+    color: $trx-failure-color;
+}
+
+.trx-not-executed {
+    color: $trx-failure-color;
+}
+
+.trx-executed {
+    color: $trx-success-color;
+}
+
