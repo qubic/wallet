@@ -383,7 +383,6 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     window.open(ExplorerUrlHelper.getAddressUrl(publicId), '_blank');
   }
 
-
   assets(publicId: string) {
     const confirmDialo = this.dialog.open(AssetsDialog, {
       restoreFocus: false, data: {
