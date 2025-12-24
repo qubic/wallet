@@ -228,18 +228,22 @@
       [title]="t('seedOverviewComponent.table.actions.openExplorer')">
       <mat-icon>explore</mat-icon>
     </button>
-    <br *ngIf="walletService.privateKey && !isTable">
-    <button *ngIf="!isOnlyWatch" mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
-      (click)="reveal(publicId)">
-      <mat-icon svgIcon="key_vertical"></mat-icon>
+    <button mat-icon-button class="icon-color-link" [matMenuTriggerFor]="accountMenu">
+      <mat-icon>more_vert</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.editSeed')"
-      (click)="edit(publicId)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.deleteSeed')"
-      (click)="delete(publicId)">
-      <mat-icon>delete</mat-icon>
-    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button *ngIf="!isOnlyWatch" mat-menu-item (click)="reveal(publicId)">
+        <mat-icon svgIcon="key_vertical"></mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.revealSeed') }}</span>
+      </button>
+      <button mat-menu-item (click)="edit(publicId)">
+        <mat-icon>edit</mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.editSeed') }}</span>
+      </button>
+      <button mat-menu-item class="delete-action" (click)="delete(publicId)">
+        <mat-icon>delete_outline</mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.deleteSeed') }}</span>
+      </button>
+    </mat-menu>
   </ng-template>
 </ng-container>
