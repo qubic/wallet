@@ -79,6 +79,29 @@ mat-card {
     margin-bottom: 20px;
 }
 
+.dashboard-wallet-name {
+    display: flex;
+    max-width: 100%;
+
+    .alias-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+        max-width: 100%;
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .watch-icon {
+            flex-shrink: 0;
+        }
+    }
+}
+
 ::ng-deep {
     .is-mobile {
         mat-card {

@@ -94,7 +94,12 @@
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name">
-              {{ address.alias }}
+              <div class="alias-wrapper">
+                <span>{{ address.alias }}</span>
+                <mat-icon *ngIf="address.isOnlyWatch" class="watch-icon" inline>
+                  visibility
+                </mat-icon>
+              </div>
             </div>
             <br>
             <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
