@@ -364,8 +364,7 @@
         "max.tooltip": "Set to maximum available amount on this Seed",
         "error": {
           "required": "Amount is required",
-          "min": "Amount must be a minimum of 1",
-          "notInteger": "Decimals are not allowed. Only whole units are accepted"
+          "min": "Amount must be a minimum of 1"
         }
       },
       "tick": {

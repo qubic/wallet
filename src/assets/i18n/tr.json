@@ -363,8 +363,7 @@
         "max.tooltip": "Cüzdandaki mevcut maksimum tutar",
         "error": {
           "required": "Tutar gerekli",
-          "min": "Tutar en az 1 olmalıdır",
-          "notInteger": "Ondalık sayılara izin verilmez. Yalnızca tam birimler kabul edilir"
+          "min": "Tutar en az 1 olmalıdır"
         }
       },
       "tick": {

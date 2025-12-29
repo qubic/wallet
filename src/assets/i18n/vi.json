@@ -362,8 +362,7 @@
         "max.tooltip": "Đặt tối đa số có sẵn trên Seed này",
         "error": {
           "required": "Yêu cầu số lượng",
-          "min": "Số lượng tối thiểu là 1",
-          "notInteger": "Không cho phép số thập phân. Chỉ chấp nhận đơn vị nguyên"
+          "min": "Số lượng tối thiểu là 1"
         }
       },
       "tick": {
