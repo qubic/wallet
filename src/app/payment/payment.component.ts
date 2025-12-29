@@ -221,20 +221,28 @@ export class PaymentComponent implements OnInit, OnDestroy {
               return (data - this.walletService.getSettings().tickAddition);
             }
           })).subscribe(async tick => {
-            var qtx = new QubicTransaction();
-            await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick + this.walletService.getSettings().tickAddition).build(s);
+            try {
+              var qtx = new QubicTransaction();
+              await qtx.setSourcePublicKey(this.transferForm.controls.sourceId.value!).setDestinationPublicKey(destinationId!).setAmount(this.transferForm.controls.amount.value!).setTick(tick + this.walletService.getSettings().tickAddition).build(s);
 
-            var publishResult = await this.transactionService.publishTransaction(qtx);
+              var publishResult = await this.transactionService.publishTransaction(qtx);
 
-            if (publishResult && publishResult.success) {
-              this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0') }), this.t.translate('general.close'), {
-                duration: 10000,
-              });
-              this.isBroadcasting = false;
-              this.router.navigate(['/']);
-            }
-            else {
-              this._snackBar.open(publishResult.message ?? this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
+              if (publishResult && publishResult.success) {
+                this._snackBar.open(this.t.translate('paymentComponent.messages.storedForPropagation', { tick: this.decimalPipe.transform(qtx.tick, '1.0-0') }), this.t.translate('general.close'), {
+                  duration: 10000,
+                });
+                this.isBroadcasting = false;
+                this.router.navigate(['/']);
+              }
+              else {
+                this._snackBar.open(publishResult.message ?? this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
+                  duration: 10000,
+                  panelClass: "error"
+                });
+                this.isBroadcasting = false;
+              }
+            } catch (error) {
+              this._snackBar.open(this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
                 duration: 10000,
                 panelClass: "error"
               });
