@@ -107,8 +107,7 @@
       "possessedAmount": "Besessene Menge",
       "tick": "Gültig für Tick {{tick}}",
       "reportingNodes": "Berichtsknoten",
-      "issuerIdentity": "Identität des Ausstellers",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Identität des Ausstellers"
     },
     "buttons": {
       "close": "Schließen",

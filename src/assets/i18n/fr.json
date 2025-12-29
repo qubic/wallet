@@ -107,8 +107,7 @@
       "possessedAmount": "Quantité en Possession",
       "tick": "Valide pour le Tick {{tick}}",
       "reportingNodes": "Nœuds Rapporteurs",
-      "issuerIdentity": "Identité de l'Émetteur",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Identité de l'Émetteur"
     },
     "buttons": {
       "close": "Fermer",

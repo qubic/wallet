@@ -107,8 +107,7 @@
       "possessedAmount": "Частичное владение",
       "tick": "Подтверждено тиком {{tick}}",
       "reportingNodes": "Отчетная Нода",
-      "issuerIdentity": "Идентификатор владельца",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Идентификатор владельца"
     },
     "buttons": {
       "close": "Закрыть",

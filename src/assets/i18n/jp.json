@@ -107,8 +107,7 @@
       "possessedAmount": "保有量",
       "tick": "{{tick}}のティックで有効",
       "reportingNodes": "報告ノード",
-      "issuerIdentity": "発行者ID",
-      "managedBy": "Managed By"
+      "issuerIdentity": "発行者ID"
     },
     "buttons": {
       "close": "閉じる",

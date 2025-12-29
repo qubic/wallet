@@ -107,8 +107,7 @@
       "possessedAmount": "İşlem Gören Tutar",
       "tick": "{{tick}} Tick için geçerlidir",
       "reportingNodes": "Raporlama Düğümleri",
-      "issuerIdentity": "Veren Kimliği",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Veren Kimliği"
     },
     "buttons": {
       "close": "Kapat",
