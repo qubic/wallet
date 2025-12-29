@@ -6,7 +6,14 @@
     h3 {
         font-weight: bold;
         margin-bottom: 0px;
-        ;
+    }
+}
+
+::ng-deep .delete-action {
+    color: var(--warn-color) !important;
+
+    mat-icon {
+        color: var(--warn-color) !important;
     }
 }
 
