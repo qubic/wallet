@@ -362,7 +362,8 @@
         "max.tooltip": "Establecer al monto máximo disponible para este Seed",
         "error": {
           "required": "Se requiere la cantidad",
-          "min": "La cantidad debe ser al menos de 1"
+          "min": "La cantidad debe ser al menos de 1",
+          "notInteger": "No se permiten decimales. Solo se aceptan unidades enteras"
         }
       },
       "tick": {

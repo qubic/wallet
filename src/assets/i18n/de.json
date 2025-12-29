@@ -363,7 +363,8 @@
         "max.tooltip": "Maximal möglicher Betrag für dieses Konto einsetzen",
         "error": {
           "required": "Betrag wird benötigt",
-          "min": "Betrag muss mindestens 1 sein."
+          "min": "Betrag muss mindestens 1 sein.",
+          "notInteger": "Dezimalzahlen sind nicht erlaubt. Nur ganze Einheiten werden akzeptiert"
         }
       },
       "tick": {

@@ -108,6 +108,9 @@
                                 <mat-error *ngIf="transferForm.controls['amount'].hasError('min')">
                                     {{ t("paymentComponent.form.amount.error.min") }}
                                 </mat-error>
+                                <mat-error *ngIf="transferForm.controls['amount'].hasError('notInteger')">
+                                    {{ t("paymentComponent.form.amount.error.notInteger") }}
+                                </mat-error>
                                 <mat-hint *ngIf="transferForm.controls.sourceId.value" align="end">{{
                                     transferForm.controls['amount'].value | number: '1.0-0' }} /
                                     {{ maxAmount | number: '1.0-0' }} {{ t("general.currency") }}</mat-hint>

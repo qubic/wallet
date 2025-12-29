@@ -34,6 +34,21 @@ function uppercaseValidator(): ValidatorFn {
   };
 }
 
+/**
+ * Validator to check if the value is an integer (no decimals allowed)
+ * QUBIC only supports whole units
+ */
+function integerValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value && control.value !== 0) {
+      return null;
+    }
+    const value = Number(control.value);
+    const isInteger = Number.isInteger(value);
+    return isInteger ? null : { notInteger: true };
+  };
+}
+
 @Component({
   selector: 'app-wallet',
   templateUrl: './payment.component.html',
@@ -67,7 +82,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     sourceId: ['', [Validators.required]],
     destinationId: ["", this.destinationValidators],
     selectedDestinationId: [""],
-    amount: [0, [Validators.required, Validators.min(1)]],
+    amount: [0, [Validators.required, Validators.min(1), integerValidator()]],
     tick: [0, [Validators.required]],
   });
 
@@ -125,12 +140,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
         if (params['receiverId']) {
           const publicId = params['receiverId'];
           this.transferForm.controls.destinationId.setValue(publicId);
-      }
-      if (params['amount']) {
-        const amount = params['amount'];
-        this.transferForm.controls.amount.setValue(amount);
-      }
-    });
+        }
+        if (params['amount']) {
+          const amount = params['amount'];
+          this.transferForm.controls.amount.setValue(amount);
+        }
+      });
 
     if (this.txTemplate) {
       this.fillFromTemplate(this.txTemplate);

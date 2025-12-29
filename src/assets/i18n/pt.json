@@ -361,7 +361,8 @@
         "max.tooltip": "Definir para a quantidade máxima disponível para esta Seed",
         "error": {
           "required": "A quantidade é obrigatória",
-          "min": "A quantidade deve ser no mínimo 1"
+          "min": "A quantidade deve ser no mínimo 1",
+          "notInteger": "Decimais não são permitidos. Somente unidades inteiras são aceitas"
         }
       },
       "tick": {

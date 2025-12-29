@@ -362,7 +362,8 @@
         "max.tooltip": "Stel in op het maximaal beschikbare bedrag op deze seed",
         "error": {
           "required": "Bedrag is vereist",
-          "min": "Bedrag moet minimaal 1 zijn"
+          "min": "Bedrag moet minimaal 1 zijn",
+          "notInteger": "Decimalen zijn niet toegestaan. Alleen hele getallen worden geaccepteerd"
         }
       },
       "tick": {
