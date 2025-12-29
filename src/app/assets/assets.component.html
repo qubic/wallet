@@ -270,7 +270,10 @@
               <div class="col">
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.amount") }}</mat-label>
-                  <input matInput type="number" formControlName="amount">
+                  <input matInput
+                    [value]="sendForm.controls['amount'].value | number: '1.0-0'"
+                    (input)="onAmountInputChange($event)"
+                    formControlName="amount">
                   <mat-error *ngIf="sendForm.controls['amount'].hasError('required')">
                     {{ t("assetsComponent.form.amount.error") }}
                   </mat-error>

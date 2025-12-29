@@ -261,6 +261,14 @@ export class AssetsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onAmountInputChange(event: any) {
+    const value = event?.target?.value || '';
+    const numericalValue = Number(value.replace(/\D/g, ''));
+    const amountControl = this.sendForm.get('amount');
+    if (amountControl) {
+      amountControl.setValue(numericalValue, { emitEvent: false });
+    }
+  }
 
   refreshData(): void {
     this.loadAssets(true);

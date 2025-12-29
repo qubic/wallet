@@ -34,21 +34,6 @@ function uppercaseValidator(): ValidatorFn {
   };
 }
 
-/**
- * Validator to check if the value is an integer (no decimals allowed)
- * QUBIC only supports whole units
- */
-function integerValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (!control.value && control.value !== 0) {
-      return null;
-    }
-    const value = Number(control.value);
-    const isInteger = Number.isInteger(value);
-    return isInteger ? null : { notInteger: true };
-  };
-}
-
 @Component({
   selector: 'app-wallet',
   templateUrl: './payment.component.html',
@@ -82,7 +67,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     sourceId: ['', [Validators.required]],
     destinationId: ["", this.destinationValidators],
     selectedDestinationId: [""],
-    amount: [0, [Validators.required, Validators.min(1), integerValidator()]],
+    amount: [0, [Validators.required, Validators.min(1)]],
     tick: [0, [Validators.required]],
   });
 
@@ -175,6 +160,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   setAmounToMax(addAmount: number = 0) {
     this.transferForm.controls.amount.setValue(this.maxAmount + addAmount);
+  }
+
+  onAmountInputChange(event: any) {
+    const value = event?.target?.value || '';
+    const numericalValue = Number(value.replace(/\D/g, ''));
+    this.transferForm.controls.amount.setValue(numericalValue, { emitEvent: false });
   }
 
   init() {

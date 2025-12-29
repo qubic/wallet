@@ -84,8 +84,10 @@
                         <div class="col-is-mobile">
                             <mat-form-field class="full-width">
                                 <mat-label>{{ t("paymentComponent.form.amount.placeholder") }}</mat-label>
-                                <input matInput type="number"
+                                <input matInput
                                     [placeholder]="t('paymentComponent.form.amount.placeholder')"
+                                    [value]="transferForm.controls['amount'].value | number: '1.0-0'"
+                                    (input)="onAmountInputChange($event)"
                                     formControlName="amount">
                                 <button *ngIf="transferForm.controls['amount'].value" matSuffix mat-icon-button
                                     aria-label="Clear" (click)="transferForm.controls['amount'].setValue(null)"
@@ -107,9 +109,6 @@
                                 </mat-error>
                                 <mat-error *ngIf="transferForm.controls['amount'].hasError('min')">
                                     {{ t("paymentComponent.form.amount.error.min") }}
-                                </mat-error>
-                                <mat-error *ngIf="transferForm.controls['amount'].hasError('notInteger')">
-                                    {{ t("paymentComponent.form.amount.error.notInteger") }}
                                 </mat-error>
                                 <mat-hint *ngIf="transferForm.controls.sourceId.value" align="end">{{
                                     transferForm.controls['amount'].value | number: '1.0-0' }} /
