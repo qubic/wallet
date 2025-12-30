@@ -235,6 +235,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
                 this.isBroadcasting = false;
               }
             } catch (error) {
+              console.error('Transaction publishing failed:', error);
               this._snackBar.open(this.t.translate('paymentComponent.messages.failedToSend'), this.t.translate('general.close'), {
                 duration: 10000,
                 panelClass: "error"
