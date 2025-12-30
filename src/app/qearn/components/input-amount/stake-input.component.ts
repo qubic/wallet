@@ -16,8 +16,8 @@ export class StakeInputComponent implements OnChanges {
 
   onInputChange(event: any) {
     const value = event?.target?.value || '';
-    // Remove decimal point and everything after it
-    const integerPart = value.split('.')[0].split(',')[0];
+    // Remove decimal point and everything after it, then strip non-digits (like commas)
+    const integerPart = value.split('.')[0];
     const numericalValue = Number(integerPart.replace(/\D/g, ''));
 
     this.amountControl.setValue(numericalValue, { emitEvent: false });
