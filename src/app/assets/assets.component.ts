@@ -263,8 +263,8 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   onAmountInputChange(event: any) {
     const value = event?.target?.value || '';
-    // Remove decimal point and everything after it, then strip non-digits (like commas)
-    const integerPart = value.split('.')[0];
+    // Remove decimal portion (handles both US "1,000.99" and EU "1.000,99" formats)
+    const integerPart = value.replace(/[.,]\d{1,2}$/, '');
     const numericalValue = Number(integerPart.replace(/\D/g, ''));
     const amountControl = this.sendForm.get('amount');
     if (amountControl) {
