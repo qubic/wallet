@@ -18,6 +18,7 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+import { parseFormattedInteger } from '../helpers/number-input.helper';
 
 /**
  * Validator to check if the address is all uppercase
@@ -164,9 +165,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   onAmountInputChange(event: any) {
     const value = event?.target?.value || '';
-    // Remove decimal portion (handles both US "1,000.99" and EU "1.000,99" formats)
-    const integerPart = value.replace(/[.,]\d{1,2}$/, '');
-    const numericalValue = Number(integerPart.replace(/\D/g, ''));
+    const numericalValue = parseFormattedInteger(value);
     this.transferForm.controls.amount.setValue(numericalValue, { emitEvent: false });
   }
 

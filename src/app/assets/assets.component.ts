@@ -23,6 +23,7 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { parseFormattedInteger } from '../helpers/number-input.helper';
 import { ASSET_TRANSFER_FEE, TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE } from '../constants/qubic.constants';
 
 // Interfaces for asset grouping
@@ -263,9 +264,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
   onAmountInputChange(event: any) {
     const value = event?.target?.value || '';
-    // Remove decimal portion (handles both US "1,000.99" and EU "1.000,99" formats)
-    const integerPart = value.replace(/[.,]\d{1,2}$/, '');
-    const numericalValue = Number(integerPart.replace(/\D/g, ''));
+    const numericalValue = parseFormattedInteger(value);
     const amountControl = this.sendForm.get('amount');
     if (amountControl) {
       amountControl.setValue(numericalValue, { emitEvent: false });

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
+import { parseFormattedInteger } from '../../../helpers/number-input.helper';
 
 @Component({
   selector: 'app-stake-input',
@@ -16,9 +17,7 @@ export class StakeInputComponent implements OnChanges {
 
   onInputChange(event: any) {
     const value = event?.target?.value || '';
-    // Remove decimal portion (handles both US "1,000.99" and EU "1.000,99" formats)
-    const integerPart = value.replace(/[.,]\d{1,2}$/, '');
-    const numericalValue = Number(integerPart.replace(/\D/g, ''));
+    const numericalValue = parseFormattedInteger(value);
 
     this.amountControl.setValue(numericalValue, { emitEvent: false });
     this.validateAmount(this.maxAmount);
