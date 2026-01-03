@@ -18,6 +18,7 @@ export class StakeInputComponent implements OnChanges {
   onInputChange(event: any) {
     const value = event?.target?.value || '';
     const numericalValue = parseFormattedInteger(value);
+    if (numericalValue === null) return; // Exceeds max digits, keep previous value
 
     this.amountControl.setValue(numericalValue, { emitEvent: false });
     this.validateAmount(this.maxAmount);

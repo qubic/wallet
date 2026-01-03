@@ -265,6 +265,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
   onAmountInputChange(event: any) {
     const value = event?.target?.value || '';
     const numericalValue = parseFormattedInteger(value);
+    if (numericalValue === null) return; // Exceeds max digits, keep previous value
     const amountControl = this.sendForm.get('amount');
     if (amountControl) {
       amountControl.setValue(numericalValue, { emitEvent: false });

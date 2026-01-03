@@ -273,6 +273,7 @@
                   <input matInput
                     [value]="sendForm.controls['amount'].value | number: '1.0-0'"
                     (input)="onAmountInputChange($event)"
+                    maxlength="19"
                     formControlName="amount">
                   <mat-error *ngIf="sendForm.controls['amount'].hasError('required')">
                     {{ t("assetsComponent.form.amount.error") }}
