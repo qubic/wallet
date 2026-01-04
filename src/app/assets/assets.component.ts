@@ -23,7 +23,6 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
-import { parseFormattedInteger } from '../helpers/number-input.helper';
 import { ASSET_TRANSFER_FEE, TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE } from '../constants/qubic.constants';
 
 // Interfaces for asset grouping
@@ -259,16 +258,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
       ]);
 
       amountControl.updateValueAndValidity();
-    }
-  }
-
-  onAmountInputChange(event: any) {
-    const value = event?.target?.value || '';
-    const numericalValue = parseFormattedInteger(value);
-    if (numericalValue === null) return; // Exceeds max digits, keep previous value
-    const amountControl = this.sendForm.get('amount');
-    if (amountControl) {
-      amountControl.setValue(numericalValue, { emitEvent: false });
     }
   }
 

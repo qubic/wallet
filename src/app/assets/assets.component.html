@@ -271,8 +271,7 @@
                 <mat-form-field appearance="fill" class="full-width">
                   <mat-label>{{ t("assetsComponent.form.amount") }}</mat-label>
                   <input matInput
-                    [value]="sendForm.controls['amount'].value | number: '1.0-0'"
-                    (input)="onAmountInputChange($event)"
+                    appAmountInput
                     maxlength="19"
                     formControlName="amount">
                   <mat-error *ngIf="sendForm.controls['amount'].hasError('required')">

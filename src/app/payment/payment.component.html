@@ -86,8 +86,7 @@
                                 <mat-label>{{ t("paymentComponent.form.amount.placeholder") }}</mat-label>
                                 <input matInput
                                     [placeholder]="t('paymentComponent.form.amount.placeholder')"
-                                    [value]="transferForm.controls['amount'].value | number: '1.0-0'"
-                                    (input)="onAmountInputChange($event)"
+                                    appAmountInput
                                     maxlength="19"
                                     formControlName="amount">
                                 <button *ngIf="transferForm.controls['amount'].value" matSuffix mat-icon-button

@@ -18,7 +18,6 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
-import { parseFormattedInteger } from '../helpers/number-input.helper';
 
 /**
  * Validator to check if the address is all uppercase
@@ -161,13 +160,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   setAmounToMax(addAmount: number = 0) {
     this.transferForm.controls.amount.setValue(this.maxAmount + addAmount);
-  }
-
-  onAmountInputChange(event: any) {
-    const value = event?.target?.value || '';
-    const numericalValue = parseFormattedInteger(value);
-    if (numericalValue === null) return; // Exceeds max digits, keep previous value
-    this.transferForm.controls.amount.setValue(numericalValue, { emitEvent: false });
   }
 
   init() {
