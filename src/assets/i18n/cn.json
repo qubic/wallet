@@ -107,8 +107,7 @@
       "possessedAmount": "持有量",
       "tick": "有效刻度 {{tick}}",
       "reportingNodes": "报告节点",
-      "issuerIdentity": "发行人身份",
-      "managedBy": "Managed By"
+      "issuerIdentity": "发行人身份"
     },
     "buttons": {
       "close": "关闭",

@@ -107,8 +107,7 @@
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Issuer Identity"
     },
     "buttons": {
       "close": "Close",
