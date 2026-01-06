@@ -34,10 +34,36 @@ export class AmountInputDirective implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('paste', ['$event'])
+  onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text') || '';
+    const parsed = parseFormattedInteger(pastedText);
+
+    if (parsed === null || parsed > Number.MAX_SAFE_INTEGER) {
+      // Invalid paste - keep current value
+      return;
+    }
+
+    const input = this.el.nativeElement;
+    this.lastValidValue = parsed;
+    this.control.control?.setValue(parsed);
+    input.value = '' + parsed;
+  }
+
   @HostListener('input')
   onInput() {
     const input = this.el.nativeElement;
-    const parsed = parseFormattedInteger(input.value || '');
+    const rawValue = input.value || '';
+
+    // If empty, allow it
+    if (rawValue === '') {
+      this.lastValidValue = 0;
+      this.control.control?.setValue(0, { emitEvent: false });
+      return;
+    }
+
+    const parsed = parseFormattedInteger(rawValue);
 
     // Reject invalid format or values exceeding safe integer limit
     if (parsed === null || parsed > Number.MAX_SAFE_INTEGER) {
