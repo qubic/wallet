@@ -1,3 +1,24 @@
+# [4.23.0](https://github.com/qubic/wallet/compare/v4.22.0...v4.23.0) (2026-01-07)
+
+
+### Bug Fixes
+
+* handle undefined response in dev-proxy error callback ([6902ceb](https://github.com/qubic/wallet/commit/6902ceb931c55eb9bae6f05afadedd02dfc03765))
+* prevent deploy workflow from triggering on unmerged PR close ([a69a165](https://github.com/qubic/wallet/commit/a69a16559e46d6be7ed809feb34028ca0448bdfc))
+* strip decimals when pasting formatted numbers in amount fields ([fd8b204](https://github.com/qubic/wallet/commit/fd8b2040087b7ca7280dc59db4542c187f9ed25d))
+* style delete action in red for visual distinction ([f1dfeb0](https://github.com/qubic/wallet/commit/f1dfeb056fac2d4cd3b76c9a4826e8aea334c96f))
+* truncate long account names with ellipsis in dashboard cards ([8c0b3df](https://github.com/qubic/wallet/commit/8c0b3df8b2d7e2da87708510dee4a030eab7d8e2))
+* validate decimals in amount fields ([#203](https://github.com/qubic/wallet/issues/203)) ([3ce03b4](https://github.com/qubic/wallet/commit/3ce03b42c6bb1a1b98cefaff6859c9094507de88))
+
+
+### Features
+
+* Add active IPO count badge to navigation ([#196](https://github.com/qubic/wallet/issues/196)) ([8f7c5c3](https://github.com/qubic/wallet/commit/8f7c5c3b17b36f908a0471cbeb8eb7e7460629d6))
+* add context menu and fix responsive dashboard cards ([f14d1dc](https://github.com/qubic/wallet/commit/f14d1dc506b5cb50793a0a192b6f5ed6cb74142b))
+* add transaction status icons with unified tx-status component ([#198](https://github.com/qubic/wallet/issues/198)) ([058b689](https://github.com/qubic/wallet/commit/058b68991bf3a42840e6132947febf4ced0c025c))
+* display SendMany transaction transfers ([#199](https://github.com/qubic/wallet/issues/199)) ([d1b2eff](https://github.com/qubic/wallet/commit/d1b2eff2f4efb059e62cfff9f890548f4c88320f))
+* **reveal-seed:** redesign dialog with QR code and security enhancements ([68b89ad](https://github.com/qubic/wallet/commit/68b89addf34ab18dba1b42e32bc208923a96386a))
+
 # [4.23.0-rc.1](https://github.com/qubic/wallet/compare/v4.22.0...v4.23.0-rc.1) (2026-01-07)
 
 
