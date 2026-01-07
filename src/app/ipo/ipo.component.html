@@ -54,7 +54,7 @@
                             </div>
 
                             <div *ngFor="let transaction of bids" class="transaction-list">
-                                <qli-transfer-status [transaction]="transaction"></qli-transfer-status>
+                                <tx-status [transaction]="transaction"></tx-status>
                                 <div class="center">
                                     <div class="trans-amount currency-value">{{ transaction.price | number: '1.0-0' }}
                                         {{

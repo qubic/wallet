@@ -14,21 +14,15 @@ export class StakeInputComponent implements OnChanges {
     return this.formGroup.get('amount')!;
   }
 
-  onInputChange(event: any) {
-    const value = event?.target?.value || '';
-    const numericalValue = Number(value.replace(/\D/g, ''));
-
-    this.amountControl.setValue(numericalValue, { emitEvent: false });
+  onValidInput() {
     this.validateAmount(this.maxAmount);
   }
 
   validateAmount(maxAmount: number): void {
-    const minRequiredBalance = 1;
     this.amountControl.setValidators([
       Validators.required,
       Validators.min(10000000),
       Validators.max(maxAmount),
-      Validators.min(minRequiredBalance)
     ]);
     this.amountControl.updateValueAndValidity();
   }

@@ -81,8 +81,12 @@
     "title": "Adres Bilgisi",
     "publicId": "Adres Kimliği",
     "privateId": "55 karakterlik Özel Anahtar",
+    "privateSeedLabel": "55 karakterlik Özel Seed",
+    "revealSeedWarningTitle": "Özel Seed'inizi paylaşmayın!",
+    "revealSeedWarningDescription": "Birisi özel seed'inize sahip olursa, hesabınız üzerinde tam kontrole sahip olur.",
     "buttons": {
-      "close": "Kapat"
+      "reveal": "Göster",
+      "hide": "Gizle"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "İşlem Gören Tutar",
       "tick": "{{tick}} Tick için geçerlidir",
       "reportingNodes": "Raporlama Düğümleri",
-      "issuerIdentity": "Veren Kimliği",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Veren Kimliği"
     },
     "buttons": {
       "close": "Kapat",
@@ -120,7 +123,6 @@
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
       "placeholder.error": "60 karakterlik bir genel anahtar gereklidir.",
-      "amount": "Gönderilecek Tutar",
       "amount.error": "Tutar gereklidir",
       "amount.value.error": "Tutar 0'dan büyük olmalıdır",
       "amount.max.error": "Tutar, sahip olunan miktarı aşamaz",
@@ -148,7 +150,6 @@
       "selectAsset": "Varlık Seç",
       "sourceContract": "Kaynak Sözleşme",
       "destinationContract": "Hedef Sözleşme",
-      "amount": "Miktar",
       "procedureFee": "İşlem Ücreti",
       "tick": "Tick",
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",
@@ -160,7 +161,6 @@
       "sourceRequired": "Kaynak sözleşme gerekli",
       "destinationRequired": "Hedef sözleşme gerekli",
       "contractsEqual": "Kaynak ve hedef sözleşmeler farklı olmalıdır",
-      "amount": "Miktar gerekli",
       "amountMin": "Miktar en az 1 olmalıdır",
       "amountMax": "Miktar {{max}} değerini aşamaz",
       "tickRequired": "Tick gerekli",
@@ -399,11 +399,11 @@
       "exchange.tooltip": "İç Transfer",
       "explorer.tooltip": "Transferi Explorer'da Göster",
       "receive.tooltip": "Gelen Transfer",
-      "status.pending.tooltip": "Bekliyor",
-      "status.executed.tooltip": "Gerçekleşti",
-      "status.dismissed.tooltip": "Reddedildi",
-      "status.unknown.tooltip": "Bilinmiyor",
-      "status.confirmed.tooltip": "Aşamalı",
+      "status.pending.tooltip": "Onay Bekliyor",
+      "status.success.tooltip": "Başarılı transfer",
+      "status.failure.tooltip": "Transfer başarısız",
+      "status.invalid.tooltip": "İşlem gerçekleştirilmedi",
+      "status.executed.tooltip": "İşlem gerçekleştirildi",
       "filter.seed.label": "Adrese Göre Filtrele",
       "exportButton": "Dışa Aktar"
     },
@@ -415,6 +415,9 @@
       "tick": "Tik",
       "type": "Tür",
       "fee": "Ücret",
+      "showTransfers": "Transferleri Göster",
+      "hideTransfers": "Transferleri Gizle",
+      "transfersCount": "{{count}} Transfer",
       "assetTransferWarning": "Bu işlem yalnızca kaynak adresin işlem listesinde görünmektedir. Hedef adresin işlem listesinde gösterilmesi mevcut sürümde henüz desteklenmemektedir.",
       "timestamp": "Zaman damgası"
     },

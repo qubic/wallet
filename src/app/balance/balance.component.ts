@@ -1,24 +1,23 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ApiService } from '../services/api.service';
 import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, TransactionArchiver, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
+import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
-import { AssetTransfer } from '../services/api.model';
+import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
+import { AssetTransfer, SendManyTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
-import { AddressNameResult } from '../services/apis/static/qubic-static.model';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { isSendManyTransaction, isSimpleTransfer } from '../helpers/transaction-status.helper';
 
 @Component({
   selector: 'app-balance',
@@ -30,12 +29,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   shortenAddress = shortenAddress;
+  isSendManyTransaction = isSendManyTransaction;
+  isSimpleTransfer = isSimpleTransfer;
   ExplorerUrlHelper = ExplorerUrlHelper;
   public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
   public numberLastEpoch = 0;
-  public currentTickArchiver: BehaviorSubject<number> = new BehaviorSubject(0);
   public transactions: Transaction[] = [];
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
@@ -51,19 +51,18 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
-
+  public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
+  public sendManyExpanded: { [key: string]: boolean } = {};
 
   constructor(
     private router: Router,
     private transloco: TranslocoService,
-    private api: ApiService,
     private apiArchiver: ApiArchiverService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private us: UpdaterService,
+    public us: UpdaterService,
     private addressNameService: AddressNameService
   ) {
-    this.getCurrentTickArchiver();
     this.seedFilterFormControl.setValue(null);
   }
 
@@ -154,7 +153,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     if (element === 'element1') {
       this.isShowAllTransactions = false;
       this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.currentTickArchiver.value
+      this.lastProcessedTick = this.us.archiverLatestTick.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
       // Initialize tick range for the current epoch when switching to epochs view
@@ -221,17 +220,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  private getCurrentTickArchiver() {
-    this.apiArchiver.getLatestTick()
-      .subscribe(latestTick => {
-        if (latestTick) {
-          this.currentTickArchiver.next(latestTick);
-        }
-      });
-  }
-
-
   getAllTransactionByPublicId(publicId: string): void {
     if (!this.isShowAllTransactions) {
       return;
@@ -252,20 +240,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
           this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
         }
 
-        await Promise.all(this.transactionsRecord.map(transaction =>
-          this.checkAndParseAssetTransfer(transaction)
-        ));
+        await Promise.all(this.transactionsRecord.map(async transaction => {
+          await this.checkAndParseAssetTransfer(transaction);
+        }));
 
         this.sortTransactions();
       }
     });
-  }
-
-  /**
-   * Check if transaction is a standard Qubic transfer (inputType 0)
-   */
-  isStandardQubicTransfer(inputType: number): boolean {
-    return inputType === 0;
   }
 
   /**
@@ -279,11 +260,11 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   /**
    * Check if transaction can be repeated in the wallet
-   * Only standard Qubic transfers (inputType 0) and QX asset transfers (inputType 2) are repeatable
+   * Only simple transfers (inputType 0 with amount > 0) and QX asset transfers (inputType 2) are repeatable
    * Other smart contract transactions should use their dedicated dapp frontend
    */
-  isRepeatableTransaction(destId: string, inputType: number): boolean {
-    return this.isStandardQubicTransfer(inputType) || this.isQxAssetTransfer(destId, inputType);
+  isRepeatableTransaction(destId: string, inputType: number, amount: number): boolean {
+    return isSimpleTransfer(inputType, amount) || this.isQxAssetTransfer(destId, inputType);
   }
 
   getAssetsTransfers = async (data: string): Promise<AssetTransfer | null> => {
@@ -307,15 +288,17 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async checkAndParseAssetTransfer(transaction: any): Promise<void> {
-    const txId = transaction.transactions[0].transaction.txId;
+  async checkAndParseAssetTransfer(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
 
-    if (this.isQxAssetTransfer(
-      transaction.transactions[0].transaction.destId,
-      transaction.transactions[0].transaction.inputType
-    )) {
+    const txId = firstTx.transaction.txId;
+
+    if (this.isQxAssetTransfer(firstTx.transaction.destId, firstTx.transaction.inputType)) {
       try {
-        const assetData = await this.getAssetsTransfers(transaction.transactions[0].transaction.inputHex);
+        const assetData = await this.getAssetsTransfers(firstTx.transaction.inputHex);
         if (assetData) {
           this.assetTransferData[txId] = assetData;
         }
@@ -327,6 +310,65 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   getAssetTransfer(txId: string): AssetTransfer | null {
     return this.assetTransferData[txId] || null;
+  }
+
+  /**
+   * Parse SendMany payload to extract all transfers
+   */
+  getSendManyTransfers = async (data: string): Promise<SendManyTransfer[]> => {
+    const binaryData = new Uint8Array(data.match(/.{1,2}/g)?.map((pair) => parseInt(pair, 16)) ?? []);
+
+    const parsedPayload = await new QubicTransferSendManyPayload().parse(binaryData);
+    const transfers = parsedPayload.getTransfers();
+
+    return transfers.map((item: any) => ({
+      destId: item.destId.getIdentityAsSring() ?? '',
+      amount: item.amount.getNumber().toString()
+    }));
+  }
+
+  async checkAndParseSendManyTransfer(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
+
+    const txId = firstTx.transaction.txId;
+
+    if (this.isSendManyTransaction(firstTx.transaction.destId, firstTx.transaction.inputType)) {
+      try {
+        const transfers = await this.getSendManyTransfers(firstTx.transaction.inputHex);
+        if (transfers && transfers.length > 0) {
+          this.sendManyTransferData[txId] = transfers;
+        }
+      } catch (error) {
+        console.error('Error parsing sendmany transfer:', error);
+      }
+    }
+  }
+
+  getSendManyTransfer(txId: string): SendManyTransfer[] | null {
+    return this.sendManyTransferData[txId] || null;
+  }
+
+  async toggleSendManyExpanded(transaction: TransactionRecord): Promise<void> {
+    const firstTx = transaction.transactions?.[0];
+    if (!firstTx?.transaction) {
+      return;
+    }
+
+    const txId = firstTx.transaction.txId;
+
+    // Parse on first expand if not already parsed
+    if (!this.sendManyTransferData[txId]) {
+      await this.checkAndParseSendManyTransfer(transaction);
+    }
+
+    this.sendManyExpanded[txId] = !this.sendManyExpanded[txId];
+  }
+
+  isSendManyExpanded(txId: string): boolean {
+    return this.sendManyExpanded[txId] || false;
   }
 
   private updateTransactionsRecord(): void {
@@ -523,7 +565,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   repeat(transaction: Transaction) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.type)) {
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)) {
       console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
       return;
     }
@@ -548,7 +590,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   async repeatTransactionArchiver(transaction: TransactionDetails) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType)) {
+    const amount = parseInt(transaction.amount, 10);
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, amount)) {
       console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
       return;
     }

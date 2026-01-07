@@ -81,8 +81,12 @@
     "title": "アドレス情報",
     "publicId": "アドレスID",
     "privateId": "55文字のシード",
+    "privateSeedLabel": "55文字のプライベートシード",
+    "revealSeedWarningTitle": "プライベートシードを共有しないでください！",
+    "revealSeedWarningDescription": "誰かがあなたのプライベートシードを持っていると、あなたのアカウントを完全に制御できます。",
     "buttons": {
-      "close": "閉じる"
+      "reveal": "表示",
+      "hide": "非表示"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "保有量",
       "tick": "{{tick}}のティックで有効",
       "reportingNodes": "報告ノード",
-      "issuerIdentity": "発行者ID",
-      "managedBy": "Managed By"
+      "issuerIdentity": "発行者ID"
     },
     "buttons": {
       "close": "閉じる",
@@ -120,7 +123,6 @@
       "select.error": "資産の選択が必要です",
       "placeholder": "受信者のアドレスID",
       "placeholder.error": "60文字の公開キーが必要です。",
-      "amount": "送信する量",
       "amount.error": "数量が必要です",
       "amount.value.error": "数量は0以上でなければなりません",
       "amount.max.error": "数量は保有数量を超えることはできません",
@@ -148,7 +150,6 @@
       "selectAsset": "資産を選択",
       "sourceContract": "ソース契約",
       "destinationContract": "宛先契約",
-      "amount": "数量",
       "procedureFee": "手続き手数料",
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",
@@ -160,7 +161,6 @@
       "sourceRequired": "ソース契約が必要です",
       "destinationRequired": "宛先契約が必要です",
       "contractsEqual": "ソース契約と宛先契約は異なる必要があります",
-      "amount": "数量が必要です",
       "amountMin": "数量は少なくとも1である必要があります",
       "amountMax": "数量は {{max}} を超えることはできません",
       "tickRequired": "ティックが必要です",
@@ -400,10 +400,10 @@
       "explorer.tooltip": "エクスプローラーで転送を表示",
       "receive.tooltip": "入金",
       "status.pending.tooltip": "保留中",
-      "status.executed.tooltip": "実行済み",
-      "status.dismissed.tooltip": "却下された",
-      "status.unknown.tooltip": "不明",
-      "status.confirmed.tooltip": "確定",
+      "status.success.tooltip": "送金成功",
+      "status.failure.tooltip": "送金失敗",
+      "status.invalid.tooltip": "取引は実行されませんでした",
+      "status.executed.tooltip": "取引実行済み",
       "filter.seed.label": "住所でフィルター",
       "exportButton": "取引をエクスポート"
     },
@@ -415,6 +415,9 @@
       "tick": "ティック",
       "type": "タイプ",
       "fee": "手数料",
+      "showTransfers": "送金を表示",
+      "hideTransfers": "送金を非表示",
+      "transfersCount": "{{count}}件の送金",
       "assetTransferWarning": "この取引は送信元アドレスの取引リストにのみ表示されます。宛先アドレスの取引リストに表示する機能は、現在のバージョンではまだサポートされていません。",
       "timestamp": "タイムスタンプ"
     },

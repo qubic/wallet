@@ -6,6 +6,11 @@ $darkBackgroundColor: #101820;
 $darkLighterBackgroundColor: #192531;
 $darkLighter-10-BackgroundColor: #494F55;
 
+// Transaction status colors
+$trx-pending-color: #f5a623;      // Yellow/amber for pending
+$trx-success-color: #4caf50;      // Green for success/executed
+$trx-failure-color: #f44336;      // Red for failure/not-executed
+
 // Material Design Breakpoints
 $breakpoint-xs: 0;
 $breakpoint-sm: 600px;

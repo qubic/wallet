@@ -261,7 +261,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   refreshData(): void {
     this.loadAssets(true);
   }

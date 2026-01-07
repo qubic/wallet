@@ -6,7 +6,14 @@
     h3 {
         font-weight: bold;
         margin-bottom: 0px;
-        ;
+    }
+}
+
+::ng-deep .delete-action {
+    color: var(--warn-color) !important;
+
+    mat-icon {
+        color: var(--warn-color) !important;
     }
 }
 
@@ -74,8 +81,32 @@
 }
 
 mat-card {
-    min-width: 385px;
+    width: 100%;
+    max-width: 420px;
     margin-bottom: 20px;
+}
+
+.dashboard-wallet-name {
+    display: flex;
+    max-width: 100%;
+
+    .alias-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+        max-width: 100%;
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .watch-icon {
+            flex-shrink: 0;
+        }
+    }
 }
 
 ::ng-deep {

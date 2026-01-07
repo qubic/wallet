@@ -81,8 +81,12 @@
     "title": "Kontoinformationen",
     "publicId": "Konto-ID",
     "privateId": "Konto-Passwort",
+    "privateSeedLabel": "55-Zeichen Privater Seed",
+    "revealSeedWarningTitle": "Teilen Sie Ihren privaten Seed nicht!",
+    "revealSeedWarningDescription": "Wenn jemand Ihren privaten Seed hat, hat er die volle Kontrolle über Ihr Konto.",
     "buttons": {
-      "close": "Schließen"
+      "reveal": "Anzeigen",
+      "hide": "Ausblenden"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "Besessene Menge",
       "tick": "Gültig für Tick {{tick}}",
       "reportingNodes": "Berichtsknoten",
-      "issuerIdentity": "Identität des Ausstellers",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Identität des Ausstellers"
     },
     "buttons": {
       "close": "Schließen",
@@ -120,7 +123,6 @@
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",
       "placeholder.error": "Ein 60-Zeichen öffentlicher Schlüssel ist erforderlich.",
-      "amount": "Zu sendende Menge",
       "amount.error": "Menge ist erforderlich",
       "amount.value.error": "Die Menge muss größer als 0 sein",
       "amount.max.error": "Die Menge darf die gehaltene Menge nicht überschreiten",
@@ -148,7 +150,6 @@
       "selectAsset": "Asset auswählen",
       "sourceContract": "Quellvertrag",
       "destinationContract": "Zielvertrag",
-      "amount": "Menge",
       "procedureFee": "Verfahrensgebühr",
       "tick": "Tick",
       "tickOverwrite": "Manuelles Tick-Override",
@@ -160,7 +161,6 @@
       "sourceRequired": "Quellvertrag ist erforderlich",
       "destinationRequired": "Zielvertrag ist erforderlich",
       "contractsEqual": "Quell- und Zielverträge müssen unterschiedlich sein",
-      "amount": "Menge ist erforderlich",
       "amountMin": "Menge muss mindestens 1 sein",
       "amountMax": "Menge darf {{max}} nicht überschreiten",
       "tickRequired": "Tick ist erforderlich",
@@ -398,11 +398,11 @@
       "exchange.tooltip": "Interne Überweisung",
       "explorer.tooltip": "Show Transfer in Explorer",
       "receive.tooltip": "Eingehende Überweisung",
-      "status.pending.tooltip": "In Bearbeitung",
-      "status.executed.tooltip": "Ausgeführt",
-      "status.dismissed.tooltip": "Fehlgeschlagen",
-      "status.unknown.tooltip": "Unbekannt",
-      "status.confirmed.tooltip": "Vorbereitet",
+      "status.pending.tooltip": "Ausstehend",
+      "status.success.tooltip": "Erfolgreiche Überweisung",
+      "status.failure.tooltip": "Überweisung fehlgeschlagen",
+      "status.invalid.tooltip": "Transaktion nicht ausgeführt",
+      "status.executed.tooltip": "Transaktion ausgeführt",
       "filter.seed.label": "Filtern nach Adresse",
       "exportButton": "Export Buchungen"
     },
@@ -415,6 +415,9 @@
       "type": "Typ",
       "timestamp": "Zeitstempel",
       "fee": "Gebühr",
+      "showTransfers": "Überweisungen anzeigen",
+      "hideTransfers": "Überweisungen ausblenden",
+      "transfersCount": "{{count}} Überweisungen",
       "assetTransferWarning": "Diese Transaktion ist nur in der Transaktionsliste der Quelladresse sichtbar. Die Anzeige in der Transaktionsliste der Zieladresse wird in der aktuellen Version noch nicht unterstützt."
     },
     "epoch": "Epoche",

@@ -81,8 +81,12 @@
     "title": "Thông tin địa chỉ",
     "publicId": "ID địa chỉ",
     "privateId": "Seed 55 ký tự",
+    "privateSeedLabel": "Seed Riêng tư 55 ký tự",
+    "revealSeedWarningTitle": "Không chia sẻ Seed riêng tư của bạn!",
+    "revealSeedWarningDescription": "Nếu ai đó có seed riêng tư của bạn, họ sẽ có toàn quyền kiểm soát tài khoản của bạn.",
     "buttons": {
-      "close": "Đóng"
+      "reveal": "Hiển thị",
+      "hide": "Ẩn"
     }
   },
   "assetsComponent": {
@@ -119,7 +123,6 @@
       "select.error": "Yêu cầu chọn tài sản",
       "placeholder": "ID địa chỉ của người nhận",
       "placeholder.error": "Yêu cầu public-key 60 ký tự.",
-      "amount": "Số lượng cần gửi",
       "amount.error": "Yêu cầu số lượng",
       "amount.value.error": "Số lượng phải lớn hơn 0",
       "amount.max.error": "Số lượng không thể vượt quá số đang giữ",
@@ -147,7 +150,6 @@
       "selectAsset": "Chọn Tài sản",
       "sourceContract": "Hợp đồng Nguồn",
       "destinationContract": "Hợp đồng Đích",
-      "amount": "Số lượng",
       "procedureFee": "Phí Thủ tục",
       "tick": "Tick",
       "tickOverwrite": "Ghi đè Tick Thủ công",
@@ -159,7 +161,6 @@
       "sourceRequired": "Hợp đồng nguồn là bắt buộc",
       "destinationRequired": "Hợp đồng đích là bắt buộc",
       "contractsEqual": "Hợp đồng nguồn và đích phải khác nhau",
-      "amount": "Số lượng là bắt buộc",
       "amountMin": "Số lượng phải ít nhất là 1",
       "amountMax": "Số lượng không được vượt quá {{max}}",
       "tickRequired": "Tick là bắt buộc",
@@ -399,10 +400,10 @@
       "explorer.tooltip": "Xem giao dịch trên Explorer",
       "receive.tooltip": "Nhận vào",
       "status.pending.tooltip": "Đang chờ",
-      "status.executed.tooltip": "Đã thực thi",
-      "status.dismissed.tooltip": "Đã hủy",
-      "status.unknown.tooltip": "Không rõ",
-      "status.confirmed.tooltip": "Đã xếp lịch",
+      "status.success.tooltip": "Chuyển tiền thành công",
+      "status.failure.tooltip": "Chuyển tiền thất bại",
+      "status.invalid.tooltip": "Giao dịch không được thực thi",
+      "status.executed.tooltip": "Giao dịch đã thực thi",
       "filter.seed.label": "Lọc theo địa chỉ",
       "exportButton": "Xuất giao dịch"
     },
@@ -414,6 +415,9 @@
       "tick": "Tick",
       "type": "Loại",
       "fee": "Phí",
+      "showTransfers": "Hiển thị Chuyển khoản",
+      "hideTransfers": "Ẩn Chuyển khoản",
+      "transfersCount": "{{count}} Chuyển khoản",
       "assetTransferWarning": "Giao dịch này chỉ hiển thị trong danh sách giao dịch của địa chỉ nguồn. Việc hiển thị nó trong danh sách giao dịch của địa chỉ đích chưa được hỗ trợ trong phiên bản hiện tại.",
       "timestamp": "Dấu thời gian"
     },
