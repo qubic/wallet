@@ -13,6 +13,7 @@ import { EnvironmentService } from '../services/env.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LatestStatsResponse } from '../services/apis/stats/api.stats.model';
+import { ApiLiveService } from '../services/apis/live/api.live.service';
 
 @Component({
   selector: 'app-navigation',
@@ -66,6 +67,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   public isAssetsSelected = false;
   public isVotingSelected = false;
   public isIpoSelected = false;
+  public activeIpoCount = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -80,7 +82,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     public environmentService: EnvironmentService,
-    private router: Router
+    private router: Router,
+    private apiLiveService: ApiLiveService
   ) {
     this.router.events
       .pipe(
@@ -97,7 +100,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.isVotingSelected = currentUrl === '/voting';
         this.isIpoSelected = currentUrl === '/ipo';
         this.isSettingsSelected = currentUrl === '/settings';
-      });
+
+              });
   }
 
   ngOnInit(): void {
@@ -144,6 +148,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
           panelClass: 'error',
         });
       }
+    });
+
+    // Fetch active IPOs on page load
+    this.apiLiveService.getActiveIpos().pipe(takeUntil(this.destroy$)).subscribe((ipos) => {
+      this.activeIpoCount = ipos?.length || 0;
     });
   }
 

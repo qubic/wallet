@@ -81,8 +81,12 @@
     "title": "Account Informatie",
     "publicId": "Account ID",
     "privateId": "Account Wachtwoord",
+    "privateSeedLabel": "55-tekens Privé Seed",
+    "revealSeedWarningTitle": "Deel uw privé Seed niet!",
+    "revealSeedWarningDescription": "Als iemand uw privé seed heeft, heeft diegene volledige controle over uw account.",
     "buttons": {
-      "close": "Sluiten"
+      "reveal": "Tonen",
+      "hide": "Verbergen"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "Possessed Amount",
       "tick": "Valid for Tick {{tick}}",
       "reportingNodes": "Reporting Nodes",
-      "issuerIdentity": "Issuer Identity",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Issuer Identity"
     },
     "buttons": {
       "close": "Close",
@@ -120,7 +123,6 @@
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
       "placeholder.error": "A 60-char public-key is required.",
-      "amount": "Amount to send",
       "amount.error": "Amount is required",
       "amount.value.error": "The amount must be greater than 0",
       "amount.max.error": "The amount cannot exceed the quantity held",
@@ -148,7 +150,6 @@
       "selectAsset": "Activa Selecteren",
       "sourceContract": "Broncontract",
       "destinationContract": "Bestemmingscontract",
-      "amount": "Hoeveelheid",
       "procedureFee": "Procedurekosten",
       "tick": "Tick",
       "tickOverwrite": "Handmatige Tick Overschrijving",
@@ -160,7 +161,6 @@
       "sourceRequired": "Broncontract is verplicht",
       "destinationRequired": "Bestemmingscontract is verplicht",
       "contractsEqual": "Bron- en bestemmingscontracten moeten verschillend zijn",
-      "amount": "Hoeveelheid is verplicht",
       "amountMin": "Hoeveelheid moet minimaal 1 zijn",
       "amountMax": "Hoeveelheid mag niet meer zijn dan {{max}}",
       "tickRequired": "Tick is verplicht",
@@ -398,11 +398,11 @@
       "exchange.tooltip": "Internal Transfer",
       "explorer.tooltip": "Show Transfer in Explorer",
       "receive.tooltip": "Inkomende transacties",
-      "status.pending.tooltip": "In afwachting van",
-      "status.executed.tooltip": "Uitgevoerd",
-      "status.dismissed.tooltip": "Niet uitgevoerd",
-      "status.unknown.tooltip": "Onebekend",
-      "status.confirmed.tooltip": "Gecontroleerd",
+      "status.pending.tooltip": "In afwachting",
+      "status.success.tooltip": "Succesvolle overdracht",
+      "status.failure.tooltip": "Overdracht mislukt",
+      "status.invalid.tooltip": "Transactie niet uitgevoerd",
+      "status.executed.tooltip": "Transactie uitgevoerd",
       "filter.seed.label": "Filter op adres",
       "exportButton": "Transacties exporteren"
     },
@@ -414,6 +414,9 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Kosten",
+      "showTransfers": "Overboekingen tonen",
+      "hideTransfers": "Overboekingen verbergen",
+      "transfersCount": "{{count}} Overboekingen",
       "assetTransferWarning": "Deze transactie is alleen zichtbaar in de transactielijst van het bronadres. Weergave in de transactielijst van het bestemmingsadres wordt in de huidige versie nog niet ondersteund.",
       "timestamp": "Tijdstempel"
     },

@@ -81,8 +81,12 @@
     "title": "Informations sur l'adresse",
     "publicId": "ID de l'adresse",
     "privateId": "Seed de 55 caractères",
+    "privateSeedLabel": "Seed Privé de 55 caractères",
+    "revealSeedWarningTitle": "Ne partagez pas votre Seed privé !",
+    "revealSeedWarningDescription": "Si quelqu'un possède votre seed privé, il aura le contrôle total de votre compte.",
     "buttons": {
-      "close": "Fermer"
+      "reveal": "Révéler",
+      "hide": "Masquer"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "Quantité en Possession",
       "tick": "Valide pour le Tick {{tick}}",
       "reportingNodes": "Nœuds Rapporteurs",
-      "issuerIdentity": "Identité de l'Émetteur",
-      "managedBy": "Managed By"
+      "issuerIdentity": "Identité de l'Émetteur"
     },
     "buttons": {
       "close": "Fermer",
@@ -120,7 +123,6 @@
       "select.error": "La sélection de l'actif est requise",
       "placeholder": "ID de l'adresse du destinataire",
       "placeholder.error": "Une clé publique de 60 caractères est requise.",
-      "amount": "Montant à envoyer",
       "amount.error": "Le montant est requis",
       "amount.value.error": "Le montant doit être supérieur à 0",
       "amount.max.error": "Le montant ne peut pas dépasser la quantité détenue",
@@ -148,7 +150,6 @@
       "selectAsset": "Sélectionner un Actif",
       "sourceContract": "Contrat Source",
       "destinationContract": "Contrat de Destination",
-      "amount": "Quantité",
       "procedureFee": "Frais de Procédure",
       "tick": "Tick",
       "tickOverwrite": "Remplacement Manuel du Tick",
@@ -160,7 +161,6 @@
       "sourceRequired": "Le contrat source est requis",
       "destinationRequired": "Le contrat de destination est requis",
       "contractsEqual": "Les contrats source et de destination doivent être différents",
-      "amount": "La quantité est requise",
       "amountMin": "La quantité doit être d'au moins 1",
       "amountMax": "La quantité ne peut pas dépasser {{max}}",
       "tickRequired": "Le tick est requis",
@@ -399,10 +399,10 @@
       "explorer.tooltip": "Afficher le transfert dans l'Explorateur",
       "receive.tooltip": "Transfert entrant",
       "status.pending.tooltip": "En attente",
-      "status.executed.tooltip": "Exécuté",
-      "status.dismissed.tooltip": "Rejeté",
-      "status.unknown.tooltip": "Inconnu",
-      "status.confirmed.tooltip": "Enregistré",
+      "status.success.tooltip": "Transfert réussi",
+      "status.failure.tooltip": "Transfert échoué",
+      "status.invalid.tooltip": "Transaction non exécutée",
+      "status.executed.tooltip": "Transaction exécutée",
       "filter.seed.label": "Filtrer par Adresse",
       "exportButton": "Exporter les transactions"
     },
@@ -414,6 +414,9 @@
       "tick": "Tick",
       "type": "Type",
       "fee": "Frais",
+      "showTransfers": "Afficher Transferts",
+      "hideTransfers": "Masquer Transferts",
+      "transfersCount": "{{count}} Transferts",
       "assetTransferWarning": "Cette transaction est visible uniquement dans la liste des transactions de l'adresse source. L'afficher dans la liste des transactions de l'adresse de destination n'est pas encore pris en charge dans la version actuelle.",
       "timestamp": "Horodatage"
     },

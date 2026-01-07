@@ -9,9 +9,15 @@ on:
   pull_request:
     types:
       - closed
+    branches:
+      - dev
+      - staging
+      - main
 
 jobs:
   release-and-deploy:
+    # Only run on push events OR when PR is actually merged (not just closed)
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: 🛎️ Checkout repository

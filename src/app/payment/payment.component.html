@@ -84,8 +84,10 @@
                         <div class="col-is-mobile">
                             <mat-form-field class="full-width">
                                 <mat-label>{{ t("paymentComponent.form.amount.placeholder") }}</mat-label>
-                                <input matInput type="number"
+                                <input matInput
                                     [placeholder]="t('paymentComponent.form.amount.placeholder')"
+                                    appAmountInput
+                                    maxlength="19"
                                     formControlName="amount">
                                 <button *ngIf="transferForm.controls['amount'].value" matSuffix mat-icon-button
                                     aria-label="Clear" (click)="transferForm.controls['amount'].setValue(null)"

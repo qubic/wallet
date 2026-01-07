@@ -1,3 +1,57 @@
+::ng-deep .mat-mdc-dialog-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-dialog-content,
+.dialog-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-dialog-actions {
+  justify-content: center !important;
+}
+
+.warning {
+  background-color: rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--warn-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  word-break: normal;
+  box-sizing: border-box;
+
+  mat-icon {
+    color: var(--warn-color);
+    flex-shrink: 0;
+  }
+
+  .warning-content {
+    text-align: left;
+  }
+
+  strong {
+    color: var(--warn-color);
+    font-size: 15px;
+    font-family: inherit;
+  }
+
+  p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    font-family: inherit;
+  }
+}
+
 .seedInput {
   display: flex;
   flex-direction: column;
@@ -5,12 +59,180 @@
   align-items: center;
   row-gap: 10px;
   word-break: break-all;
-  mat-form-field {
-    width: 100%;
+  margin: 0 auto 16px auto;
+}
+
+.seed-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+    }
   }
 }
 
+.qrcode-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 12px auto;
+}
 
-.explanation{
-  padding-top: 16px;
+// Blur styles for hidden content (secure - fake data rendered, not real seed)
+.hidden-seed {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.qr-placeholder {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.reveal-btn {
+  margin-bottom: 8px;
+
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+// Mobile responsiveness
+@media screen and (max-width: 480px) {
+  ::ng-deep .cdk-overlay-pane {
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  ::ng-deep .mat-mdc-dialog-content {
+    max-width: 100%;
+    padding: 4px;
+  }
+
+  .warning {
+    padding: 10px;
+    gap: 8px;
+    margin: 0 auto 8px auto;
+    border-width: 1px;
+
+    strong {
+      font-size: 13px;
+    }
+
+    p {
+      font-size: 12px;
+      margin-top: 2px;
+    }
+  }
+
+  .seedInput {
+    row-gap: 6px;
+    margin: 0 auto 8px auto;
+
+    strong {
+      font-size: 13px;
+    }
+  }
+
+  .seed-row {
+    font-size: 12px;
+
+    .copy {
+      font-size: 11px;
+    }
+  }
+
+  .qrcode-container {
+    margin: 0 auto 6px auto;
+  }
+
+  .reveal-btn {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+}
+
+// Very small screens (iPhone SE, etc.)
+@media screen and (max-width: 375px) {
+  ::ng-deep .cdk-overlay-pane {
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  ::ng-deep .mat-mdc-dialog-content {
+    padding: 2px 0;
+  }
+
+  .warning {
+    padding: 6px;
+    gap: 6px;
+    margin: 0 auto 6px auto;
+    border-width: 1px;
+    border-radius: 6px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    strong {
+      font-size: 11px;
+    }
+
+    p {
+      font-size: 10px;
+      margin-top: 1px;
+    }
+  }
+
+  .seedInput {
+    row-gap: 4px;
+    margin: 0 auto 8px auto;
+
+    strong {
+      font-size: 12px;
+    }
+  }
+
+  .seed-row {
+    .copy {
+      font-size: 11px;
+    }
+
+    button {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .reveal-btn {
+    font-size: 11px;
+    padding: 0 10px;
+    margin-top: 8px;
+  }
+
+  .qrcode-container {
+    margin: 8px auto;
+  }
 }

@@ -81,8 +81,12 @@
     "title": "地址信息",
     "publicId": "地址ID",
     "privateId": "55 位字符种子",
+    "privateSeedLabel": "55 字符私有种子",
+    "revealSeedWarningTitle": "请勿分享您的私有种子！",
+    "revealSeedWarningDescription": "如果有人获得您的私有种子，他们将完全控制您的账户。",
     "buttons": {
-      "close": "关闭"
+      "reveal": "显示",
+      "hide": "隐藏"
     }
   },
   "assetsComponent": {
@@ -103,8 +107,7 @@
       "possessedAmount": "持有量",
       "tick": "有效刻度 {{tick}}",
       "reportingNodes": "报告节点",
-      "issuerIdentity": "发行人身份",
-      "managedBy": "Managed By"
+      "issuerIdentity": "发行人身份"
     },
     "buttons": {
       "close": "关闭",
@@ -120,7 +123,6 @@
       "select.error": "需要选择资产",
       "placeholder": "接收方地址 ID",
       "placeholder.error": "需要一个 60 位字符地址",
-      "amount": "发送数量",
       "amount.error": "需要填写数量",
       "amount.value.error": "数量必须大于 0",
       "amount.max.error": "数量不能超过持有的数量",
@@ -148,7 +150,6 @@
       "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
-      "amount": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
@@ -160,7 +161,6 @@
       "sourceRequired": "需要源合约",
       "destinationRequired": "需要目标合约",
       "contractsEqual": "源合约和目标合约必须不同",
-      "amount": "需要数量",
       "amountMin": "数量必须至少为1",
       "amountMax": "数量不能超过 {{max}}",
       "tickRequired": "需要刻度",
@@ -399,11 +399,11 @@
       "exchange.tooltip": "内部转账",
       "explorer.tooltip": "在浏览器中显示交易",
       "receive.tooltip": "接收记录",
-      "status.pending.tooltip": "待处理",
-      "status.executed.tooltip": "已执行",
-      "status.dismissed.tooltip": "已解雇",
-      "status.unknown.tooltip": "未知",
-      "status.confirmed.tooltip": "已暂存",
+      "status.pending.tooltip": "等待中",
+      "status.success.tooltip": "转账成功",
+      "status.failure.tooltip": "转账失败",
+      "status.invalid.tooltip": "交易未执行",
+      "status.executed.tooltip": "交易已执行",
       "filter.seed.label": "按地址筛选",
       "exportButton": "导出交易"
     },
@@ -415,6 +415,9 @@
       "tick": "刻度",
       "type": "类型",
       "fee": "费用",
+      "showTransfers": "显示转账",
+      "hideTransfers": "隐藏转账",
+      "transfersCount": "{{count}} 笔转账",
       "assetTransferWarning": "此交易仅在源地址的交易列表中可见。在当前版本中尚不支持在目标地址的交易列表中显示它。",
       "timestamp": "时间戳"
     },

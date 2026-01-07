@@ -80,7 +80,7 @@
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
             </div>
             <div class="text-center">
-              <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
+              <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: address.publicId, isOnlyWatch: address.isOnlyWatch }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -94,7 +94,12 @@
           <mat-card-content>
             <br>
             <div class="dashboard-wallet-name">
-              {{ address.alias }}
+              <div class="alias-wrapper">
+                <span>{{ address.alias }}</span>
+                <mat-icon *ngIf="address.isOnlyWatch" class="watch-icon" inline>
+                  visibility
+                </mat-icon>
+              </div>
             </div>
             <br>
             <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
@@ -118,7 +123,7 @@
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
             </div>
             <div class="text-center">
-              <ng-container class="mobileActionLine" *ngTemplateOutlet="actions; context: address"></ng-container>
+              <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: address.publicId, isOnlyWatch: address.isOnlyWatch }"></ng-container>
             </div>
           </mat-card-content>
         </mat-card>
@@ -193,7 +198,7 @@
           {{ t("seedOverviewComponent.table.actions.title") }}
         </th>
         <td mat-cell *matCellDef="let seed" class="tableActionLine alignRight">
-          <ng-container *ngTemplateOutlet="actions; context: seed"></ng-container>
+          <ng-container [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ publicId: seed.publicId, isOnlyWatch: seed.isOnlyWatch }"></ng-container>
         </td>
       </ng-container>
 
@@ -207,7 +212,7 @@
       </tr>
     </table>
   </div>
-  <ng-template #actions let-publicId="publicId">
+  <ng-template #actions let-publicId="publicId" let-isOnlyWatch="isOnlyWatch">
     <button *ngIf="isNotWatchOnly(publicId) && hasAssets(publicId)" mat-icon-button class="icon-color-link"
       [title]="t('seedOverviewComponent.table.actions.assets')" (click)="openAssetsPage()">
       <mat-icon>category</mat-icon>
@@ -228,18 +233,22 @@
       [title]="t('seedOverviewComponent.table.actions.openExplorer')">
       <mat-icon>explore</mat-icon>
     </button>
-    <br *ngIf="walletService.privateKey && !isTable">
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.revealSeed')"
-      (click)="reveal(publicId)">
-      <mat-icon svgIcon="key_vertical"></mat-icon>
+    <button mat-icon-button class="icon-color-link" [matMenuTriggerFor]="accountMenu">
+      <mat-icon>more_vert</mat-icon>
     </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.editSeed')"
-      (click)="edit(publicId)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button class="icon-color-link" [title]="t('seedOverviewComponent.table.actions.deleteSeed')"
-      (click)="delete(publicId)">
-      <mat-icon>delete</mat-icon>
-    </button>
+    <mat-menu #accountMenu="matMenu">
+      <button *ngIf="!isOnlyWatch" mat-menu-item (click)="reveal(publicId)">
+        <mat-icon svgIcon="key_vertical"></mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.revealSeed') }}</span>
+      </button>
+      <button mat-menu-item (click)="edit(publicId)">
+        <mat-icon>edit</mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.editSeed') }}</span>
+      </button>
+      <button mat-menu-item class="delete-action" (click)="delete(publicId)">
+        <mat-icon>delete_outline</mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.deleteSeed') }}</span>
+      </button>
+    </mat-menu>
   </ng-template>
 </ng-container>

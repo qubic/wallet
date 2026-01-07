@@ -135,4 +135,15 @@ export interface QuerySmartContractRequest {
       initialTick: number;
     };
   }
-  
+
+
+// /live/v1/ipos/active
+export interface ActiveIpo {
+  contractIndex: number;
+  assetName: string;
+}
+
+export interface ActiveIposResponse {
+  ipos: ActiveIpo[];
+}
+
