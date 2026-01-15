@@ -120,6 +120,11 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     return this.walletService.getSeeds();
   }
 
+  getSelectedSourceSeed() {
+    const publicId = this.ipoForm.controls.sourceId.value;
+    return this.getSeeds().find(s => s.publicId === publicId);
+  }
+
   repeat(transaction: Transaction) {
     this.router.navigate(['payment'], {
       state: {

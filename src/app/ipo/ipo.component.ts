@@ -1,14 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, ContractDto, IpoBid, IpoBidOverview, ProposalDto, SmartContract, Transaction } from '../services/api.model';
-import { FormControl } from '@angular/forms';
-import { UpdaterService } from '../services/updater-service';
+import { ContractDto, IpoBid, IpoBidOverview, SmartContract, Transaction } from '../services/api.model';
 import { Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AddressNameService } from '../services/address-name.service';
+import { getDisplayName } from '../utils/address.utils';
 
 @Component({
   selector: 'app-ipo',
@@ -19,17 +17,18 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   public ipoContracts: ContractDto[] = [];
   public loaded: boolean = false;
-  public seedFilterFormControl: FormControl = new FormControl();
+  public refreshing: boolean = false;
   public currentTick = 0;
-  public userServiceSubscription: Subscription | undefined;
   public ipoBids: Transaction[] = [];
   public smartContracts: SmartContract[] = [];
   private destroy$ = new Subject<void>();
 
-
-  constructor(private router: Router, private transloco: TranslocoService, private api: ApiService, private walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService) {
-
-  }
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private walletService: WalletService,
+    private addressNameService: AddressNameService
+  ) { }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -44,33 +43,26 @@ export class IpoComponent implements OnInit, OnDestroy {
     this.init();
   }
 
-  getDate() {
-    return new Date();
-  }
-
   init() {
+    this.refreshing = true;
 
-    this.api.getSmartContracts().pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.smartContracts = s;
+    forkJoin({
+      smartContracts: this.api.getSmartContracts(),
+      ipoContracts: this.api.getIpoContracts(),
+      bids: this.api.getCurrentIpoBids(this.getSeeds().map(m => m.publicId))
+    }).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (result) => {
+        this.smartContracts = result.smartContracts;
+        this.ipoContracts = result.ipoContracts;
+        this.ipoBids = result.bids;
+        this.loaded = true;
+        this.refreshing = false;
+      },
+      error: () => {
+        this.refreshing = false;
+      }
     });
-
-    this.api.getIpoContracts().pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.ipoContracts = s;
-      this.loaded = true;
-    });
-
-    this.loadBids();
   }
-
-  onlyUnique(value: Transaction, index: any, array: Transaction[]) {
-    return array.findIndex((f: Transaction) => f.id === value.id) == index;
-  }
-
-  // getTransactions(publicId: string | null = null): Transaction[] {
-  //   return this.accountBalances.flatMap((b) => b.transactions.filter(f => publicId == null || f.sourceId == publicId || f.destId == publicId))
-  //     .filter(this.onlyUnique)
-  //     .sort((a,b) =>  { return (<any>new Date(b.created)) - (<any>new Date(a.created))});
-  // }
 
   isOwnId(publicId: string): boolean {
     return this.walletService.getSeeds().find(f => f.publicId == publicId) !== undefined;
@@ -84,14 +76,20 @@ export class IpoComponent implements OnInit, OnDestroy {
       return '';
   }
 
-  getSeeds() {
-    return this.walletService.getSeeds();
+  getAddressDisplayName(address: string): string {
+    if (!address) {
+      return '';
+    }
+    try {
+      const addressName = this.addressNameService.getAddressName(address);
+      return getDisplayName(address, this.walletService.getSeeds(), addressName);
+    } catch (e) {
+      return address;
+    }
   }
 
-  loadBids(contractId: number | null = null) {
-    this.api.getCurrentIpoBids(this.getSeeds().map(m => m.publicId)).pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.ipoBids = s;
-    });
+  getSeeds() {
+    return this.walletService.getSeeds();
   }
 
   repeat(transaction: Transaction) {

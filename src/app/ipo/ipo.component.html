@@ -26,35 +26,51 @@
                     <button [routerLink]="['/ipo/participate/', p.index]" mat-raised-button color="primary">
                         <mat-icon>payments</mat-icon> {{ t("ipoComponent.buttons.place-bid") }}
                     </button>
-                    <button mat-raised-button (click)="init()">
-                        <mat-icon>refresh</mat-icon> {{ t("ipoComponent.buttons.refresh") }}
+                    <button mat-raised-button class="refresh-btn" (click)="init()" [disabled]="refreshing">
+                        <mat-spinner *ngIf="refreshing" class="refresh-spinner" diameter="20"></mat-spinner>
+                        <span class="refresh-content" [class.hidden]="refreshing">
+                            <mat-icon>refresh</mat-icon>
+                            <span>{{ t("ipoComponent.buttons.refresh") }}</span>
+                        </span>
                     </button>
                     <button mat-raised-button (click)="openStats(p.index)">
                         <mat-icon>query_stats</mat-icon> {{ t("ipoComponent.livPanelHint") }}
                     </button>
                     <div *ngIf="ipoContracts">
                         <h3>{{ t("ipoComponent.yourShares") }}</h3>
-                        {{ t("ipoComponent.statusValid", {tick: getBidOverview(p.index).tick | number: '1.0-0'}) }}
-                        <div *ngFor="let bid of getMyShares(p.index)" class="transaction-list">
-                            <strong>{{ bid.bids.length }} ({{ getTotalPrice(bid.bids) | number: '1.0-0'}} {{
-                                t("general.currency") }})</strong> {{ t("ipoComponent.sharesFor") }}
-                            <div [class]="{copy: true, ownId: isOwnId(bid.computorId)}">
-                                <span matTooltip="{{ t('general.copy.tooltip') }}"
-                                    [cdkCopyToClipboard]="bid.computorId">{{ bid.computorId }} {{
-                                    getSeedName(bid.computorId) }}</span>
+                        <div class="status-valid">({{ t("ipoComponent.statusValid", {tick: getBidOverview(p.index).tick | number: '1.0-0'}) }})</div>
+                        <ng-container *ngIf="getMyShares(p.index) as shares">
+                            <div *ngIf="shares.length === 0" class="empty-state">
+                                {{ t("ipoComponent.noShares") }}
                             </div>
-                        </div>
+                            <div *ngFor="let bid of shares" class="transaction-list">
+                                <strong>{{ bid.bids.length }} ({{ getTotalPrice(bid.bids) | number: '1.0-0'}} {{
+                                    t("general.currency") }})</strong> {{ t("ipoComponent.sharesFor") }}
+                                <div [class]="{copy: true, ownId: isOwnId(bid.computorId)}">
+                                    <span matTooltip="{{ t('general.copy.tooltip') }}"
+                                        [cdkCopyToClipboard]="bid.computorId">{{ bid.computorId }} {{
+                                        getSeedName(bid.computorId) }}</span>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <div>
                         <h3>{{ t("ipoComponent.yourBids") }}</h3>
 
                         <ng-container *ngIf="getContractBids(p.index) as bids">
-                            <div *ngIf="bids.length === 0">
+                            <div *ngIf="bids.length === 0" class="empty-state">
                                 {{ t("ipoComponent.noBids") }}
                             </div>
 
                             <div *ngFor="let transaction of bids" class="transaction-list">
-                                <tx-status [transaction]="transaction"></tx-status>
+                                <span class="status-icon">
+                                    <mat-icon *ngIf="transaction.status == 'Success'" class="trx-executed"
+                                        matTooltip="{{ t('balanceComponent.transactions.status.executed.tooltip') }}">check_circle_outline</mat-icon>
+                                    <mat-icon *ngIf="transaction.status == 'Failed'" class="transfer-failed"
+                                        matTooltip="{{ t('balanceComponent.transactions.status.failure.tooltip') }}">highlight_off</mat-icon>
+                                    <mat-icon *ngIf="transaction.status != 'Success' && transaction.status != 'Failed'" class="trx-pending"
+                                        matTooltip="{{ t('balanceComponent.transactions.status.pending.tooltip') }}">schedule</mat-icon>
+                                </span>
                                 <div class="center">
                                     <div class="trans-amount currency-value">{{ transaction.price | number: '1.0-0' }}
                                         {{
@@ -62,47 +78,34 @@
                                         t("ipoComponent.bidStatus.pcs") }} </div>
                                     <div class="trans-date"> Tick: {{ transaction.targetTick | number: '1.0-0' }} </div>
                                 </div>
-                                <div class="send-receive-indicator">
-                                    <button
-                                        *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
-                                        mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
-                                        (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
-                                    <mat-icon class="send"
-                                        matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
-                                        *ngIf="isOwnId(transaction.sourceId)">arrow_downward</mat-icon>
-                                    <mat-icon class="send"
-                                        matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
-                                        *ngIf="!isOwnId(transaction.sourceId)">empty</mat-icon>
-                                    <mat-icon class="receive"
-                                        matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
-                                        *ngIf="isOwnId(transaction.destId)">arrow_upward</mat-icon>
-                                    <mat-icon class="receive"
-                                        matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
-                                        *ngIf="!isOwnId(transaction.destId)">empty</mat-icon>
-                                </div>
-                                <div>
-                                    <div [class]="{copy: true, ownId: isOwnId(transaction.sourceId)}">
-                                        From: <span matTooltip="{{ t('general.copy.tooltip') }}"
-                                            [cdkCopyToClipboard]="transaction.sourceId">{{ transaction.sourceId }} {{
-                                            getSeedName(transaction.sourceId) }}</span>
+                                <div class="address-group">
+                                    <div class="send-receive-indicator">
+                                        <button
+                                            *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
+                                            mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
+                                            (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
+                                        <mat-icon class="send"
+                                            matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
+                                            *ngIf="isOwnId(transaction.sourceId)">arrow_downward</mat-icon>
+                                        <mat-icon class="receive"
+                                            matTooltip="{{ t('balanceComponent.transactions.receive.tooltip') }}"
+                                            *ngIf="isOwnId(transaction.destId)">arrow_upward</mat-icon>
                                     </div>
-                                    <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">To: <span
-                                            matTooltip="{{ t('general.copy.tooltip') }}"
-                                            [cdkCopyToClipboard]="transaction.destId">{{ transaction.destId }} {{
-                                            getSeedName(transaction.destId) }}</span></div>
+                                    <div>
+                                        <div [class]="{copy: true, ownId: isOwnId(transaction.sourceId)}">
+                                            From: <span matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.sourceId">{{
+                                                getAddressDisplayName(transaction.sourceId) }}</span>
+                                        </div>
+                                        <div [class]="{copy: true, ownId: isOwnId(transaction.destId)}">
+                                            To: <span matTooltip="{{ t('general.copy.tooltip') }}"
+                                                [cdkCopyToClipboard]="transaction.destId">{{
+                                                getAddressDisplayName(transaction.destId) }}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span *ngIf="transaction.created">Created: {{ transaction.created | date:'short'
-                                        }}<br></span>
-                                    <span *ngIf="transaction.broadcasted && !transaction.stored">Broadcasted: {{
-                                        transaction.broadcasted | date:'short' }}<br></span>
-                                    <span *ngIf="transaction.stored">Stored: {{ transaction.stored | date:'short'
-                                        }}<br></span>
-                                    <span *ngIf="transaction.staged">Staged: {{ transaction.staged | date:'short'
-                                        }}<br></span>
-                                    <span *ngIf="transaction.confirmed">Confirmed: {{ transaction.confirmed |
-                                        date:'short'
-                                        }}</span>
+                                <div class="trans-dates">
+                                    <span *ngIf="transaction.created">{{ transaction.created | dateTime }}</span>
                                 </div>
                             </div>
                         </ng-container>

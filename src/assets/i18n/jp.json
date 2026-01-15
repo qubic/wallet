@@ -540,6 +540,8 @@
     "buttons.refresh": "ステータスを更新",
     "bidStatus.hint": "このステータスは入札が行われたかのみを表示します。成功したかどうかは表示されません。",
     "bidStatus.pcs": "個",
+    "noBids": "まだ入札がありません",
+    "noShares": "まだ株式を所有していません",
     "place-bid": {
       "title": "入札を行う",
       "needBalance": "プラスの残高があるシードが少なくとも1つ必要です。",
