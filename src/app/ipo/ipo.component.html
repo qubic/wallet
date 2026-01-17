@@ -80,10 +80,6 @@
                                 </div>
                                 <div class="address-group">
                                     <div class="send-receive-indicator">
-                                        <button
-                                            *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending'"
-                                            mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
-                                            (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
                                         <mat-icon class="send"
                                             matTooltip="{{ t('balanceComponent.transactions.send.tooltip') }}"
                                             *ngIf="isOwnId(transaction.sourceId)">arrow_downward</mat-icon>

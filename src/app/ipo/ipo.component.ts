@@ -18,7 +18,6 @@ export class IpoComponent implements OnInit, OnDestroy {
   public ipoContracts: ContractDto[] = [];
   public loaded: boolean = false;
   public refreshing: boolean = false;
-  public currentTick = 0;
   public ipoBids: Transaction[] = [];
   public smartContracts: SmartContract[] = [];
   private destroy$ = new Subject<void>();
@@ -90,14 +89,6 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   getSeeds() {
     return this.walletService.getSeeds();
-  }
-
-  repeat(transaction: Transaction) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
   }
 
   getContractBids(contractId: number) {
