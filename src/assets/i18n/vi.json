@@ -540,6 +540,8 @@
     "buttons.refresh": "Làm mới trạng thái",
     "bidStatus.hint": "Trạng thái chỉ cho biết giá thầu của bạn đã được gửi, KHÔNG cho biết có thành công hay không.",
     "bidStatus.pcs": "món",
+    "noBids": "Bạn chưa có giá thầu nào",
+    "noShares": "Bạn chưa có cổ phần nào",
     "place-bid": {
       "title": "Đặt giá thầu",
       "needBalance": "Bạn cần ít nhất một Seed có số dư dương.",

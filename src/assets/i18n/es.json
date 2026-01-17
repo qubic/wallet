@@ -538,7 +538,8 @@
     "buttons.refresh": "Actualizar el Estado",
     "bidStatus.hint": "El estado solo se muestra si tu oferta ha sido colocada. NO si ha sido exitosa.",
     "bidStatus.pcs": "pcs",
-    "noBids": "No se encontraron Ofertas",
+    "noBids": "Aún no tienes ofertas",
+    "noShares": "Aún no tienes acciones",
     "place-bid": {
       "title": "Hacer una Oferta",
       "needBalance": "Necesitas al menos una Seed con saldo positivo.",

@@ -540,7 +540,8 @@
     "buttons.refresh": "刷新状态",
     "bidStatus.hint": "仅当您已出价时才会显示该状态。 如果成功的话就不会。",
     "bidStatus.pcs": "pcs",
-    "noBids": "未找到出價",
+    "noBids": "您还没有出价",
+    "noShares": "您还没有股份",
     "place-bid": {
       "title": "出价",
       "needBalance": "您至少需要一颗具有正余额的种子。",
