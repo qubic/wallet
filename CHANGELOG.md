@@ -1,3 +1,10 @@
+## [4.23.1-rc.1](https://github.com/qubic/wallet/compare/v4.23.0...v4.23.1-rc.1) (2026-01-18)
+
+
+### Bug Fixes
+
+* **ipo:** improve UI and remove non-functional repeat button ([d7dc61d](https://github.com/qubic/wallet/commit/d7dc61d673d84d3c51478a160521690e23445e9f))
+
 # [4.23.0](https://github.com/qubic/wallet/compare/v4.22.0...v4.23.0) (2026-01-07)
 
 
