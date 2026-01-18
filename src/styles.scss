@@ -5,8 +5,8 @@
 
 // Light Theme Text
 $dark-text: #000000;
-$dark-positiv-color: #079455;
-$dark-negativ-color: #d92d20;
+$dark-positiv-color: $receive-color-light;
+$dark-negativ-color: $send-color-light;
 $dark-primary-text: rgba($dark-text, 0.87);
 $dark-accent-text: rgba($dark-primary-text, 0.54);
 $dark-disabled-text: rgba($dark-primary-text, 0.38);
@@ -67,8 +67,8 @@ $mat-light-theme-background: (
 
 // Dark Theme text
 $light-text: #ffffff;
-$light-positiv-color: #47cd89;
-$light-negativ-color: #f97066;
+$light-positiv-color: $receive-color;
+$light-negativ-color: $send-color;
 $light-primary-text: $light-text;
 $light-accent-text: rgba($light-primary-text, 0.7);
 $light-disabled-text: rgba($light-primary-text, 0.5);
@@ -247,6 +247,14 @@ $altTheme: (
   }
 
   .isNegativ {
+    color: $light-negativ-color;
+  }
+
+  .receive {
+    color: $light-positiv-color;
+  }
+
+  .send {
     color: $light-negativ-color;
   }
 
@@ -1136,6 +1144,29 @@ mat-hint {
 
 .isNegativ {
   color: $dark-negativ-color;
+}
+
+.receive {
+  color: $dark-positiv-color;
+}
+
+.send {
+  color: $dark-negativ-color;
+}
+
+// Transaction status colors (global - same for all themes)
+.trx-pending {
+  color: $trx-pending-color;
+}
+
+.trx-executed,
+.transfer-success {
+  color: $trx-success-color;
+}
+
+.trx-not-executed,
+.transfer-failed {
+  color: $trx-failure-color;
 }
 
 // analog bootstrap

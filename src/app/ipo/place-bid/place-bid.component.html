@@ -19,10 +19,15 @@
                             <div class="col">
                                 <mat-form-field appearance="fill" placeholder="Sender Seed" class="full-width">
                                     <mat-label>{{ t("paymentComponent.form.sourceSeed.label") }}</mat-label>
-                                    <mat-select formControlName="sourceId">
+                                    <mat-select formControlName="sourceId" panelClass="full-width">
+                                        <mat-select-trigger>
+                                            <span *ngIf="ipoForm.controls['sourceId'].value && getSelectedSourceSeed()">
+                                                {{ getSelectedSourceSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                                            </span>
+                                        </mat-select-trigger>
                                         <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId"
                                             class="custom-mat-option">
-                                            {{ seed | seedFirstLine }}
+                                            {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="ipoForm.controls['sourceId'].hasError('required')">
@@ -106,7 +111,7 @@
                             [disabled]="!ipoForm.valid || !walletService.privateKey">{{
                             t("ipoComponent.place-bid.buttons.send") }}</button>
                         <div *ngIf="!walletService.privateKey">
-                            <button mat-raised-button color="warn" type="button" (click)="loadKey()">{{
+                            <button mat-raised-button color="primary" type="button" (click)="loadKey()">{{
                                 t("paymentComponent.buttons.loadPrivateKey") }}</button>
                         </div>
                     </mat-card-actions>

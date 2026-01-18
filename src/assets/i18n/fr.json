@@ -538,7 +538,8 @@
     "buttons.refresh": "Actualiser le Statut",
     "bidStatus.hint": "Le statut s'affiche uniquement si votre offre a été placée. PAS si elle a été réussie.",
     "bidStatus.pcs": "pcs",
-    "noBids": "Aucune Offre trouvée",
+    "noBids": "Vous n'avez pas encore d'offres",
+    "noShares": "Vous n'avez pas encore d'actions",
     "place-bid": {
       "title": "Placer une Offre",
       "needBalance": "Vous avez besoin d'au moins une Seed avec un solde positif.",

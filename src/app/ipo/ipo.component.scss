@@ -1,6 +1,29 @@
-.mostVotes{
-    font-weight: bold;
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 6px;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 1;
+    }
 }
+
+.empty-state {
+    color: gray;
+    padding: 10px 0;
+}
+
+.status-valid {
+    font-size: 0.85em;
+    color: gray;
+    margin-top: -15px;
+    margin-bottom: 16px;
+}
+
 .proposal-card {
     margin-bottom: 10px;    
     min-width: 120px;
@@ -17,24 +40,29 @@
     flex-wrap: wrap;
     align-items: center;
     padding: 5px;
-    column-gap: 10px;
+    gap: 5px;
     margin: 10px;
-  
+
+    .address-group {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
     .send-receive-indicator {
-        min-width: 98px;
-        text-align: right;
+        display: flex;
+        align-items: center;
     }
-    
-    .receive {
-        color: green;
-    }
-  
-    .send {
-        color: red;
-    }
-  
+
     .trans-date {
         font-size: 0.9em;
+    }
+
+    .trans-dates {
+        margin-left: auto;
+        text-align: right;
+        font-size: 0.9em;
+        align-self: flex-start;
     }
   
     .trans-amount {
@@ -60,7 +88,34 @@
     padding-bottom: 20px;
   }
 
-  .loading {
+.refresh-btn {
+    position: relative;
+
+    .refresh-spinner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .refresh-content {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        vertical-align: middle;
+
+        mat-icon {
+            vertical-align: middle;
+        }
+
+        &.hidden {
+            visibility: hidden;
+        }
+    }
+}
+
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;

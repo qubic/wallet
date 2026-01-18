@@ -538,7 +538,8 @@
     "buttons.refresh": "Refresh Status",
     "bidStatus.hint": "The status shows only if your bid has been placed. NOT if it was successful.",
     "bidStatus.pcs": "pcs",
-    "noBids": "Geen biedingen gevonden",
+    "noBids": "Je hebt nog geen biedingen",
+    "noShares": "Je hebt nog geen aandelen",
     "place-bid": {
       "title": "Place a Bid",
       "needBalance": "You need at least one seed with a positive balance.",
