@@ -138,13 +138,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   getMaxAmount(publicId: string) {
-    this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(s => {
-      if (s && s.length > 0 && s.find(f => f.publicId == publicId)) {
-        this.maxAmount = s.find(f => f.publicId == publicId)?.currentEstimatedAmount ?? s.find(f => f.publicId == publicId)?.epochBaseAmount ?? 0;
-      } else {
-        this.maxAmount = 0;
-      }
-    });
+    this.maxAmount = this.walletService.getSeed(publicId)?.balance ?? 0;
   }
 
   setAmounToMax(addAmount: number = 0) {
