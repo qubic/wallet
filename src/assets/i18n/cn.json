@@ -9,7 +9,6 @@
       "balance": "交易",
       "qearn": "Qearn",
       "settings": "设置",
-      "voting": "投票",
       "ipo": "IPO",
       "assets": "资产"
     },
@@ -446,78 +445,6 @@
       "title": "导出设置",
       "hint": "按下面的按钮下载您当前的地址配置文件，它包含您的加密种子，您还应该保存解锁文件（私钥）。",
       "buttons.export": "导出/保存 Config 文件"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic 计算者投票",
-    "description": "Qubic 计算者投票用于就整个网络的待决定提案达成共识，这可以包括接受智能合约或做出其他协议决策，仅允许计算者参与。",
-    "proposals": {
-      "editButton": "编辑",
-      "createButton": "创建提案",
-      "voteButton": "投票",
-      "title": "{{amount}} 目前的提案",
-      "noComputorHint": "您还没有注册任何计算者，如果您想提出任何建议，您需要至少拥有一个计算者种子。",
-      "votingResult": "投票结果",
-      "noVotes": "不投票",
-      "from": "来自:",
-      "url": "提案 URL:"
-    },
-    "participate": {
-      "title": "参加",
-      "cancelButton": "取消",
-      "sendVotesButton": "发送投票",
-      "notConfirmedMessage": "该提案尚未得到 Qubic 网络的确认，请等待投票。",
-      "noComputorsText": "您没有计算者或您的计算者已创建提案。",
-      "computorsSelected": "选择计算者"
-    },
-    "create": {
-      "title": "创建提案",
-      "cancelButton": "取消",
-      "sendVotesButton": "发送提案",
-      "alreadyPublished": "该计算者已经发布了提案，每个纪元只允许一个",
-      "buttons": {
-        "create": "创建提案",
-        "publish": "连接并发布提案",
-        "reset": "重置表格",
-        "loadPrivateKey": "加载金库文件",
-        "finish": "显示提案"
-      },
-      "form": {
-        "operatorSeed.label": "仲裁员种子",
-        "operatorSeed.error.required": "需要填写仲裁员",
-        "sourceSeed.label": "用于提案的计算者",
-        "sourceSeed.error.required": "需要填写计算者",
-        "title.label": "提案标题",
-        "title.placeholder": "提案标题",
-        "title.error.required": "标题为必填项",
-        "title.error.min": "标题必须至少有 2 个字符",
-        "title.error.max": "标题不得超过 100 个字符",
-        "description.label": "提案说明",
-        "description.placeholder": "提案说明",
-        "description.error.min": "描述必须至少有 2 个字符",
-        "description.error.max": "描述不得超过 5000 个字符",
-        "description.error.required": "描述为必填项",
-        "option.label": "选项 {{id}}",
-        "option.placeholder": "选项 {{id}}",
-        "option.error.required": "选项 {{id}} 为必填项",
-        "option.error.min": "选项必须至少有 2 个字符",
-        "option.error.max": "选项不得超过 50 个字符",
-        "computorIp.label": "计算者 IP 地址",
-        "computorIp.placeholder": "计算者 IP 地址",
-        "computorIp.error.required": "需要填写计算者 IP 地址"
-      },
-      "proposalStep.label": "创建提案",
-      "publishStep.label": "发布提案",
-      "finishStep.label": "完成",
-      "finishStep.success": "您的提案已发送到您的计算者。"
-    },
-    "status": {
-      "success": "法定人数接受",
-      "failed": "被法定人数驳回",
-      "publishing": "发布中",
-      "pending": "投票已开放",
-      "draft": "草稿",
-      "unknown": "状态未知"
     }
   },
   "ipoComponent": {

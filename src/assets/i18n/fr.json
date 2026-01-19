@@ -9,7 +9,6 @@
       "balance": "Solde",
       "qearn": "Qearn",
       "settings": "Paramètres",
-      "voting": "Vote",
       "ipo": "IPO",
       "assets": "Actifs"
     },
@@ -444,78 +443,6 @@
       "title": "Exporter les paramètres",
       "hint": "Appuyez sur le bouton ci-dessous pour télécharger votre configuration actuelle. Elle contient vos Seed cryptées. Vous devriez également avoir sauvegardé votre clé privée.",
       "buttons.export": "Exporter/Sauvegarder la configuration"
-    }
-  },
-  "votingComponent": {
-    "title": "Vote Computor Qubic",
-    "description": "Le vote computor Qubic est utilisé pour atteindre un consensus sur des sujets à décider concernant l'ensemble du réseau. Cela peut inclure l'acceptation de contrats intelligents ou la prise de décisions protocolaires. Seuls les computors sont autorisés à participer.",
-    "proposals": {
-      "editButton": "Modifier",
-      "createButton": "Créer une proposition",
-      "voteButton": "Voter",
-      "title": "{{amount}} Propositions actuelles",
-      "noComputorHint": "Vous n'avez enregistré aucun Computor. Si vous souhaitez proposer quelque chose, vous devez avoir au moins une Seed Computor.",
-      "votingResult": "Résultat du vote",
-      "noVotes": "aucun vote",
-      "from": "De :",
-      "url": "URL de la proposition :"
-    },
-    "participate": {
-      "title": "Participer",
-      "cancelButton": "Annuler",
-      "sendVotesButton": "Envoyer les votes",
-      "notConfirmedMessage": "Cette proposition n'est pas encore confirmée par le réseau Qubic. Veuillez attendre pour voter.",
-      "noComputorsText": "Vous n'avez pas de Computors ou vos Computors ont déjà créé une proposition.",
-      "computorsSelected": "Computors sélectionnés"
-    },
-    "create": {
-      "title": "Créer une proposition",
-      "cancelButton": "Annuler",
-      "sendVotesButton": "Envoyer la proposition",
-      "alreadyPublished": "Ce Computor a déjà publié une proposition. Une seule est autorisée par Epoch",
-      "buttons": {
-        "create": "Créer une proposition",
-        "publish": "Connecter et publier la proposition",
-        "reset": "Réinitialiser le formulaire",
-        "loadPrivateKey": "Charger le fichier Wallet",
-        "finish": "Afficher les propositions"
-      },
-      "form": {
-        "operatorSeed.label": "Seed de l'opérateur",
-        "operatorSeed.error.required": "L'opérateur est requis",
-        "sourceSeed.label": "Computor à utiliser pour la proposition",
-        "sourceSeed.error.required": "Le computor est requis",
-        "title.label": "Titre de la proposition",
-        "title.placeholder": "Titre de la proposition",
-        "title.error.required": "Le titre est requis",
-        "title.error.min": "Le titre doit avoir au moins 2 caractères",
-        "title.error.max": "Le titre ne doit pas dépasser 100 caractères",
-        "description.label": "Description de la proposition",
-        "description.placeholder": "Description de la proposition",
-        "description.error.min": "La description doit avoir au moins 2 caractères",
-        "description.error.max": "La description ne doit pas dépasser 5000 caractères",
-        "description.error.required": "La description est requise",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "L'option {{id}} est requise",
-        "option.error.min": "L'option doit avoir au moins 2 caractères",
-        "option.error.max": "L'option ne doit pas dépasser 50 caractères",
-        "computorIp.label": "Adresse IP du computor",
-        "computorIp.placeholder": "Adresse IP du computor",
-        "computorIp.error.required": "L'adresse IP du computor est requise"
-      },
-      "proposalStep.label": "Créer une proposition",
-      "publishStep.label": "Publier la proposition",
-      "finishStep.label": "Terminé",
-      "finishStep.success": "Votre proposition a été envoyée à votre computor."
-    },
-    "status": {
-      "success": "Accepté par le quorum",
-      "failed": "Rejeté par le quorum",
-      "publishing": "Publication en cours",
-      "pending": "Vote ouvert",
-      "draft": "Brouillon",
-      "unknown": "Statut inconnu"
     }
   },
   "ipoComponent": {

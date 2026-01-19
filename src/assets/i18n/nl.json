@@ -9,7 +9,6 @@
       "balance": "Account Balans",
       "qearn": "Qearn",
       "settings": "Instellingen",
-      "voting": "Voting",
       "ipo": "IPO",
       "assets": "Assets"
     },
@@ -444,78 +443,6 @@
       "title": "Export Settings",
       "hint": "Press the below button to download your current config. It contains your encrypted seeds. You also should have saved your private key.",
       "buttons.export": "Export/Save Config"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic Computor Voting",
-    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
-    "proposals": {
-      "editButton": "Edit",
-      "createButton": "Create Proposal",
-      "voteButton": "Vote",
-      "title": "{{amount}} Current Proposals",
-      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
-      "votingResult": "Voting Result",
-      "noVotes": "no votes",
-      "from": "From:",
-      "url": "Propsal URL:"
-    },
-    "participate": {
-      "title": "Participate",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Votes",
-      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
-      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
-      "computorsSelected": "Computors selected"
-    },
-    "create": {
-      "title": "Create Proposal",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Proposal",
-      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
-      "buttons": {
-        "create": "Create Proposal",
-        "publish": "Connect and Publish Proposal",
-        "reset": "Reset Form",
-        "loadPrivateKey": "Load vault file",
-        "finish": "Show Proposals"
-      },
-      "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "Computor to use for proposal",
-        "sourceSeed.error.required": "Computor is required",
-        "title.label": "Proposal Title",
-        "title.placeholder": "Proposal Title",
-        "title.error.required": "Title is required",
-        "title.error.min": "Title must have at least 2 characters",
-        "title.error.max": "Title must have at maximum 100 characters",
-        "description.label": "Proposal Description",
-        "description.placeholder": "Proposal Description",
-        "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 5000 characters",
-        "description.error.required": "Description is required",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} is required",
-        "option.error.min": "Option must have at least 2 characters",
-        "option.error.max": "Option must have at maximum 50 characters",
-        "computorIp.label": "Computor IP Address",
-        "computorIp.placeholder": "Computor IP Address",
-        "computorIp.error.required": "Computor IP Address required"
-      },
-      "proposalStep.label": "Create Proposal",
-      "publishStep.label": "Publish Proposal",
-      "finishStep.label": "Done",
-      "finishStep.success": "Your Proposal has been sent to your computor."
-    },
-    "status": {
-      "success": "Accepted by Quorum",
-      "failed": "Dismissed by Quorum",
-      "publishing": "Publish in progress",
-      "pending": "Voting is open",
-      "draft": "Draft",
-      "unknown": "Unknown status"
     }
   },
   "ipoComponent": {

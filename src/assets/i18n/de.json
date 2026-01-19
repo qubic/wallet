@@ -9,7 +9,6 @@
       "balance": "Buchungen",
       "qearn": "Qearn",
       "settings": "Einstellungen",
-      "voting": "Voting",
       "ipo": "IPO",
       "assets": "Assets"
     },
@@ -445,78 +444,6 @@
       "title": "Einstellungen exportieren",
       "hint": "Klicke auf die Schaltfläche unten, um deine aktuelle Konfiguration herunterzuladen. Es enthält deine verschlüsselten Seeds. Du solltest auch deinen privaten Schlüssel gespeichert haben.",
       "buttons.export": "Starte Export"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic Computor Abstimmung",
-    "description": "Die Qubic-Computor-Abstimmung dient der Konsensfindung über zu entscheidende Themen im gesamten Netzwerk. Dies kann das Akzeptieren intelligenter Verträge oder das Treffen anderer Protokollentscheidungen umfassen. Es dürfen nur Computor teilnehmen.",
-    "proposals": {
-      "editButton": "Bearbeiten",
-      "createButton": "Vorschlag erstellen",
-      "voteButton": "Abstimmen",
-      "title": "{{amount}} Vorschläge",
-      "noComputorHint": "Du hast keinen registrierten Computor. Wenn du etwas vorschlagen möchtest, musst du mindestens einen Computor haben.",
-      "votingResult": "Ergebnis",
-      "noVotes": "keine Stimmen",
-      "from": "Von:",
-      "url": "URL:"
-    },
-    "participate": {
-      "title": "Abstimmen",
-      "cancelButton": "Abbrechen",
-      "sendVotesButton": "Stimmen senden",
-      "notConfirmedMessage": "Dieser Vorschlag ist vom Netzwerk noch nicht bestätigt. Bitte warte mit abstimmen.",
-      "noComputorsText": "Du hast keine Computoren oder diese wurden bereits für Vorschläge verwendet.",
-      "computorsSelected": "Alle auswählen"
-    },
-    "create": {
-      "title": "Vorschlag erstellen",
-      "cancelButton": "Abbrechen",
-      "sendVotesButton": "Vorschlag speichern",
-      "alreadyPublished": "Dieser Computor hat bereits einen veröffentlichten Vorschlag. Es ist pro Epoche nur ein Vorschlag erlaubt.",
-      "buttons": {
-        "create": "Vorschlag erstellen",
-        "publish": "Verbinden und Vorschlag publizieren",
-        "reset": "Zurücksetzen",
-        "loadPrivateKey": "Tresor-Datei öffnen",
-        "finish": "Zeige Vorschläge"
-      },
-      "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator ist erforderlich",
-        "sourceSeed.label": "Computor",
-        "sourceSeed.error.required": "Computor ist erforderlich",
-        "title.label": "Titel",
-        "title.placeholder": "Titel",
-        "title.error.required": "Titel ist erforderlich",
-        "title.error.min": "Der Titel muss mindestens 2 Zeichen lang sein",
-        "title.error.max": "Der Titel darf höchstens 100 Zeichen lang sein",
-        "description.label": "Beschreibung",
-        "description.placeholder": "Beschreibung",
-        "description.error.required": "Beschreibung ist erforderlich",
-        "description.error.min": "Die Beschreibung muss mindestens 2 Zeichen lang sein",
-        "description.error.max": "Die Beschreibung darf höchstens 5000 Zeichen lang sein",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} ist erforderlich",
-        "option.error.min": "Die Option muss mindestens 2 Zeichen lang sein",
-        "option.error.max": "Die Option darf höchstens 50 Zeichen lang sein",
-        "computorIp.label": "Computer IP-Adresse",
-        "computorIp.placeholder": "Computor IP-Adresse",
-        "computorIp.error.required": "Computor IP-Adresse ist erforderlich"
-      },
-      "proposalStep.label": "Erstellen",
-      "publishStep.label": "Veröffentlichen",
-      "finishStep.label": "Abschluss",
-      "finishStep.success": "Dein Vorschlag wurde zu deinem Computor gesendet."
-    },
-    "status": {
-      "success": "Vom Quorum akzeptiert",
-      "failed": "Vom Quorum abgelehnt",
-      "publishing": "Veröffentlichung läuft",
-      "pending": "Abstimmung ist offen",
-      "draft": "Entwurf",
-      "unknown": "Unbekannter Status"
     }
   },
   "ipoComponent": {
