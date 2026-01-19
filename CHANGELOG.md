@@ -1,3 +1,12 @@
+## [4.23.1](https://github.com/qubic/wallet/compare/v4.23.0...v4.23.1) (2026-01-19)
+
+
+### Bug Fixes
+
+* **ipo:** improve UI and remove non-functional repeat button ([d7dc61d](https://github.com/qubic/wallet/commit/d7dc61d673d84d3c51478a160521690e23445e9f))
+* **ipo:** use correct balance source in getMaxAmount ([6b224ae](https://github.com/qubic/wallet/commit/6b224ae3341a9f4b26e7dbad4fc572dc63505fd9))
+* **ipo:** use walletService.getSeeds() for balance check in place-bid ([6cf236b](https://github.com/qubic/wallet/commit/6cf236b374228efe2c6019dd52b1fbda81cd7e3b))
+
 ## [4.23.1-rc.2](https://github.com/qubic/wallet/compare/v4.23.1-rc.1...v4.23.1-rc.2) (2026-01-19)
 
 
