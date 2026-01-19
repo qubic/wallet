@@ -1,14 +1,14 @@
 <ng-container *transloco="let t">
     <div class="content_container">
         <h1>{{ t("ipoComponent.place-bid.title") }}</h1>
-        <div *ngIf="balances.length <= 0">
+        <div *ngIf="!hasSeeds()">
             {{ t("ipoComponent.place-bid.needBalance") }}
         </div>
-        <div *ngIf="!ipoContract">
+        <div *ngIf="hasSeeds() && !ipoContract">
             {{ t("ipoComponent.place-bid.noContract") }}<br><br>
             <a [routerLink]="['/ipo']">{{ t("ipoComponent.place-bid.noContract.gotoIpoLabel") }}</a>
         </div>
-        <div *ngIf="balances.length > 0 && ipoContract">
+        <div *ngIf="hasSeeds() && ipoContract">
             <form [formGroup]="ipoForm" novalidate (ngSubmit)="onSubmit()">
                 <mat-card class="transfer-card">
                     <mat-card-content>

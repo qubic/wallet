@@ -4,7 +4,7 @@ import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, ContractDto, ProposalDto, Transaction } from '../../services/api.model';
+import { ContractDto, Transaction } from '../../services/api.model';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   public currentTick = 0;
   public contractIndex: number | undefined;
   private sub: any;
-  public balances: BalanceResponse[] = [];
   public tickOverwrite = false;
   public maxAmount: number = 0;
   public ipoContract: ContractDto | undefined;
@@ -78,9 +77,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   init(): void {
-    this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(s => {
-      this.balances = s;
-    });
     this.us.currentTick.pipe(takeUntil(this.destroy$)).subscribe(tick => {
       this.currentTick = tick;
       this.ipoForm.controls.tick.addValidators(Validators.min(tick));
@@ -142,13 +138,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   getMaxAmount(publicId: string) {
-    this.us.currentBalance.pipe(takeUntil(this.destroy$)).subscribe(s => {
-      if (s && s.length > 0 && s.find(f => f.publicId == publicId)) {
-        this.maxAmount = s.find(f => f.publicId == publicId)?.currentEstimatedAmount ?? s.find(f => f.publicId == publicId)?.epochBaseAmount ?? 0;
-      } else {
-        this.maxAmount = 0;
-      }
-    });
+    this.maxAmount = this.walletService.getSeed(publicId)?.balance ?? 0;
   }
 
   setAmounToMax(addAmount: number = 0) {
