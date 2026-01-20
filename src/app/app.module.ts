@@ -55,11 +55,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import { VotingComponent } from './voting/voting.component';
-import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
-import { VotingCreateComponent } from './voting/create/voting-create.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { VotingStatusComponent } from './voting/voting-status/voting-status.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
@@ -130,10 +126,6 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     LanguageChooserComponent,
     AccountComponent,
     ExportComponent,
-    VotingComponent,
-    VotingParticipateComponent,
-    VotingCreateComponent,
-    VotingStatusComponent,
     IpoComponent,
     PlaceBidComponent,
     TransferStatusComponent,

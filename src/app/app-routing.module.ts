@@ -4,14 +4,10 @@ import { BalanceComponent } from './balance/balance.component';
 import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PaymentComponent } from './payment/payment.component';
-import { VotingComponent } from './voting/voting.component';
-import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
-import { VotingCreateComponent } from './voting/create/voting-create.component';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { AssetsComponent } from './assets/assets.component';
 import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
-import { NavigationComponent } from './navigation/navigation.component';
 import { WelcomeComponent } from './public/welcome/welcome.component';
 import { CreateVaultComponent } from './public/create-vault/create-vault.component';
 import { walletReadyGuard } from './guards/wallet-ready.guard';
@@ -60,22 +56,6 @@ const routes: Routes = [
   {
     path     : 'qearn',
     component: QearnComponent
-  },
-  {
-    path     : 'voting',
-    component: VotingComponent
-  },
-  {
-    path     : 'voting/create',
-    component: VotingCreateComponent
-  },
-  {
-    path     : 'voting/create/:computorId',
-    component: VotingCreateComponent
-  },
-  {
-    path     : 'voting/participate/:index',
-    component: VotingParticipateComponent
   },
   {
     path     : 'settings',

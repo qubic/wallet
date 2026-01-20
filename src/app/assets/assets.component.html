@@ -314,7 +314,7 @@
                 {{ t("assetsComponent.form.buttons.cancel") }}
               </button>
               <button *ngIf="!walletService.privateKey" mat-raised-button color="primary" type="button"
-                (click)="loadKey()">{{ t("votingComponent.create.buttons.loadPrivateKey") }}
+                (click)="loadKey()">{{ t("paymentComponent.buttons.loadPrivateKey") }}
               </button>
               <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
                 [disabled]="!sendForm.valid || getBalanceAfterFees() < 0">
