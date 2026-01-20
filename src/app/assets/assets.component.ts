@@ -561,6 +561,11 @@ export class AssetsComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Sort managing contracts by number of units (highest first)
+    grouped.forEach(group => {
+      group.managingContracts.sort((a, b) => b.asset.ownedAmount - a.asset.ownedAmount);
+    });
+
     this.groupedAssets = Array.from(grouped.values()).sort((a, b) =>
       a.assetName.localeCompare(b.assetName, undefined, { sensitivity: 'base' })
     );

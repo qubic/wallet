@@ -1,3 +1,10 @@
+# [4.24.0](https://github.com/qubic/wallet/compare/v4.23.1...v4.24.0) (2026-01-20)
+
+
+### Features
+
+* sort managing contracts by number of units in grouped assets ([51c0142](https://github.com/qubic/wallet/commit/51c0142d4c606e959b289b0df146e502a1134dd5))
+
 ## [4.23.1](https://github.com/qubic/wallet/compare/v4.23.0...v4.23.1) (2026-01-19)
 
 
