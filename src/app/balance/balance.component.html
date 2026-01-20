@@ -35,14 +35,6 @@
         </div>
         <span *ngIf="!isShowAllTransactions">
             <div *ngIf="getTransactions().length > 0">
-                <div *ngIf="accountBalances.length <= 0 && hasSeeds()">
-                    <div class="loading">
-                        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-                    </div>
-                    <div class="text-center">
-                        {{ t("general.loading") }}
-                    </div>
-                </div>
                 <mat-accordion *ngFor="let transaction of getTransactions()">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
