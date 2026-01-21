@@ -10,7 +10,8 @@
       "qearn": "Qearn",
       "settings": "Cài đặt",
       "ipo": "IPO",
-      "assets": "Tài sản"
+      "assets": "Tài sản",
+      "support": "Hỗ trợ"
     },
     "version": "Phiên bản {{version}}",
     "version.url": "qubic.org",
@@ -445,6 +446,18 @@
       "title": "Xuất cài đặt",
       "hint": "Nhấn nút bên dưới để tải xuống tệp cấu hình địa chỉ hiện tại. Tệp chứa các Seed đã mã hóa. Bạn cũng nên lưu tệp mở khóa (private key).",
       "buttons.export": "Xuất/Lưu tệp Config"
+    },
+    "support": {
+      "warning": {
+        "title": "Cảnh giác với kẻ lừa đảo",
+        "description": "Chúng tôi không cung cấp hỗ trợ trực tiếp. Chúng tôi sẽ không bao giờ yêu cầu seed riêng tư, chia sẻ màn hình hoặc cài đặt ứng dụng hỗ trợ từ xa. Hãy cẩn thận với những kẻ mạo danh trên Discord, GitHub hoặc bất kỳ nền tảng nào khác."
+      },
+      "discord": {
+        "label": "Discord (Kênh hỗ trợ)"
+      },
+      "github": {
+        "label": "GitHub (Báo cáo sự cố)"
+      }
     }
   },
   "ipoComponent": {

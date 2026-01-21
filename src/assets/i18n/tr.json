@@ -10,7 +10,8 @@
       "qearn": "Qearn",
       "settings": "Ayarlar",
       "ipo": "IPO",
-      "assets": "Varlıklar"
+      "assets": "Varlıklar",
+      "support": "Destek"
     },
     "version": "Versiyon {{version}}",
     "version.url": "qubic.org",
@@ -445,6 +446,18 @@
       "title": "Ayarları Dışa Aktar",
       "hint": "Mevcut adres yapılandırma dosyanızı indirmek için aşağıdaki düğmeye basın. Bu dosya şifrelenmiş cüzdanlarınızı içerir. Ayrıca kilit açma dosyanızı (özel anahtar) kaydetmiş olmanız gerekir.",
       "buttons.export": "Yapılandırma Dosyasını Dışa Aktar/Kaydet"
+    },
+    "support": {
+      "warning": {
+        "title": "Dolandırıcılara dikkat edin",
+        "description": "Canlı destek sunmuyoruz. Özel seed'inizi, ekran paylaşımı veya uzak destek uygulamaları yüklemenizi asla istemeyiz. Discord, GitHub veya diğer platformlardaki taklitçilere karşı dikkatli olun."
+      },
+      "discord": {
+        "label": "Discord (Destek kanalı)"
+      },
+      "github": {
+        "label": "GitHub (Hata bildir)"
+      }
     }
   },
   "ipoComponent": {

@@ -93,6 +93,7 @@ import { SeedDisplayPipe } from './pipes/seed-display.pipe';
 import { SeedFirstLinePipe, SeedSecondLinePipe } from './pipes/seed-display-line.pipe';
 import { DateTimePipe } from './pipes/date-time.pipe';
 import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
+import { SettingsSupportComponent } from './settings/support/support.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -143,7 +144,8 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     SeedFirstLinePipe,
     DateTimePipe,
     SeedSecondLinePipe,
-    TransferRightsComponent
+    TransferRightsComponent,
+    SettingsSupportComponent
   ],
   imports: [
     BrowserModule,

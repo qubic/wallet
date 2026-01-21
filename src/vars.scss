@@ -7,13 +7,19 @@ $darkLighterBackgroundColor: #192531;
 $darkLighter-10-BackgroundColor: #494F55;
 
 // Transaction status colors
-$trx-pending-color: #f5a623;      // Yellow/amber for pending
-$trx-success-color: #4caf50;      // Green for success/executed
-$trx-failure-color: #f44336;      // Red for failure/not-executed
+$trx-pending-color: #f5a623; // Yellow/amber for pending
+$trx-success-color: #4caf50; // Green for success/executed
+$trx-failure-color: #f44336; // Red for failure/not-executed
+
+$warning-color: #CDA747;
+
+// Text colors for reuse
+$dark-accent-text: rgba(#000000, 0.54); // Light theme secondary text
+$light-accent-text: rgba(#ffffff, 0.7); // Dark theme secondary text
 
 // Send/Receive indicator colors (dark theme - light text on dark background)
-$send-color: #f97066;             // Red for outgoing transactions
-$receive-color: #47cd89;          // Green for incoming transactions
+$send-color: #f97066; // Red for outgoing transactions
+$receive-color: #47cd89; // Green for incoming transactions
 
 // Send/Receive indicator colors (light theme - dark text on light background)
 $send-color-light: #d92d20;
