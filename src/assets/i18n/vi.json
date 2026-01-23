@@ -453,10 +453,12 @@
         "description": "Chúng tôi không cung cấp hỗ trợ trực tiếp. Chúng tôi sẽ không bao giờ yêu cầu seed riêng tư, chia sẻ màn hình hoặc cài đặt ứng dụng hỗ trợ từ xa. Hãy cẩn thận với những kẻ mạo danh trên Discord, GitHub hoặc bất kỳ nền tảng nào khác."
       },
       "discord": {
-        "label": "Discord (Kênh hỗ trợ)"
+        "label": "Discord (Kênh hỗ trợ)",
+        "description": "Nhận trợ giúp từ cộng đồng Qubic"
       },
       "github": {
-        "label": "GitHub (Báo cáo sự cố)"
+        "label": "GitHub (Báo cáo sự cố)",
+        "description": "Báo cáo lỗi hoặc yêu cầu tính năng"
       }
     }
   },

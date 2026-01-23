@@ -455,10 +455,12 @@
         "description": "We do not offer Live Support. We will never ask for your private seed, request screen sharing, or ask you to install remote support apps. Be careful with impersonators on Discord, GitHub, or any other platform."
       },
       "discord": {
-        "label": "Discord (Support channel)"
+        "label": "Discord (Support channel)",
+        "description": "Get help from the Qubic community"
       },
       "github": {
-        "label": "GitHub (File an issue)"
+        "label": "GitHub (File an issue)",
+        "description": "Report bugs or request features"
       }
     }
   },

@@ -23,12 +23,12 @@
             </div>
             <div class="channel-details">
               <h3>{{ t("settings.support.discord.label") }}</h3>
-              <span class="channel-url">{{ discordUrl }}</span>
+              <span class="channel-description">{{ t("settings.support.discord.description") }}</span>
             </div>
             <div class="channel-action">
               <button mat-raised-button color="primary" (click)="openExternalLink(discordUrl)">
-                <mat-icon>open_in_new</mat-icon>
                 Open
+                <mat-icon iconPositionEnd>open_in_new</mat-icon>
               </button>
             </div>
           </mat-card-content>
@@ -42,12 +42,12 @@
             </div>
             <div class="channel-details">
               <h3>{{ t("settings.support.github.label") }}</h3>
-              <span class="channel-url">{{ githubUrl }}</span>
+              <span class="channel-description">{{ t("settings.support.github.description") }}</span>
             </div>
             <div class="channel-action">
               <button mat-raised-button color="primary" (click)="openExternalLink(githubUrl)">
-                <mat-icon>open_in_new</mat-icon>
                 Open
+                <mat-icon iconPositionEnd>open_in_new</mat-icon>
               </button>
             </div>
           </mat-card-content>

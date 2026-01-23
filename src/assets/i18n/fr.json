@@ -451,10 +451,12 @@
         "description": "Nous n'offrons pas de support en direct. Nous ne vous demanderons jamais votre seed privé, de partager votre écran ou d'installer des applications de support à distance. Méfiez-vous des imposteurs sur Discord, GitHub ou toute autre plateforme."
       },
       "discord": {
-        "label": "Discord (Canal de support)"
+        "label": "Discord (Canal de support)",
+        "description": "Obtenez de l'aide de la communauté Qubic"
       },
       "github": {
-        "label": "GitHub (Signaler un problème)"
+        "label": "GitHub (Signaler un problème)",
+        "description": "Signaler des bugs ou demander des fonctionnalités"
       }
     }
   },

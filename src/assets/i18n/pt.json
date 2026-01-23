@@ -450,10 +450,12 @@
         "description": "Não oferecemos suporte ao vivo. Nunca pediremos sua seed privada, compartilhamento de tela ou que instale aplicativos de suporte remoto. Cuidado com impostores no Discord, GitHub ou outras plataformas."
       },
       "discord": {
-        "label": "Discord (Canal de suporte)"
+        "label": "Discord (Canal de suporte)",
+        "description": "Obtenha ajuda da comunidade Qubic"
       },
       "github": {
-        "label": "GitHub (Relatar um problema)"
+        "label": "GitHub (Relatar um problema)",
+        "description": "Relatar bugs ou solicitar recursos"
       }
     }
   },

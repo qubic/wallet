@@ -453,10 +453,12 @@
         "description": "我們不提供即時支援。我們絕不會要求您提供私鑰、進行螢幕共享或安裝遠端支援應用程式。請小心 Discord、GitHub 或其他平台上的冒充者。"
       },
       "discord": {
-        "label": "Discord（支援頻道）"
+        "label": "Discord（支援頻道）",
+        "description": "從 Qubic 社群獲得幫助"
       },
       "github": {
-        "label": "GitHub（提交問題）"
+        "label": "GitHub（提交問題）",
+        "description": "報告錯誤或請求功能"
       }
     }
   },

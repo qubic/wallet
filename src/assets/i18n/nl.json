@@ -451,10 +451,12 @@
         "description": "We bieden geen live ondersteuning. We zullen nooit om uw privé seed vragen, schermdeling aanvragen of u vragen om remote ondersteuningsapps te installeren. Wees voorzichtig met imitators op Discord, GitHub of andere platforms."
       },
       "discord": {
-        "label": "Discord (Ondersteuningskanaal)"
+        "label": "Discord (Ondersteuningskanaal)",
+        "description": "Krijg hulp van de Qubic-gemeenschap"
       },
       "github": {
-        "label": "GitHub (Meld een probleem)"
+        "label": "GitHub (Meld een probleem)",
+        "description": "Bugs melden of functies aanvragen"
       }
     }
   },

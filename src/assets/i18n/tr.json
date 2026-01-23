@@ -453,10 +453,12 @@
         "description": "Canlı destek sunmuyoruz. Özel seed'inizi, ekran paylaşımı veya uzak destek uygulamaları yüklemenizi asla istemeyiz. Discord, GitHub veya diğer platformlardaki taklitçilere karşı dikkatli olun."
       },
       "discord": {
-        "label": "Discord (Destek kanalı)"
+        "label": "Discord (Destek kanalı)",
+        "description": "Qubic topluluğundan yardım alın"
       },
       "github": {
-        "label": "GitHub (Hata bildir)"
+        "label": "GitHub (Hata bildir)",
+        "description": "Hata bildirin veya özellik talep edin"
       }
     }
   },
