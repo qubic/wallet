@@ -10,7 +10,8 @@
       "qearn": "Qearn",
       "settings": "Configuraciones",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "Assets",
+      "support": "Soporte"
     },
     "version": "Versión {{version}}",
     "version.url": "qubic.org",
@@ -443,6 +444,20 @@
       "title": "Exportar configuraciones",
       "hint": "Presiona el botón de abajo para descargar tu configuración actual. Contiene tus Seeds cifradas. También deberías haber guardado tu clave privada.",
       "buttons.export": "Exportar/Guardar la configuración"
+    },
+    "support": {
+      "warning": {
+        "title": "Cuidado con los estafadores",
+        "description": "No ofrecemos soporte en vivo. Nunca le pediremos su semilla privada, compartir pantalla ni instalar aplicaciones de soporte remoto. Tenga cuidado con los impostores en Discord, GitHub u otras plataformas."
+      },
+      "discord": {
+        "label": "Discord (Canal de soporte)",
+        "description": "Obtén ayuda de la comunidad Qubic"
+      },
+      "github": {
+        "label": "GitHub (Reportar un problema)",
+        "description": "Reportar errores o solicitar funciones"
+      }
     }
   },
   "ipoComponent": {

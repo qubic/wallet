@@ -91,7 +91,9 @@
           <a mat-list-item routerLink="ipo" (click)="checkMobileToggle()" [class.selected-nav]="isIpoSelected"><mat-icon
               class="icon-color-link icon">multiline_chart</mat-icon>{{ t("general.navigation.ipo") }}<span *ngIf="activeIpoCount > 0" class="nav-badge">{{ activeIpoCount }}</span></a>
           <a mat-list-item routerLink="settings" (click)="checkMobileToggle()" [class.selected-nav]="isSettingsSelected"><mat-icon
-              class="icon-color-link icon">settings</mat-icon>{{ t("general.navigation.settings") }}</a>         
+              class="icon-color-link icon">settings</mat-icon>{{ t("general.navigation.settings") }}</a>
+          <a mat-list-item routerLink="support" (click)="checkMobileToggle()" [class.selected-nav]="isSupportSelected"><mat-icon
+              class="icon-color-link icon">help_outline</mat-icon>{{ t("general.navigation.support") }}</a>
         </mat-nav-list>
 
         <div>
