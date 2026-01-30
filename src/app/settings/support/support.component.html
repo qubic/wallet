@@ -1,0 +1,59 @@
+<ng-container *transloco="let t">
+  <div class="content_container">
+    <h1>{{ t("general.navigation.support") }}</h1>
+
+    <div class="support-content">
+      <!-- Anti-Scam Warning Card -->
+      <mat-card class="support-warning-card">
+        <mat-card-content>
+          <div class="warning-header">
+            <img src="assets/icons/warning.svg" alt="Warning" class="warning-icon" />
+            <h2>{{ t("settings.support.warning.title") }}</h2>
+          </div>
+          <p class="warning-text">{{ t("settings.support.warning.description") }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="channels-grid">
+        <!-- Discord Channel -->
+        <mat-card class="support-channel-card">
+          <mat-card-content class="support-channel-content">
+            <div class="channel-icon-wrapper">
+              <img src="assets/icons/discord.svg" alt="Discord" class="channel-icon" />
+            </div>
+            <div class="channel-details">
+              <h3>{{ t("settings.support.discord.label") }}</h3>
+              <span class="channel-description">{{ t("settings.support.discord.description") }}</span>
+            </div>
+            <div class="channel-action">
+              <button mat-raised-button color="primary" (click)="openExternalLink(discordUrl)">
+                Open
+                <mat-icon iconPositionEnd>open_in_new</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- GitHub Channel -->
+        <mat-card class="support-channel-card">
+          <mat-card-content class="support-channel-content">
+            <div class="channel-icon-wrapper">
+              <img src="assets/icons/github.svg" alt="GitHub" class="channel-icon" />
+            </div>
+            <div class="channel-details">
+              <h3>{{ t("settings.support.github.label") }}</h3>
+              <span class="channel-description">{{ t("settings.support.github.description") }}</span>
+            </div>
+            <div class="channel-action">
+              <button mat-raised-button color="primary" (click)="openExternalLink(githubUrl)">
+                Open
+                <mat-icon iconPositionEnd>open_in_new</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+</ng-container>

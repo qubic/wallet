@@ -10,7 +10,8 @@
       "qearn": "Qearn",
       "settings": "設定",
       "ipo": "IPO",
-      "assets": "資産"
+      "assets": "資産",
+      "support": "Support"
     },
     "version": "バージョン {{version}}",
     "version.url": "qubic.org",
@@ -445,6 +446,20 @@
       "title": "設定をエクスポート",
       "hint": "以下のボタンを押して現在のアドレス設定ファイルをダウンロードしてください。それには暗号化されたシードが含まれています。また、ロック解除ファイル（秘密鍵）も保存しておくべきです。",
       "buttons.export": "設定ファイルをエクスポート／保存"
+    },
+    "support": {
+      "warning": {
+        "title": "Beware of scammers",
+        "description": "We do not offer Live Support. We will never ask for your private seed, request screen sharing, or ask you to install remote support apps. Be careful with impersonators on Discord, GitHub, or any other platform."
+      },
+      "discord": {
+        "label": "Discord (Support channel)",
+        "description": "Get help from the Qubic community"
+      },
+      "github": {
+        "label": "GitHub (File an issue)",
+        "description": "Report bugs or request features"
+      }
     }
   },
   "ipoComponent": {
