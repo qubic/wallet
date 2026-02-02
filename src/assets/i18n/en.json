@@ -10,7 +10,8 @@
       "qearn": "Qearn",
       "settings": "Settings",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "Assets",
+      "support": "Support"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -447,6 +448,20 @@
       "title": "Export Settings",
       "hint": "Press the below button to download your current address config file. It contains your encrypted seeds. You also should have saved your unlock file (private key).",
       "buttons.export": "Export/Save Config File"
+    },
+    "support": {
+      "warning": {
+        "title": "Beware of scammers",
+        "description": "We do not offer Live Support. We will never ask for your private seed, request screen sharing, or ask you to install remote support apps. Be careful with impersonators on Discord, GitHub, or any other platform."
+      },
+      "discord": {
+        "label": "Discord (Support channel)",
+        "description": "Get help from the Qubic community"
+      },
+      "github": {
+        "label": "GitHub (File an issue)",
+        "description": "Report bugs or request features"
+      }
     }
   },
   "ipoComponent": {
