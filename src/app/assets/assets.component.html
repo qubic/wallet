@@ -274,6 +274,15 @@
                     appAmountInput
                     maxlength="19"
                     formControlName="amount">
+                  <button *ngIf="maxAssetAmount > 0" matSuffix mat-icon-button
+                    matTooltip="{{ t('assetsComponent.form.amount.max.tooltip') }}"
+                    (click)="setAssetAmountToMax()" type="button">
+                    <mat-icon>all_inclusive</mat-icon>
+                  </button>
+                  <mat-hint *ngIf="sendForm.controls['assetSelect'].value" align="end">
+                    {{ sendForm.controls['amount'].value | number: '1.0-0' }} /
+                    {{ maxAssetAmount | number: '1.0-0' }} {{ sendForm.controls['assetSelect'].value?.assetName }}
+                  </mat-hint>
                   <mat-error *ngIf="sendForm.controls['amount'].hasError('required')">
                     {{ t("assetsComponent.form.amount.error") }}
                   </mat-error>
