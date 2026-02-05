@@ -1,3 +1,18 @@
+# [4.25.0-rc.1](https://github.com/qubic/wallet/compare/v4.24.0...v4.25.0-rc.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* add desktop-only class to slide toggle for table view to hide the button on small screens ([d7d17bc](https://github.com/qubic/wallet/commit/d7d17bcbd556beab202a20d267049f7bf6cca5d6))
+* improve assets page action buttons alignment and icon ([bf4780b](https://github.com/qubic/wallet/commit/bf4780bc247c01af493c03eb115e9893ce9f01ca))
+
+
+### Features
+
+* add max amount button to asset transfer form ([80dfdf3](https://github.com/qubic/wallet/commit/80dfdf38fe0a04c7c89ccfa049bec3decaab4a04))
+* add Qubic Feedback card to support page ([9de4a36](https://github.com/qubic/wallet/commit/9de4a36ddd384909c5a0697f340a36c37036af9a))
+* add support channels ([#221](https://github.com/qubic/wallet/issues/221)) ([1b465c9](https://github.com/qubic/wallet/commit/1b465c9290ec27f967217d34766d419dd1d6d661))
+
 # [4.24.0](https://github.com/qubic/wallet/compare/v4.23.1...v4.24.0) (2026-01-20)
 
 
