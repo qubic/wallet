@@ -87,6 +87,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
   isSending: boolean = false;
   showSendForm: boolean = false;
   isTable: boolean = false;
+  maxAssetAmount: number = 0;
 
   public selectedAccountId = false;
   private selectedDestinationId: any;
@@ -250,6 +251,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
     if (assetSelectControl && amountControl) {
       const selectedAsset = assetSelectControl.value;
       const maxAmount = selectedAsset ? selectedAsset.ownedAmount : 0;
+      this.maxAssetAmount = maxAmount;
 
       amountControl.setValidators([
         Validators.required,
@@ -259,6 +261,10 @@ export class AssetsComponent implements OnInit, OnDestroy {
 
       amountControl.updateValueAndValidity();
     }
+  }
+
+  setAssetAmountToMax(): void {
+    this.sendForm.controls['amount'].setValue(this.maxAssetAmount);
   }
 
   refreshData(): void {
