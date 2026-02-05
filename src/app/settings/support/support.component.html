@@ -52,6 +52,25 @@
             </div>
           </mat-card-content>
         </mat-card>
+
+        <!-- Qubic Feedback -->
+        <mat-card class="support-channel-card">
+          <mat-card-content class="support-channel-content">
+            <div class="channel-icon-wrapper">
+              <img src="assets/icons/qubic-logo.svg" alt="Qubic" class="channel-icon" />
+            </div>
+            <div class="channel-details">
+              <h3>{{ t("settings.support.feedback.label") }}</h3>
+              <span class="channel-description">{{ t("settings.support.feedback.description") }}</span>
+            </div>
+            <div class="channel-action">
+              <button mat-raised-button color="primary" (click)="openExternalLink(feedbackUrl)">
+                Open
+                <mat-icon iconPositionEnd>open_in_new</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
 

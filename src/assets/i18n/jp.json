@@ -461,6 +461,10 @@
       "github": {
         "label": "GitHub (File an issue)",
         "description": "Report bugs or request features"
+      },
+      "feedback": {
+        "label": "Qubic Feedback（機能リクエスト）",
+        "description": "新機能や改善を提案する"
       }
     }
   },

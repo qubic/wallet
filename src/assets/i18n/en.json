@@ -463,6 +463,10 @@
       "github": {
         "label": "GitHub (File an issue)",
         "description": "Report bugs or request features"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Feature Requests)",
+        "description": "Suggest new features and improvements"
       }
     }
   },

@@ -461,6 +461,10 @@
       "github": {
         "label": "GitHub (Hata bildir)",
         "description": "Hata bildirin veya özellik talep edin"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Özellik İstekleri)",
+        "description": "Yeni özellikler ve iyileştirmeler önerin"
       }
     }
   },

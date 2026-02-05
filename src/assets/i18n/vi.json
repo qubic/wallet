@@ -461,6 +461,10 @@
       "github": {
         "label": "GitHub (Báo cáo sự cố)",
         "description": "Báo cáo lỗi hoặc yêu cầu tính năng"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Yêu cầu tính năng)",
+        "description": "Đề xuất tính năng mới và cải tiến"
       }
     }
   },

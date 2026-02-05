@@ -460,6 +460,10 @@
       "github": {
         "label": "GitHub (Problem melden)",
         "description": "Fehler melden oder Funktionen anfordern"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Funktionsanfragen)",
+        "description": "Neue Funktionen und Verbesserungen vorschlagen"
       }
     }
   },

@@ -11,6 +11,7 @@ export class SettingsSupportComponent {
 
   public discordUrl = 'https://discord.com/channels/768887649540243497/1029858434117550170';
   public githubUrl = 'https://github.com/qubic/wallet/issues/new';
+  public feedbackUrl = 'https://feedback.qubic.org/b/web-wallet';
 
   constructor(
     private router: Router,

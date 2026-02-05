@@ -461,6 +461,10 @@
       "github": {
         "label": "GitHub（提交問題）",
         "description": "報告錯誤或請求功能"
+      },
+      "feedback": {
+        "label": "Qubic Feedback（功能請求）",
+        "description": "建議新功能和改進"
       }
     }
   },

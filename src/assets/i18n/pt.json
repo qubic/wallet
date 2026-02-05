@@ -458,6 +458,10 @@
       "github": {
         "label": "GitHub (Relatar um problema)",
         "description": "Relatar bugs ou solicitar recursos"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Solicitações de recursos)",
+        "description": "Sugerir novos recursos e melhorias"
       }
     }
   },
