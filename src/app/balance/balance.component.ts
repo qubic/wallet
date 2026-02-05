@@ -3,7 +3,7 @@ import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { BalanceResponse, fixTransactionDates, Transaction } from '../services/api.model';
+import { fixTransactionDates, Transaction } from '../services/api.model';
 import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
@@ -32,7 +32,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
   isSendManyTransaction = isSendManyTransaction;
   isSimpleTransfer = isSimpleTransfer;
   ExplorerUrlHelper = ExplorerUrlHelper;
-  public accountBalances: BalanceResponse[] = [];
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
   public numberLastEpoch = 0;
@@ -116,17 +115,6 @@ export class BalanceComponent implements OnInit, OnDestroy {
             this.updateTransactionsRecord();
           }
         });
-
-      this.us.currentBalance
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(response => {
-          this.accountBalances = response;
-        }, errorResponse => {
-          this._snackBar.open(errorResponse.error, this.transloco.translate("general.close"), {
-            duration: 0,
-            panelClass: "error"
-        });
-      });
     }
   }
 

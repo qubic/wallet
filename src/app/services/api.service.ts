@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, ProposalCreateRequest, ProposalCreateResponse, ProposalDto, QubicAsset, SmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, SmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
 import {
   HttpClient, HttpHeaders, HttpParams,
   HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
@@ -17,7 +17,6 @@ import { WalletService } from './wallet.service';
 })
 export class ApiService {
 
-  public currentProposals: BehaviorSubject<ProposalDto[]> = new BehaviorSubject<ProposalDto[]>([]);
   public currentIpoContracts: BehaviorSubject<ContractDto[]> = new BehaviorSubject<ContractDto[]>([]);
   public currentPeerList: BehaviorSubject<PeerDto[]> = new BehaviorSubject<PeerDto[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -175,22 +174,6 @@ export class ApiService {
     }));
   }
 
-  public getProposals() {
-    let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalDto[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentProposals.next(p);
-      return p;
-    }));
-  }
-
   public getIpoContracts() {
     let localVarPath = `/Wallet/IpoContracts`;
     return this.httpClient.request<ContractDto[]>('get', `${this.basePath}${localVarPath}`,
@@ -205,33 +188,6 @@ export class ApiService {
       this.currentIpoContracts.next(p);
       return p;
     }));
-  }
-
-  public submitProposalCreateRequest(proposal: ProposalCreateRequest) {
-    let localVarPath = `/Voting/Proposal`;
-    return this.httpClient.request<ProposalCreateResponse>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: proposal,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public submitProposalPublished(proposalId: string) {
-    let localVarPath = `/Voting/Proposal/` + proposalId + "/publish";
-    return this.httpClient.request<ProposalCreateResponse>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    );
   }
 
   public getPeerList() {

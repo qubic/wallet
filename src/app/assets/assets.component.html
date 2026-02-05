@@ -178,7 +178,7 @@
         </button>
         <button *ngIf="canTransferRights(group)" mat-icon-button class="icon-color-link" (click)="openTransferRightsForm(group)"
           title='{{ t("assetsComponent.buttons.transferRights") }}'>
-          <mat-icon>swap_horiz</mat-icon>
+          <mat-icon svgIcon="transfer_rights"></mat-icon>
         </button>
         <button mat-icon-button class="icon-color-link" (click)="openIssuerIdentity(issuerIdentity)"
           title='{{ t("assetsComponent.table.issuerIdentity") }}'>
@@ -274,6 +274,15 @@
                     appAmountInput
                     maxlength="19"
                     formControlName="amount">
+                  <button *ngIf="maxAssetAmount > 0" matSuffix mat-icon-button
+                    matTooltip="{{ t('assetsComponent.form.amount.max.tooltip') }}"
+                    (click)="setAssetAmountToMax()" type="button">
+                    <mat-icon>all_inclusive</mat-icon>
+                  </button>
+                  <mat-hint *ngIf="sendForm.controls['assetSelect'].value" align="end">
+                    {{ sendForm.controls['amount'].value | number: '1.0-0' }} /
+                    {{ maxAssetAmount | number: '1.0-0' }} {{ sendForm.controls['assetSelect'].value?.assetName }}
+                  </mat-hint>
                   <mat-error *ngIf="sendForm.controls['amount'].hasError('required')">
                     {{ t("assetsComponent.form.amount.error") }}
                   </mat-error>
@@ -314,7 +323,7 @@
                 {{ t("assetsComponent.form.buttons.cancel") }}
               </button>
               <button *ngIf="!walletService.privateKey" mat-raised-button color="primary" type="button"
-                (click)="loadKey()">{{ t("votingComponent.create.buttons.loadPrivateKey") }}
+                (click)="loadKey()">{{ t("paymentComponent.buttons.loadPrivateKey") }}
               </button>
               <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
                 [disabled]="!sendForm.valid || getBalanceAfterFees() < 0">

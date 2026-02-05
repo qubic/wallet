@@ -27,7 +27,7 @@
           <mat-icon>add_circle</mat-icon>
           {{ t("seedOverviewComponent.addSeedButton") }}
         </button>&nbsp;
-        <mat-slide-toggle *ngIf="!isMobile" (change)="toggleTableView($event)" [checked]="isTable">{{
+        <mat-slide-toggle class="desktopOnly" *ngIf="!isMobile" (change)="toggleTableView($event)" [checked]="isTable">{{
           t('seedOverviewComponent.isTable')}}</mat-slide-toggle>
       </div>
       <div style="margin-left: auto;" class="text-right">

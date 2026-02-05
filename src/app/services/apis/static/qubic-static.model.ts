@@ -18,7 +18,6 @@ export interface StaticSmartContract {
   address: string;
   procedures: SmartContractProcedure[];
   website?: string;
-  proposalUrl?: string;
 }
 
 export interface GetSmartContractsResponse {

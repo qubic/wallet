@@ -9,9 +9,9 @@
       "balance": "Bakiye",
       "qearn": "Qearn",
       "settings": "Ayarlar",
-      "voting": "Oylama",
       "ipo": "IPO",
-      "assets": "Varlıklar"
+      "assets": "Varlıklar",
+      "support": "Destek"
     },
     "version": "Versiyon {{version}}",
     "version.url": "qubic.org",
@@ -123,9 +123,11 @@
       "select.error": "Varlık seçimi gereklidir",
       "placeholder": "Alıcının adres kimliği",
       "placeholder.error": "60 karakterlik bir genel anahtar gereklidir.",
+      "amount": "Tutar",
       "amount.error": "Tutar gereklidir",
       "amount.value.error": "Tutar 0'dan büyük olmalıdır",
       "amount.max.error": "Tutar, sahip olunan miktarı aşamaz",
+      "amount.max.tooltip": "Mevcut maksimum miktara ayarla",
       "tick": "Tick",
       "tick.error": "Tick gereklidir",
       "tick.tooltip": "Tick gereklidir",
@@ -446,78 +448,24 @@
       "title": "Ayarları Dışa Aktar",
       "hint": "Mevcut adres yapılandırma dosyanızı indirmek için aşağıdaki düğmeye basın. Bu dosya şifrelenmiş cüzdanlarınızı içerir. Ayrıca kilit açma dosyanızı (özel anahtar) kaydetmiş olmanız gerekir.",
       "buttons.export": "Yapılandırma Dosyasını Dışa Aktar/Kaydet"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic Computor Oylaması",
-    "description": "Qubic Computor oylaması, ağın tamamıyla ilgili olarak karar verilecek konular üzerinde fikir birliğine varmak için kullanılır. Bu, akıllı sözleşmelerin kabul edilmesini veya diğer protokol kararlarının alınmasını içerebilir. Yalnızca Computor'ların katılmasına izin verilir.",
-    "proposals": {
-      "editButton": "Düzenle",
-      "createButton": "Teklif Oluştur",
-      "voteButton": "Oyla",
-      "title": "{{amount}} teklif mevcut",
-      "noComputorHint": "Computor olarak kayıtlı değilsiniz. Herhangi bir şey önermek istiyorsanız en az bir Computor Cüzdanına sahip olmanız gerekir.",
-      "votingResult": "Oylama Sonuçları",
-      "noVotes": "Oy Bulunamadı",
-      "from": "Gönderen:",
-      "url": "Teklif URL:"
     },
-    "participate": {
-      "title": "Katıl",
-      "cancelButton": "İptal",
-      "sendVotesButton": "Teklif Gönder",
-      "notConfirmedMessage": "Bu Teklif henüz Qubic Network tarafından onaylanmadı. Lütfen oy vermek için bekleyin.",
-      "noComputorsText": "Computor'unuz yok veya Computor'larınız için zaten bir teklif oluşturdu.",
-      "computorsSelected": "Computorlar seçildi"
-    },
-    "create": {
-      "title": "Teklif Ver",
-      "cancelButton": "İptal",
-      "sendVotesButton": "Teklif Gönder",
-      "alreadyPublished": "Bu Computor'un zaten bir teklifi var. Her dönem için yalnızca bir teklife izin verilir",
-      "buttons": {
-        "create": "Teklif Oluştur",
-        "publish": "Teklif Bağla ve Yayımla",
-        "reset": "Formu Sıfırla",
-        "loadPrivateKey": "Kasa Dosyası Yükle",
-        "finish": "Teklifleri Görüntüle"
+    "support": {
+      "warning": {
+        "title": "Dolandırıcılara dikkat edin",
+        "description": "Canlı destek sunmuyoruz. Özel seed'inizi, ekran paylaşımı veya uzak destek uygulamaları yüklemenizi asla istemeyiz. Discord, GitHub veya diğer platformlardaki taklitçilere karşı dikkatli olun."
       },
-      "form": {
-        "operatorSeed.label": "Operatör Cüzdanı",
-        "operatorSeed.error.required": "Operatör Gerekli",
-        "sourceSeed.label": "Teklif için kullanılacak Computor",
-        "sourceSeed.error.required": "Computor Gerekli",
-        "title.label": "Teklif Başlığı",
-        "title.placeholder": "Teklif Başlığı",
-        "title.error.required": "Başlık Gerekli",
-        "title.error.min": "Başlık en az 2 karakter bulunmalıdır",
-        "title.error.max": "Başlık maksimum 100 karakter içerebilir",
-        "description.label": "Teklif Açıklaması",
-        "description.placeholder": "Teklif Açıklaması",
-        "description.error.min": "Açıklama en az 2 karakter bulunmalıdır",
-        "description.error.max": "Açıklama en çok 5000 karakter içerebilir",
-        "description.error.required": "Açıklama Gerekli",
-        "option.label": "Opsiyon {{id}}",
-        "option.placeholder": "Opsiyon {{id}}",
-        "option.error.required": "Opsiyon {{id}} gerekli",
-        "option.error.min": "Opsiyon en az 2 karakterden oluşmalıdır",
-        "option.error.max": "Opsiyon en çok 50 karakterden oluşmalıdır",
-        "computorIp.label": "Computor IP Adresi",
-        "computorIp.placeholder": "Computor IP Adresi",
-        "computorIp.error.required": "Computor IP Adresi Gerekli"
+      "discord": {
+        "label": "Discord (Destek kanalı)",
+        "description": "Qubic topluluğundan yardım alın"
       },
-      "proposalStep.label": "Teklif Oluştur",
-      "publishStep.label": "Teklifi Yayınla",
-      "finishStep.label": "Bitti",
-      "finishStep.success": "Teklifiniz Computor'a gönderildi."
-    },
-    "status": {
-      "success": "Çoğunluk Tarafından Kabul Edildi",
-      "failed": "Çoğunluk Tarafından Reddedildi",
-      "publishing": "Yayınlama devam ediyor",
-      "pending": "Oylama Açıldı",
-      "draft": "Taslak",
-      "unknown": "Bilinmeyen Durum"
+      "github": {
+        "label": "GitHub (Hata bildir)",
+        "description": "Hata bildirin veya özellik talep edin"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Özellik İstekleri)",
+        "description": "Yeni özellikler ve iyileştirmeler önerin"
+      }
     }
   },
   "ipoComponent": {

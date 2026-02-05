@@ -55,11 +55,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import { VotingComponent } from './voting/voting.component';
-import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
-import { VotingCreateComponent } from './voting/create/voting-create.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { VotingStatusComponent } from './voting/voting-status/voting-status.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
@@ -97,6 +93,7 @@ import { SeedDisplayPipe } from './pipes/seed-display.pipe';
 import { SeedFirstLinePipe, SeedSecondLinePipe } from './pipes/seed-display-line.pipe';
 import { DateTimePipe } from './pipes/date-time.pipe';
 import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
+import { SettingsSupportComponent } from './settings/support/support.component';
 
 
 /** Http interceptor providers in outside-in order */
@@ -130,10 +127,6 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     LanguageChooserComponent,
     AccountComponent,
     ExportComponent,
-    VotingComponent,
-    VotingParticipateComponent,
-    VotingCreateComponent,
-    VotingStatusComponent,
     IpoComponent,
     PlaceBidComponent,
     TransferStatusComponent,
@@ -151,7 +144,8 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     SeedFirstLinePipe,
     DateTimePipe,
     SeedSecondLinePipe,
-    TransferRightsComponent
+    TransferRightsComponent,
+    SettingsSupportComponent
   ],
   imports: [
     BrowserModule,

@@ -9,9 +9,9 @@
       "balance": "Giao dịch",
       "qearn": "Qearn",
       "settings": "Cài đặt",
-      "voting": "Bỏ phiếu",
       "ipo": "IPO",
-      "assets": "Tài sản"
+      "assets": "Tài sản",
+      "support": "Hỗ trợ"
     },
     "version": "Phiên bản {{version}}",
     "version.url": "qubic.org",
@@ -123,9 +123,11 @@
       "select.error": "Yêu cầu chọn tài sản",
       "placeholder": "ID địa chỉ của người nhận",
       "placeholder.error": "Yêu cầu public-key 60 ký tự.",
+      "amount": "Số lượng",
       "amount.error": "Yêu cầu số lượng",
       "amount.value.error": "Số lượng phải lớn hơn 0",
       "amount.max.error": "Số lượng không thể vượt quá số đang giữ",
+      "amount.max.tooltip": "Đặt số lượng tối đa có sẵn",
       "tick": "Tick",
       "tick.error": "Yêu cầu Tick",
       "tick.tooltip": "Yêu cầu Tick",
@@ -446,78 +448,24 @@
       "title": "Xuất cài đặt",
       "hint": "Nhấn nút bên dưới để tải xuống tệp cấu hình địa chỉ hiện tại. Tệp chứa các Seed đã mã hóa. Bạn cũng nên lưu tệp mở khóa (private key).",
       "buttons.export": "Xuất/Lưu tệp Config"
-    }
-  },
-  "votingComponent": {
-    "title": "Bỏ phiếu Computor Qubic",
-    "description": "Bỏ phiếu của Computor Qubic được dùng để đạt đồng thuận cho các chủ đề cần quyết định của toàn mạng. Điều này có thể bao gồm chấp nhận smart contract hoặc quyết định thay đổi giao thức khác. Chỉ Computor mới được tham gia.",
-    "proposals": {
-      "editButton": "Sửa",
-      "createButton": "Tạo đề xuất",
-      "voteButton": "Bỏ phiếu",
-      "title": "{{amount}} Đề xuất hiện tại",
-      "noComputorHint": "Bạn chưa đăng ký Computor nào. Nếu muốn tạo đề xuất, bạn cần ít nhất một Seed của Computor.",
-      "votingResult": "Kết quả bỏ phiếu",
-      "noVotes": "chưa có phiếu",
-      "from": "Từ:",
-      "url": "URL đề xuất:"
     },
-    "participate": {
-      "title": "Tham gia",
-      "cancelButton": "Hủy",
-      "sendVotesButton": "Gửi phiếu",
-      "notConfirmedMessage": "Đề xuất này chưa được mạng Qubic xác nhận. Vui lòng chờ để bỏ phiếu.",
-      "noComputorsText": "Bạn không có Computor hoặc Computor của bạn đã tạo một đề xuất.",
-      "computorsSelected": "Đã chọn Computor"
-    },
-    "create": {
-      "title": "Tạo đề xuất",
-      "cancelButton": "Hủy",
-      "sendVotesButton": "Gửi đề xuất",
-      "alreadyPublished": "Computor này đã có đề xuất được công bố. Chỉ được phép một đề xuất mỗi Epoch",
-      "buttons": {
-        "create": "Tạo đề xuất",
-        "publish": "Kết nối và công bố đề xuất",
-        "reset": "Đặt lại biểu mẫu",
-        "loadPrivateKey": "Tải tệp Vault",
-        "finish": "Xem đề xuất"
+    "support": {
+      "warning": {
+        "title": "Cảnh giác với kẻ lừa đảo",
+        "description": "Chúng tôi không cung cấp hỗ trợ trực tiếp. Chúng tôi sẽ không bao giờ yêu cầu seed riêng tư, chia sẻ màn hình hoặc cài đặt ứng dụng hỗ trợ từ xa. Hãy cẩn thận với những kẻ mạo danh trên Discord, GitHub hoặc bất kỳ nền tảng nào khác."
       },
-      "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Yêu cầu Operator",
-        "sourceSeed.label": "Computor dùng để đề xuất",
-        "sourceSeed.error.required": "Yêu cầu Computor",
-        "title.label": "Tiêu đề đề xuất",
-        "title.placeholder": "Tiêu đề đề xuất",
-        "title.error.required": "Yêu cầu tiêu đề",
-        "title.error.min": "Tiêu đề phải có ít nhất 2 ký tự",
-        "title.error.max": "Tiêu đề tối đa 100 ký tự",
-        "description.label": "Mô tả đề xuất",
-        "description.placeholder": "Mô tả đề xuất",
-        "description.error.min": "Mô tả phải có ít nhất 2 ký tự",
-        "description.error.max": "Mô tả tối đa 5000 ký tự",
-        "description.error.required": "Yêu cầu mô tả",
-        "option.label": "Tùy chọn {{id}}",
-        "option.placeholder": "Tùy chọn {{id}}",
-        "option.error.required": "Yêu cầu tùy chọn {{id}}",
-        "option.error.min": "Tùy chọn phải có ít nhất 2 ký tự",
-        "option.error.max": "Tùy chọn tối đa 50 ký tự",
-        "computorIp.label": "Địa chỉ IP của Computor",
-        "computorIp.placeholder": "Địa chỉ IP của Computor",
-        "computorIp.error.required": "Yêu cầu địa chỉ IP của Computor"
+      "discord": {
+        "label": "Discord (Kênh hỗ trợ)",
+        "description": "Nhận trợ giúp từ cộng đồng Qubic"
       },
-      "proposalStep.label": "Tạo đề xuất",
-      "publishStep.label": "Công bố đề xuất",
-      "finishStep.label": "Hoàn tất",
-      "finishStep.success": "Đề xuất của bạn đã được gửi tới Computor."
-    },
-    "status": {
-      "success": "Được Quorum chấp nhận",
-      "failed": "Bị Quorum bác bỏ",
-      "publishing": "Đang công bố",
-      "pending": "Đang mở bỏ phiếu",
-      "draft": "Bản nháp",
-      "unknown": "Trạng thái không rõ"
+      "github": {
+        "label": "GitHub (Báo cáo sự cố)",
+        "description": "Báo cáo lỗi hoặc yêu cầu tính năng"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Yêu cầu tính năng)",
+        "description": "Đề xuất tính năng mới và cải tiến"
+      }
     }
   },
   "ipoComponent": {
