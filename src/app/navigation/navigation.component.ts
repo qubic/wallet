@@ -65,8 +65,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   public isBalanceSelected = false;
   public isQearnSelected = false;
   public isAssetsSelected = false;
-  public isVotingSelected = false;
   public isIpoSelected = false;
+  public isSupportSelected = false;
   public activeIpoCount = 0;
   private destroy$ = new Subject<void>();
 
@@ -97,9 +97,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.isQearnSelected = currentUrl === '/qearn';
         this.isBalanceSelected = currentUrl === '/balance';
         this.isAssetsSelected = currentUrl === '/assets-area';
-        this.isVotingSelected = currentUrl === '/voting';
         this.isIpoSelected = currentUrl === '/ipo';
         this.isSettingsSelected = currentUrl === '/settings';
+        this.isSupportSelected = currentUrl === '/support';
 
               });
   }

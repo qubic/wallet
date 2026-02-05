@@ -4,97 +4,82 @@ import { BalanceComponent } from './balance/balance.component';
 import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PaymentComponent } from './payment/payment.component';
-import { VotingComponent } from './voting/voting.component';
-import { VotingParticipateComponent } from './voting/participate/voting-participate.component';
-import { VotingCreateComponent } from './voting/create/voting-create.component';
 import { IpoComponent } from './ipo/ipo.component';
 import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { AssetsComponent } from './assets/assets.component';
 import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
-import { NavigationComponent } from './navigation/navigation.component';
 import { WelcomeComponent } from './public/welcome/welcome.component';
 import { CreateVaultComponent } from './public/create-vault/create-vault.component';
 import { walletReadyGuard } from './guards/wallet-ready.guard';
 import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { QearnComponent } from './qearn/qearn.component';
+import { SettingsSupportComponent } from './settings/support/support.component';
 
 const routes: Routes = [
   {
-    path     : 'public',
+    path: 'public',
     component: WelcomeComponent
   },
   {
-    path     : 'create',
+    path: 'create',
     component: CreateVaultComponent
   },
   {
-    path     : 'unlock',
+    path: 'unlock',
     component: PublicUnLockComponent
   },
   {
-    path     : 'import',
+    path: 'import',
     component: ImportVaultComponent
   },
   {
-    path     : '',
+    path: '',
     component: MainComponent,
     canActivate: [walletReadyGuard]
   },
   {
-    path     : 'payment',
+    path: 'payment',
     component: PaymentComponent
   },
   {
-    path     : 'payment/:receiverId',
+    path: 'payment/:receiverId',
     component: PaymentComponent
   },
   {
-    path     : 'payment/:receiverId/:amount',
+    path: 'payment/:receiverId/:amount',
     component: PaymentComponent
   },
   {
-    path     : 'balance',
+    path: 'balance',
     component: BalanceComponent
   },
   {
-    path     : 'qearn',
+    path: 'qearn',
     component: QearnComponent
   },
   {
-    path     : 'voting',
-    component: VotingComponent
-  },
-  {
-    path     : 'voting/create',
-    component: VotingCreateComponent
-  },
-  {
-    path     : 'voting/create/:computorId',
-    component: VotingCreateComponent
-  },
-  {
-    path     : 'voting/participate/:index',
-    component: VotingParticipateComponent
-  },
-  {
-    path     : 'settings',
+    path: 'settings',
     component: SettingsComponent
   },
   {
-    path     : 'ipo',
+    path: 'support',
+    component: SettingsSupportComponent,
+  },
+  {
+    path: 'ipo',
     component: IpoComponent
   },
   {
-    path     : 'ipo/participate/:contractId',
+    path: 'ipo/participate/:contractId',
     component: PlaceBidComponent
   },
   {
-    path     : 'assets-area',
+    path: 'assets-area',
     component: AssetsComponent
   },
   {
-    path     : 'assets-area/transfer-rights',
+    path: 'assets-area/transfer-rights',
     component: TransferRightsComponent
   },
 ];

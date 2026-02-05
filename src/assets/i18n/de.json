@@ -9,9 +9,9 @@
       "balance": "Buchungen",
       "qearn": "Qearn",
       "settings": "Einstellungen",
-      "voting": "Voting",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "Assets",
+      "support": "Unterstützung"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -123,9 +123,11 @@
       "select.error": "Auswahl des Vermögenswerts ist erforderlich",
       "placeholder": "Öffentliche-ID des Empfängers",
       "placeholder.error": "Ein 60-Zeichen öffentlicher Schlüssel ist erforderlich.",
+      "amount": "Menge",
       "amount.error": "Menge ist erforderlich",
       "amount.value.error": "Die Menge muss größer als 0 sein",
       "amount.max.error": "Die Menge darf die gehaltene Menge nicht überschreiten",
+      "amount.max.tooltip": "Auf maximale verfügbare Menge setzen",
       "tick": "Tick",
       "tick.error": "Tick ist erforderlich",
       "tick.tooltip": "Tick ist erforderlich",
@@ -445,78 +447,24 @@
       "title": "Einstellungen exportieren",
       "hint": "Klicke auf die Schaltfläche unten, um deine aktuelle Konfiguration herunterzuladen. Es enthält deine verschlüsselten Seeds. Du solltest auch deinen privaten Schlüssel gespeichert haben.",
       "buttons.export": "Starte Export"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic Computor Abstimmung",
-    "description": "Die Qubic-Computor-Abstimmung dient der Konsensfindung über zu entscheidende Themen im gesamten Netzwerk. Dies kann das Akzeptieren intelligenter Verträge oder das Treffen anderer Protokollentscheidungen umfassen. Es dürfen nur Computor teilnehmen.",
-    "proposals": {
-      "editButton": "Bearbeiten",
-      "createButton": "Vorschlag erstellen",
-      "voteButton": "Abstimmen",
-      "title": "{{amount}} Vorschläge",
-      "noComputorHint": "Du hast keinen registrierten Computor. Wenn du etwas vorschlagen möchtest, musst du mindestens einen Computor haben.",
-      "votingResult": "Ergebnis",
-      "noVotes": "keine Stimmen",
-      "from": "Von:",
-      "url": "URL:"
     },
-    "participate": {
-      "title": "Abstimmen",
-      "cancelButton": "Abbrechen",
-      "sendVotesButton": "Stimmen senden",
-      "notConfirmedMessage": "Dieser Vorschlag ist vom Netzwerk noch nicht bestätigt. Bitte warte mit abstimmen.",
-      "noComputorsText": "Du hast keine Computoren oder diese wurden bereits für Vorschläge verwendet.",
-      "computorsSelected": "Alle auswählen"
-    },
-    "create": {
-      "title": "Vorschlag erstellen",
-      "cancelButton": "Abbrechen",
-      "sendVotesButton": "Vorschlag speichern",
-      "alreadyPublished": "Dieser Computor hat bereits einen veröffentlichten Vorschlag. Es ist pro Epoche nur ein Vorschlag erlaubt.",
-      "buttons": {
-        "create": "Vorschlag erstellen",
-        "publish": "Verbinden und Vorschlag publizieren",
-        "reset": "Zurücksetzen",
-        "loadPrivateKey": "Tresor-Datei öffnen",
-        "finish": "Zeige Vorschläge"
+    "support": {
+      "warning": {
+        "title": "Vorsicht vor Betrügern",
+        "description": "Wir bieten keinen Live-Support an. Wir werden niemals nach Ihrem privaten Seed fragen, Bildschirmfreigabe anfordern oder Sie bitten, Fernwartungs-Apps zu installieren. Seien Sie vorsichtig mit Betrügern auf Discord, GitHub oder anderen Plattformen."
       },
-      "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator ist erforderlich",
-        "sourceSeed.label": "Computor",
-        "sourceSeed.error.required": "Computor ist erforderlich",
-        "title.label": "Titel",
-        "title.placeholder": "Titel",
-        "title.error.required": "Titel ist erforderlich",
-        "title.error.min": "Der Titel muss mindestens 2 Zeichen lang sein",
-        "title.error.max": "Der Titel darf höchstens 100 Zeichen lang sein",
-        "description.label": "Beschreibung",
-        "description.placeholder": "Beschreibung",
-        "description.error.required": "Beschreibung ist erforderlich",
-        "description.error.min": "Die Beschreibung muss mindestens 2 Zeichen lang sein",
-        "description.error.max": "Die Beschreibung darf höchstens 5000 Zeichen lang sein",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} ist erforderlich",
-        "option.error.min": "Die Option muss mindestens 2 Zeichen lang sein",
-        "option.error.max": "Die Option darf höchstens 50 Zeichen lang sein",
-        "computorIp.label": "Computer IP-Adresse",
-        "computorIp.placeholder": "Computor IP-Adresse",
-        "computorIp.error.required": "Computor IP-Adresse ist erforderlich"
+      "discord": {
+        "label": "Discord (Support-Kanal)",
+        "description": "Holen Sie sich Hilfe von der Qubic-Community"
       },
-      "proposalStep.label": "Erstellen",
-      "publishStep.label": "Veröffentlichen",
-      "finishStep.label": "Abschluss",
-      "finishStep.success": "Dein Vorschlag wurde zu deinem Computor gesendet."
-    },
-    "status": {
-      "success": "Vom Quorum akzeptiert",
-      "failed": "Vom Quorum abgelehnt",
-      "publishing": "Veröffentlichung läuft",
-      "pending": "Abstimmung ist offen",
-      "draft": "Entwurf",
-      "unknown": "Unbekannter Status"
+      "github": {
+        "label": "GitHub (Problem melden)",
+        "description": "Fehler melden oder Funktionen anfordern"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Funktionsanfragen)",
+        "description": "Neue Funktionen und Verbesserungen vorschlagen"
+      }
     }
   },
   "ipoComponent": {

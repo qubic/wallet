@@ -9,9 +9,9 @@
       "balance": "取引履歴",
       "qearn": "Qearn",
       "settings": "設定",
-      "voting": "投票",
       "ipo": "IPO",
-      "assets": "資産"
+      "assets": "資産",
+      "support": "Support"
     },
     "version": "バージョン {{version}}",
     "version.url": "qubic.org",
@@ -123,9 +123,11 @@
       "select.error": "資産の選択が必要です",
       "placeholder": "受信者のアドレスID",
       "placeholder.error": "60文字の公開キーが必要です。",
+      "amount": "数量",
       "amount.error": "数量が必要です",
       "amount.value.error": "数量は0以上でなければなりません",
       "amount.max.error": "数量は保有数量を超えることはできません",
+      "amount.max.tooltip": "最大利用可能数量に設定",
       "tick": "ティック",
       "tick.error": "ティックが必要です",
       "tick.tooltip": "ティックが必要です",
@@ -446,78 +448,24 @@
       "title": "設定をエクスポート",
       "hint": "以下のボタンを押して現在のアドレス設定ファイルをダウンロードしてください。それには暗号化されたシードが含まれています。また、ロック解除ファイル（秘密鍵）も保存しておくべきです。",
       "buttons.export": "設定ファイルをエクスポート／保存"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic コンピュータ投票",
-    "description": "Qubicコンピュータ投票は、ネットワーク全体に関する決定事項について合意を得るために使用されます。これには、スマートコントラクトの受け入れやその他のプロトコル決定が含まれることがあります。参加できるのはコンピュータのみです。",
-    "proposals": {
-      "editButton": "編集",
-      "createButton": "提案を作成",
-      "voteButton": "投票",
-      "title": "{{amount}} 現在の提案",
-      "noComputorHint": "登録されたコンピュータがありません。何かを提案する場合は、少なくとも1つのコンピュータシードを持っている必要があります。",
-      "votingResult": "投票結果",
-      "noVotes": "投票なし",
-      "from": "提案者:",
-      "url": "提案のURL:"
     },
-    "participate": {
-      "title": "参加する",
-      "cancelButton": "キャンセル",
-      "sendVotesButton": "投票を送信",
-      "notConfirmedMessage": "この提案はまだQubicネットワークによって確認されていません。投票する前にお待ちください。",
-      "noComputorsText": "コンピュータがいないか、またはコンピュータが既に提案を作成しています。",
-      "computorsSelected": "選択されたコンピュータ"
-    },
-    "create": {
-      "title": "提案を作成",
-      "cancelButton": "キャンセル",
-      "sendVotesButton": "提案を送信",
-      "alreadyPublished": "このコンピュータはすでに公開された提案を持っています。エポックごとに1つのみが許可されます",
-      "buttons": {
-        "create": "提案を作成",
-        "publish": "接続して提案を公開",
-        "reset": "フォームをリセット",
-        "loadPrivateKey": "ヴォールトファイルをロード",
-        "finish": "提案を表示"
+    "support": {
+      "warning": {
+        "title": "Beware of scammers",
+        "description": "We do not offer Live Support. We will never ask for your private seed, request screen sharing, or ask you to install remote support apps. Be careful with impersonators on Discord, GitHub, or any other platform."
       },
-      "form": {
-        "operatorSeed.label": "オペレータシード",
-        "operatorSeed.error.required": "オペレータが必要です",
-        "sourceSeed.label": "提案に使用するコンピュータ",
-        "sourceSeed.error.required": "コンピュータが必要です",
-        "title.label": "提案のタイトル",
-        "title.placeholder": "提案のタイトル",
-        "title.error.required": "タイトルが必要です",
-        "title.error.min": "タイトルは少なくとも2文字必要です",
-        "title.error.max": "タイトルは最大100文字までです",
-        "description.label": "提案の説明",
-        "description.placeholder": "提案の説明",
-        "description.error.min": "説明は少なくとも2文字必要です",
-        "description.error.max": "説明は最大1000文字までです",
-        "description.error.required": "説明が必要です",
-        "option.label": "選択肢 {{id}}",
-        "option.placeholder": "選択肢 {{id}}",
-        "option.error.required": "選択肢 {{id}}が必要です",
-        "option.error.min": "選択肢は少なくとも2文字必要です",
-        "option.error.max": "選択肢は最大50文字までです",
-        "computorIp.label": "コンピュータIPアドレス",
-        "computorIp.placeholder": "コンピュータIPアドレス",
-        "computorIp.error.required": "コンピュータIPアドレスが必要です"
+      "discord": {
+        "label": "Discord (Support channel)",
+        "description": "Get help from the Qubic community"
       },
-      "proposalStep.label": "提案を作成",
-      "publishStep.label": "提案を公開",
-      "finishStep.label": "完了",
-      "finishStep.success": "あなたの提案はコンピュータに送信されました。"
-    },
-    "status": {
-      "success": "クォーラムによって受け入れられました",
-      "failed": "クォーラムによって却下されました",
-      "publishing": "公開中",
-      "pending": "投票が開かれています",
-      "draft": "ドラフト",
-      "unknown": "不明なステータス"
+      "github": {
+        "label": "GitHub (File an issue)",
+        "description": "Report bugs or request features"
+      },
+      "feedback": {
+        "label": "Qubic Feedback（機能リクエスト）",
+        "description": "新機能や改善を提案する"
+      }
     }
   },
   "ipoComponent": {

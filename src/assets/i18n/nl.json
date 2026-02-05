@@ -9,9 +9,9 @@
       "balance": "Account Balans",
       "qearn": "Qearn",
       "settings": "Instellingen",
-      "voting": "Voting",
       "ipo": "IPO",
-      "assets": "Assets"
+      "assets": "Assets",
+      "support": "Ondersteuning"
     },
     "version": "Versie {{version}}",
     "version.url": "qubic.org",
@@ -123,9 +123,11 @@
       "select.error": "Asset selection is required",
       "placeholder": "Address ID of the receiver",
       "placeholder.error": "A 60-char public-key is required.",
+      "amount": "Bedrag",
       "amount.error": "Amount is required",
       "amount.value.error": "The amount must be greater than 0",
       "amount.max.error": "The amount cannot exceed the quantity held",
+      "amount.max.tooltip": "Instellen op maximaal beschikbaar bedrag",
       "tick": "Tick",
       "tick.error": "Tick is required",
       "tick.tooltip": "Tick is required",
@@ -444,78 +446,24 @@
       "title": "Export Settings",
       "hint": "Press the below button to download your current config. It contains your encrypted seeds. You also should have saved your private key.",
       "buttons.export": "Export/Save Config"
-    }
-  },
-  "votingComponent": {
-    "title": "Qubic Computor Voting",
-    "description": "The Qubic computor voting is used to reach a consensus on topics to be decided regarding the entire network. This can include accepting smart contracts or making other protocol decisions. Only computors are allowed to participate.",
-    "proposals": {
-      "editButton": "Edit",
-      "createButton": "Create Proposal",
-      "voteButton": "Vote",
-      "title": "{{amount}} Current Proposals",
-      "noComputorHint": "You don't have registered any Computor. If you want to propose anything, you need to have at least one Computor Seed.",
-      "votingResult": "Voting Result",
-      "noVotes": "no votes",
-      "from": "From:",
-      "url": "Propsal URL:"
     },
-    "participate": {
-      "title": "Participate",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Votes",
-      "notConfirmedMessage": "This Proposal is not yet confirmed by the Qubic Network. Please wait to vote.",
-      "noComputorsText": "You do not have Computors or your Computors already have created a proposal.",
-      "computorsSelected": "Computors selected"
-    },
-    "create": {
-      "title": "Create Proposal",
-      "cancelButton": "Cancel",
-      "sendVotesButton": "Send Proposal",
-      "alreadyPublished": "This Computor has already a published Proposal. Only one is allowed per Epoch",
-      "buttons": {
-        "create": "Create Proposal",
-        "publish": "Connect and Publish Proposal",
-        "reset": "Reset Form",
-        "loadPrivateKey": "Load vault file",
-        "finish": "Show Proposals"
+    "support": {
+      "warning": {
+        "title": "Pas op voor oplichters",
+        "description": "We bieden geen live ondersteuning. We zullen nooit om uw privé seed vragen, schermdeling aanvragen of u vragen om remote ondersteuningsapps te installeren. Wees voorzichtig met imitators op Discord, GitHub of andere platforms."
       },
-      "form": {
-        "operatorSeed.label": "Operator Seed",
-        "operatorSeed.error.required": "Operator is required",
-        "sourceSeed.label": "Computor to use for proposal",
-        "sourceSeed.error.required": "Computor is required",
-        "title.label": "Proposal Title",
-        "title.placeholder": "Proposal Title",
-        "title.error.required": "Title is required",
-        "title.error.min": "Title must have at least 2 characters",
-        "title.error.max": "Title must have at maximum 100 characters",
-        "description.label": "Proposal Description",
-        "description.placeholder": "Proposal Description",
-        "description.error.min": "Description must have at least 2 characters",
-        "description.error.max": "Description must have at maximum 5000 characters",
-        "description.error.required": "Description is required",
-        "option.label": "Option {{id}}",
-        "option.placeholder": "Option {{id}}",
-        "option.error.required": "Option {{id}} is required",
-        "option.error.min": "Option must have at least 2 characters",
-        "option.error.max": "Option must have at maximum 50 characters",
-        "computorIp.label": "Computor IP Address",
-        "computorIp.placeholder": "Computor IP Address",
-        "computorIp.error.required": "Computor IP Address required"
+      "discord": {
+        "label": "Discord (Ondersteuningskanaal)",
+        "description": "Krijg hulp van de Qubic-gemeenschap"
       },
-      "proposalStep.label": "Create Proposal",
-      "publishStep.label": "Publish Proposal",
-      "finishStep.label": "Done",
-      "finishStep.success": "Your Proposal has been sent to your computor."
-    },
-    "status": {
-      "success": "Accepted by Quorum",
-      "failed": "Dismissed by Quorum",
-      "publishing": "Publish in progress",
-      "pending": "Voting is open",
-      "draft": "Draft",
-      "unknown": "Unknown status"
+      "github": {
+        "label": "GitHub (Meld een probleem)",
+        "description": "Bugs melden of functies aanvragen"
+      },
+      "feedback": {
+        "label": "Qubic Feedback (Functieverzoeken)",
+        "description": "Nieuwe functies en verbeteringen voorstellen"
+      }
     }
   },
   "ipoComponent": {
