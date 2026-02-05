@@ -51,6 +51,10 @@ export class AppComponent {
       'key_vertical',
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/key-vertical.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'transfer_rights',
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/transfer-rights.svg')
+    );
   }
 
   init() {
