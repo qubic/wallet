@@ -11,6 +11,7 @@
       "settings": "Настройки",
       "ipo": "IPO",
       "assets": "Акции",
+      "buy": "Купить",
       "support": "Поддержка"
     },
     "version": "Версия {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
         "refreshBalance": "Обновить баланс",
-        "openExplorer": "Показать в Explorer"
+        "openExplorer": "Показать в Explorer",
+        "buy": "Купить"
       }
     },
     "hasPendingTransaction": "Транзакция в обработке",
@@ -466,6 +468,10 @@
         "description": "Предложить новые функции и улучшения"
       }
     }
+  },
+  "buyComponent": {
+    "title": "Купить QUBIC",
+    "selectAddress": "Выберите адрес получения"
   },
   "ipoComponent": {
     "messages": {

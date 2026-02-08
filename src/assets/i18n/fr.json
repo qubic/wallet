@@ -11,6 +11,7 @@
       "settings": "Paramètres",
       "ipo": "IPO",
       "assets": "Actifs",
+      "buy": "Acheter",
       "support": "Support"
     },
     "version": "Version {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "Modifier l'adresse",
         "deleteSeed": "Supprimer l'adresse",
         "refreshBalance": "Actualiser le solde depuis le réseau",
-        "openExplorer": "Afficher dans l'Explorateur"
+        "openExplorer": "Afficher dans l'Explorateur",
+        "buy": "Acheter"
       }
     },
     "hasPendingTransaction": "Transactions en attente",
@@ -465,6 +467,10 @@
         "description": "Suggérer de nouvelles fonctionnalités et améliorations"
       }
     }
+  },
+  "buyComponent": {
+    "title": "Acheter QUBIC",
+    "selectAddress": "Sélectionner l'adresse de réception"
   },
   "ipoComponent": {
     "messages": {

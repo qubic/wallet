@@ -11,6 +11,7 @@
       "settings": "Settings",
       "ipo": "IPO",
       "assets": "Assets",
+      "buy": "Buy",
       "support": "Support"
     },
     "version": "Version {{version}}",
@@ -260,7 +261,8 @@
         "editSeed": "Edit address",
         "deleteSeed": "Delete address",
         "refreshBalance": "Refresh Balance from Network",
-        "openExplorer": "View in Explorer"
+        "openExplorer": "View in Explorer",
+        "buy": "Buy"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -469,6 +471,10 @@
         "description": "Suggest new features and improvements"
       }
     }
+  },
+  "buyComponent": {
+    "title": "Buy QUBIC",
+    "selectAddress": "Select receiving address"
   },
   "ipoComponent": {
     "messages": {

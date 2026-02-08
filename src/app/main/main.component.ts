@@ -28,6 +28,7 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { MAX_WALLET_ACCOUNTS } from '../constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -381,6 +382,16 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
   openExplorer(publicId: string) {
     window.open(ExplorerUrlHelper.getAddressUrl(publicId), '_blank');
+  }
+
+  buy(publicId: string) {
+    const params = new URLSearchParams({
+      coinType: 'QUBIC',
+      fiatType: 'USD',
+      walletAddress: publicId,
+      theme: 'dark',
+    });
+    window.open(`${environment.banxaUrl}?${params.toString()}`, '_blank');
   }
 
   assets(publicId: string) {

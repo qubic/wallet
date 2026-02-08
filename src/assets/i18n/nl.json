@@ -11,6 +11,7 @@
       "settings": "Instellingen",
       "ipo": "IPO",
       "assets": "Assets",
+      "buy": "Kopen",
       "support": "Ondersteuning"
     },
     "version": "Versie {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "Account aanpassen",
         "deleteSeed": "Account verwijderen",
         "refreshBalance": "Refresh Balance from Network",
-        "openExplorer": "Weergeven in Explorer"
+        "openExplorer": "Weergeven in Explorer",
+        "buy": "Kopen"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -465,6 +467,10 @@
         "description": "Nieuwe functies en verbeteringen voorstellen"
       }
     }
+  },
+  "buyComponent": {
+    "title": "QUBIC kopen",
+    "selectAddress": "Ontvangstadres selecteren"
   },
   "ipoComponent": {
     "messages": {

@@ -11,6 +11,7 @@
       "settings": "Ayarlar",
       "ipo": "IPO",
       "assets": "Varlıklar",
+      "buy": "Satın Al",
       "support": "Destek"
     },
     "version": "Versiyon {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "Adresi Düzenle",
         "deleteSeed": "Adresi Sil",
         "refreshBalance": "Bakiyeyi Ağdan Yenile",
-        "openExplorer": "Explorer'da Görüntüle"
+        "openExplorer": "Explorer'da Görüntüle",
+        "buy": "Satın Al"
       }
     },
     "hasPendingTransaction": "Bekleyen İşlemler",
@@ -467,6 +469,10 @@
         "description": "Yeni özellikler ve iyileştirmeler önerin"
       }
     }
+  },
+  "buyComponent": {
+    "title": "QUBIC Satın Al",
+    "selectAddress": "Alıcı adresini seçin"
   },
   "ipoComponent": {
     "messages": {

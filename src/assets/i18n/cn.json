@@ -11,6 +11,7 @@
       "settings": "设置",
       "ipo": "IPO",
       "assets": "资产",
+      "buy": "購買",
       "support": "支援"
     },
     "version": "Version {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
         "refreshBalance": "刷新余额",
-        "openExplorer": "在浏览器中查看"
+        "openExplorer": "在浏览器中查看",
+        "buy": "购买"
       }
     },
     "hasPendingTransaction": "交易待定",
@@ -467,6 +469,10 @@
         "description": "建議新功能和改進"
       }
     }
+  },
+  "buyComponent": {
+    "title": "購買 QUBIC",
+    "selectAddress": "选择接收地址"
   },
   "ipoComponent": {
     "messages": {

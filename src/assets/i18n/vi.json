@@ -11,6 +11,7 @@
       "settings": "Cài đặt",
       "ipo": "IPO",
       "assets": "Tài sản",
+      "buy": "Mua",
       "support": "Hỗ trợ"
     },
     "version": "Phiên bản {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "Sửa địa chỉ",
         "deleteSeed": "Xóa địa chỉ",
         "refreshBalance": "Làm mới số dư từ mạng",
-        "openExplorer": "Xem trên Explorer"
+        "openExplorer": "Xem trên Explorer",
+        "buy": "Mua"
       }
     },
     "hasPendingTransaction": "Giao dịch đang chờ",
@@ -467,6 +469,10 @@
         "description": "Đề xuất tính năng mới và cải tiến"
       }
     }
+  },
+  "buyComponent": {
+    "title": "Mua QUBIC",
+    "selectAddress": "Chọn địa chỉ nhận"
   },
   "ipoComponent": {
     "messages": {

@@ -11,6 +11,7 @@
       "settings": "設定",
       "ipo": "IPO",
       "assets": "資産",
+      "buy": "購入",
       "support": "Support"
     },
     "version": "バージョン {{version}}",
@@ -258,7 +259,8 @@
         "editSeed": "アドレスを編集",
         "deleteSeed": "アドレスを削除",
         "refreshBalance": "ネットワークから残高を更新",
-        "openExplorer": "エクスプローラーで表示"
+        "openExplorer": "エクスプローラーで表示",
+        "buy": "購入"
       }
     },
     "hasPendingTransaction": "保留中の取引",
@@ -467,6 +469,10 @@
         "description": "新機能や改善を提案する"
       }
     }
+  },
+  "buyComponent": {
+    "title": "QUBICを購入",
+    "selectAddress": "受取アドレスを選択"
   },
   "ipoComponent": {
     "messages": {
