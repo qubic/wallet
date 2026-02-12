@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { BalanceResponse, NetworkBalance, QubicAsset, Transaction } from './api.model';
@@ -7,7 +7,7 @@ import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ApiStatsService } from './apis/stats/api.stats.service';
 import { LatestStatsResponse } from './apis/stats/api.stats.model';
 import { ApiLiveService } from './apis/live/api.live.service';
@@ -15,7 +15,7 @@ import { ApiLiveService } from './apis/live/api.live.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UpdaterService {
+export class UpdaterService implements OnDestroy {
 
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -47,6 +47,8 @@ export class UpdaterService {
   private isActive = true;
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
+  private intervalIds: ReturnType<typeof setInterval>[] = [];
+  private visibilitySub!: Subscription;
 
   constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
     this.init();
@@ -63,24 +65,24 @@ export class UpdaterService {
     this.getLatestStats();
     this.getTransactionsArchiver();
     // every 30 seconds
-    setInterval(() => {
+    this.intervalIds.push(setInterval(() => {
       this.getStatusArchiver();
       this.getCurrentTickArchiver();
       this.getTickInfo();
-    }, 30000);
+    }, 30000));
     // every minute
-    setInterval(() => {
+    this.intervalIds.push(setInterval(() => {
       this.getCurrentBalance();
       this.getNetworkBalances();
       this.getAssets();
       this.getTransactionsArchiver();
-    }, 60000);
+    }, 60000));
     // every hour
-    setInterval(() => {
+    this.intervalIds.push(setInterval(() => {
       this.getLatestStats();
-    }, 60000 * 60);
+    }, 60000 * 60));
 
-    this.visibilityService.isActive().subscribe(s => {
+    this.visibilitySub = this.visibilityService.isActive().subscribe(s => {
       if (!this.isActive && s) {
         this.isActive = s;
         this.forceUpdateCurrentTick();
@@ -90,6 +92,11 @@ export class UpdaterService {
     });
   }
 
+  ngOnDestroy(): void {
+    this.intervalIds.forEach(id => clearInterval(id));
+    this.intervalIds = [];
+    this.visibilitySub?.unsubscribe();
+  }
 
   public loadCurrentBalance(force = false) {
     this.getCurrentBalance(force);
