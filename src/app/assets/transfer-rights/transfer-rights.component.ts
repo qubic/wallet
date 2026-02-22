@@ -17,7 +17,7 @@ import { TransactionService } from '../../services/transaction.service';
 import { UpdaterService } from '../../services/updater-service';
 import { ApiLiveService } from '../../services/apis/live/api.live.service';
 import { QubicStaticService } from '../../services/apis/static/qubic-static.service';
-import { StaticSmartContract, SmartContractProcedure } from '../../services/apis/static/qubic-static.model';
+import { StaticSmartContract } from '../../services/apis/static/qubic-static.model';
 
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
@@ -25,7 +25,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { DynamicPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/DynamicPayload';
 
 import { shortenAddress } from '../../utils/address.utils';
-import { TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE } from '../../constants/qubic.constants';
+import { findTransferRightsProcedure, canReceiveTransferRights } from '../../utils/smart-contract.utils';
 
 /**
  * Interface for contracts that can manage assets
@@ -279,8 +279,8 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         continue;
       }
 
-      // Check if contract supports transfer rights
-      const procedure = this.findTransferRightsProcedure(contract);
+      // Check if contract has the transfer rights procedure
+      const procedure = findTransferRightsProcedure(contract);
       if (!procedure) {
         continue;
       }
@@ -373,9 +373,11 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
   private buildDestinationContractOptions(): void {
     const contracts: ManagingContractOption[] = [];
 
-    // Dynamically find ALL contracts that support the transfer rights procedure
+    // Find contracts that allow transfer shares and have the procedure
     for (const [contractIndex, contract] of this.smartContractsMap.entries()) {
-      const procedure = this.findTransferRightsProcedure(contract);
+      if (!canReceiveTransferRights(contract)) continue;
+
+      const procedure = findTransferRightsProcedure(contract);
 
       if (procedure) {
         // Validate procedure fee exists and is valid
@@ -403,15 +405,6 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     this.filteredDestinationContracts = this.destinationContracts;
   }
 
-  /**
-   * Find transfer rights procedure in a contract
-   * Uses dynamic procedure name from constants
-   */
-  private findTransferRightsProcedure(contract: StaticSmartContract): SmartContractProcedure | null {
-    return contract.procedures.find(p =>
-      p.name === TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE
-    ) ?? null;
-  }
 
   /**
    * Handle source contract selection change

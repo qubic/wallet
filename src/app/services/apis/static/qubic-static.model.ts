@@ -18,6 +18,7 @@ export interface StaticSmartContract {
   address: string;
   procedures: SmartContractProcedure[];
   website?: string;
+  allowTransferShares?: boolean;
 }
 
 export interface GetSmartContractsResponse {
