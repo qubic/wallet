@@ -176,7 +176,7 @@
           title='{{ t("assetsComponent.buttons.send") }}'>
           <mat-icon>send</mat-icon>
         </button>
-        <button *ngIf="canTransferRights(group)" mat-icon-button class="icon-color-link" (click)="openTransferRightsForm(group)"
+        <button *ngIf="showTransferRightsButton(group)" mat-icon-button class="icon-color-link" (click)="openTransferRightsForm(group)"
           title='{{ t("assetsComponent.buttons.transferRights") }}'>
           <mat-icon svgIcon="transfer_rights"></mat-icon>
         </button>
