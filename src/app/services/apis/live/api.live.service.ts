@@ -8,6 +8,7 @@ import {
     BalanceResponse,
     BlockHeightResponse,
     BroadcastTransactionResponse,
+    IpoBidsResponse,
     QuerySmartContractRequest,
     QuerySmartContractResponse,
     TickInfoResponse,
@@ -217,6 +218,25 @@ export class ApiLiveService {
         ).pipe(
             map((response: ActiveIposResponse) => {
                 return response?.ipos || [];
+            })
+        );
+    }
+
+
+    public getIpoBids(contractIndex: number) {
+        let localVarPath = `/ipos/${contractIndex}/bids`;
+        return this.httpClient.request<IpoBidsResponse>('get', `${this.basePath}${localVarPath}`,
+            {
+                context: new HttpContext(),
+                responseType: 'json'
+            }
+        ).pipe(
+            map((response: IpoBidsResponse) => {
+                if (response) {
+                    return response;
+                } else {
+                    throw new Error('Invalid response format');
+                }
             })
         );
     }
