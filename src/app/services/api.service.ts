@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, SmartContract, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, Transaction } from './api.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
@@ -156,22 +156,6 @@ export class ApiService {
     }));
   }
 
-  public getIpoContracts() {
-    let localVarPath = `/Wallet/IpoContracts`;
-    return this.httpClient.request<ContractDto[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentIpoContracts.next(p);
-      return p;
-    }));
-  }
-
   public getPeerList() {
     let localVarPath = `/Public/Peers`;
     return this.httpClient.request<PeerDto[]>('get', `${this.basePath}${localVarPath}`,
@@ -188,18 +172,4 @@ export class ApiService {
     }));
   }
 
-  public getSmartContracts() {
-
-    let localVarPath = `/ipo/contracts`;
-
-    return this.httpClient.request<SmartContract[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    );
-  }
 }
