@@ -405,7 +405,6 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     this.filteredDestinationContracts = this.destinationContracts;
   }
 
-
   /**
    * Handle source contract selection change
    */

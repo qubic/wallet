@@ -120,4 +120,26 @@
     justify-content: center;
     align-items: center;
     padding: 20px 0px 20px 0px;
-  }
+}
+
+.contract-bid-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    background-color: rgba(255, 152, 0, 0.1);
+    border-left: 3px solid #ff9800;
+    border-radius: 4px;
+
+    .error-icon {
+        color: #ff9800;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .retry-btn {
+        margin-left: auto;
+    }
+}

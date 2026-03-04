@@ -12,7 +12,19 @@
                 {{ t("general.loading") }}
             </div>
         </div>
-        <div *ngIf="ipoContracts.length <= 0  && loaded">
+        <div *ngIf="loadError && loaded">
+            <mat-card class="proposal-card">
+                <mat-card-content>
+                    {{ t("ipoComponent.loadError") }}
+                    <br><br>
+                    <button mat-raised-button color="primary" (click)="init()" [disabled]="refreshing">
+                        <mat-spinner *ngIf="refreshing" diameter="20"></mat-spinner>
+                        <span *ngIf="!refreshing">{{ t("ipoComponent.buttons.refresh") }}</span>
+                    </button>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div *ngIf="ipoContracts.length <= 0 && loaded && !loadError">
             <mat-card class="proposal-card">
                 <mat-card-content>
                     {{ t("ipoComponent.noIpos") }}
@@ -36,6 +48,16 @@
                     <button mat-raised-button (click)="openStats(p.index)">
                         <mat-icon>query_stats</mat-icon> {{ t("ipoComponent.livPanelHint") }}
                     </button>
+                    <div *ngIf="hasBidError(p.index)" class="contract-bid-error">
+                        <mat-icon class="error-icon">warning</mat-icon>
+                        <span>{{ t("ipoComponent.bidLoadError") }}</span>
+                        <button mat-stroked-button color="warn" class="retry-btn"
+                            (click)="retryContractBids(p.index)"
+                            [disabled]="isRetrying(p.index)">
+                            <mat-spinner *ngIf="isRetrying(p.index)" diameter="16"></mat-spinner>
+                            <span *ngIf="!isRetrying(p.index)">{{ t("ipoComponent.buttons.retryBids") }}</span>
+                        </button>
+                    </div>
                     <div *ngIf="ipoContracts">
                         <h3>{{ t("ipoComponent.yourShares") }}</h3>
                         <div class="status-valid">({{ t("ipoComponent.statusValid", {tick: getBidOverview(p.index).tick | number: '1.0-0'}) }})</div>
