@@ -95,13 +95,6 @@ export interface QubicAsset {
   issuerIdentity: string;
 }
 
-export interface SmartContract {
-  epoch: number,
-  contractIndex: number,
-  address: string,
-  name: string
-}
-
 export interface AssetTransfer {
   assetName: string
   units: string

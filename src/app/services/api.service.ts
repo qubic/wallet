@@ -12,7 +12,12 @@ import { TokenService } from './token.service';
 })
 export class ApiService {
 
-  public currentIpoContracts: BehaviorSubject<ContractDto[]> = new BehaviorSubject<ContractDto[]>([]);
+  private _currentIpoContracts = new BehaviorSubject<ContractDto[]>([]);
+  public currentIpoContracts = this._currentIpoContracts.asObservable();
+
+  public setIpoContracts(contracts: ContractDto[]): void {
+    this._currentIpoContracts.next(contracts);
+  }
   public currentPeerList: BehaviorSubject<PeerDto[]> = new BehaviorSubject<PeerDto[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private basePath = environment.apiQliUrl;
