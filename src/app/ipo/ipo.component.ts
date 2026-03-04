@@ -11,6 +11,7 @@ import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { IpoBidsResponse } from '../services/apis/live/api.live.model';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 @Component({
   selector: 'app-ipo',
@@ -19,6 +20,7 @@ import { StaticSmartContract } from '../services/apis/static/qubic-static.model'
 })
 export class IpoComponent implements OnInit, OnDestroy {
 
+  public ExplorerUrlHelper = ExplorerUrlHelper;
   public ipoContracts: ContractDto[] = [];
   public loaded: boolean = false;
   public refreshing: boolean = false;
@@ -136,14 +138,6 @@ export class IpoComponent implements OnInit, OnDestroy {
     return this.walletService.getSeeds().find(f => f.publicId == publicId) !== undefined;
   }
 
-  getSeedName(publicId: string): string {
-    var seed = this.walletService.getSeeds().find(f => f.publicId == publicId);
-    if (seed !== undefined)
-      return '(' + seed.alias + ')';
-    else
-      return '';
-  }
-
   getAddressDisplayName(address: string): string {
     if (!address) {
       return '';
@@ -230,7 +224,6 @@ export class IpoComponent implements OnInit, OnDestroy {
     }));
     return arr;
   }
-
 
   groupBy(list: any[], keyGetter: (n: any) => any) {
     const map = new Map();

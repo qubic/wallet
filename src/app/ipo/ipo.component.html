@@ -68,10 +68,10 @@
                             <div *ngFor="let bid of shares" class="transaction-list">
                                 <strong>{{ bid.bids.length }} ({{ getTotalPrice(bid.bids) | number: '1.0-0'}} {{
                                     t("general.currency") }})</strong> {{ t("ipoComponent.sharesFor") }}
-                                <div [class]="{copy: true, ownId: isOwnId(bid.computorId)}">
-                                    <span matTooltip="{{ t('general.copy.tooltip') }}"
-                                        [cdkCopyToClipboard]="bid.computorId">{{ bid.computorId }} {{
-                                        getSeedName(bid.computorId) }}</span>
+                                <div [class]="{ownId: isOwnId(bid.computorId)}">
+                                    <a [href]="ExplorerUrlHelper.getAddressUrl(bid.computorId)"
+                                        target="_blank">{{
+                                        getAddressDisplayName(bid.computorId) }}</a>
                                 </div>
                             </div>
                         </ng-container>
