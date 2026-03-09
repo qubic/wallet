@@ -479,6 +479,7 @@
     "noIpos": "Atualmente, nenhum IPO ativo",
     "loadError": "Falha ao carregar dados do IPO. Por favor, tente novamente.",
     "bidLoadError": "Falha ao carregar dados de lances para este contrato.",
+    "bidsLoadError": "Falha ao carregar seus lances. Por favor, tente atualizar.",
     "buttons.retryBids": "Tentar novamente",
     "yourBids": "Seus Lances",
     "yourShares": "Suas Ações",

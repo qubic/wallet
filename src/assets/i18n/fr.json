@@ -480,6 +480,7 @@
     "noIpos": "Actuellement aucune IPO active",
     "loadError": "Impossible de charger les données IPO. Veuillez réessayer.",
     "bidLoadError": "Impossible de charger les données d'enchères pour ce contrat.",
+    "bidsLoadError": "Impossible de charger vos enchères. Veuillez réessayer.",
     "buttons.retryBids": "Réessayer",
     "yourBids": "Vos Offres",
     "yourShares": "Vos Actions",

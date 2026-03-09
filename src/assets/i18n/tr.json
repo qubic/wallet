@@ -482,6 +482,7 @@
     "noIpos": "Aktif IPO bulunamadı",
     "loadError": "IPO verileri yüklenemedi. Lütfen tekrar deneyin.",
     "bidLoadError": "Bu sözleşme için teklif verileri yüklenemedi.",
+    "bidsLoadError": "Teklifleriniz yüklenemedi. Lütfen yenilemeyi deneyin.",
     "buttons.retryBids": "Tekrar dene",
     "yourBids": "Teklifleriniz",
     "yourShares": "Paylaşımlarınız",

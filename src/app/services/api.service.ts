@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, Transaction } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset } from './api.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
@@ -115,20 +115,6 @@ export class ApiService {
     return this.httpClient.request<MarketInformation>('get', `${this.basePath}${localVarPath}`,
       {
         context: new HttpContext(),
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getCurrentIpoBids(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentIpoBids`;
-    return this.httpClient.request<Transaction[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
         responseType: 'json'
       }
     );

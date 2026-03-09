@@ -481,6 +481,7 @@
     "noIpos": "Aktuell keine IPOs aktiv",
     "loadError": "IPO-Daten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     "bidLoadError": "Gebotsdaten für diesen Vertrag konnten nicht geladen werden.",
+    "bidsLoadError": "Ihre Gebote konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     "buttons.retryBids": "Erneut versuchen",
     "yourBids": "Ihre Gebote",
     "yourShares": "Ihre Anteile",
