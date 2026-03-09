@@ -481,6 +481,7 @@
     "noIpos": "Hiện chưa có IPO nào hoạt động",
     "loadError": "Không thể tải dữ liệu IPO. Vui lòng thử lại.",
     "bidLoadError": "Không thể tải dữ liệu đấu thầu cho hợp đồng này.",
+    "bidsLoadError": "Không thể tải các đấu thầu của bạn. Vui lòng thử làm mới.",
     "buttons.retryBids": "Thử lại",
     "yourBids": "Giá thầu của bạn",
     "yourShares": "Cổ phần của bạn",

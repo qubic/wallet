@@ -479,6 +479,7 @@
     "noIpos": "Currently no IPO's active",
     "loadError": "Kan IPO-gegevens niet laden. Probeer het opnieuw.",
     "bidLoadError": "Kan biedingsgegevens voor dit contract niet laden.",
+    "bidsLoadError": "Kan uw biedingen niet laden. Probeer het opnieuw.",
     "buttons.retryBids": "Opnieuw proberen",
     "yourBids": "Your Bids",
     "yourShares": "Your Shares",

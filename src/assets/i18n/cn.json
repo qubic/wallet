@@ -481,6 +481,7 @@
     "noIpos": "目前没有 IPO 活跃",
     "loadError": "加载 IPO 数据失败。请重试。",
     "bidLoadError": "无法加载此合约的竞标数据。",
+    "bidsLoadError": "无法加载您的竞标。请尝试刷新。",
     "buttons.retryBids": "重试",
     "yourBids": "您的出价",
     "yourShares": "您的股份",

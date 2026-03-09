@@ -481,6 +481,7 @@
     "noIpos": "現在アクティブなIPOはありません",
     "loadError": "IPOデータの読み込みに失敗しました。もう一度お試しください。",
     "bidLoadError": "このコントラクトの入札データの読み込みに失敗しました。",
+    "bidsLoadError": "入札データの読み込みに失敗しました。更新してください。",
     "buttons.retryBids": "再試行",
     "yourBids": "あなたの入札",
     "yourShares": "あなたの株式",

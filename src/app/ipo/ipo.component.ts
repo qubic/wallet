@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { WalletService } from '../services/wallet.service';
-import { ContractDto, IpoBid, IpoBidOverview, Transaction } from '../services/api.model';
+import { ContractDto, IpoBid, IpoBidOverview } from '../services/api.model';
 import { Router } from '@angular/router';
 import { catchError, forkJoin, of, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -9,8 +9,8 @@ import { AddressNameService } from '../services/address-name.service';
 import { getDisplayName } from '../utils/address.utils';
 import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { IpoBidsResponse } from '../services/apis/live/api.live.model';
-import { QubicStaticService } from '../services/apis/static/qubic-static.service';
-import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
+import { CurrentIpoBidsContract } from '../services/apis/aggregation/api.aggregation.model';
+import { ApiAggregationService } from '../services/apis/aggregation/api.aggregation.service';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 
 @Component({
@@ -27,15 +27,15 @@ export class IpoComponent implements OnInit, OnDestroy {
   public loadError: boolean = false;
   public failedBidContracts = new Set<number>();
   public retryingContracts = new Set<number>();
-  public ipoBids: Transaction[] = [];
-  private contractAddressMap = new Map<number, string>();
+  public ipoBids: CurrentIpoBidsContract[] = [];
+  public ipoBidsLoadError: boolean = false;
   private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
     private api: ApiService,
     private apiLiveService: ApiLiveService,
-    private qubicStaticService: QubicStaticService,
+    private apiAggregationService: ApiAggregationService,
     private walletService: WalletService,
     private addressNameService: AddressNameService
   ) { }
@@ -56,6 +56,7 @@ export class IpoComponent implements OnInit, OnDestroy {
   init() {
     this.refreshing = true;
     this.loadError = false;
+    this.ipoBidsLoadError = false;
     this.failedBidContracts.clear();
     this.retryingContracts.clear();
 
@@ -63,10 +64,10 @@ export class IpoComponent implements OnInit, OnDestroy {
     this.apiLiveService.getActiveIpos().pipe(
       switchMap(activeIpos => {
         if (activeIpos.length === 0) {
-          return of({ activeIpos, bidResponses: [] as IpoBidsResponse[], bids: [] as Transaction[], staticContracts: [] as StaticSmartContract[] });
+          return of({ activeIpos, bidResponses: [] as IpoBidsResponse[], bids: [] as CurrentIpoBidsContract[] });
         }
 
-        // Fetch bids, user transactions, and contract addresses in parallel
+        // Fetch bids and user bid transactions in parallel
         const bidRequests = activeIpos.map(ipo =>
           this.apiLiveService.getIpoBids(ipo.contractIndex).pipe(
             catchError(() => {
@@ -77,8 +78,12 @@ export class IpoComponent implements OnInit, OnDestroy {
         );
         return forkJoin({
           bidResponses: forkJoin(bidRequests),
-          bids: this.api.getCurrentIpoBids(this.getSeeds().map(m => m.publicId)),
-          staticContracts: this.qubicStaticService.getSmartContracts()
+          bids: this.apiAggregationService.getCurrentIpoBids(this.getSeeds().map(m => m.publicId)).pipe(
+            catchError(() => {
+              this.ipoBidsLoadError = true;
+              return of([] as CurrentIpoBidsContract[]);
+            })
+          ),
         }).pipe(
           map(result => ({ activeIpos, ...result }))
         );
@@ -86,12 +91,6 @@ export class IpoComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (result) => {
-        // Build contract address map for matching bids to contracts
-        this.contractAddressMap.clear();
-        for (const sc of result.staticContracts) {
-          this.contractAddressMap.set(sc.contractIndex, sc.address);
-        }
-
         // Map live API responses to existing ContractDto format
         this.ipoContracts = result.activeIpos.map((ipo, i) => {
           const bidResponse = result.bidResponses[i];
@@ -155,14 +154,8 @@ export class IpoComponent implements OnInit, OnDestroy {
   }
 
   getContractBids(contractId: number) {
-    const destination = this.contractAddressMap.get(contractId);
-    if (!destination) {
-      return [];
-    }
-
-    return this.ipoBids.filter(
-      (tx: Transaction) => tx.destId === destination
-    );
+    const contract = this.ipoBids.find(c => c.contractIndex === contractId);
+    return contract?.transactions || [];
   }
 
   hasBidError(contractIndex: number): boolean {

@@ -125,20 +125,6 @@ export class ApiService {
     );
   }
 
-  public getCurrentIpoBids(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentIpoBids`;
-    return this.httpClient.request<Transaction[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
   public submitTransaction(submitTransaction: SubmitTransactionRequest) {
     let localVarPath = `/Public/SubmitTransaction`;
     return this.httpClient.request<SubmitTransactionResponse>('post', `${this.basePath}${localVarPath}`,

@@ -479,6 +479,7 @@
     "noIpos": "Actualmente no hay IPOs activas",
     "loadError": "No se pudieron cargar los datos de la IPO. Por favor, inténtelo de nuevo.",
     "bidLoadError": "No se pudieron cargar los datos de ofertas para este contrato.",
+    "bidsLoadError": "No se pudieron cargar sus ofertas. Por favor, intente actualizar.",
     "buttons.retryBids": "Reintentar",
     "yourBids": "Tus Ofertas",
     "yourShares": "Tus Acciones",

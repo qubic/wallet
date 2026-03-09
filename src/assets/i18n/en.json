@@ -483,6 +483,7 @@
     "noIpos": "Currently no IPO's active",
     "loadError": "Failed to load IPO data. Please try again.",
     "bidLoadError": "Failed to load bid data for this contract.",
+    "bidsLoadError": "Failed to load your bids. Please try refreshing.",
     "buttons.retryBids": "Retry",
     "yourBids": "Your Bids",
     "yourShares": "Your Shares",

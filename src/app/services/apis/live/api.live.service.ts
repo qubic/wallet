@@ -34,7 +34,6 @@ const qHelper = new QubicHelper();
 
 export class ApiLiveService {
     private basePath = environment.apiUrl + "/live/v1";
-
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
 
