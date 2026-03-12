@@ -3,7 +3,8 @@ import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { fixTransactionDates, Transaction } from '../services/api.model';
+import { AssetTransfer, SendManyTransfer } from '../services/api.model';
+import { PendingTransaction } from '../services/pending-transaction.service';
 import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
@@ -12,12 +13,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
-import { AssetTransfer, SendManyTransfer } from '../services/api.model';
 import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { isSendManyTransaction, isSimpleTransfer } from '../helpers/transaction-status.helper';
+import { PendingTransactionService } from '../services/pending-transaction.service';
 
 @Component({
   selector: 'app-balance',
@@ -35,7 +36,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
   public numberLastEpoch = 0;
-  public transactions: Transaction[] = [];
+  public pendingTransactions: PendingTransaction[] = [];
+  public filteredPendingTransactions: PendingTransaction[] = [];
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
@@ -60,7 +62,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
     public us: UpdaterService,
-    private addressNameService: AddressNameService
+    private addressNameService: AddressNameService,
+    private pendingTxService: PendingTransactionService
   ) {
     this.seedFilterFormControl.setValue(null);
   }
@@ -86,25 +89,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
-      this.us.internalTransactions
+      this.pendingTxService.pendingTransactions$
         .pipe(takeUntil(this.destroy$))
-        .subscribe(async txs => {
-          this.transactions = fixTransactionDates(txs);
+        .subscribe(txs => {
+          this.pendingTransactions = txs;
           this.correctTheTransactionListByPublicId();
-
-          // Parse asset transfers for qli transactions
-          for (const tx of this.transactions) {
-            if (tx.inputHex && this.isQxAssetTransfer(tx.destId, tx.type)) {
-              try {
-                const assetData = await this.getAssetsTransfers(tx.inputHex);
-                if (assetData) {
-                  this.assetTransferData[tx.id] = assetData;
-                }
-              } catch (error) {
-                console.error('Error parsing qli asset transfer:', error);
-              }
-            }
-          }
+          this.updateFilteredPendingTransactions();
+          this.parsePendingAssetTransfers();
         });
 
       this.us.transactionsArray
@@ -300,6 +291,22 @@ export class BalanceComponent implements OnInit, OnDestroy {
     return this.assetTransferData[txId] || null;
   }
 
+  private async parsePendingAssetTransfers(): Promise<void> {
+    for (const tx of this.pendingTransactions) {
+      if (!tx.inputHex || this.assetTransferData[tx.txId]) continue;
+      if (this.isQxAssetTransfer(tx.destId, tx.inputType)) {
+        try {
+          const assetData = await this.getAssetsTransfers(tx.inputHex);
+          if (assetData) {
+            this.assetTransferData[tx.txId] = assetData;
+          }
+        } catch (error) {
+          console.error('Error parsing pending asset transfer:', error);
+        }
+      }
+    }
+  }
+
   /**
    * Parse SendMany payload to extract all transfers
    */
@@ -377,6 +384,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.transactionsRecord = uniqueTransactions;
       this.sortTransactions();
+      this.updateFilteredPendingTransactions();
     }
   }
 
@@ -390,7 +398,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   correctTheTransactionListByPublicId(): void {
     const validSeeds = this.getSeeds().map(seed => seed.publicId);
-    this.transactions = this.transactions.filter(transaction => {
+    this.pendingTransactions = this.pendingTransactions.filter(transaction => {
       return validSeeds.includes(transaction.sourceId) || validSeeds.includes(transaction.destId);
     });
   }
@@ -401,26 +409,23 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
 
-  getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(transaction => {
-      // check publicId and status
+  getTransactions(publicId: string | null = null): PendingTransaction[] {
+    return this.pendingTransactions.filter(transaction => {
       const matchesPublicId = publicId == null || transaction.sourceId === publicId || transaction.destId === publicId;
-      const isNotSuccess = transaction.status !== 'Success';
 
-      if (!matchesPublicId || !isNotSuccess) return false;
-
-      // get the tick and txId to compare
-      const txId = transaction.id;
-      const tick = transaction.targetTick;
+      if (!matchesPublicId) return false;
 
       // check if the transaction is already returned by the archiver so it can be excluded
       const shouldBeExcluded = this.transactionsRecord.some(ref =>
-        ref.tickNumber === tick &&
-        ref.transactions.some(t => t.transaction.txId === txId)
+        ref.transactions.some(t => t.transaction.txId === transaction.txId)
       );
 
       return !shouldBeExcluded; // Exclude if matched
     });
+  }
+
+  private updateFilteredPendingTransactions(): void {
+    this.filteredPendingTransactions = this.getTransactions();
   }
 
 
@@ -551,23 +556,26 @@ export class BalanceComponent implements OnInit, OnDestroy {
     window.URL.revokeObjectURL(url);
   }
 
-  repeat(transaction: Transaction) {
+  dismissFailedTransaction(event: Event, txId: string): void {
+    event.stopPropagation();
+    this.pendingTxService.removeFailedTransaction(txId);
+  }
+
+  repeat(transaction: PendingTransaction) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)) {
-      console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, transaction.amount)) {
+      console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
       return;
     }
 
     // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
-    if (this.isQxAssetTransfer(transaction.destId, transaction.type)) {
-      // Route to assets component for QX asset transfers
+    if (this.isQxAssetTransfer(transaction.destId, transaction.inputType)) {
       this.router.navigate(['assets-area'], {
         state: {
           template: transaction
         }
       });
     } else {
-      // Route to payment component for standard Qubic transfers
       this.router.navigate(['payment'], {
         state: {
           template: transaction

@@ -813,6 +813,7 @@ export class WalletService {
 
   public clearConfig() {
     localStorage.removeItem(this.configName);
+    localStorage.removeItem('pendingTransactions');
     this.runningConfiguration.seeds = [];
     this.publicKey = null;
     this.isWalletReady = false;

@@ -18,6 +18,7 @@
     "copy.tooltip": "复制",
     "error": "错误",
     "close": "X",
+    "delete": "删除",
     "currency": "QUBIC",
     "currentTick": "刻度: {{tick}}",
     "loading": "加载中...",

@@ -9,7 +9,7 @@ import { SeedEditDialog } from './edit-seed/seed-edit.component';
 import { RevealSeedDialog } from './reveal-seed/reveal-seed.component';
 import { Router } from '@angular/router';
 import { QrReceiveDialog } from './qr-receive/qr-receive.component';
-import { BalanceResponse, NetworkBalance, Transaction } from '../services/api.model';
+import { BalanceResponse, NetworkBalance } from '../services/api.model';
 import { MatSort } from '@angular/material/sort';
 import { UpdaterService } from '../services/updater-service';
 import { QubicService } from '../services/qubic.service';
@@ -28,6 +28,7 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { MAX_WALLET_ACCOUNTS } from '../constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PendingTransaction, PendingTransactionService } from '../services/pending-transaction.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
   balances: BalanceResponse[] = [];
-  public transactions: Transaction[] = [];
+  public pendingTransactions: PendingTransaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
 
@@ -86,6 +87,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     private decimalPipe: DecimalPipe,
     private deviceService: DeviceDetectorService,
     private transloco: TranslocoService,
+    private pendingTxService: PendingTransactionService,
   ) {
 
     this.walletService.updateConfig({ useBridge: false, });
@@ -142,10 +144,10 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-    updaterService.internalTransactions
+    this.pendingTxService.pendingTransactions$
       .pipe(takeUntil(this.destroy$))
       .subscribe(txs => {
-        this.transactions = txs;
+        this.pendingTransactions = txs;
       });
 
     //1. vault file export due to move to new wallet
@@ -405,6 +407,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
       confirmDialo.afterClosed().subscribe(result => {
         if (result) {
           this.walletService.deleteSeed(publicId);
+          this.pendingTxService.removeBySourceId(publicId);
           this.refreshData();
           this.openExportDialog();
         }
@@ -455,7 +458,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
 
   hasPendingTransaction(publicId: string) {
-    return this.transactions.find(t => (t.sourceId == publicId || t.destId == publicId) && t.isPending);
+    return this.pendingTransactions.find(t => (t.sourceId === publicId || t.destId === publicId) && t.isPending);
   }
 
 }

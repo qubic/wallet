@@ -18,6 +18,7 @@
     "copy.tooltip": "Sao chép",
     "error": "Lỗi",
     "close": "Đóng",
+    "delete": "Xóa",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "đang tải...",

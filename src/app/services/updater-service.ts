@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { BalanceResponse, NetworkBalance, QubicAsset, Transaction } from './api.model';
+import { BalanceResponse, NetworkBalance, QubicAsset } from './api.model';
 import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
 import { ApiService } from './api.service';
 import { ApiArchiverService } from './api.archiver.service';
@@ -11,6 +10,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { ApiStatsService } from './apis/stats/api.stats.service';
 import { LatestStatsResponse } from './apis/stats/api.stats.model';
 import { ApiLiveService } from './apis/live/api.live.service';
+import { PendingTransactionService } from './pending-transaction.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,6 @@ export class UpdaterService {
       burnedQus: ''
     }
   });
-  public internalTransactions: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]); // used to store internal tx
   public errorStatus: BehaviorSubject<string> = new BehaviorSubject<string>("");
   private tickLoading = false;
   private tickInfoLoading = false;
@@ -48,7 +47,7 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
   private status!: StatusArchiver;
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 
@@ -69,7 +68,12 @@ export class UpdaterService {
       this.getTickInfo();
     }, 30000);
     // every minute
-    setInterval(() => {
+    setInterval(async () => {
+      try {
+        await this.pendingTxService.checkAndResolvePendingTransactions(this.archiverLatestTick.getValue());
+      } catch (e) {
+        console.error('Failed to resolve pending transactions:', e);
+      }
       this.getCurrentBalance();
       this.getNetworkBalances();
       this.getAssets();
@@ -111,7 +115,6 @@ export class UpdaterService {
       this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
         if (r) {
           this.currentBalance.next(r);
-          this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
         }
         this.balanceLoading = false;
       }, errorResponse => {
@@ -119,10 +122,6 @@ export class UpdaterService {
         this.balanceLoading = false;
       });
     }
-  }
-
-  private onlyUniqueTx(value: Transaction, index: any, array: Transaction[]) {
-    return array.findIndex((f: Transaction) => f.id === value.id) == index;
   }
 
   public forceLoadAssets(allbackFn: ((assets: QubicAsset[]) => void) | undefined = undefined) {
@@ -363,41 +362,4 @@ export class UpdaterService {
     this.getCurrentTickArchiver();
   }
 
-  public addQubicTransaction(tx: QubicTransaction): void {
-    const newTx: Transaction = {
-      amount: Number(tx.amount.getNumber()),
-      status: "Broadcasted",
-      sourceId: tx.sourcePublicKey.getIdentityAsSring() ?? "",
-      destId: tx.destinationPublicKey.getIdentityAsSring() ?? "",
-      broadcasted: new Date(),
-      id: tx.getId(),
-      targetTick: tx.tick,
-      created: new Date(),
-      isPending: true,
-      moneyFlow: false,
-      type: tx.inputType
-    };
-    this.addTransaction(newTx);
-  }
-
-  public addTransaction(tx: Transaction): void {
-    const list = this.internalTransactions.getValue();
-    if (!list.find(f => f.id.slice(0, 56) === tx.id.slice(0, 56))) {
-      list.unshift(tx);
-      this.internalTransactions.next(list);
-    }
-  }
-
-  public addTransactions(txs: Transaction[]): void {
-    var list = this.internalTransactions.getValue();
-    txs.forEach(tx => {
-      const existingTx = list.find(f => f.id.slice(0, 56) === tx.id.slice(0, 56));
-      if (!existingTx) {
-        list.push(tx);
-      } else {
-        Object.assign(existingTx, tx);
-      }
-    });
-    this.internalTransactions.next(list.sort((a, b) => { return b.targetTick - a.targetTick }));
-  }
 }

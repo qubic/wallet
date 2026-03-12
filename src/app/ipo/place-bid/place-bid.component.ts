@@ -4,16 +4,16 @@ import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { ContractDto, Transaction } from '../../services/api.model';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ContractDto } from '../../services/api.model';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UpdaterService } from '../../services/updater-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { lastValueFrom } from 'rxjs';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 export interface ComputorSelected {
   name: string;
@@ -35,7 +35,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
 
   public currentTick = 0;
   public contractIndex: number | undefined;
-  private sub: any;
   public tickOverwrite = false;
   public maxAmount: number = 0;
   public ipoContract: ContractDto | undefined;
@@ -51,11 +50,10 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private transloco: TranslocoService, private api: ApiService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
-    , private route: ActivatedRoute
     , private fb: FormBuilder
     , private dialog: MatDialog
-    , private apiService: ApiService
     , private apiLiveService: ApiLiveService
+    , private transactionService: TransactionService
   ) {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(state => {
       if (state && state['contractId']) {
@@ -96,10 +94,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     return this.walletService.getSeeds().length > 0;
   }
 
-  onlyUnique(value: Transaction, index: any, array: Transaction[]) {
-    return array.findIndex((f: Transaction) => f.id === value.id) == index;
-  }
-
   isOwnId(publicId: string): boolean {
     return this.walletService.getSeeds().find(f => f.publicId == publicId) !== undefined;
   }
@@ -119,14 +113,6 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   getSelectedSourceSeed() {
     const publicId = this.ipoForm.controls.sourceId.value;
     return this.getSeeds().find(s => s.publicId === publicId);
-  }
-
-  repeat(transaction: Transaction) {
-    this.router.navigate(['payment'], {
-      state: {
-        template: transaction
-      }
-    });
   }
 
   setComputor(comp: ComputorSelected, ev: any) {
@@ -163,24 +149,26 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
         targetTick = tickInfo.tick + this.walletService.getSettings().tickAddition; // set tick to send tx
       }
 
-      this.walletService.revealSeed((<any>this.ipoForm.controls.sourceId.value)).then(s => {
-        new QubicHelper().createIpo(s, this.ipoContract?.index!, this.ipoForm.controls.price.value!, this.ipoForm.controls.quantity.value!, targetTick!).then(tx => {
-          // hack to get uintarray to array for sending to api
-          this.api.submitTransaction({ SignedTransaction: this.walletService.arrayBufferToBase64(tx) }).subscribe(r => {
-            if (r && r.id) {
-              this._snackBar.open(this.transloco.translate('ipoComponent.messages.unlock', { id: r.id }), this.transloco.translate('general.close'), {
-                duration: 3000,
-              });
-              // this.init();
-              this.router.navigate(['/ipo']);
-            }
-          }, er => {
-            this._snackBar.open(this.transloco.translate('ipoComponent.messages.failedToSend'), this.transloco.translate('general.close'), {
-              duration: 5000,
-              panelClass: "error"
-            });
+      this.walletService.revealSeed((<any>this.ipoForm.controls.sourceId.value)).then(async s => {
+        const result = await this.transactionService.submitIpoTransaction(
+          s,
+          this.ipoForm.controls.sourceId.value!,
+          this.ipoContract!,
+          this.ipoForm.controls.price.value!,
+          this.ipoForm.controls.quantity.value!,
+          targetTick!
+        );
+        if (result.success) {
+          this._snackBar.open(this.transloco.translate('ipoComponent.messages.storedForPropagation', { tick: targetTick }), this.transloco.translate('general.close'), {
+            duration: 3000,
           });
-        });
+          this.router.navigate(['/ipo']);
+        } else {
+          this._snackBar.open(result.message || this.transloco.translate('ipoComponent.messages.failedToSend'), this.transloco.translate('general.close'), {
+            duration: 5000,
+            panelClass: "error"
+          });
+        }
       }).catch(e => {
         this._snackBar.open(this.transloco.translate('ipoComponent.messages.failedToDecrypt'), this.transloco.translate('general.close'), {
           duration: 10000,

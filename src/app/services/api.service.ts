@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, SmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
-import {
-  HttpClient, HttpHeaders, HttpParams,
-  HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-} from '@angular/common/http';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, SmartContract, Transaction } from './api.model';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
-import { lastValueFrom, map, Observable, of } from 'rxjs';
+import { map } from 'rxjs';
 import { TokenService } from './token.service';
-import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
-import { WalletService } from './wallet.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +18,7 @@ export class ApiService {
   private basePath = environment.apiQliUrl;
   private authenticationActive = false;
 
-  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor, private walletService: WalletService) {
+  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
     this.reAuthenticate();
   }
 
@@ -132,19 +127,6 @@ export class ApiService {
         responseType: 'json'
       }
     );
-  }
-
-  public submitTransaction(submitTransaction: SubmitTransactionRequest) {
-    let localVarPath = `/Public/SubmitTransaction`;
-    return this.httpClient.request<SubmitTransactionResponse>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: submitTransaction,
-        responseType: 'json'
-      })
   }
 
   public getCurrentTick() {

@@ -10,7 +10,7 @@ import { QubicEntityResponse } from '@qubic-lib/qubic-ts-library/dist/qubic-comm
 import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
 import { QubicTickInfo } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTickInfo';
 import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
-import { BalanceResponse, PeerDto, Transaction } from './api.model';
+import { BalanceResponse, PeerDto } from './api.model';
 import { ApiService } from './api.service';
 import { UpdaterService } from './updater-service';
 import { WalletService } from './wallet.service';

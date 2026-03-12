@@ -18,6 +18,7 @@
     "copy.tooltip": "Copy",
     "error": "Error",
     "close": "X",
+    "delete": "Delete",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "loading...",

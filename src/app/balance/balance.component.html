@@ -34,12 +34,12 @@
             </mat-button-toggle-group>
         </div>
         <span *ngIf="!isShowAllTransactions">
-            <div *ngIf="getTransactions().length > 0">
-                <mat-accordion *ngFor="let transaction of getTransactions()">
+            <div *ngIf="filteredPendingTransactions.length > 0">
+                <mat-accordion *ngFor="let transaction of filteredPendingTransactions">
                     <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                <tx-status [transaction]="transaction" [lastArchivedTick]="(us.archiverLatestTick | async) ?? undefined"></tx-status>
+                                <tx-status [transaction]="transaction"></tx-status>
                                 &nbsp;
                                 <span class="display-publicid disable-area">
                                     <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.sourceId)"
@@ -52,16 +52,20 @@
                                     {{ transaction.created | dateTime }}
                                 </span>
                                 <button
-                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.targetTick && transaction.status !== 'Pending' && isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)"
+                                    *ngIf="isOwnId(transaction.sourceId) && currentTick > transaction.tickNumber && !transaction.isPending && isRepeatableTransaction(transaction.destId, transaction.inputType, transaction.amount)"
                                     mat-icon-button matTooltip="{{ t('balanceComponent.repeatTransaction') }}"
                                     (click)="repeat(transaction)"><mat-icon>repeat</mat-icon></button>
+                                <button
+                                    *ngIf="!transaction.isPending"
+                                    mat-icon-button matTooltip="{{ t('general.delete') }}"
+                                    (click)="dismissFailedTransaction($event, transaction.txId)"><mat-icon>delete</mat-icon></button>
                             </mat-panel-title>
                             <mat-panel-description class="disable-area">
                                 <ng-container
-                                    *ngIf="getAssetTransfer(transaction.id); else normalAmount">
-                                    {{ getAssetTransfer(transaction.id)!.units | number:
+                                    *ngIf="getAssetTransfer(transaction.txId) as transfer; else normalAmount">
+                                    {{ transfer.units | number:
                                     '1.0-0' }}&nbsp;{{
-                                    getAssetTransfer(transaction.id)!.assetName }}
+                                    transfer.assetName }}
                                 </ng-container>
                                 <ng-template #normalAmount>
                                     {{ transaction.amount | number: '1.0-0'
@@ -89,13 +93,13 @@
                                             <span class="label">{{ t("balanceComponent.transaction.trxId") }}</span>
                                         </div>
                                         <div class="col-value disable-area">
-                                            <span class="value"> <a *ngIf="transaction.id.substring(56) !== 'aaaa'"
-                                                    [href]="ExplorerUrlHelper.getTransactionUrl(transaction.id)"
-                                                    target="_blank">{{transaction.id}}
+                                            <span class="value"> <a *ngIf="transaction.txId.substring(56) !== 'aaaa'"
+                                                    [href]="ExplorerUrlHelper.getTransactionUrl(transaction.txId)"
+                                                    target="_blank">{{transaction.txId}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
-                                                    [cdkCopyToClipboard]="transaction.id">content_copy</mat-icon>
+                                                    [cdkCopyToClipboard]="transaction.txId">content_copy</mat-icon>
                                             </span>
                                         </div>
                                     </div>
@@ -121,14 +125,14 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value">
-                                                <ng-container *ngIf="getAssetTransfer(transaction.id); else normalDestination">
-                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)"
+                                                <ng-container *ngIf="getAssetTransfer(transaction.txId) as transfer; else normalDestination">
+                                                    <a [href]="ExplorerUrlHelper.getAddressUrl(transfer.newOwnerAndPossessor)"
                                                         target="_blank">
-                                                        {{getAddressDisplayName(getAssetTransfer(transaction.id)!.newOwnerAndPossessor)}}
+                                                        {{getAddressDisplayName(transfer.newOwnerAndPossessor)}}
                                                     </a>
                                                     <mat-icon class="icon-color-link icon"
                                                         matTooltip="{{ t('general.copy.tooltip') }}"
-                                                        [cdkCopyToClipboard]="getAssetTransfer(transaction.id)!.newOwnerAndPossessor">content_copy</mat-icon>
+                                                        [cdkCopyToClipboard]="transfer.newOwnerAndPossessor">content_copy</mat-icon>
                                                 </ng-container>
                                                 <ng-template #normalDestination>
                                                     <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.destId)"
@@ -148,8 +152,8 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value"> <a
-                                                    [href]="ExplorerUrlHelper.getTickUrl(transaction.targetTick)"
-                                                    target="_blank">{{ transaction.targetTick | number: '1.0-0' }}
+                                                    [href]="ExplorerUrlHelper.getTickUrl(transaction.tickNumber)"
+                                                    target="_blank">{{ transaction.tickNumber | number: '1.0-0' }}
                                                 </a>
                                             </span>
                                         </div>
@@ -160,11 +164,11 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value">
-                                                {{ formatInputType(transaction.type,transaction.destId) }}</span>
+                                                {{ formatInputType(transaction.inputType,transaction.destId) }}</span>
                                         </div>
                                     </div>
                                     <!-- Add Fee row after Type row for asset transfers -->
-                                    <div class="row" *ngIf="getAssetTransfer(transaction.id)">
+                                    <div class="row" *ngIf="getAssetTransfer(transaction.txId)">
                                         <div class="col-label">
                                             <span class="label">{{ t("balanceComponent.transaction.fee") }}</span>
                                         </div>
@@ -249,10 +253,10 @@
                         </mat-panel-title>
                         <mat-panel-description class="disable-area">
                             <ng-container
-                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalAmount">
-                                {{ getAssetTransfer(transaction.transactions[0].transaction.txId)!.units | number:
+                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId) as transfer; else normalAmount">
+                                {{ transfer.units | number:
                                 '1.0-0' }}&nbsp;{{
-                                getAssetTransfer(transaction.transactions[0].transaction.txId)!.assetName }}
+                                transfer.assetName }}
                             </ng-container>
                             <ng-template #normalAmount>
                                 {{ transaction.transactions[0].transaction.amount | number: '1.0-0' }}&nbsp;{{
@@ -319,14 +323,14 @@
                                     <div class="col-value disable-area">
                                         <span class="value">
                                             <ng-container
-                                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId); else normalDest">
-                                                <a [href]="ExplorerUrlHelper.getAddressUrl(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)"
+                                                *ngIf="getAssetTransfer(transaction.transactions[0].transaction.txId) as transfer; else normalDest">
+                                                <a [href]="ExplorerUrlHelper.getAddressUrl(transfer.newOwnerAndPossessor)"
                                                     target="_blank">
-                                                    {{getAddressDisplayName(getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor)}}
+                                                    {{getAddressDisplayName(transfer.newOwnerAndPossessor)}}
                                                 </a>
                                                 <mat-icon class="icon-color-link icon"
                                                     matTooltip="{{ t('general.copy.tooltip') }}"
-                                                    [cdkCopyToClipboard]="getAssetTransfer(transaction.transactions[0].transaction.txId)!.newOwnerAndPossessor">content_copy</mat-icon>
+                                                    [cdkCopyToClipboard]="transfer.newOwnerAndPossessor">content_copy</mat-icon>
                                             </ng-container>
                                             <ng-template #normalDest>
                                                 <a [href]="ExplorerUrlHelper.getAddressUrl(transaction.transactions[0].transaction.destId)"

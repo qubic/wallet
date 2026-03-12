@@ -139,7 +139,7 @@ export class ApiLiveService {
     }
 
 
-    public submitBroadcastTransaction(encodedTransaction: string) {
+    public broadcastTransaction(encodedTransaction: string) {
         let localVarPath = `/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
@@ -153,7 +153,7 @@ export class ApiLiveService {
         ).pipe(
             map((response: BroadcastTransactionResponse) => {
                 if (response) {
-                    //console.log('Response from submitBroadcastTransaction:', response);
+                    //console.log('Response from broadcastTransaction:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
@@ -250,7 +250,7 @@ export class ApiLiveService {
               tx.setPayload(dynamicPayload);
             }
             const res = await tx.build(seed);
-            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
+            const txResult = await lastValueFrom(this.broadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
             return {
                 txResult,
           };
