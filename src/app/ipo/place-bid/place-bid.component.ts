@@ -137,6 +137,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
         duration: 5000,
         panelClass: "error"
       });
+      return;
     }
 
     // todo: create service: same is used in payment component.
