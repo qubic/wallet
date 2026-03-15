@@ -6,7 +6,6 @@ import { IDecodedSeed, ISeed } from '../model/seed';
 import { ITx } from '../model/tx';
 import { QubicAsset } from './api.model';
 import { Router } from '@angular/router';
-import { OnReadOpts } from 'net';
 
 export interface Seed {
   seed: string;
@@ -25,8 +24,6 @@ export class WalletService {
   private configName = 'wallet-config';
   public privateKey: CryptoKey | null = null;
   public publicKey: CryptoKey | null = null;
-  //public seeds: ISeed[] = [];
-  //public webBridges: string[] = [];
   public txs: ITx[] = [];
   public configError = false;
   public erroredConfig: string = '';
@@ -83,11 +80,8 @@ export class WalletService {
     // create empty configuration
     this.runningConfiguration = {
       seeds: [],
-      webBridges: [],
       tickAddition: 10,
       numberLastEpoch: 10,
-      useBridge: (<any>window).require,
-      enableBeta: false
     };
     this.onConfig = new BehaviorSubject(this.runningConfiguration);
     this.load();
@@ -157,20 +151,6 @@ export class WalletService {
       this.isWalletReady = true;
     }
 
-    const tempFixedBridgeAddress = 'wss://webbridge.qubic.li';
-
-    if (!this.runningConfiguration.webBridges)
-      this.runningConfiguration.webBridges = [];
-
-    // remove legacy entries
-    this.runningConfiguration.webBridges =
-      this.runningConfiguration.webBridges.filter(
-        (f) => f !== 'https://1.b.qubic.li'
-      );
-    if (this.runningConfiguration.webBridges.length <= 0)
-      this.runningConfiguration.webBridges.push(tempFixedBridgeAddress);
-
-    // todo: load web bridges dynamically
 
 
   }
@@ -188,24 +168,11 @@ export class WalletService {
     await this.saveConfig(lock);
   }
 
-  public getWebBridges(): string[] {
-    return [...this.runningConfiguration.webBridges];
-  }
-
-  public getRandomWebBridgeUrl(): string {
-    return this.runningConfiguration.webBridges[
-      Math.floor(Math.random() * this.runningConfiguration.webBridges.length)
-    ];
-  }
-
   public getSettings(): IConfig {
     return {
       seeds: [...this.runningConfiguration.seeds],
-      webBridges: [...this.runningConfiguration.webBridges],
-      useBridge: this.runningConfiguration.useBridge,
       tickAddition: this.runningConfiguration.tickAddition,
       numberLastEpoch: this.runningConfiguration.numberLastEpoch,
-      enableBeta: this.runningConfiguration.enableBeta,
     };
   }
 
@@ -221,14 +188,8 @@ export class WalletService {
   public async updateConfig(config: any): Promise<void> {
     if (config.tickAddition !== undefined)
       this.runningConfiguration.tickAddition = config.tickAddition;
-    if (config.enableBeta !== undefined)
-      this.runningConfiguration.enableBeta = config.enableBeta;
     if (config.numberLastEpoch !== undefined)
       this.runningConfiguration.numberLastEpoch = config.numberLastEpoch;
-    if (config.enableBeta !== undefined)
-      this.runningConfiguration.enableBeta = config.enableBeta;
-    if (config.useBridge !== undefined)
-      this.runningConfiguration.useBridge = config.useBridge;
     await this.saveConfig(false);
   }
 
@@ -760,11 +721,8 @@ export class WalletService {
         exportSeed.isExported = true;
         return exportSeed;
       }),
-      webBridges: this.runningConfiguration.webBridges,
-      useBridge: this.runningConfiguration.useBridge,
       tickAddition: this.runningConfiguration.tickAddition,
       numberLastEpoch: this.runningConfiguration.numberLastEpoch,
-      enableBeta: this.runningConfiguration.enableBeta
     };
     return exportConfig;
   }

@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { QubicConnector } from '@qubic-lib/qubic-ts-library/dist/QubicConnector';
-import { QubicPackageBuilder } from '@qubic-lib/qubic-ts-library/dist/QubicPackageBuilder';
-import { QubicPackageType } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicPackageType';
-import { RequestResponseHeader } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/RequestResponseHeader';
-import { ApiService } from './api.service';
 import { ContractDto } from './api.model';
 import { WalletService } from './wallet.service';
 import { ApiLiveService } from './apis/live/api.live.service';
@@ -26,71 +21,11 @@ export class TransactionService {
     constructor(
         private t: TranslocoService,
         private walletService: WalletService,
-        private api: ApiService,
         private apiLiveService: ApiLiveService,
         private pendingTxService: PendingTransactionService
     ) {
 
     }
-
-    /**
-     * sends the tx directly to the network (via websocket bridge)
-     * 
-     * @param qtx the qubic transaction to publish to the network
-     * @param callbackFn callback function got's called when tx is published or any error happened
-     */
-    private async directPush(qtx: QubicTransaction, callbackFn?: (result: ITransactionPublishResult) => void) {
-
-        // create header
-        const header = new RequestResponseHeader(QubicPackageType.BROADCAST_TRANSACTION, qtx.getPackageSize());
-        const builder = new QubicPackageBuilder(header.getSize());
-        builder.add(header);
-        builder.add(qtx);
-        const transactionBinaryData = builder.getData();
-
-        let transactionSent = false;
-
-        // create a dedicated connection to the network
-        const qubicConnector = new QubicConnector(this.walletService.getRandomWebBridgeUrl());
-
-        // event when websocket to bridge is established
-        qubicConnector.onReady = () => {
-            // choose random
-            qubicConnector.connect(this.api.currentPeerList.getValue()[0].ipAddress);
-        }
-        // event when we have connection to the qubic node/peer
-        qubicConnector.onPeerConnected = () => {
-            // send transaction
-            if (qubicConnector.sendPackage(transactionBinaryData)) {
-                transactionSent = true;
-                if (callbackFn) {
-                    callbackFn({
-                        success: true,
-                        txId: qtx.getId()
-                    });
-                }
-            } else {
-                if (callbackFn) {
-                    callbackFn({
-                        success: false,
-                        message: this.t.translate('paymentComponent.messages.failedToSend')
-                    });
-                }
-            }
-            qubicConnector.stop();
-        }
-        qubicConnector.start(); // start publishing
-        // timeout for publishing a transaction. if there is no result in 2 seconds it has failed
-        window.setTimeout(() => {
-            if (!transactionSent && callbackFn) {
-                callbackFn({
-                    success: false,
-                    message: this.t.translate('general.messages.timeoutTryAgain')
-                });
-            }
-        }, 2000);
-    }
-
 
     /**
      * Publish a Qubic Transaction to the network
@@ -125,39 +60,26 @@ export class TransactionService {
             };
         }
 
-        // if we are using bridged mode, the transaction is sent directly to the network
-        if (this.walletService.getSettings().useBridge) {
-            return new Promise((resolve) => {
-                this.directPush(qtx, (r) => {
-                    if (r.success) {
-                        this.storePendingTransaction(qtx);
-                    }
-                    resolve(r);
-                });
-            })
-        }
-        else {
-            const binaryData = qtx.getPackageData();
-            const encodedTransaction = this.walletService.arrayBufferToBase64(binaryData);
+        const binaryData = qtx.getPackageData();
+        const encodedTransaction = this.walletService.arrayBufferToBase64(binaryData);
 
-            try {
-                const apiResult = await lastValueFrom(this.apiLiveService.broadcastTransaction(encodedTransaction));
-                if (apiResult && apiResult.transactionId) {
-                    this.storePendingTransaction(qtx);
-                    return { success: true, txId: apiResult.transactionId };
-                } else {
-                    return {
-                        success: false,
-                        message: this.t.translate('paymentComponent.messages.failedToSend')
-                    };
-                }
-            } catch (error) {
-                console.error('Transaction broadcast failed:', error instanceof Error ? error.message : 'Unknown error');
+        try {
+            const apiResult = await lastValueFrom(this.apiLiveService.broadcastTransaction(encodedTransaction));
+            if (apiResult && apiResult.transactionId) {
+                this.storePendingTransaction(qtx);
+                return { success: true, txId: apiResult.transactionId };
+            } else {
                 return {
                     success: false,
                     message: this.t.translate('paymentComponent.messages.failedToSend')
                 };
             }
+        } catch (error) {
+            console.error('Transaction broadcast failed:', error instanceof Error ? error.message : 'Unknown error');
+            return {
+                success: false,
+                message: this.t.translate('paymentComponent.messages.failedToSend')
+            };
         }
     }
 

@@ -62,7 +62,6 @@ import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { TransferStatusComponent } from './core/transfer-status/transfer-status.component';
 import { SettingsGeneralComponent } from './settings/general/general.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { QubicService } from './services/qubic.service';
 import { DecimalPipe } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
@@ -206,7 +205,6 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
       ApiStatsService,
       ApiTxStatusService,
       UpdaterService,
-      QubicService,
       DecimalPipe,
       EnvironmentService,
       { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
