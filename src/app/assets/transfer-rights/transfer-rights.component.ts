@@ -25,7 +25,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { DynamicPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/DynamicPayload';
 
 import { shortenAddress } from '../../utils/address.utils';
-import { findTransferRightsProcedure, canReceiveTransferRights } from '../../utils/smart-contract.utils';
+import { findManagementRightsProcedure, findTransferRightsProcedure, canReceiveTransferRights } from '../../utils/smart-contract.utils';
 
 /**
  * Interface for contracts that can manage assets
@@ -44,6 +44,7 @@ interface ManagingContractOption {
  */
 interface SourceContractOption extends ManagingContractOption {
   asset: QubicAsset;
+  procedureType: 'transfer' | 'revoke';
 }
 
 /**
@@ -244,8 +245,11 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       // Process assets into source contract options
       this.buildSourceContractOptions(allAssets);
 
-      // Build destination contract options (all contracts with transfer rights procedure)
+      // Build destination contract options
       this.buildDestinationContractOptions();
+
+      // Re-validate current form selections against rebuilt lists
+      this.revalidateFormSelections();
 
     } catch (error) {
       console.error('Error loading assets:', error);
@@ -257,6 +261,35 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     } finally {
       this.isLoading = false;
       this.isLoadingAssets = false;
+    }
+  }
+
+  /**
+   * Re-validate current form selections after options are rebuilt.
+   * Clears selections that are no longer present in the updated lists.
+   */
+  private revalidateFormSelections(): void {
+    const currentAsset = this.transferRightsForm.get('selectedAsset')?.value as AssetOption | null;
+    if (currentAsset) {
+      const stillExists = this.assets.find(a => this.compareAssets(a, currentAsset));
+      if (!stillExists) {
+        this.transferRightsForm.patchValue({ selectedAsset: '', sourceContract: '', destinationContract: '' });
+        this.selectedAsset = null;
+        this.selectedSourceContract = null;
+        this.selectedDestinationContract = null;
+        return;
+      }
+    }
+
+    const currentSource = this.transferRightsForm.get('sourceContract')?.value as SourceContractOption | null;
+    if (currentSource) {
+      const stillExists = this.sourceContracts.find(c => c.contractIndex === currentSource.contractIndex &&
+        c.asset.publicId === currentSource.asset.publicId);
+      if (!stillExists) {
+        this.transferRightsForm.patchValue({ sourceContract: '', destinationContract: '' });
+        this.selectedSourceContract = null;
+        this.selectedDestinationContract = null;
+      }
     }
   }
 
@@ -279,14 +312,15 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
         continue;
       }
 
-      // Check if contract has the transfer rights procedure
-      const procedure = findTransferRightsProcedure(contract);
-      if (!procedure) {
+      // Check if contract has a management rights procedure (transfer or revoke)
+      const result = findManagementRightsProcedure(contract);
+      if (!result) {
         continue;
       }
 
-      // Validate procedure fee exists and is valid
-      if (procedure.fee === undefined || procedure.fee === null || procedure.fee < 0) {
+      const { procedure, type: procedureType } = result;
+
+      if (procedure.fee == null || procedure.fee < 0) {
         console.warn(`Contract ${contract.name} has invalid procedure fee:`, procedure.fee);
         continue;
       }
@@ -302,7 +336,8 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           procedureId: procedure.id,
           procedureFee: procedure.fee,
           availableBalance: asset.ownedAmount,
-          asset: asset
+          asset: asset,
+          procedureType: procedureType
         };
         contractMap.set(contractKey, sourceContract);
 
@@ -367,22 +402,23 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
 
   /**
    * Build destination contract options
-   * Lists all contracts that support transfer rights procedure
-   * Dynamically discovers contracts based on procedure availability
+   * Lists all contracts that could be valid destinations.
+   * The actual filtering depends on the selected source contract's procedure type
+   * and is applied in onSourceContractChange.
    */
   private buildDestinationContractOptions(): void {
     const contracts: ManagingContractOption[] = [];
 
-    // Find contracts that allow transfer shares and have the procedure
     for (const [contractIndex, contract] of this.smartContractsMap.entries()) {
-      if (!canReceiveTransferRights(contract)) continue;
+      // A contract is a valid destination if it has allowTransferShares AND a TransferShareManagementRights procedure,
+      // OR if it is QX (which is always a valid destination for RevokeAssetManagementRights)
+      const hasAllowTransfer = canReceiveTransferRights(contract);
+      const transferProc = findTransferRightsProcedure(contract);
+      const isQx = contract.address === QubicDefinitions.QX_ADDRESS;
 
-      const procedure = findTransferRightsProcedure(contract);
-
-      if (procedure) {
-        // Validate procedure fee exists and is valid
-        if (procedure.fee === undefined || procedure.fee === null || procedure.fee < 0) {
-          console.warn(`Contract ${contract.name} has invalid procedure fee:`, procedure.fee);
+      if ((hasAllowTransfer && transferProc) || isQx) {
+        if (transferProc && (transferProc.fee == null || transferProc.fee < 0)) {
+          console.warn(`Contract ${contract.name} has invalid procedure fee:`, transferProc.fee);
           continue;
         }
 
@@ -390,9 +426,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           contractIndex: contractIndex,
           contractName: contract.label || contract.name,
           address: contract.address,
-          procedureId: procedure.id,
-          procedureFee: procedure.fee,
-          availableBalance: 0 // Not applicable for destination
+          procedureId: transferProc?.id ?? 0,
+          procedureFee: transferProc?.fee ?? 0,
+          availableBalance: 0
         });
       }
     }
@@ -405,37 +441,47 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
     this.filteredDestinationContracts = this.destinationContracts;
   }
 
-
   /**
    * Handle source contract selection change
+   * Filters destination contracts based on the source contract's procedure type:
+   * - RevokeAssetManagementRights: destination is only QX
+   * - TransferShareManagementRights: destination is contracts with allowTransferShares AND TransferShareManagementRights
    */
   private onSourceContractChange(sourceContract: SourceContractOption | null): void {
     this.selectedSourceContract = sourceContract;
 
     if (sourceContract) {
-      // Filter destination contracts to exclude the source contract
-      this.filteredDestinationContracts = this.destinationContracts.filter(
-        dest => dest.contractIndex !== sourceContract.contractIndex
-      );
+      if (sourceContract.procedureType === 'revoke') {
+        // Revoke: destination can only be QX
+        this.filteredDestinationContracts = this.destinationContracts.filter(
+          dest => dest.address === QubicDefinitions.QX_ADDRESS
+        );
+      } else {
+        // Transfer: destination must have allowTransferShares AND TransferShareManagementRights procedure
+        // Exclude the source contract itself
+        this.filteredDestinationContracts = this.destinationContracts.filter(dest => {
+          if (dest.contractIndex === sourceContract.contractIndex) return false;
+          const contract = this.smartContractsMap.get(dest.contractIndex);
+          if (!contract) return false;
+          return canReceiveTransferRights(contract) && !!findTransferRightsProcedure(contract);
+        });
+      }
 
       // Update shares validation based on available balance
       this.updateSharesValidation();
 
-      // Auto-select QX as destination if not managed by QX
-      if (sourceContract.address !== QubicDefinitions.QX_ADDRESS && !this.transferRightsForm.get('destinationContract')?.value) {
-        const qxContract = this.filteredDestinationContracts.find(c => c.address === QubicDefinitions.QX_ADDRESS);
-        if (qxContract) {
-          this.transferRightsForm.patchValue({
-            destinationContract: qxContract
-          });
-        }
-      }
-
-      // Clear destination if same as source (shouldn't happen with filtering, but keep as safety)
-      const destContract = this.transferRightsForm.get('destinationContract')?.value;
-      if (destContract && destContract.contractIndex === sourceContract.contractIndex) {
+      // Clear destination if it's no longer in the filtered list
+      const currentDest = this.transferRightsForm.get('destinationContract')?.value;
+      if (currentDest && !this.filteredDestinationContracts.some(d => d.contractIndex === currentDest.contractIndex)) {
         this.transferRightsForm.patchValue({
           destinationContract: ''
+        });
+      }
+
+      // Auto-select destination if only one option
+      if (this.filteredDestinationContracts.length === 1 && !this.transferRightsForm.get('destinationContract')?.value) {
+        this.transferRightsForm.patchValue({
+          destinationContract: this.filteredDestinationContracts[0]
         });
       }
     } else {
@@ -471,18 +517,21 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       // Auto-select first contract if only one option
       if (this.filteredSourceContracts.length === 1) {
         this.transferRightsForm.patchValue({
-          sourceContract: this.filteredSourceContracts[0]
+          sourceContract: this.filteredSourceContracts[0],
+          destinationContract: ''
         });
       } else {
-        // Clear source contract selection
+        // Clear source and destination contract selection
         this.transferRightsForm.patchValue({
-          sourceContract: ''
+          sourceContract: '',
+          destinationContract: ''
         });
       }
     } else {
       this.filteredSourceContracts = [];
       this.transferRightsForm.patchValue({
         sourceContract: '',
+        destinationContract: '',
         numberOfShares: null
       });
     }
@@ -635,6 +684,18 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Validate destination is consistent with procedure type
+    if (this.selectedSourceContract.procedureType === 'revoke') {
+      if (this.selectedDestinationContract.address !== QubicDefinitions.QX_ADDRESS) {
+        return;
+      }
+    } else {
+      const destContract = this.smartContractsMap.get(this.selectedDestinationContract.contractIndex);
+      if (!destContract || !canReceiveTransferRights(destContract) || !findTransferRightsProcedure(destContract)) {
+        return;
+      }
+    }
+
     // Validate fee balance
     if (!this.canPayFees()) {
       this.snackBar.open(
@@ -668,35 +729,59 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       // Reveal seed for signing
       signSeed = await this.walletService.revealSeed(asset.publicId);
 
-      // Build payload (52 bytes total)
-      // Asset: issuer (32 bytes) + assetName (8 bytes) = 40 bytes
-      // numberOfShares: sint64 = 8 bytes
-      // newManagingContractIndex: uint32 = 4 bytes
-      const payloadBytes = new Uint8Array(52);
-      let offset = 0;
-
-      // Add issuer identity (32 bytes)
+      // Build payload based on procedure type
+      const isRevoke = this.selectedSourceContract.procedureType === 'revoke';
+      const encoder = new TextEncoder();
       const issuerPubKey = new PublicKey(asset.issuerIdentity);
       const issuerBytes = issuerPubKey.getPackageData();
-      payloadBytes.set(issuerBytes, offset);
-      offset += 32;
-
-      // Add asset name (8 bytes, padded with null bytes)
-      const encoder = new TextEncoder();
       const nameBytes = encoder.encode(asset.assetName);
-      payloadBytes.set(nameBytes.slice(0, 8), offset);
-      offset += 8;
 
-      // Add number of shares (8 bytes, signed int64, little-endian)
-      const dataView = new DataView(payloadBytes.buffer);
-      dataView.setBigInt64(offset, BigInt(numberOfShares), true);
-      offset += 8;
+      let payloadBytes: Uint8Array;
+      let dataView: DataView;
+      let offset = 0;
 
-      // Add new managing contract index (4 bytes, unsigned int32, little-endian)
-      dataView.setUint32(offset, this.selectedDestinationContract.contractIndex, true);
+      if (isRevoke) {
+        // Revoke payload (48 bytes):
+        // Asset: assetName (8 bytes) + issuer (32 bytes) = 40 bytes
+        // numberOfShares: sint64 = 8 bytes
+        payloadBytes = new Uint8Array(48);
+        dataView = new DataView(payloadBytes.buffer);
 
-      // Create payload wrapper
-      const payload = new DynamicPayload(52);
+        // Asset name (8 bytes, padded with null bytes)
+        payloadBytes.set(nameBytes.slice(0, 8), offset);
+        offset += 8;
+
+        // Issuer identity (32 bytes)
+        payloadBytes.set(issuerBytes, offset);
+        offset += 32;
+
+        // Number of shares (8 bytes, signed int64, little-endian)
+        dataView.setBigInt64(offset, BigInt(numberOfShares), true);
+      } else {
+        // Transfer payload (52 bytes):
+        // Asset: issuer (32 bytes) + assetName (8 bytes) = 40 bytes
+        // numberOfShares: sint64 = 8 bytes
+        // newManagingContractIndex: uint32 = 4 bytes
+        payloadBytes = new Uint8Array(52);
+        dataView = new DataView(payloadBytes.buffer);
+
+        // Issuer identity (32 bytes)
+        payloadBytes.set(issuerBytes, offset);
+        offset += 32;
+
+        // Asset name (8 bytes, padded with null bytes)
+        payloadBytes.set(nameBytes.slice(0, 8), offset);
+        offset += 8;
+
+        // Number of shares (8 bytes, signed int64, little-endian)
+        dataView.setBigInt64(offset, BigInt(numberOfShares), true);
+        offset += 8;
+
+        // New managing contract index (4 bytes, unsigned int32, little-endian)
+        dataView.setUint32(offset, this.selectedDestinationContract.contractIndex, true);
+      }
+
+      const payload = new DynamicPayload(payloadBytes.length);
       payload.setPayload(payloadBytes);
 
       // Build transaction
