@@ -5,5 +5,5 @@ export const environment = {
     apiUrl: 'http://localhost:7004',
     staticApiUrl: 'https://static.qubic.org',
     explorerUrl: 'https://explorer.qubic.org',
-    banxaUrl: 'https://QUBIC.banxa.com'
+    banxaUrl: 'https://qubic.banxa-sandbox.com'
 };

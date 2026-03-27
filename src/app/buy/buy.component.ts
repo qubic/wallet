@@ -20,6 +20,11 @@ export class BuyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const writableSeeds = this.getWritableSeeds();
+    if (writableSeeds.length > 0) {
+      this.selectedAddress = writableSeeds[0].publicId;
+    }
+
     this.buildUrl();
   }
 
@@ -37,6 +42,8 @@ export class BuyComponent implements OnInit {
 
   private buildUrl(): void {
     const params = new URLSearchParams({
+      coinType: 'QUBIC',
+      blockchain: 'QUBIC',
       fiatType: 'USD',
       walletAddress: this.selectedAddress,
       theme: 'dark',

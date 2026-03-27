@@ -5,6 +5,5 @@ export const environment = {
   apiUrl: 'https://rpc.qubic.org',
   staticApiUrl: 'https://static.qubic.org',
   explorerUrl: 'https://explorer.qubic.org',
-  banxaUrl: 'https://QUBIC.banxa.com'
+  banxaUrl: 'https://qubic.banxa.com'
 };
-
