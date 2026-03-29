@@ -11,7 +11,8 @@
       "settings": "Settings",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Support"
+      "support": "Support",
+      "buy": "Buy"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -260,7 +261,8 @@
         "editSeed": "Edit address",
         "deleteSeed": "Delete address",
         "refreshBalance": "Refresh Balance from Network",
-        "openExplorer": "View in Explorer"
+        "openExplorer": "View in Explorer",
+        "buy": "Buy"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -688,6 +690,45 @@
       "rewardTable": "Reward Table",
       "txSuccess": "Transaction Succeeded!",
       "txFailed": "Transaction Failed!"
+    }
+  },
+  "buyComponent": {
+    "title": "Buy QUBIC",
+    "subtitle": "Get a live quote from Banxa, then continue checkout inside the wallet.",
+    "selectAddress": "Select receiving address",
+    "fiatAmount": "Fiat amount",
+    "fiatCurrency": "Fiat currency",
+    "coinCurrency": "Cryptocurrency",
+    "blockchain": "Blockchain",
+    "paymentMethod": "Payment method",
+    "quoteSummary": "Quote summary",
+    "quoteUnavailable": "No quote loaded yet.",
+    "estimatedReceive": "Estimated receive",
+    "networkFee": "Network fee",
+    "transactionFee": "Transaction fee",
+    "price": "Price",
+    "partner": "Provider",
+    "buttons": {
+      "refreshQuote": "Refresh quote",
+      "createOrder": "Continue to checkout",
+      "resetCheckout": "Reset checkout"
+    },
+    "hints": {
+      "checkout": "The Banxa checkout is shown after the buy order is created."
+    },
+    "messages": {
+      "loadingOptions": "Loading Banxa options...",
+      "loadingFailed": "Unable to load Banxa options right now.",
+      "quoteLoaded": "Banxa quote updated.",
+      "quoteFailed": "Unable to fetch a Banxa quote right now.",
+      "orderCreated": "Banxa checkout is ready below.",
+      "orderFailed": "Unable to create the Banxa order right now.",
+      "missingAddress": "Please choose a receiving address first.",
+      "noWritableAddresses": "A writable wallet address is required to buy QUBIC."
+    },
+    "errors": {
+      "required": "This field is required.",
+      "minAmount": "Enter an amount greater than zero."
     }
   }
 }
