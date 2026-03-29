@@ -1,0 +1,128 @@
+<ng-container *transloco="let t">
+  <div class="buy-container">
+    <div class="buy-header">
+      <h1>{{ t("buyComponent.title") }}</h1>
+      <p class="buy-subtitle">{{ t("buyComponent.subtitle") }}</p>
+    </div>
+
+    <mat-card class="buy-card">
+      <mat-card-content>
+        <div class="buy-grid">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>{{ t("buyComponent.selectAddress") }}</mat-label>
+            <mat-select [(value)]="selectedAddress" (selectionChange)="onAddressChange()" panelClass="full-width">
+              <mat-select-trigger>
+                <span *ngIf="selectedAddress && getSelectedSeed()">
+                  {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                </span>
+              </mat-select-trigger>
+              <mat-option *ngFor="let seed of getWritableSeeds()" [value]="seed.publicId" class="custom-mat-option">
+                {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <form [formGroup]="buyForm" class="buy-grid">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("buyComponent.fiatAmount") }}</mat-label>
+              <input matInput type="number" min="1" formControlName="fiatAmount" />
+              <mat-error *ngIf="buyForm.controls.fiatAmount.hasError('required')">{{ t("buyComponent.errors.required") }}</mat-error>
+              <mat-error *ngIf="buyForm.controls.fiatAmount.hasError('min')">{{ t("buyComponent.errors.minAmount") }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("buyComponent.fiatCurrency") }}</mat-label>
+              <mat-select formControlName="fiatCode">
+                <mat-option *ngFor="let fiat of fiats" [value]="fiat.code">{{ fiat.code }} - {{ fiat.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("buyComponent.coinCurrency") }}</mat-label>
+              <mat-select formControlName="coinCode">
+                <mat-option *ngFor="let currency of currencies" [value]="currency.code">
+                  {{ currency.code }} - {{ currency.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("buyComponent.blockchain") }}</mat-label>
+              <mat-select formControlName="blockchain">
+                <mat-option *ngFor="let blockchain of blockchains" [value]="blockchain.code">
+                  {{ blockchain.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>{{ t("buyComponent.paymentMethod") }}</mat-label>
+              <mat-select formControlName="paymentMethodId">
+                <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id">
+                  {{ paymentMethod.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </div>
+
+        <div class="button-row">
+          <button mat-raised-button type="button" (click)="refreshQuote()" [disabled]="isLoadingOptions || isLoadingQuote">
+            <span *ngIf="!isLoadingQuote">{{ t("buyComponent.buttons.refreshQuote") }}</span>
+            <mat-progress-spinner *ngIf="isLoadingQuote" mode="indeterminate" [diameter]="20"></mat-progress-spinner>
+          </button>
+          <button mat-raised-button color="primary" type="button" (click)="createOrder()" [disabled]="isLoadingOptions || isCreatingOrder || !quote">
+            <span *ngIf="!isCreatingOrder">{{ t("buyComponent.buttons.createOrder") }}</span>
+            <mat-progress-spinner *ngIf="isCreatingOrder" mode="indeterminate" [diameter]="20"></mat-progress-spinner>
+          </button>
+          <button mat-button type="button" (click)="resetCheckout()">{{ t("buyComponent.buttons.resetCheckout") }}</button>
+        </div>
+
+        <div class="hint-text" *ngIf="isLoadingOptions">{{ t("buyComponent.messages.loadingOptions") }}</div>
+
+        <mat-card class="quote-card">
+          <mat-card-header>
+            <mat-card-title>{{ t("buyComponent.quoteSummary") }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content *ngIf="quote; else emptyQuote">
+            <div class="quote-row">
+              <span>{{ t("buyComponent.estimatedReceive") }}</span>
+              <strong>{{ quote.coinAmount | number:'1.2-8' }} {{ quote.coinCode }}</strong>
+            </div>
+            <div class="quote-row">
+              <span>{{ t("buyComponent.price") }}</span>
+              <strong>{{ quote.price | number:'1.2-8' }}</strong>
+            </div>
+            <div class="quote-row">
+              <span>{{ t("buyComponent.networkFee") }}</span>
+              <strong>{{ quote.networkFee | number:'1.2-8' }}</strong>
+            </div>
+            <div class="quote-row">
+              <span>{{ t("buyComponent.transactionFee") }}</span>
+              <strong>{{ quote.feeAmount | number:'1.2-8' }}</strong>
+            </div>
+            <div class="quote-row">
+              <span>{{ t("buyComponent.partner") }}</span>
+              <strong>{{ environment.banxaPartner }}</strong>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <ng-template #emptyQuote>
+          <div class="empty-state">{{ t("buyComponent.quoteUnavailable") }}</div>
+        </ng-template>
+
+        <div class="checkout-hint" *ngIf="quote && !banxaUrl">{{ t("buyComponent.hints.checkout") }}</div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="iframe-wrapper" *ngIf="banxaUrl">
+      <iframe
+        [src]="banxaUrl"
+        allow="camera; microphone; payment"
+        frameborder="0"
+        class="banxa-iframe"
+      ></iframe>
+    </div>
+  </div>
+</ng-container>

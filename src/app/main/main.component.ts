@@ -311,6 +311,14 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  buy(publicId: string) {
+    this.router.navigate(['/', 'buy'], {
+      queryParams: {
+        publicId: publicId
+      }
+    });
+  }
+
   edit(publicId: string) {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });
@@ -459,4 +467,3 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   }
 
 }
-
