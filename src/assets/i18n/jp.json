@@ -157,7 +157,8 @@
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",
       "maxButton": "最大",
-      "submit": "権利を譲渡"
+      "submit": "権利を譲渡",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "資産の選択が必要です",

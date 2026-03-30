@@ -157,7 +157,8 @@
       "tick": "Tick",
       "tickOverwrite": "Handmatige Tick Overschrijving",
       "maxButton": "Max",
-      "submit": "Rechten Overdragen"
+      "submit": "Rechten Overdragen",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "Activa selectie is verplicht",

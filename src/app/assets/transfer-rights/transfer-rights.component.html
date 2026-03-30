@@ -96,6 +96,9 @@
                   {{ t("transferRights.errors.contractsEqual") }}
                 </mat-error>
               </mat-form-field>
+              <div *ngIf="selectedSourceContract?.procedureType === 'revoke'" class="info-note">
+                * {{ t("transferRights.form.revokeOnlyHint", { contract: selectedSourceContract?.contractName }) }}
+              </div>
             </div>
           </div>
 

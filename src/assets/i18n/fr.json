@@ -157,7 +157,8 @@
       "tick": "Tick",
       "tickOverwrite": "Remplacement Manuel du Tick",
       "maxButton": "Max",
-      "submit": "Transférer les Droits"
+      "submit": "Transférer les Droits",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "La sélection d'actif est requise",
