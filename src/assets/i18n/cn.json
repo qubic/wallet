@@ -152,11 +152,13 @@
       "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
+      "amount": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
       "maxButton": "最大",
-      "submit": "转移权利"
+      "submit": "转移权利",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "需要选择资产",

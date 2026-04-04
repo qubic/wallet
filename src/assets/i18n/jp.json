@@ -152,11 +152,13 @@
       "selectAsset": "資産を選択",
       "sourceContract": "ソース契約",
       "destinationContract": "宛先契約",
+      "amount": "数量",
       "procedureFee": "手続き手数料",
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",
       "maxButton": "最大",
-      "submit": "権利を譲渡"
+      "submit": "権利を譲渡",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "資産の選択が必要です",

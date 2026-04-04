@@ -152,11 +152,13 @@
       "selectAsset": "Varlık Seç",
       "sourceContract": "Kaynak Sözleşme",
       "destinationContract": "Hedef Sözleşme",
+      "amount": "Miktar",
       "procedureFee": "İşlem Ücreti",
       "tick": "Tick",
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",
       "maxButton": "Maks",
-      "submit": "Hakları Aktar"
+      "submit": "Hakları Aktar",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "Varlık seçimi gerekli",

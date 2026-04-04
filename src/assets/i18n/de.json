@@ -152,11 +152,13 @@
       "selectAsset": "Asset auswählen",
       "sourceContract": "Quellvertrag",
       "destinationContract": "Zielvertrag",
+      "amount": "Menge",
       "procedureFee": "Verfahrensgebühr",
       "tick": "Tick",
       "tickOverwrite": "Manuelles Tick-Override",
       "maxButton": "Max",
-      "submit": "Rechte übertragen"
+      "submit": "Rechte übertragen",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "Asset-Auswahl ist erforderlich",
