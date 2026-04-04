@@ -1,3 +1,10 @@
+## [4.25.1](https://github.com/qubic/wallet/compare/v4.25.0...v4.25.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* update IPO stats URL to auctions.qubic.tools ([b41d555](https://github.com/qubic/wallet/commit/b41d555b4409a8e961033c9e6f161d2f5b33202e))
+
 # [4.25.0](https://github.com/qubic/wallet/compare/v4.24.0...v4.25.0) (2026-02-05)
 
 
