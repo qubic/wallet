@@ -158,7 +158,7 @@
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",
       "maxButton": "Maks",
       "submit": "Hakları Aktar",
-      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
+      "revokeOnlyHint": "{{contract}} tarafından yönetilen varlıklar yalnızca QX'e iptal edilebilir"
     },
     "errors": {
       "assetRequired": "Varlık seçimi gerekli",

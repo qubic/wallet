@@ -158,7 +158,7 @@
       "tickOverwrite": "Ручная Замена Тика",
       "maxButton": "Макс",
       "submit": "Передать Права",
-      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
+      "revokeOnlyHint": "Активы, управляемые {{contract}}, могут быть отозваны только в QX"
     },
     "errors": {
       "assetRequired": "Требуется выбор актива",
