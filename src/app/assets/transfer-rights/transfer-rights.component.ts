@@ -373,9 +373,8 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       assetOption.owningContracts.sort((a, b) => b.availableBalance - a.availableBalance);
     }
 
-    // Convert to arrays and sort alphabetically
-    this.sourceContracts = Array.from(contractMap.values())
-      .sort((a, b) => a.contractName.localeCompare(b.contractName, undefined, { sensitivity: 'base' }));
+    // Convert to array (only used for length checks in template)
+    this.sourceContracts = Array.from(contractMap.values());
 
     this.assets = Array.from(assetMap.values())
       .sort((a, b) => {
