@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
 import { AssetTransfer, SendManyTransfer } from '../services/api.model';
 import { PendingTransaction } from '../services/pending-transaction.service';
-import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
+import { ProcessedTickInterval, QueryTransactionRecord, QueryTransactionDetails } from '../services/apis/query/api.query.model';
+import { ApiQueryService } from '../services/apis/query/api.query.service';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -41,13 +41,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
-  public transactionsArchiverSubscribe: TransactionsArchiver[] = [];
-  public transactionsArchiver: TransactionsArchiver[] = [];
-  public transactionsRecord: TransactionRecord[] = [];
+  public transactionsArchiverSubscribe: QueryTransactionRecord[] = [];
+  public transactionsArchiver: QueryTransactionRecord[] = [];
+  public transactionsRecord: QueryTransactionRecord[] = [];
   readonly panelOpenState = signal(false);
   selectedElement = new FormControl('element1');
 
-  public status!: StatusArchiver;
+  public processedTickIntervals: ProcessedTickInterval[] = [];
   public currentSelectedEpoch = 0;
   public initialProcessedTick: number = 0;
   public lastProcessedTick: number = 0;
@@ -58,7 +58,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private transloco: TranslocoService,
-    private apiArchiver: ApiArchiverService,
+    private apiQuery: ApiQueryService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
     public us: UpdaterService,
@@ -69,7 +69,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getStatusArchiver();
+    this.getProcessedTickIntervals();
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
@@ -100,7 +100,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.us.transactionsArray
         .pipe(takeUntil(this.destroy$))
-        .subscribe((transactions: TransactionsArchiver[]) => {
+        .subscribe((transactions: QueryTransactionRecord[]) => {
           if (transactions && transactions.length > 0) {
             this.transactionsArchiverSubscribe = transactions;
             this.updateTransactionsRecord();
@@ -110,13 +110,12 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
 
-  //**  new Archiver Api */
-  private getStatusArchiver() {
-    this.apiArchiver.getStatus()
-      .subscribe(s => {
-        if (s) {
-          this.status = s;
-          this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
+  private getProcessedTickIntervals() {
+    this.apiQuery.getProcessedTickIntervals()
+      .subscribe(intervals => {
+        if (intervals && intervals.length > 0) {
+          this.processedTickIntervals = intervals;
+          this.currentSelectedEpoch = intervals[intervals.length - 1].epoch;
           // Just initialize the tick range, don't fetch transactions yet
           // Transactions will be fetched when user switches to "By Epochs" tab
           this.GetTransactionsByTick(this.currentSelectedEpoch, false);
@@ -145,13 +144,12 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
 
   get firstEpoch(): number | undefined {
-    return this.status?.processedTickIntervalsPerEpoch?.[0]?.epoch;
+    return this.processedTickIntervals?.[0]?.epoch;
   }
 
   get lastEpoch(): number | undefined {
-    const intervals = this.status?.processedTickIntervalsPerEpoch;
-    if (!intervals || intervals.length === 0) return undefined;
-    return intervals[intervals.length - 1]?.epoch;
+    if (!this.processedTickIntervals || this.processedTickIntervals.length === 0) return undefined;
+    return this.processedTickIntervals[this.processedTickIntervals.length - 1]?.epoch;
   }
 
   get canNavigateToPreviousEpoch(): boolean {
@@ -163,16 +161,14 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   GetTransactionsByTick(epoch: number, fetchTransactions: boolean = true): void {
-    this.status.processedTickIntervalsPerEpoch
-      .filter(t => t.epoch === epoch)
-      .forEach(e => {
-        // Only set tick range if intervals exist and have data
-        if (e.intervals && e.intervals.length > 0 && e.intervals[0]) {
-          this.initialProcessedTick = e.intervals[0].initialProcessedTick;
-          this.lastProcessedTick = e.intervals[0].lastProcessedTick;
-          this.currentSelectedEpoch = e.epoch;
-        }
-      });
+    const epochIntervals = this.processedTickIntervals.filter(t => t.epoch === epoch);
+    if (epochIntervals.length > 0) {
+      // Use the first interval's firstTick and the last interval's lastTick
+      // to cover the full range when an epoch has gaps (multiple intervals)
+      this.initialProcessedTick = epochIntervals[0].firstTick;
+      this.lastProcessedTick = epochIntervals[epochIntervals.length - 1].lastTick;
+      this.currentSelectedEpoch = epoch;
+    }
     // Only fetch transactions if explicitly requested (e.g., when navigating between epochs)
     if (fetchTransactions) {
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
@@ -206,7 +202,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick)
+    this.apiQuery.getTransfers(publicId, this.initialProcessedTick, this.lastProcessedTick)
       .subscribe(async r => {
       if (r) {
         if (Array.isArray(r)) {
@@ -215,8 +211,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
           this.transactionsArchiver.push(r);
         }
 
-        if (this.transactionsRecord.length <= 0) {
-          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
+        if (this.transactionsRecord.length <= 0 && this.transactionsArchiver.length > 0) {
+          this.transactionsRecord.push(...this.transactionsArchiver);
         }
 
         await Promise.all(this.transactionsRecord.map(async transaction => {
@@ -267,7 +263,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async checkAndParseAssetTransfer(transaction: TransactionRecord): Promise<void> {
+  async checkAndParseAssetTransfer(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -322,7 +318,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }));
   }
 
-  async checkAndParseSendManyTransfer(transaction: TransactionRecord): Promise<void> {
+  async checkAndParseSendManyTransfer(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -346,7 +342,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     return this.sendManyTransferData[txId] || null;
   }
 
-  async toggleSendManyExpanded(transaction: TransactionRecord): Promise<void> {
+  async toggleSendManyExpanded(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -368,12 +364,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
-      this.transactionsRecord = [];
-      this.transactionsArchiverSubscribe.forEach(archiver => {
-        if (archiver.transactions && archiver.transactions.length > 0) {
-          this.transactionsRecord.push(...archiver.transactions);
-        }
-      });
+      this.transactionsRecord = [...this.transactionsArchiverSubscribe];
 
       // Filter to keep only unique transactions based on txId
       const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
@@ -584,7 +575,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async repeatTransactionArchiver(transaction: TransactionDetails) {
+  async repeatTransactionArchiver(transaction: QueryTransactionDetails) {
     // Safety check: only allow repeatable transactions
     const amount = parseInt(transaction.amount, 10);
     if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, amount)) {

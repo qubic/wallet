@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PendingTransaction } from 'src/app/services/pending-transaction.service';
-import { Transaction as ArchivedTransaction } from 'src/app/services/api.archiver.model';
+import { QueryTransactionEntry as ArchivedTransaction } from 'src/app/services/apis/query/api.query.model';
 import {
   ComputedTransactionStatus,
   TransactionStatusConfig,
