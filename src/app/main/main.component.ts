@@ -9,14 +9,11 @@ import { SeedEditDialog } from './edit-seed/seed-edit.component';
 import { RevealSeedDialog } from './reveal-seed/reveal-seed.component';
 import { Router } from '@angular/router';
 import { QrReceiveDialog } from './qr-receive/qr-receive.component';
-import { BalanceResponse, NetworkBalance, Transaction } from '../services/api.model';
+import { BalanceResponse, NetworkBalance } from '../services/api.model';
 import { MatSort } from '@angular/material/sort';
 import { UpdaterService } from '../services/updater-service';
-import { QubicService } from '../services/qubic.service';
-import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { QubicEntityResponse } from '@qubic-lib/qubic-ts-library/dist/qubic-communication/QubicEntityResponse';
 import { DecimalPipe } from '@angular/common';
 import { AssetsDialog } from './assets/assets.component';
 import { ExportConfigDialog } from '../lock/export-config/export-config.component';
@@ -28,6 +25,7 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { MAX_WALLET_ACCOUNTS } from '../constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PendingTransaction, PendingTransactionService } from '../services/pending-transaction.service';
 
 
 @Component({
@@ -41,7 +39,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
   balances: BalanceResponse[] = [];
-  public transactions: Transaction[] = [];
+  public pendingTransactions: PendingTransaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
 
@@ -80,15 +78,13 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     public dialog: MatDialog,
     private router: Router,
     private updaterService: UpdaterService,
-    private q: QubicService,
     private _snackBar: MatSnackBar,
     private t: TranslocoService,
     private decimalPipe: DecimalPipe,
     private deviceService: DeviceDetectorService,
     private transloco: TranslocoService,
+    private pendingTxService: PendingTransactionService,
   ) {
-
-    this.walletService.updateConfig({ useBridge: false, });
     this.isMobile = deviceService.isMobile();
     var dashBoardStyle = localStorage.getItem("dashboard-grid");
     this.isTable = dashBoardStyle == '0' ? true : false;
@@ -142,10 +138,10 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         }
       });
 
-    updaterService.internalTransactions
+    this.pendingTxService.pendingTransactions$
       .pipe(takeUntil(this.destroy$))
       .subscribe(txs => {
-        this.transactions = txs;
+        this.pendingTransactions = txs;
       });
 
     //1. vault file export due to move to new wallet
@@ -214,13 +210,10 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
   setDataSource(): void {
     this.dataSource = new MatTableDataSource(this.walletService.getSeeds().map(m => {
-
-      if (!this.walletService.getSettings().useBridge) {
-        if (!m.balanceTick || m.balanceTick === 0) {
-          m.balance = this.getDeprecatedBalance(m.publicId);
-          (<any>m).currentEstimatedAmount = this.getEpochChanges(m.publicId);
-          m.lastUpdate = this.getDeprecatedLastUpdate(m.publicId);
-        }
+      if (!m.balanceTick || m.balanceTick === 0) {
+        m.balance = this.getDeprecatedBalance(m.publicId);
+        (<any>m).currentEstimatedAmount = this.getEpochChanges(m.publicId);
+        m.lastUpdate = this.getDeprecatedLastUpdate(m.publicId);
       }
       return m;
     }));
@@ -405,6 +398,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
       confirmDialo.afterClosed().subscribe(result => {
         if (result) {
           this.walletService.deleteSeed(publicId);
+          this.pendingTxService.removeBySourceId(publicId);
           this.refreshData();
           this.openExportDialog();
         }
@@ -413,49 +407,21 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   }
 
   refreshBalance(publicId: string) {
-    if (this.walletService.getSettings().useBridge) {
-      if (!this.q.isConnected.getValue()) {
-        this._snackBar.open(this.t.translate('general.messages.notConnected'), this.t.translate('general.close'), {
-          duration: 10000,
-          panelClass: "error"
-        });
-      } else {
-        if (this.q.updateBalance(new PublicKey(publicId), (entityResponse: QubicEntityResponse): boolean => {
-          if (entityResponse.getEntity().getPublicKey().equals(new PublicKey(publicId))) {
-            this._snackBar.open(this.t.translate('general.messages.balanceReceived', { publicId: publicId, balance: this.decimalPipe.transform(entityResponse.getEntity().getBalance(), '1.0-0') }), this.t.translate('general.close'), {
-              duration: 10000,
-            });
-            return true;
-          }
-          return false;
-        })) {
-          this._snackBar.open(this.t.translate('general.messages.refreshRequested'), this.t.translate('general.close'), {
+    this.updaterService.forceUpdateNetworkBalance(publicId, (balances: NetworkBalance[]) => {
+      if (balances) {
+        var entry = balances.find(f => f.publicId == publicId);
+        if (entry) {
+          this._snackBar.open(this.t.translate('general.messages.balanceReceived', { publicId: publicId, balance: this.decimalPipe.transform(entry.amount, '1.0-0') }), this.t.translate('general.close'), {
             duration: 5000,
-          });
-        } else {
-          this._snackBar.open(this.t.translate('general.messages.refreshFailed'), this.t.translate('general.close'), {
-            duration: 10000,
-            panelClass: "error"
           });
         }
       }
-    } else {
-      this.updaterService.forceUpdateNetworkBalance(publicId, (balances: NetworkBalance[]) => {
-        if (balances) {
-          var entry = balances.find(f => f.publicId == publicId);
-          if (entry) {
-            this._snackBar.open(this.t.translate('general.messages.balanceReceived', { publicId: publicId, balance: this.decimalPipe.transform(entry.amount, '1.0-0') }), this.t.translate('general.close'), {
-              duration: 5000,
-            });
-          }
-        }
-      });
-    }
+    });
   }
 
 
   hasPendingTransaction(publicId: string) {
-    return this.transactions.find(t => (t.sourceId == publicId || t.destId == publicId) && t.isPending);
+    return this.pendingTransactions.find(t => (t.sourceId === publicId || t.destId === publicId) && t.isPending);
   }
 
 }

@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset, SmartContract, SubmitTransactionRequest, SubmitTransactionResponse, Transaction } from './api.model';
-import {
-  HttpClient, HttpHeaders, HttpParams,
-  HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-} from '@angular/common/http';
+import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset } from './api.model';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
-import { lastValueFrom, map, Observable, of } from 'rxjs';
+import { map } from 'rxjs';
 import { TokenService } from './token.service';
-import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
-import { WalletService } from './wallet.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  public currentIpoContracts: BehaviorSubject<ContractDto[]> = new BehaviorSubject<ContractDto[]>([]);
+  private _currentIpoContracts = new BehaviorSubject<ContractDto[]>([]);
+  public currentIpoContracts = this._currentIpoContracts.asObservable();
+
+  public setIpoContracts(contracts: ContractDto[]): void {
+    this._currentIpoContracts.next(contracts);
+  }
   public currentPeerList: BehaviorSubject<PeerDto[]> = new BehaviorSubject<PeerDto[]>([]);
   public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private basePath = environment.apiQliUrl;
   private authenticationActive = false;
 
-  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor, private walletService: WalletService) {
+  constructor(protected httpClient: HttpClient, private tokenSerice: TokenService, private authInterceptor: AuthInterceptor) {
     this.reAuthenticate();
   }
 
@@ -120,33 +120,6 @@ export class ApiService {
     );
   }
 
-  public getCurrentIpoBids(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentIpoBids`;
-    return this.httpClient.request<Transaction[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public submitTransaction(submitTransaction: SubmitTransactionRequest) {
-    let localVarPath = `/Public/SubmitTransaction`;
-    return this.httpClient.request<SubmitTransactionResponse>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: submitTransaction,
-        responseType: 'json'
-      })
-  }
-
   public getCurrentTick() {
     let localVarPath = `/Public/CurrentTick`;
     return this.httpClient.request<CurrentTickResponse>('get', `${this.basePath}${localVarPath}`,
@@ -174,22 +147,6 @@ export class ApiService {
     }));
   }
 
-  public getIpoContracts() {
-    let localVarPath = `/Wallet/IpoContracts`;
-    return this.httpClient.request<ContractDto[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentIpoContracts.next(p);
-      return p;
-    }));
-  }
-
   public getPeerList() {
     let localVarPath = `/Public/Peers`;
     return this.httpClient.request<PeerDto[]>('get', `${this.basePath}${localVarPath}`,
@@ -206,18 +163,4 @@ export class ApiService {
     }));
   }
 
-  public getSmartContracts() {
-
-    let localVarPath = `/ipo/contracts`;
-
-    return this.httpClient.request<SmartContract[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    );
-  }
 }

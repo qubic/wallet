@@ -8,6 +8,7 @@ import {
     BalanceResponse,
     BlockHeightResponse,
     BroadcastTransactionResponse,
+    IpoBidsResponse,
     QuerySmartContractRequest,
     QuerySmartContractResponse,
     TickInfoResponse,
@@ -33,7 +34,6 @@ const qHelper = new QubicHelper();
 
 export class ApiLiveService {
     private basePath = environment.apiUrl + "/live/v1";
-
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
 
@@ -139,7 +139,7 @@ export class ApiLiveService {
     }
 
 
-    public submitBroadcastTransaction(encodedTransaction: string) {
+    public broadcastTransaction(encodedTransaction: string) {
         let localVarPath = `/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
@@ -153,7 +153,7 @@ export class ApiLiveService {
         ).pipe(
             map((response: BroadcastTransactionResponse) => {
                 if (response) {
-                    //console.log('Response from submitBroadcastTransaction:', response);
+                    //console.log('Response from broadcastTransaction:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
@@ -221,6 +221,25 @@ export class ApiLiveService {
         );
     }
 
+
+    public getIpoBids(contractIndex: number) {
+        let localVarPath = `/ipos/${contractIndex}/bids`;
+        return this.httpClient.request<IpoBidsResponse>('get', `${this.basePath}${localVarPath}`,
+            {
+                context: new HttpContext(),
+                responseType: 'json'
+            }
+        ).pipe(
+            map((response: IpoBidsResponse) => {
+                if (response) {
+                    return response;
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            })
+        );
+    }
+
     public async submitQearnTransaction(seed: string, contractIndex:number, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
         try {
           const idPackage = await qHelper.createIdPackage(seed);
@@ -250,7 +269,7 @@ export class ApiLiveService {
               tx.setPayload(dynamicPayload);
             }
             const res = await tx.build(seed);
-            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
+            const txResult = await lastValueFrom(this.broadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
             return {
                 txResult,
           };

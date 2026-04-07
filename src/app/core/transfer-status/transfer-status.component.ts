@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Transaction } from 'src/app/services/api.model';
-import { Transaction as ArchivedTransaction } from 'src/app/services/api.archiver.model';
+import { PendingTransaction } from 'src/app/services/pending-transaction.service';
+import { QueryTransactionEntry as ArchivedTransaction } from 'src/app/services/apis/query/api.query.model';
 import {
   ComputedTransactionStatus,
   TransactionStatusConfig,
@@ -16,12 +16,9 @@ import {
 })
 export class TransferStatusComponent {
 
-  // For regular (qli) transactions
+  // For pending transactions
   @Input()
-  transaction?: Transaction;
-
-  @Input()
-  lastArchivedTick?: number;
+  transaction?: PendingTransaction;
 
   // For archived transactions
   @Input()
@@ -34,10 +31,9 @@ export class TransferStatusComponent {
       return computeArchivedTransactionStatus(inputType, amount, this.archivedTx.moneyFlew, destId);
     }
 
-    // Otherwise use the regular transaction object (qli - only pending/not-executed)
+    // Otherwise use the pending transaction object
     if (this.transaction) {
-      const { status, targetTick } = this.transaction;
-      return computeTransactionStatus(status, targetTick, this.lastArchivedTick);
+      return computeTransactionStatus(this.transaction.isPending);
     }
 
     // This should never happen - log error but don't crash

@@ -1,14 +1,13 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ApiService } from './services/api.service';
-import { ApiArchiverService } from './services/api.archiver.service';
+import { ApiQueryService } from './services/apis/query/api.query.service';
 import { ApiArchiveService } from './services/apis/archive/api.archive.service';
 import { ApiLiveService } from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 import { ThemeService } from './services/theme.service';
-import { QubicService } from './services/qubic.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -24,28 +23,20 @@ export class AppComponent {
   private deviceInfo!: DeviceInfo;
   public isMobile = false;
   public isDesktop = false;
-  private bridgeConnected = false;
   private _mobileQueryListener!: () => void;
-  public isElectron = false;
 
   constructor(
     public themeService: ThemeService,
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     api: ApiService,
-    apiArchiver: ApiArchiverService,
+    apiQuery: ApiQueryService,
     private deviceService: DeviceDetectorService,
-    private q: QubicService,
-
     private matIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer
   ) {
     this.checkSize();
     this.init();
-
-    if ((<any>window).require) {
-      this.isElectron = true;
-    }
 
     this.matIconRegistry.addSvgIcon(
       'key_vertical',

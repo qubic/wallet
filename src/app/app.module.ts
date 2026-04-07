@@ -39,7 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { ApiService } from './services/api.service';
-import { ApiArchiverService } from './services/api.archiver.service';
+import { ApiQueryService } from './services/apis/query/api.query.service';
 import { ApiArchiveService } from './services/apis/archive/api.archive.service';
 import { ApiLiveService} from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
@@ -62,7 +62,6 @@ import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { TransferStatusComponent } from './core/transfer-status/transfer-status.component';
 import { SettingsGeneralComponent } from './settings/general/general.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { QubicService } from './services/qubic.service';
 import { DecimalPipe } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
@@ -200,13 +199,12 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
       },
       AuthInterceptor,
       ApiService,
-      ApiArchiverService,
+      ApiQueryService,
       ApiArchiveService,
       ApiLiveService,
       ApiStatsService,
       ApiTxStatusService,
       UpdaterService,
-      QubicService,
       DecimalPipe,
       EnvironmentService,
       { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
