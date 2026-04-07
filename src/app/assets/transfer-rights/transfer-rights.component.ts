@@ -699,18 +699,6 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Validate destination is consistent with procedure type
-    if (this.selectedSourceContract.procedureType === 'revoke') {
-      if (this.selectedDestinationContract.address !== QubicDefinitions.QX_ADDRESS) {
-        return;
-      }
-    } else {
-      const destContract = this.smartContractsMap.get(this.selectedDestinationContract.contractIndex);
-      if (!destContract || !canReceiveTransferRights(destContract) || !findManagementRightsProcedure(destContract)) {
-        return;
-      }
-    }
-
     // Validate fee balance
     if (!this.canPayFees()) {
       this.snackBar.open(
