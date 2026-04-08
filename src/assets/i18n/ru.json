@@ -152,11 +152,13 @@
       "selectAsset": "Выбрать Актив",
       "sourceContract": "Исходный Контракт",
       "destinationContract": "Целевой Контракт",
+      "amount": "Количество",
       "procedureFee": "Комиссия за Процедуру",
       "tick": "Тик",
       "tickOverwrite": "Ручная Замена Тика",
       "maxButton": "Макс",
-      "submit": "Передать Права"
+      "submit": "Передать Права",
+      "revokeOnlyHint": "Активы, управляемые {{contract}}, могут быть отозваны только в QX"
     },
     "errors": {
       "assetRequired": "Требуется выбор актива",

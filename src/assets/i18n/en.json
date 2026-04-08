@@ -153,11 +153,13 @@
       "selectAsset": "Select Asset",
       "sourceContract": "Source Contract",
       "destinationContract": "Destination Contract",
+      "amount": "Amount",
       "balance": "Your balance after deducting transfer fees ({{fee}} Qubic) will be:",
       "tick": "Tick",
       "tickOverwrite": "Manual Tick Override",
       "maxButton": "Max",
-      "submit": "Transfer Rights"
+      "submit": "Transfer Rights",
+      "revokeOnlyHint": "Assets managed by {{contract}} can only be revoked to QX"
     },
     "errors": {
       "assetRequired": "Asset selection is required",

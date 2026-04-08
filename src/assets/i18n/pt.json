@@ -152,11 +152,13 @@
       "selectAsset": "Selecionar Ativo",
       "sourceContract": "Contrato de Origem",
       "destinationContract": "Contrato de Destino",
+      "amount": "Quantidade",
       "procedureFee": "Taxa de Procedimento",
       "tick": "Tick",
       "tickOverwrite": "Substituição Manual de Tick",
       "maxButton": "Máx",
-      "submit": "Transferir Direitos"
+      "submit": "Transferir Direitos",
+      "revokeOnlyHint": "Os assets gerenciados por {{contract}} só podem ser revogados para QX"
     },
     "errors": {
       "assetRequired": "A seleção de ativo é obrigatória",

@@ -152,11 +152,13 @@
       "selectAsset": "Chọn Tài sản",
       "sourceContract": "Hợp đồng Nguồn",
       "destinationContract": "Hợp đồng Đích",
+      "amount": "Số lượng",
       "procedureFee": "Phí Thủ tục",
       "tick": "Tick",
       "tickOverwrite": "Ghi đè Tick Thủ công",
       "maxButton": "Tối đa",
-      "submit": "Chuyển Quyền"
+      "submit": "Chuyển Quyền",
+      "revokeOnlyHint": "Tài sản được quản lý bởi {{contract}} chỉ có thể thu hồi về QX"
     },
     "errors": {
       "assetRequired": "Lựa chọn tài sản là bắt buộc",
