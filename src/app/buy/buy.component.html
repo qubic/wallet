@@ -119,6 +119,7 @@
     <div class="iframe-wrapper" *ngIf="banxaUrl">
       <iframe
         [src]="banxaUrl"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
         allow="camera; microphone; payment"
         frameborder="0"
         class="banxa-iframe"
