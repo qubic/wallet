@@ -11,7 +11,8 @@
       "settings": "Settings",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Support"
+      "support": "Support",
+      "signMessage": "Sign Message"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -262,7 +263,8 @@
         "editSeed": "Edit address",
         "deleteSeed": "Delete address",
         "refreshBalance": "Refresh Balance from Network",
-        "openExplorer": "View in Explorer"
+        "openExplorer": "View in Explorer",
+        "signMessage": "Sign a message"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -690,6 +692,37 @@
       "rewardTable": "Reward Table",
       "txSuccess": "Transaction Succeeded!",
       "txFailed": "Transaction Failed!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Sign / Verify Message",
+    "tabs": {
+      "sign": "Sign Message",
+      "verify": "Verify Message"
+    },
+    "form": {
+      "sourceAccount": "Account to sign with",
+      "message": "Message",
+      "messagePlaceholder": "Enter message to sign",
+      "output": "Signed output (JSON)",
+      "verifyInput": "Signed message (JSON)",
+      "verifyInputPlaceholder": "Paste JSON with identity, message, and signature fields"
+    },
+    "buttons": {
+      "sign": "Sign Message",
+      "verify": "Verify Signature"
+    },
+    "result": {
+      "valid": "Valid Signature",
+      "invalid": "Invalid Signature"
+    },
+    "messages": {
+      "signError": "Failed to sign message. Please try again.",
+      "parseError": "Invalid JSON format. Expected: { identity, message, signature }",
+      "invalidIdentity": "Invalid identity format. Expected 60 uppercase A-Z characters.",
+      "invalidSignature": "Invalid signature format. Expected 130 A-P characters.",
+      "checksumMismatch": "Signature checksum verification failed.",
+      "accountRequired": "Please select an account"
     }
   }
 }

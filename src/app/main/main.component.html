@@ -241,6 +241,10 @@
         <mat-icon svgIcon="key_vertical"></mat-icon>
         <span>{{ t('seedOverviewComponent.table.actions.revealSeed') }}</span>
       </button>
+      <button *ngIf="!isOnlyWatch" mat-menu-item (click)="signMessage(publicId)">
+        <mat-icon>draw</mat-icon>
+        <span>{{ t('seedOverviewComponent.table.actions.signMessage') }}</span>
+      </button>
       <button mat-menu-item (click)="edit(publicId)">
         <mat-icon>edit</mat-icon>
         <span>{{ t('seedOverviewComponent.table.actions.editSeed') }}</span>

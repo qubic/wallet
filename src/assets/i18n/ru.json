@@ -11,7 +11,8 @@
       "settings": "Настройки",
       "ipo": "IPO",
       "assets": "Акции",
-      "support": "Поддержка"
+      "support": "Поддержка",
+      "signMessage": "Подписать Сообщение"
     },
     "version": "Версия {{version}}",
     "version.url": "qubic.org",
@@ -260,7 +261,8 @@
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
         "refreshBalance": "Обновить баланс",
-        "openExplorer": "Показать в Explorer"
+        "openExplorer": "Показать в Explorer",
+        "signMessage": "Подписать сообщение"
       }
     },
     "hasPendingTransaction": "Транзакция в обработке",
@@ -684,6 +686,37 @@
       "lock": "Заблокировать",
       "txSuccess": "Транзакция успешна!",
       "txFailed": "Транзакция не удалась!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Подписать / Проверить Сообщение",
+    "tabs": {
+      "sign": "Подписать Сообщение",
+      "verify": "Проверить Сообщение"
+    },
+    "form": {
+      "sourceAccount": "Аккаунт для подписи",
+      "message": "Сообщение",
+      "messagePlaceholder": "Введите сообщение для подписи",
+      "output": "Подписанный результат (JSON)",
+      "verifyInput": "Подписанное сообщение (JSON)",
+      "verifyInputPlaceholder": "Вставьте JSON с полями identity, message и signature"
+    },
+    "buttons": {
+      "sign": "Подписать Сообщение",
+      "verify": "Проверить Подпись"
+    },
+    "result": {
+      "valid": "Подпись Действительна",
+      "invalid": "Подпись Недействительна"
+    },
+    "messages": {
+      "signError": "Не удалось подписать сообщение. Пожалуйста, попробуйте снова.",
+      "parseError": "Неверный формат JSON. Ожидается: { identity, message, signature }",
+      "invalidIdentity": "Неверный формат идентификатора. Ожидается 60 заглавных букв A-Z.",
+      "invalidSignature": "Неверный формат подписи. Ожидается 130 символов A-P.",
+      "checksumMismatch": "Проверка контрольной суммы подписи не пройдена.",
+      "accountRequired": "Пожалуйста, выберите аккаунт"
     }
   }
 }
