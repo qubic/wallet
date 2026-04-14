@@ -24,7 +24,14 @@ export const MAX_WALLET_ACCOUNTS = 15;
 export const ASSET_TRANSFER_FEE = QubicDefinitions.QX_TRANSFER_ASSET_FEE;
 
 /**
- * Procedure name for Transfer Share Management Rights
- * Used to dynamically find this procedure in smart contracts JSON
+ * Source identifier for Transfer Share Management Rights procedure
+ * Used to match procedures by sourceIdentifier field (case insensitive)
  */
-export const TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE = 'Transfer Share Management Rights';
+export const TRANSFER_SHARE_MANAGEMENT_RIGHTS_IDENTIFIER = 'TransferShareManagementRights';
+
+/**
+ * Source identifier for Revoke Asset Management Rights procedure
+ * Used to match procedures by sourceIdentifier field (case insensitive)
+ */
+export const REVOKE_ASSET_MANAGEMENT_RIGHTS_IDENTIFIER = 'RevokeAssetManagementRights';
+

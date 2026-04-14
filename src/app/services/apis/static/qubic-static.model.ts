@@ -6,6 +6,7 @@
 export interface SmartContractProcedure {
   id: number;
   name: string;
+  sourceIdentifier?: string;
   fee?: number;
 }
 
@@ -18,6 +19,7 @@ export interface StaticSmartContract {
   address: string;
   procedures: SmartContractProcedure[];
   website?: string;
+  allowTransferShares?: boolean;
 }
 
 export interface GetSmartContractsResponse {

@@ -311,6 +311,14 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  signMessage(publicId: string) {
+    this.router.navigate(['/', 'sign-message'], {
+      queryParams: {
+        publicId: publicId
+      }
+    });
+  }
+
   edit(publicId: string) {
     if (!this.walletService.privateKey) {
       const dialogRef = this.dialog.open(UnLockComponent, { restoreFocus: false });

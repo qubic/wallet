@@ -11,7 +11,8 @@
       "settings": "Instellingen",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Ondersteuning"
+      "support": "Ondersteuning",
+      "signMessage": "Bericht Ondertekenen"
     },
     "version": "Versie {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "Activa Selecteren",
       "sourceContract": "Broncontract",
       "destinationContract": "Bestemmingscontract",
+      "amount": "Aantal",
       "procedureFee": "Procedurekosten",
       "tick": "Tick",
       "tickOverwrite": "Handmatige Tick Overschrijving",
       "maxButton": "Max",
-      "submit": "Rechten Overdragen"
+      "submit": "Rechten Overdragen",
+      "revokeOnlyHint": "Assets beheerd door {{contract}} kunnen alleen worden ingetrokken naar QX"
     },
     "errors": {
       "assetRequired": "Activa selectie is verplicht",
@@ -258,7 +261,8 @@
         "editSeed": "Account aanpassen",
         "deleteSeed": "Account verwijderen",
         "refreshBalance": "Refresh Balance from Network",
-        "openExplorer": "Weergeven in Explorer"
+        "openExplorer": "Weergeven in Explorer",
+        "signMessage": "Een bericht ondertekenen"
       }
     },
     "hasPendingTransaction": "Transactions pending",
@@ -683,6 +687,37 @@
       "rewardTable": "Beloningstabel",
       "txSuccess": "Transactie geslaagd!",
       "txFailed": "Transactie mislukt!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Bericht Ondertekenen / Verifiëren",
+    "tabs": {
+      "sign": "Bericht Ondertekenen",
+      "verify": "Bericht Verifiëren"
+    },
+    "form": {
+      "sourceAccount": "Account om mee te ondertekenen",
+      "message": "Bericht",
+      "messagePlaceholder": "Voer het te ondertekenen bericht in",
+      "output": "Ondertekende uitvoer (JSON)",
+      "verifyInput": "Ondertekend bericht (JSON)",
+      "verifyInputPlaceholder": "Plak JSON met identity, message en signature velden"
+    },
+    "buttons": {
+      "sign": "Bericht Ondertekenen",
+      "verify": "Handtekening Verifiëren"
+    },
+    "result": {
+      "valid": "Geldige Handtekening",
+      "invalid": "Ongeldige Handtekening"
+    },
+    "messages": {
+      "signError": "Kan bericht niet ondertekenen. Probeer het opnieuw.",
+      "parseError": "Ongeldig JSON-formaat. Verwacht: { identity, message, signature }",
+      "invalidIdentity": "Ongeldig identiteitsformaat. Verwacht 60 hoofdletters A-Z.",
+      "invalidSignature": "Ongeldig handtekeningformaat. Verwacht 130 A-P tekens.",
+      "checksumMismatch": "Verificatie van de handtekeningcontrolesom is mislukt.",
+      "accountRequired": "Selecteer een account"
     }
   }
 }

@@ -11,7 +11,8 @@
       "settings": "Configurações",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Suporte"
+      "support": "Suporte",
+      "signMessage": "Assinar Mensagem"
     },
     "version": "Versão {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "Selecionar Ativo",
       "sourceContract": "Contrato de Origem",
       "destinationContract": "Contrato de Destino",
+      "amount": "Quantidade",
       "procedureFee": "Taxa de Procedimento",
       "tick": "Tick",
       "tickOverwrite": "Substituição Manual de Tick",
       "maxButton": "Máx",
-      "submit": "Transferir Direitos"
+      "submit": "Transferir Direitos",
+      "revokeOnlyHint": "Os assets gerenciados por {{contract}} só podem ser revogados para QX"
     },
     "errors": {
       "assetRequired": "A seleção de ativo é obrigatória",
@@ -258,7 +261,8 @@
         "editSeed": "Editar endereço",
         "deleteSeed": "Excluir endereço",
         "refreshBalance": "Atualizar saldo da rede",
-        "openExplorer": "Ver no Explorador"
+        "openExplorer": "Ver no Explorador",
+        "signMessage": "Assinar uma mensagem"
       }
     },
     "hasPendingTransaction": "Transações pendentes",
@@ -682,6 +686,37 @@
       "rewardTable": "Tabela de recompensas",
       "txSuccess": "Transação bem-sucedida!",
       "txFailed": "Falha na transação!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Assinar / Verificar Mensagem",
+    "tabs": {
+      "sign": "Assinar Mensagem",
+      "verify": "Verificar Mensagem"
+    },
+    "form": {
+      "sourceAccount": "Conta para assinar",
+      "message": "Mensagem",
+      "messagePlaceholder": "Digite a mensagem para assinar",
+      "output": "Saída assinada (JSON)",
+      "verifyInput": "Mensagem assinada (JSON)",
+      "verifyInputPlaceholder": "Cole o JSON com os campos identity, message e signature"
+    },
+    "buttons": {
+      "sign": "Assinar Mensagem",
+      "verify": "Verificar Assinatura"
+    },
+    "result": {
+      "valid": "Assinatura Válida",
+      "invalid": "Assinatura Inválida"
+    },
+    "messages": {
+      "signError": "Falha ao assinar a mensagem. Por favor, tente novamente.",
+      "parseError": "Formato JSON inválido. Esperado: { identity, message, signature }",
+      "invalidIdentity": "Formato de identidade inválido. Esperados 60 caracteres maiúsculos A-Z.",
+      "invalidSignature": "Formato de assinatura inválido. Esperados 130 caracteres A-P.",
+      "checksumMismatch": "Falha na verificação da soma de verificação da assinatura.",
+      "accountRequired": "Por favor, selecione uma conta"
     }
   }
 }
