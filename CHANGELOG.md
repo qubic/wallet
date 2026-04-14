@@ -1,3 +1,21 @@
+# [4.26.0](https://github.com/qubic/wallet/compare/v4.25.1...v4.26.0) (2026-04-14)
+
+
+### Bug Fixes
+
+* add missing transferRights.form.amount translation ([042d4c9](https://github.com/qubic/wallet/commit/042d4c909e74c4fd9d120aa144bc5ba484f8f6fc))
+* revoke payload field order, destination filtering, and form state preservation ([c19ec9b](https://github.com/qubic/wallet/commit/c19ec9b42c7ad542fed054d7b7255c348d1a29e3))
+* translate revokeOnlyHint for all locales ([b4ea862](https://github.com/qubic/wallet/commit/b4ea862908e1d5b83d67ede3f069a6b77e4407e3))
+* use appAmountInput directive for numberOfShares input ([2088060](https://github.com/qubic/wallet/commit/2088060fcd4f4d52f6425cf426679a1b748839e5))
+
+
+### Features
+
+* add revoke-only hint in transfer rights form ([0febf73](https://github.com/qubic/wallet/commit/0febf73e06bf25ab5b18ec9fb02966b26b8d49c6))
+* add sorting to source input field in transfer-rights component ([c51e515](https://github.com/qubic/wallet/commit/c51e515ea04d4c5ce926b104e88f093ba59b5bf8))
+* filter transfer share destinations using allowTransferShares flag ([4e0d6e1](https://github.com/qubic/wallet/commit/4e0d6e10ad0761650bc50d07d1ec0c19e5f9ea56))
+* support RevokeAssetManagementRights procedure in transfer rights ([54e9f6c](https://github.com/qubic/wallet/commit/54e9f6c57c9d2226f5b156a64c1a24414a5b2fd9))
+
 # [4.26.0-rc.1](https://github.com/qubic/wallet/compare/v4.25.1...v4.26.0-rc.1) (2026-04-14)
 
 
