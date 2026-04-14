@@ -11,6 +11,7 @@ import { UnLockComponent } from '../lock/unlock/unlock.component';
 import Crypto from '@qubic-lib/qubic-ts-library/dist/crypto';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { KeyHelper } from '@qubic-lib/qubic-ts-library/dist/keyHelper';
+import { encodeShiftedHex, decodeShiftedHex } from '../utils/shifted-hex.utils';
 
 @Component({
   selector: 'app-sign-message',
@@ -123,7 +124,7 @@ export class SignMessageComponent implements OnInit, OnDestroy {
       const result = {
         identity: idPackage.publicId,
         message: message,
-        signature: this.encodeShiftedHex(sigWithChecksum),
+        signature: encodeShiftedHex(sigWithChecksum),
       };
 
       this.signOutput = JSON.stringify(result, null, 2);
@@ -176,7 +177,7 @@ export class SignMessageComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const decoded = this.decodeShiftedHex(signature);
+      const decoded = decodeShiftedHex(signature);
       if (decoded.length !== 65) {
         this.verifyError = this.t.translate('signMessageComponent.messages.invalidSignature');
         return;
@@ -204,28 +205,4 @@ export class SignMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private encodeShiftedHex(bytes: Uint8Array): string {
-    let result = '';
-    const A = 'A'.charCodeAt(0);
-    for (let i = 0; i < bytes.length; i++) {
-      result += String.fromCharCode(A + (bytes[i] >> 4));
-      result += String.fromCharCode(A + (bytes[i] & 0x0F));
-    }
-    return result;
-  }
-
-  private decodeShiftedHex(str: string): Uint8Array {
-    const upper = str.toUpperCase();
-    const A = 'A'.charCodeAt(0);
-    const bytes = new Uint8Array(upper.length / 2);
-    for (let i = 0; i < bytes.length; i++) {
-      const hi = upper.charCodeAt(i * 2) - A;
-      const lo = upper.charCodeAt(i * 2 + 1) - A;
-      if (hi < 0 || hi > 15 || lo < 0 || lo > 15) {
-        throw new Error('Invalid shifted hex character');
-      }
-      bytes[i] = (hi << 4) | lo;
-    }
-    return bytes;
-  }
 }
