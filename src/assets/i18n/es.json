@@ -11,7 +11,8 @@
       "settings": "Configuraciones",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Soporte"
+      "support": "Soporte",
+      "signMessage": "Firmar Mensaje"
     },
     "version": "Versión {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "Seleccionar Activo",
       "sourceContract": "Contrato de Origen",
       "destinationContract": "Contrato de Destino",
+      "amount": "Cantidad",
       "procedureFee": "Tarifa del Procedimiento",
       "tick": "Tick",
       "tickOverwrite": "Anulación Manual de Tick",
       "maxButton": "Máx",
-      "submit": "Transferir Derechos"
+      "submit": "Transferir Derechos",
+      "revokeOnlyHint": "Los activos gestionados por {{contract}} solo pueden ser revocados a QX"
     },
     "errors": {
       "assetRequired": "La selección de activo es obligatoria",
@@ -258,7 +261,8 @@
         "editSeed": "Editar la dirección",
         "deleteSeed": "Eliminar la dirección",
         "refreshBalance": "Actualizar el saldo desde la red",
-        "openExplorer": "Ver en el Explorador"
+        "openExplorer": "Ver en el Explorador",
+        "signMessage": "Firmar un mensaje"
       }
     },
     "hasPendingTransaction": "Transacciones pendientes",
@@ -683,6 +687,37 @@
       "rewardTable": "Tabla de recompensas",
       "txSuccess": "Transacción exitosa!",
       "txFailed": "Transacción fallida!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Firmar / Verificar Mensaje",
+    "tabs": {
+      "sign": "Firmar Mensaje",
+      "verify": "Verificar Mensaje"
+    },
+    "form": {
+      "sourceAccount": "Cuenta para firmar",
+      "message": "Mensaje",
+      "messagePlaceholder": "Ingrese el mensaje a firmar",
+      "output": "Salida firmada (JSON)",
+      "verifyInput": "Mensaje firmado (JSON)",
+      "verifyInputPlaceholder": "Pegue JSON con los campos identity, message y signature"
+    },
+    "buttons": {
+      "sign": "Firmar Mensaje",
+      "verify": "Verificar Firma"
+    },
+    "result": {
+      "valid": "Firma Válida",
+      "invalid": "Firma Inválida"
+    },
+    "messages": {
+      "signError": "Error al firmar el mensaje. Por favor, inténtelo de nuevo.",
+      "parseError": "Formato JSON inválido. Esperado: { identity, message, signature }",
+      "invalidIdentity": "Formato de identidad inválido. Se esperan 60 caracteres A-Z en mayúsculas.",
+      "invalidSignature": "Formato de firma inválido. Se esperan 130 caracteres A-P.",
+      "checksumMismatch": "La verificación de la suma de comprobación de la firma falló.",
+      "accountRequired": "Por favor, seleccione una cuenta"
     }
   }
 }

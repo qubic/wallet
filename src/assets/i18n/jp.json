@@ -11,7 +11,8 @@
       "settings": "設定",
       "ipo": "IPO",
       "assets": "資産",
-      "support": "Support"
+      "support": "Support",
+      "signMessage": "メッセージ署名"
     },
     "version": "バージョン {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "資産を選択",
       "sourceContract": "ソース契約",
       "destinationContract": "宛先契約",
+      "amount": "数量",
       "procedureFee": "手続き手数料",
       "tick": "ティック",
       "tickOverwrite": "手動ティックオーバーライド",
       "maxButton": "最大",
-      "submit": "権利を譲渡"
+      "submit": "権利を譲渡",
+      "revokeOnlyHint": "{{contract}} が管理するアセットは QX にのみ取り消すことができます"
     },
     "errors": {
       "assetRequired": "資産の選択が必要です",
@@ -258,7 +261,8 @@
         "editSeed": "アドレスを編集",
         "deleteSeed": "アドレスを削除",
         "refreshBalance": "ネットワークから残高を更新",
-        "openExplorer": "エクスプローラーで表示"
+        "openExplorer": "エクスプローラーで表示",
+        "signMessage": "メッセージに署名"
       }
     },
     "hasPendingTransaction": "保留中の取引",
@@ -686,6 +690,37 @@
       "rewardTable": "報酬表",
       "txSuccess": "取引が成功しました！",
       "txFailed": "取引に失敗しました！"
+    }
+  },
+  "signMessageComponent": {
+    "title": "メッセージの署名 / 検証",
+    "tabs": {
+      "sign": "メッセージ署名",
+      "verify": "メッセージ検証"
+    },
+    "form": {
+      "sourceAccount": "署名に使用するアカウント",
+      "message": "メッセージ",
+      "messagePlaceholder": "署名するメッセージを入力",
+      "output": "署名済み出力 (JSON)",
+      "verifyInput": "署名済みメッセージ (JSON)",
+      "verifyInputPlaceholder": "identity、message、signature フィールドを含む JSON を貼り付け"
+    },
+    "buttons": {
+      "sign": "メッセージ署名",
+      "verify": "署名を検証"
+    },
+    "result": {
+      "valid": "有効な署名",
+      "invalid": "無効な署名"
+    },
+    "messages": {
+      "signError": "メッセージの署名に失敗しました。もう一度お試しください。",
+      "parseError": "無効な JSON 形式です。期待: { identity, message, signature }",
+      "invalidIdentity": "無効な ID 形式です。大文字 A-Z 60 文字が必要です。",
+      "invalidSignature": "無効な署名形式です。A-P 130 文字が必要です。",
+      "checksumMismatch": "署名チェックサムの検証に失敗しました。",
+      "accountRequired": "アカウントを選択してください"
     }
   }
 }

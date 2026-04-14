@@ -11,7 +11,8 @@
       "settings": "设置",
       "ipo": "IPO",
       "assets": "资产",
-      "support": "支援"
+      "support": "支援",
+      "signMessage": "签名消息"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "选择资产",
       "sourceContract": "源合约",
       "destinationContract": "目标合约",
+      "amount": "数量",
       "procedureFee": "程序费用",
       "tick": "刻度",
       "tickOverwrite": "手动刻度覆盖",
       "maxButton": "最大",
-      "submit": "转移权利"
+      "submit": "转移权利",
+      "revokeOnlyHint": "由 {{contract}} 管理的资产只能撤销到 QX"
     },
     "errors": {
       "assetRequired": "需要选择资产",
@@ -258,7 +261,8 @@
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
         "refreshBalance": "刷新余额",
-        "openExplorer": "在浏览器中查看"
+        "openExplorer": "在浏览器中查看",
+        "signMessage": "签署消息"
       }
     },
     "hasPendingTransaction": "交易待定",
@@ -685,6 +689,37 @@
       "rewardTable": "奖励表",
       "txSuccess": "交易成功！",
       "txFailed": "交易失败！"
+    }
+  },
+  "signMessageComponent": {
+    "title": "签名 / 验证消息",
+    "tabs": {
+      "sign": "签名消息",
+      "verify": "验证消息"
+    },
+    "form": {
+      "sourceAccount": "用于签名的账户",
+      "message": "消息",
+      "messagePlaceholder": "输入要签名的消息",
+      "output": "签名输出 (JSON)",
+      "verifyInput": "已签名消息 (JSON)",
+      "verifyInputPlaceholder": "粘贴包含 identity、message 和 signature 字段的 JSON"
+    },
+    "buttons": {
+      "sign": "签名消息",
+      "verify": "验证签名"
+    },
+    "result": {
+      "valid": "签名有效",
+      "invalid": "签名无效"
+    },
+    "messages": {
+      "signError": "签名消息失败。请重试。",
+      "parseError": "无效的 JSON 格式。预期: { identity, message, signature }",
+      "invalidIdentity": "无效的身份格式。预期 60 个大写字母 A-Z。",
+      "invalidSignature": "无效的签名格式。预期 130 个 A-P 字符。",
+      "checksumMismatch": "签名校验和验证失败。",
+      "accountRequired": "请选择一个账户"
     }
   }
 }

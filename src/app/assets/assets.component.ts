@@ -23,7 +23,8 @@ import { shortenAddress } from '../utils/address.utils';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
-import { ASSET_TRANSFER_FEE, TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE } from '../constants/qubic.constants';
+import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
+import { hasManagementRightsProcedure } from '../utils/smart-contract.utils';
 
 // Interfaces for asset grouping
 interface GroupedAsset {
@@ -676,32 +677,27 @@ export class AssetsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check if a grouped asset supports transfer rights
-   * Transfer rights are available for assets with balance > 0 in contracts that support it
-   * Dynamically checks based on procedure name from backend
+   * Check if a grouped asset can show the transfer rights button.
+   * The source contract must have the procedure and the user must own shares.
    */
-  canTransferRights(group: GroupedAsset): boolean {
-    // Check if any managing contract in this group supports transfer rights
+  showTransferRightsButton(group: GroupedAsset): boolean {
     return group.managingContracts.some((mc: ManagingContract) => {
       const contract = this.smartContractsMap.get(mc.contractIndex);
       if (!contract) return false;
 
-      // Dynamically check if contract has the transfer rights procedure
-      const hasProcedure = contract.procedures.some(
-        p => p.name === TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE
-      );
-
-      // Must have procedure and positive balance
-      return hasProcedure && mc.asset.ownedAmount > 0;
+      // Source contract must have the procedure and user must own shares
+      return hasManagementRightsProcedure(contract) && mc.asset.ownedAmount > 0;
     });
   }
 
   /**
-   * Navigate to Transfer Rights form with first managing contract pre-selected
+   * Navigate to Transfer Rights form with first eligible managing contract pre-selected
    */
   openTransferRightsForm(group: GroupedAsset): void {
-    // Get the first managing contract
-    const firstContract = group.managingContracts[0];
+    const firstContract = group.managingContracts.find((mc: ManagingContract) => {
+      const contract = this.smartContractsMap.get(mc.contractIndex);
+      return contract ? hasManagementRightsProcedure(contract) && mc.asset.ownedAmount > 0 : false;
+    });
 
     if (firstContract) {
       this.router.navigate(['/assets-area/transfer-rights'], {

@@ -11,7 +11,8 @@
       "settings": "Ayarlar",
       "ipo": "IPO",
       "assets": "Varlıklar",
-      "support": "Destek"
+      "support": "Destek",
+      "signMessage": "Mesaj İmzala"
     },
     "version": "Versiyon {{version}}",
     "version.url": "qubic.org",
@@ -152,11 +153,13 @@
       "selectAsset": "Varlık Seç",
       "sourceContract": "Kaynak Sözleşme",
       "destinationContract": "Hedef Sözleşme",
+      "amount": "Miktar",
       "procedureFee": "İşlem Ücreti",
       "tick": "Tick",
       "tickOverwrite": "Manuel Tick Geçersiz Kılma",
       "maxButton": "Maks",
-      "submit": "Hakları Aktar"
+      "submit": "Hakları Aktar",
+      "revokeOnlyHint": "{{contract}} tarafından yönetilen varlıklar yalnızca QX'e iptal edilebilir"
     },
     "errors": {
       "assetRequired": "Varlık seçimi gerekli",
@@ -258,7 +261,8 @@
         "editSeed": "Adresi Düzenle",
         "deleteSeed": "Adresi Sil",
         "refreshBalance": "Bakiyeyi Ağdan Yenile",
-        "openExplorer": "Explorer'da Görüntüle"
+        "openExplorer": "Explorer'da Görüntüle",
+        "signMessage": "Bir mesaj imzala"
       }
     },
     "hasPendingTransaction": "Bekleyen İşlemler",
@@ -687,6 +691,37 @@
       "rewardTable": "Ödül Tablosu",
       "txSuccess": "İşlem Başarılı!",
       "txFailed": "İşlem Başarısız!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Mesaj İmzala / Doğrula",
+    "tabs": {
+      "sign": "Mesaj İmzala",
+      "verify": "Mesaj Doğrula"
+    },
+    "form": {
+      "sourceAccount": "İmzalamak için hesap",
+      "message": "Mesaj",
+      "messagePlaceholder": "İmzalanacak mesajı girin",
+      "output": "İmzalı çıktı (JSON)",
+      "verifyInput": "İmzalı mesaj (JSON)",
+      "verifyInputPlaceholder": "identity, message ve signature alanlarını içeren JSON yapıştırın"
+    },
+    "buttons": {
+      "sign": "Mesajı İmzala",
+      "verify": "İmzayı Doğrula"
+    },
+    "result": {
+      "valid": "Geçerli İmza",
+      "invalid": "Geçersiz İmza"
+    },
+    "messages": {
+      "signError": "Mesaj imzalanamadı. Lütfen tekrar deneyin.",
+      "parseError": "Geçersiz JSON formatı. Beklenen: { identity, message, signature }",
+      "invalidIdentity": "Geçersiz kimlik formatı. 60 büyük harf A-Z bekleniyor.",
+      "invalidSignature": "Geçersiz imza formatı. 130 A-P karakter bekleniyor.",
+      "checksumMismatch": "İmza sağlama toplamı doğrulaması başarısız oldu.",
+      "accountRequired": "Lütfen bir hesap seçin"
     }
   }
 }
