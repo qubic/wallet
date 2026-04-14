@@ -11,7 +11,8 @@
       "settings": "Einstellungen",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Unterstützung"
+      "support": "Unterstützung",
+      "signMessage": "Nachricht signieren"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -260,7 +261,8 @@
         "editSeed": "Konto bearbeiten",
         "deleteSeed": "Konto löschen",
         "refreshBalance": "Kontostand im Netzwerk abrufen",
-        "openExplorer": "In Explorer anzeigen"
+        "openExplorer": "In Explorer anzeigen",
+        "signMessage": "Nachricht signieren"
       }
     },
     "hasPendingTransaction": "Offene Zahlungen",
@@ -687,6 +689,37 @@
       "rewardTable": "Belohnungstabelle",
       "txSuccess": "Transaktion erfolgreich!",
       "txFailed": "Transaktion fehlgeschlagen!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Nachricht signieren / verifizieren",
+    "tabs": {
+      "sign": "Nachricht signieren",
+      "verify": "Nachricht verifizieren"
+    },
+    "form": {
+      "sourceAccount": "Konto zum Signieren",
+      "message": "Nachricht",
+      "messagePlaceholder": "Nachricht zum Signieren eingeben",
+      "output": "Signierte Ausgabe (JSON)",
+      "verifyInput": "Signierte Nachricht (JSON)",
+      "verifyInputPlaceholder": "JSON mit identity, message und signature Feldern einfügen"
+    },
+    "buttons": {
+      "sign": "Nachricht signieren",
+      "verify": "Signatur verifizieren"
+    },
+    "result": {
+      "valid": "Gültige Signatur",
+      "invalid": "Ungültige Signatur"
+    },
+    "messages": {
+      "signError": "Nachricht konnte nicht signiert werden. Bitte versuchen Sie es erneut.",
+      "parseError": "Ungültiges JSON-Format. Erwartet: { identity, message, signature }",
+      "invalidIdentity": "Ungültiges Identitätsformat. Erwartet 60 Großbuchstaben A-Z.",
+      "invalidSignature": "Ungültiges Signaturformat. Erwartet 130 A-P Zeichen.",
+      "checksumMismatch": "Signatur-Prüfsummenverifizierung fehlgeschlagen.",
+      "accountRequired": "Bitte wählen Sie ein Konto aus"
     }
   }
 }
