@@ -107,24 +107,17 @@ export class SignMessageComponent implements OnInit, OnDestroy {
 
     try {
       const seed = await this.walletService.revealSeed(sourceId);
-      const { schnorrq, K12 } = await Crypto;
+      const { schnorrq } = await Crypto;
       const helper = new QubicHelper();
       const idPackage = await helper.createIdPackage(seed);
 
       const messageBytes = new TextEncoder().encode(message);
       const signature = schnorrq.sign(idPackage.privateKey, idPackage.publicKey, messageBytes);
 
-      const checksumOut = new Uint8Array(1);
-      K12(signature, checksumOut, 1);
-
-      const sigWithChecksum = new Uint8Array(65);
-      sigWithChecksum.set(signature);
-      sigWithChecksum[64] = checksumOut[0];
-
       const result = {
         identity: idPackage.publicId,
         message: message,
-        signature: encodeShiftedHex(sigWithChecksum),
+        signature: encodeShiftedHex(signature),
       };
 
       this.signOutput = JSON.stringify(result, null, 2);
@@ -171,29 +164,19 @@ export class SignMessageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!/^[A-Pa-p]{130}$/.test(signature)) {
+    if (!/^[A-Pa-p]{128}$/.test(signature)) {
       this.verifyError = this.t.translate('signMessageComponent.messages.invalidSignature');
       return;
     }
 
     try {
-      const decoded = decodeShiftedHex(signature);
-      if (decoded.length !== 65) {
+      const sigBytes = decodeShiftedHex(signature);
+      if (sigBytes.length !== 64) {
         this.verifyError = this.t.translate('signMessageComponent.messages.invalidSignature');
         return;
       }
 
-      const sigBytes = decoded.slice(0, 64);
-      const checksum = decoded[64];
-
-      const { schnorrq, K12 } = await Crypto;
-
-      const checksumOut = new Uint8Array(1);
-      K12(sigBytes, checksumOut, 1);
-      if (checksumOut[0] !== checksum) {
-        this.verifyError = this.t.translate('signMessageComponent.messages.checksumMismatch');
-        return;
-      }
+      const { schnorrq } = await Crypto;
 
       const publicKeyBytes = KeyHelper.getIdentityBytes(identity);
       const messageBytes = new TextEncoder().encode(message);
