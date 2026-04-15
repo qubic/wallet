@@ -15,6 +15,7 @@ import { PublicUnLockComponent } from './public/unlock/unlock.component';
 import { ImportVaultComponent } from './public/import/import.component';
 import { QearnComponent } from './qearn/qearn.component';
 import { SettingsSupportComponent } from './settings/support/support.component';
+import { BuyComponent } from './buy/buy.component';
 import { SignMessageComponent } from './sign-message/sign-message.component';
 
 const routes: Routes = [
@@ -66,6 +67,11 @@ const routes: Routes = [
   {
     path: 'support',
     component: SettingsSupportComponent,
+  },
+  {
+    path: 'buy',
+    component: BuyComponent,
+    canActivate: [walletReadyGuard]
   },
   {
     path: 'ipo',

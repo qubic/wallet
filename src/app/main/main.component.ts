@@ -311,6 +311,14 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  buy(publicId: string) {
+    this.router.navigate(['/', 'buy'], {
+      queryParams: {
+        publicId: publicId
+      }
+    });
+  }
+
   signMessage(publicId: string) {
     this.router.navigate(['/', 'sign-message'], {
       queryParams: {
@@ -467,4 +475,3 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   }
 
 }
-

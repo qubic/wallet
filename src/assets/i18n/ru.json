@@ -11,6 +11,7 @@
       "settings": "Настройки",
       "ipo": "IPO",
       "assets": "Акции",
+      "buy": "Buy",
       "support": "Поддержка",
       "signMessage": "Подписать Сообщение"
     },
@@ -257,6 +258,7 @@
         "revealSeed": "Раскрыть пароль счета",
         "assets": "Показать ваши акции",
         "makePayment": "Произвести платеж",
+        "buy": "Buy QUBIC",
         "receivePayment": "Сгенерировать QR-код для получения платежа",
         "editSeed": "Редактировать счет",
         "deleteSeed": "Удалить аккаунт",
@@ -270,6 +272,10 @@
     "marketSupply": "Обеспечение",
     "marketCap": "Рыночная капитализация",
     "marketCurrency": "$"
+  },
+  "buyComponent": {
+    "title": "Buy QUBIC",
+    "selectAddress": "Select receiving address"
   },
   "dashboard": {
     "title": "Панель инструментов",

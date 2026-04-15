@@ -11,6 +11,7 @@
       "settings": "Ayarlar",
       "ipo": "IPO",
       "assets": "Varlıklar",
+      "buy": "Buy",
       "support": "Destek",
       "signMessage": "Mesaj İmzala"
     },
@@ -257,6 +258,7 @@
         "revealSeed": "55 karakterlik bir anahtar yenile",
         "assets": "Sahip Olunan Varlıkları Göster",
         "makePayment": "Ödeme Yap",
+        "buy": "Buy QUBIC",
         "receivePayment": "Ödeme almak için bir QR Kodu oluşturun.",
         "editSeed": "Adresi Düzenle",
         "deleteSeed": "Adresi Sil",
@@ -270,6 +272,10 @@
     "marketSupply": "Piyasa Arzı",
     "marketCap": "Piyasa Değeri",
     "marketCurrency": "$"
+  },
+  "buyComponent": {
+    "title": "Buy QUBIC",
+    "selectAddress": "Select receiving address"
   },
   "dashboard": {
     "title": "Gösterge Paneli",

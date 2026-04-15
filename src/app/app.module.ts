@@ -94,6 +94,7 @@ import { SeedFirstLinePipe, SeedSecondLinePipe } from './pipes/seed-display-line
 import { DateTimePipe } from './pipes/date-time.pipe';
 import { TransferRightsComponent } from './assets/transfer-rights/transfer-rights.component';
 import { SettingsSupportComponent } from './settings/support/support.component';
+import { BuyComponent } from './buy/buy.component';
 import { SignMessageComponent } from './sign-message/sign-message.component';
 
 
@@ -147,6 +148,7 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
     SeedSecondLinePipe,
     TransferRightsComponent,
     SettingsSupportComponent,
+    BuyComponent,
     SignMessageComponent
   ],
   imports: [

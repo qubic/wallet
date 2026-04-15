@@ -65,6 +65,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   public isBalanceSelected = false;
   public isQearnSelected = false;
   public isAssetsSelected = false;
+  public isBuySelected = false;
   public isIpoSelected = false;
   public isSignMessageSelected = false;
   public isSupportSelected = false;
@@ -98,6 +99,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.isQearnSelected = currentUrl === '/qearn';
         this.isBalanceSelected = currentUrl === '/balance';
         this.isAssetsSelected = currentUrl === '/assets-area';
+        this.isBuySelected = currentUrl.startsWith('/buy');
         this.isIpoSelected = currentUrl === '/ipo';
         this.isSignMessageSelected = currentUrl.startsWith('/sign-message');
         this.isSettingsSelected = currentUrl === '/settings';

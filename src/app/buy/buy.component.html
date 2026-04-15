@@ -1,0 +1,30 @@
+<ng-container *transloco="let t">
+  <div class="buy-container">
+    <div class="buy-header">
+      <h1>{{ t("buyComponent.title") }}</h1>
+      <div class="address-selector" *ngIf="getWritableSeeds().length > 1">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>{{ t("buyComponent.selectAddress") }}</mat-label>
+          <mat-select [(value)]="selectedAddress" (selectionChange)="onAddressChange()" panelClass="full-width">
+            <mat-select-trigger>
+              <span *ngIf="selectedAddress && getSelectedSeed()">
+                {{ getSelectedSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let seed of getWritableSeeds()" [value]="seed.publicId" class="custom-mat-option">
+              {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="iframe-wrapper" *ngIf="banxaUrl">
+      <iframe
+        [src]="banxaUrl"
+        allow="camera; microphone; payment"
+        frameborder="0"
+        class="banxa-iframe"
+      ></iframe>
+    </div>
+  </div>
+</ng-container>
