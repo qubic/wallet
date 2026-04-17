@@ -11,6 +11,7 @@ import { ThemeService } from './services/theme.service';
 import { QubicService } from './services/qubic.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ export class AppComponent {
   ) {
     this.checkSize();
     this.init();
+    this.setFrameSrcPolicy();
 
     if ((<any>window).require) {
       this.isElectron = true;
@@ -75,6 +77,13 @@ export class AppComponent {
     this.isDesktop = this.deviceService.isDesktop();
 
 
+  }
+
+  private setFrameSrcPolicy(): void {
+    const meta = document.createElement('meta');
+    meta.httpEquiv = 'Content-Security-Policy';
+    meta.content = `frame-src 'self' ${environment.banxaUrl} https://status.qubic.li;`;
+    document.head.appendChild(meta);
   }
 
   ngOnDestroy(): void {
