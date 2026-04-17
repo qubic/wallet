@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { WalletService } from '../services/wallet.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-buy',
@@ -21,6 +22,7 @@ export class BuyComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
+    private themeService: ThemeService,
     public walletService: WalletService
   ) {}
 
@@ -71,7 +73,8 @@ export class BuyComponent implements OnInit, OnDestroy {
       blockchain: 'QUBIC',
       fiatType: 'USD',
       walletAddress: this.selectedAddress,
-      theme: 'dark',
+      theme: this.themeService.isDarkTheme ? 'dark' : 'light',
+      returnUrl: window.location.origin,
     });
     const url = `${this.banxaBaseUrl}?${params.toString()}`;
     this.banxaUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);

@@ -11,7 +11,7 @@
       "settings": "设置",
       "ipo": "IPO",
       "assets": "资产",
-      "buy": "Buy",
+      "buy": "购买",
       "support": "支援",
       "signMessage": "签名消息"
     },
@@ -258,7 +258,7 @@
         "revealSeed": "显示 55 位字符种子",
         "assets": "显示资产",
         "makePayment": "付款",
-        "buy": "Buy QUBIC",
+        "buy": "购买 QUBIC",
         "receivePayment": "生成二维码以接收付款",
         "editSeed": "编辑地址",
         "deleteSeed": "删除地址",
@@ -274,8 +274,9 @@
     "marketCurrency": "$"
   },
   "buyComponent": {
-    "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "title": "购买 QUBIC",
+    "selectAddress": "QUBIC 接收地址",
+    "noAddresses": "没有可用地址。请先在钱包中添加一个地址。"
   },
   "dashboard": {
     "title": "主页",

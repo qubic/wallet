@@ -11,7 +11,7 @@
       "settings": "Instellingen",
       "ipo": "IPO",
       "assets": "Assets",
-      "buy": "Buy",
+      "buy": "Kopen",
       "support": "Ondersteuning",
       "signMessage": "Bericht Ondertekenen"
     },
@@ -258,7 +258,7 @@
         "revealSeed": "Onthul account wachtwoord",
         "assets": "Show Owned Assets",
         "makePayment": "Doe een betaling",
-        "buy": "Buy QUBIC",
+        "buy": "QUBIC kopen",
         "receivePayment": "Genereer een QR Code om een betaling te ontvangen.",
         "editSeed": "Account aanpassen",
         "deleteSeed": "Account verwijderen",
@@ -274,8 +274,9 @@
     "marketCurrency": "$"
   },
   "buyComponent": {
-    "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "title": "QUBIC kopen",
+    "selectAddress": "Account waarop QUBIC ontvangen worden",
+    "noAddresses": "Geen adressen beschikbaar. Voeg eerst een adres toe aan uw wallet."
   },
   "dashboard": {
     "title": "Dashboard",

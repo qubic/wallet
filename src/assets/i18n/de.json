@@ -11,7 +11,7 @@
       "settings": "Einstellungen",
       "ipo": "IPO",
       "assets": "Assets",
-      "buy": "Buy",
+      "buy": "Kaufen",
       "support": "Unterstützung",
       "signMessage": "Nachricht signieren"
     },
@@ -258,7 +258,7 @@
         "revealSeed": "Konto-Passwort anzeigen",
         "assets": "Show Owned Assets",
         "makePayment": "Zahlung starten",
-        "buy": "Buy QUBIC",
+        "buy": "QUBIC kaufen",
         "receivePayment": "QR Code zum Empfang einer Zahlung generieren.",
         "editSeed": "Konto bearbeiten",
         "deleteSeed": "Konto löschen",
@@ -274,8 +274,9 @@
     "marketCurrency": "$"
   },
   "buyComponent": {
-    "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "title": "QUBIC kaufen",
+    "selectAddress": "Konto auf dem QUBIC empfangen werden",
+    "noAddresses": "Keine Adressen verfügbar. Bitte fügen Sie zuerst eine Adresse zu Ihrem Wallet hinzu."
   },
   "dashboard": {
     "title": "Dashboard",

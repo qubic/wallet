@@ -277,7 +277,8 @@
   },
   "buyComponent": {
     "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "selectAddress": "Address where QUBIC are to be received",
+    "noAddresses": "No addresses available. Please add an address to your wallet first."
   },
   "dashboard": {
     "title": "Dashboard",

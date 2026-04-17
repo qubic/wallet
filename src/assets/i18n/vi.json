@@ -11,7 +11,7 @@
       "settings": "Cài đặt",
       "ipo": "IPO",
       "assets": "Tài sản",
-      "buy": "Buy",
+      "buy": "Mua",
       "support": "Hỗ trợ",
       "signMessage": "Ký Tin Nhắn"
     },
@@ -258,7 +258,7 @@
         "revealSeed": "Hiển thị Seed 55 ký tự",
         "assets": "Xem tài sản sở hữu",
         "makePayment": "Thực hiện thanh toán",
-        "buy": "Buy QUBIC",
+        "buy": "Mua QUBIC",
         "receivePayment": "Tạo mã QR để nhận thanh toán",
         "editSeed": "Sửa địa chỉ",
         "deleteSeed": "Xóa địa chỉ",
@@ -274,8 +274,9 @@
     "marketCurrency": "$"
   },
   "buyComponent": {
-    "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "title": "Mua QUBIC",
+    "selectAddress": "Địa chỉ nhận QUBIC",
+    "noAddresses": "Không có địa chỉ khả dụng. Vui lòng thêm địa chỉ vào ví của bạn trước."
   },
   "dashboard": {
     "title": "Bảng điều khiển",

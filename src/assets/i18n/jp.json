@@ -11,7 +11,7 @@
       "settings": "設定",
       "ipo": "IPO",
       "assets": "資産",
-      "buy": "Buy",
+      "buy": "購入",
       "support": "Support",
       "signMessage": "メッセージ署名"
     },
@@ -258,7 +258,7 @@
         "revealSeed": "55文字のシードを表示",
         "assets": "所有資産を表示",
         "makePayment": "支払いをする",
-        "buy": "Buy QUBIC",
+        "buy": "QUBICを購入",
         "receivePayment": "支払いを受けるためのQRコードを生成する。",
         "editSeed": "アドレスを編集",
         "deleteSeed": "アドレスを削除",
@@ -274,8 +274,9 @@
     "marketCurrency": "¥"
   },
   "buyComponent": {
-    "title": "Buy QUBIC",
-    "selectAddress": "Select receiving address"
+    "title": "QUBICを購入",
+    "selectAddress": "QUBICを受け取るアドレス",
+    "noAddresses": "利用可能なアドレスがありません。まずウォレットにアドレスを追加してください。"
   },
   "dashboard": {
     "title": "ダッシュボード",
