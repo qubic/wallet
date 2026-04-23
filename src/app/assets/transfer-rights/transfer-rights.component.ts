@@ -460,7 +460,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
    * Handle source contract selection change
    * Filters destination contracts based on the source contract's procedure type:
    * - RevokeAssetManagementRights: destination is only QX
-   * - TransferShareManagementRights: destination is contracts with allowTransferShares AND TransferShareManagementRights
+   * - TransferShare(s)ManagementRights: destination is contracts with allowTransferShares AND a transfer rights procedure
    */
   private onSourceContractChange(sourceContract: SourceContractOption | null): void {
     this.selectedSourceContract = sourceContract;
