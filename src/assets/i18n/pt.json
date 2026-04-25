@@ -202,7 +202,8 @@
           "required": "Nome necessário",
           "min": "O nome deve ter pelo menos 3 caracteres",
           "max": "O nome não pode exceder 50 caracteres",
-          "regex": "Pode conter apenas {{regex}}"
+          "regex": "Pode conter apenas {{regex}}",
+          "duplicate": "Este nome já está em uso"
         }
       },
       "seed": {

@@ -20,6 +20,9 @@
           <mat-error *ngIf="seedEditForm.controls['alias'].hasError('pattern')">
             {{ t("seedEditComponent.form.alias.error.regex", {regex: "a-zA-Z0-9_-"})}}
           </mat-error>
+          <mat-error *ngIf="seedEditForm.controls['alias'].hasError('duplicateAlias')">
+            {{ t("seedEditComponent.form.alias.error.duplicate")}}
+          </mat-error>
         </mat-form-field>
         <div *ngIf="isNew">
           <mat-slide-toggle formControlName="isWatchOnlyAddress" (change)="toggleWatchOnlyAddress()">
