@@ -7,7 +7,7 @@
         <mat-form-field class="full-width">
           <mat-label>{{ t("seedEditComponent.form.alias.placeholder") }}</mat-label>
           <input matInput [placeholder]="t('seedEditComponent.form.alias.placeholder')" formControlName="alias"
-            type="text">
+            type="text" [errorStateMatcher]="dirtyErrorMatcher">
           <mat-error *ngIf="seedEditForm.controls['alias'].hasError('required')">
             {{ t("seedEditComponent.form.alias.error.required")}}
           </mat-error>
@@ -115,8 +115,8 @@
         *ngIf="seedEditForm.controls['isWatchOnlyAddress'].value && isNew" color="primary" (click)="onSubmit()"
         [disabled]="!this.seedEditFormPublicId.valid">{{
         t("seedEditComponent.buttons.create")}}</button>
-      <button mat-raised-button *ngIf="walletService.privateKey && !isNew" [mat-dialog-close]="true" color="primary"
-        (click)="onSubmit()">{{ t("seedEditComponent.buttons.save")}}</button>
+      <button mat-raised-button *ngIf="walletService.privateKey && !isNew" color="primary"
+        (click)="onSubmit()" [disabled]="!seedEditForm.valid">{{ t("seedEditComponent.buttons.save")}}</button>
     </div>
   </mat-dialog-actions>
 </div>
