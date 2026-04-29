@@ -202,7 +202,8 @@
           "required": "Yêu cầu tên",
           "min": "Tên phải có ít nhất 3 ký tự",
           "max": "Tên tối đa 50 ký tự",
-          "regex": "Chỉ được chứa {{regex}}"
+          "regex": "Chỉ được chứa {{regex}}",
+          "duplicate": "Tên này đã được sử dụng"
         }
       },
       "seed": {

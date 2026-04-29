@@ -202,7 +202,8 @@
           "required": "Name wird benötigt.",
           "min": "Name muss mindestens 3 Zeichen lang sein.",
           "max": "Name darf höchstens 50 Zeichen lang sein.",
-          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}"
+          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}",
+          "duplicate": "Dieser Name wird bereits verwendet"
         }
       },
       "seed": {

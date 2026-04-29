@@ -202,7 +202,8 @@
           "required": "Naam vereist",
           "min": "Naam moet minimaal uit 3 karakters bestaan",
           "max": "Naam mag maximaal 50 karakters hebben",
-          "regex": "Kan alleen {{regex}} bevatten."
+          "regex": "Kan alleen {{regex}} bevatten.",
+          "duplicate": "Deze naam is al in gebruik"
         }
       },
       "seed": {
