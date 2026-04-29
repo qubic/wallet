@@ -717,7 +717,7 @@
     "messages": {
       "signError": "签名消息失败。请重试。",
       "parseError": "无效的 JSON 格式。预期: { identity, message, signature }",
-      "invalidIdentity": "无效的身份格式。预期 60 个大写字母 A-Z。",
+      "invalidIdentity": "身份无效。请检查该值并重试。",
       "invalidSignature": "无效的签名格式。预期 130 个 A-P 字符。",
       "checksumMismatch": "签名校验和验证失败。",
       "accountRequired": "请选择一个账户"
