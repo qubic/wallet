@@ -204,7 +204,8 @@
           "required": "Name required",
           "min": "Name must have a minimum of 3 characters",
           "max": "Name must have a maximum of 50 characters",
-          "regex": "Can only contain {{regex}}"
+          "regex": "Can only contain {{regex}}",
+          "duplicate": "This name is already in use"
         }
       },
       "seed": {
@@ -719,7 +720,7 @@
     "messages": {
       "signError": "Failed to sign message. Please try again.",
       "parseError": "Invalid JSON format. Expected: { identity, message, signature }",
-      "invalidIdentity": "Invalid identity format. Expected 60 uppercase A-Z characters.",
+      "invalidIdentity": "Invalid identity. Please check the value and try again.",
       "invalidSignature": "Invalid signature format. Expected 130 A-P characters.",
       "checksumMismatch": "Signature checksum verification failed.",
       "accountRequired": "Please select an account"
