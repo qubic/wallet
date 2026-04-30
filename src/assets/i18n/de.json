@@ -202,7 +202,8 @@
           "required": "Name wird benötigt.",
           "min": "Name muss mindestens 3 Zeichen lang sein.",
           "max": "Name darf höchstens 50 Zeichen lang sein.",
-          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}"
+          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}",
+          "duplicate": "Dieser Name wird bereits verwendet"
         }
       },
       "seed": {
@@ -716,7 +717,7 @@
     "messages": {
       "signError": "Nachricht konnte nicht signiert werden. Bitte versuchen Sie es erneut.",
       "parseError": "Ungültiges JSON-Format. Erwartet: { identity, message, signature }",
-      "invalidIdentity": "Ungültiges Identitätsformat. Erwartet 60 Großbuchstaben A-Z.",
+      "invalidIdentity": "Ungültige Identität. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.",
       "invalidSignature": "Ungültiges Signaturformat. Erwartet 130 A-P Zeichen.",
       "checksumMismatch": "Signatur-Prüfsummenverifizierung fehlgeschlagen.",
       "accountRequired": "Bitte wählen Sie ein Konto aus"

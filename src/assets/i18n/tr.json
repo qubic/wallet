@@ -202,7 +202,8 @@
           "required": "Ad Zorunludur",
           "min": "Ad en az 3 karakterden oluşmalıdır",
           "max": "Ad en fazla 50 karakterden oluşmalıdır",
-          "regex": "Yalnızca {{regex}} içerebilir"
+          "regex": "Yalnızca {{regex}} içerebilir",
+          "duplicate": "Bu isim zaten kullanılıyor"
         }
       },
       "seed": {
@@ -718,7 +719,7 @@
     "messages": {
       "signError": "Mesaj imzalanamadı. Lütfen tekrar deneyin.",
       "parseError": "Geçersiz JSON formatı. Beklenen: { identity, message, signature }",
-      "invalidIdentity": "Geçersiz kimlik formatı. 60 büyük harf A-Z bekleniyor.",
+      "invalidIdentity": "Geçersiz kimlik. Lütfen değeri kontrol edip tekrar deneyin.",
       "invalidSignature": "Geçersiz imza formatı. 130 A-P karakter bekleniyor.",
       "checksumMismatch": "İmza sağlama toplamı doğrulaması başarısız oldu.",
       "accountRequired": "Lütfen bir hesap seçin"

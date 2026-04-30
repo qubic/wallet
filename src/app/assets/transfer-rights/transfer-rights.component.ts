@@ -330,8 +330,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
 
       const { procedure, type: procedureType } = result;
 
-      if (procedure.fee == null || procedure.fee < 0) {
-        console.warn(`Contract ${contract.name} has invalid procedure fee:`, procedure.fee);
+      const fee = procedure.fee ?? 0;
+      if (fee < 0) {
+        console.warn(`Contract ${contract.name} has negative procedure fee:`, fee);
         continue;
       }
 
@@ -344,7 +345,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           contractName: contract.label || contract.name,
           address: contract.address,
           procedureId: procedure.id,
-          procedureFee: procedure.fee,
+          procedureFee: fee,
           availableBalance: asset.ownedAmount,
           asset: asset,
           procedureType: procedureType
@@ -432,8 +433,9 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
       const isQx = contract.address === QubicDefinitions.QX_ADDRESS;
 
       if ((hasAllowTransfer && mgmtProc) || isQx) {
-        if (mgmtProc && (mgmtProc.procedure.fee == null || mgmtProc.procedure.fee < 0)) {
-          console.warn(`Contract ${contract.name} has invalid procedure fee:`, mgmtProc.procedure.fee);
+        const fee = mgmtProc?.procedure.fee ?? 0;
+        if (fee < 0) {
+          console.warn(`Contract ${contract.name} has negative procedure fee:`, fee);
           continue;
         }
 
@@ -442,7 +444,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
           contractName: contract.label || contract.name,
           address: contract.address,
           procedureId: mgmtProc?.procedure.id ?? 0,
-          procedureFee: mgmtProc?.procedure.fee ?? 0,
+          procedureFee: fee,
           availableBalance: 0
         });
       }
@@ -460,7 +462,7 @@ export class TransferRightsComponent implements OnInit, OnDestroy {
    * Handle source contract selection change
    * Filters destination contracts based on the source contract's procedure type:
    * - RevokeAssetManagementRights: destination is only QX
-   * - TransferShareManagementRights: destination is contracts with allowTransferShares AND TransferShareManagementRights
+   * - TransferShare(s)ManagementRights: destination is contracts with allowTransferShares AND a transfer rights procedure
    */
   private onSourceContractChange(sourceContract: SourceContractOption | null): void {
     this.selectedSourceContract = sourceContract;

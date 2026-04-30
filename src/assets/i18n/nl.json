@@ -202,7 +202,8 @@
           "required": "Naam vereist",
           "min": "Naam moet minimaal uit 3 karakters bestaan",
           "max": "Naam mag maximaal 50 karakters hebben",
-          "regex": "Kan alleen {{regex}} bevatten."
+          "regex": "Kan alleen {{regex}} bevatten.",
+          "duplicate": "Deze naam is al in gebruik"
         }
       },
       "seed": {
@@ -714,7 +715,7 @@
     "messages": {
       "signError": "Kan bericht niet ondertekenen. Probeer het opnieuw.",
       "parseError": "Ongeldig JSON-formaat. Verwacht: { identity, message, signature }",
-      "invalidIdentity": "Ongeldig identiteitsformaat. Verwacht 60 hoofdletters A-Z.",
+      "invalidIdentity": "Ongeldige identiteit. Controleer de waarde en probeer het opnieuw.",
       "invalidSignature": "Ongeldig handtekeningformaat. Verwacht 130 A-P tekens.",
       "checksumMismatch": "Verificatie van de handtekeningcontrolesom is mislukt.",
       "accountRequired": "Selecteer een account"

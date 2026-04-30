@@ -202,7 +202,8 @@
           "required": "Nombre requerido",
           "min": "El nombre debe tener al menos 3 caracteres",
           "max": "El nombre no debe exceder los 50 caracteres",
-          "regex": "Solo puede contener {{regex}}"
+          "regex": "Solo puede contener {{regex}}",
+          "duplicate": "Este nombre ya está en uso"
         }
       },
       "seed": {
@@ -714,7 +715,7 @@
     "messages": {
       "signError": "Error al firmar el mensaje. Por favor, inténtelo de nuevo.",
       "parseError": "Formato JSON inválido. Esperado: { identity, message, signature }",
-      "invalidIdentity": "Formato de identidad inválido. Se esperan 60 caracteres A-Z en mayúsculas.",
+      "invalidIdentity": "Identidad inválida. Comprueba el valor e inténtalo de nuevo.",
       "invalidSignature": "Formato de firma inválido. Se esperan 130 caracteres A-P.",
       "checksumMismatch": "La verificación de la suma de comprobación de la firma falló.",
       "accountRequired": "Por favor, seleccione una cuenta"

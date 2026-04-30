@@ -202,7 +202,8 @@
           "required": "名前が必要です",
           "min": "名前は最低3文字必要です",
           "max": "名前は最大50文字までです",
-          "regex": "{{regex}}のみ含めることができます"
+          "regex": "{{regex}}のみ含めることができます",
+          "duplicate": "この名前は既に使用されています"
         }
       },
       "seed": {
@@ -717,7 +718,7 @@
     "messages": {
       "signError": "メッセージの署名に失敗しました。もう一度お試しください。",
       "parseError": "無効な JSON 形式です。期待: { identity, message, signature }",
-      "invalidIdentity": "無効な ID 形式です。大文字 A-Z 60 文字が必要です。",
+      "invalidIdentity": "ID が無効です。値を確認して、もう一度お試しください。",
       "invalidSignature": "無効な署名形式です。A-P 130 文字が必要です。",
       "checksumMismatch": "署名チェックサムの検証に失敗しました。",
       "accountRequired": "アカウントを選択してください"

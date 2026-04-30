@@ -24,14 +24,20 @@ export const MAX_WALLET_ACCOUNTS = 15;
 export const ASSET_TRANSFER_FEE = QubicDefinitions.QX_TRANSFER_ASSET_FEE;
 
 /**
- * Source identifier for Transfer Share Management Rights procedure
- * Used to match procedures by sourceIdentifier field (case insensitive)
+ * Source identifiers for Transfer Share Management Rights procedure.
+ * Both singular ('TransferShareManagementRights') and plural ('TransferSharesManagementRights')
+ * forms exist across different contract versions. Matched case-insensitively.
  */
-export const TRANSFER_SHARE_MANAGEMENT_RIGHTS_IDENTIFIER = 'TransferShareManagementRights';
+export const TRANSFER_RIGHTS_IDENTIFIERS = [
+  'TransferShareManagementRights',
+  'TransferSharesManagementRights',
+] as const;
 
 /**
- * Source identifier for Revoke Asset Management Rights procedure
- * Used to match procedures by sourceIdentifier field (case insensitive)
+ * Source identifiers for Revoke Asset Management Rights procedure.
+ * Matched case-insensitively.
  */
-export const REVOKE_ASSET_MANAGEMENT_RIGHTS_IDENTIFIER = 'RevokeAssetManagementRights';
+export const REVOKE_RIGHTS_IDENTIFIERS = [
+  'RevokeAssetManagementRights',
+] as const;
 

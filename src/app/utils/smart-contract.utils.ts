@@ -1,25 +1,30 @@
 import { SmartContractProcedure, StaticSmartContract } from '../services/apis/static/qubic-static.model';
 import {
-  TRANSFER_SHARE_MANAGEMENT_RIGHTS_IDENTIFIER,
-  REVOKE_ASSET_MANAGEMENT_RIGHTS_IDENTIFIER,
+  TRANSFER_RIGHTS_IDENTIFIERS,
+  REVOKE_RIGHTS_IDENTIFIERS,
 } from '../constants/qubic.constants';
 
 /**
- * Find a procedure that has a TransferShareManagementRights sourceIdentifier.
+ * Match a procedure's sourceIdentifier against a list of known identifiers (case-insensitive).
  */
-export function findTransferRightsProcedure(contract: StaticSmartContract): SmartContractProcedure | null {
-  return contract.procedures?.find(p =>
-    p.sourceIdentifier?.toLowerCase() === TRANSFER_SHARE_MANAGEMENT_RIGHTS_IDENTIFIER.toLowerCase()
-  ) ?? null;
+function matchesIdentifier(sourceIdentifier: string | undefined, identifiers: readonly string[]): boolean {
+  if (!sourceIdentifier) return false;
+  const id = sourceIdentifier.toLowerCase();
+  return identifiers.some(known => known.toLowerCase() === id);
 }
 
 /**
- * Find a procedure that has a RevokeAssetManagementRights sourceIdentifier.
+ * Find a procedure that matches any known Transfer Share Management Rights identifier.
+ */
+export function findTransferRightsProcedure(contract: StaticSmartContract): SmartContractProcedure | null {
+  return contract.procedures?.find(p => matchesIdentifier(p.sourceIdentifier, TRANSFER_RIGHTS_IDENTIFIERS)) ?? null;
+}
+
+/**
+ * Find a procedure that matches any known Revoke Asset Management Rights identifier.
  */
 export function findRevokeRightsProcedure(contract: StaticSmartContract): SmartContractProcedure | null {
-  return contract.procedures?.find(p =>
-    p.sourceIdentifier?.toLowerCase() === REVOKE_ASSET_MANAGEMENT_RIGHTS_IDENTIFIER.toLowerCase()
-  ) ?? null;
+  return contract.procedures?.find(p => matchesIdentifier(p.sourceIdentifier, REVOKE_RIGHTS_IDENTIFIERS)) ?? null;
 }
 
 /**
@@ -39,7 +44,8 @@ export function findManagementRightsProcedure(contract: StaticSmartContract): { 
 }
 
 /**
- * Check if a smart contract has a management rights procedure (TransferShareManagementRights or RevokeAssetManagementRights).
+ * Check if a smart contract has any management rights procedure
+ * (TransferShare(s)ManagementRights or RevokeAssetManagementRights).
  */
 export function hasManagementRightsProcedure(contract: StaticSmartContract): boolean {
   return !!findManagementRightsProcedure(contract);

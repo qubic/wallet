@@ -1,6 +1,6 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, OnDestroy, Renderer2 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { WalletService } from 'src/app/services/wallet.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IDecodedSeed, ISeed } from 'src/app/model/seed';
@@ -8,6 +8,7 @@ import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist//qubicHelper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UnLockComponent } from 'src/app/lock/unlock/unlock.component';
 import { TranslocoService } from '@ngneat/transloco';
+import { ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { ThemeService } from 'src/app/services/theme.service';
 import { QubicDialogWrapper } from 'src/app/core/dialog-wrapper/dialog-wrapper';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
@@ -24,14 +25,17 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
 
+  private aliasValidators = [Validators.required, Validators.minLength(3), Validators.maxLength(50)];
+  public dirtyErrorMatcher = new ShowOnDirtyErrorStateMatcher();
+
   seedEditForm = this.fb.group({
-    alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    alias: ["Seed " + (this.walletService.getSeeds().length + 1), this.aliasValidators],
     seed: ['', [Validators.required, Validators.minLength(55), Validators.maxLength(55), Validators.pattern('[a-z]*')]],
     publicId: ['', [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH), Validators.pattern('[A-Z]*')]],
     isWatchOnlyAddress: [false],
   });
   seedEditFormPublicId = this.fb.group({
-    alias: ["Seed " + (this.walletService.getSeeds().length + 1), [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    alias: ["Seed " + (this.walletService.getSeeds().length + 1), this.aliasValidators],
     publicId: ['', [Validators.required, Validators.minLength(QUBIC_ADDRESS_LENGTH), Validators.maxLength(QUBIC_ADDRESS_LENGTH), Validators.pattern('[A-Z]*')]],
   });
 
@@ -61,6 +65,12 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
   }
 
   init() {
+    const excludePublicId = this.isNew ? undefined : this.seed.publicId;
+    const duplicateValidator = this.duplicateAliasValidator(excludePublicId);
+
+    this.seedEditForm.controls.alias.addValidators(duplicateValidator);
+    this.seedEditFormPublicId.controls.alias.addValidators(duplicateValidator);
+
     if (this.isNew) {
       this.seedEditForm.controls.alias.setValue(this.transloco.translate("seedEditComponent.newSeedName") + " " + (this.walletService.getSeeds().length + 1));
       this.randomizeSeed();
@@ -75,8 +85,19 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
     this.seedEditForm.controls.isWatchOnlyAddress.setValue(this.seed.isOnlyWatch!);
   }
 
+  private duplicateAliasValidator(excludePublicId?: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const alias = control.value?.trim();
+      if (!alias) return null;
+      const duplicate = this.walletService.getSeeds().some(
+        s => s.alias?.toLowerCase() === alias.toLowerCase() && s.publicId !== excludePublicId
+      );
+      return duplicate ? { duplicateAlias: true } : null;
+    };
+  }
+
   getPublicId(): string {
-    return this.seedEditForm.controls.alias.valid && this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
+    return this.seedEditForm.controls.publicId.value ? this.seed?.publicId : '';
   }
 
   async onSubmit() {

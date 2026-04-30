@@ -1,3 +1,14 @@
+## [4.26.1-rc.1](https://github.com/qubic/wallet/compare/v4.26.0...v4.26.1-rc.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* constrain asset card width and truncate long names ([8293947](https://github.com/qubic/wallet/commit/8293947e5cd347ecf72817cba7420bfbfa12cb59))
+* prevent duplicate account names on create and rename ([#251](https://github.com/qubic/wallet/issues/251)) ([3e0a1f7](https://github.com/qubic/wallet/commit/3e0a1f7efd6c21833436a091abc36460bf87adfb))
+* support plural TransferSharesManagementRights identifier ([0b6ebdc](https://github.com/qubic/wallet/commit/0b6ebdcc605fe06babd5339e8d442057a253efc6))
+* treat null procedure fee as 0 instead of skipping contract ([c11634a](https://github.com/qubic/wallet/commit/c11634ac1eefcc3a18eb443dcbb2f401183ac5f3))
+* update invalid identity message ([ecb3f08](https://github.com/qubic/wallet/commit/ecb3f08ef2309b173fc69f1197e8fd7c01730265))
+
 # [4.26.0](https://github.com/qubic/wallet/compare/v4.25.1...v4.26.0) (2026-04-14)
 
 
