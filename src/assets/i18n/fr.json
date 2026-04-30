@@ -715,7 +715,7 @@
     "messages": {
       "signError": "Échec de la signature du message. Veuillez réessayer.",
       "parseError": "Format JSON invalide. Attendu : { identity, message, signature }",
-      "invalidIdentity": "Format d'identité invalide. 60 caractères majuscules A-Z attendus.",
+      "invalidIdentity": "Identité invalide. Veuillez vérifier la valeur et réessayer.",
       "invalidSignature": "Format de signature invalide. 130 caractères A-P attendus.",
       "checksumMismatch": "La vérification de la somme de contrôle de la signature a échoué.",
       "accountRequired": "Veuillez sélectionner un compte"

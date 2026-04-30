@@ -719,7 +719,7 @@
     "messages": {
       "signError": "Mesaj imzalanamadı. Lütfen tekrar deneyin.",
       "parseError": "Geçersiz JSON formatı. Beklenen: { identity, message, signature }",
-      "invalidIdentity": "Geçersiz kimlik formatı. 60 büyük harf A-Z bekleniyor.",
+      "invalidIdentity": "Geçersiz kimlik. Lütfen değeri kontrol edip tekrar deneyin.",
       "invalidSignature": "Geçersiz imza formatı. 130 A-P karakter bekleniyor.",
       "checksumMismatch": "İmza sağlama toplamı doğrulaması başarısız oldu.",
       "accountRequired": "Lütfen bir hesap seçin"

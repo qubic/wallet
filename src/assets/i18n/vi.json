@@ -718,7 +718,7 @@
     "messages": {
       "signError": "Không thể ký tin nhắn. Vui lòng thử lại.",
       "parseError": "Định dạng JSON không hợp lệ. Mong đợi: { identity, message, signature }",
-      "invalidIdentity": "Định dạng danh tính không hợp lệ. Mong đợi 60 ký tự in hoa A-Z.",
+      "invalidIdentity": "Danh tính không hợp lệ. Vui lòng kiểm tra giá trị và thử lại.",
       "invalidSignature": "Định dạng chữ ký không hợp lệ. Mong đợi 130 ký tự A-P.",
       "checksumMismatch": "Xác minh tổng kiểm tra chữ ký thất bại.",
       "accountRequired": "Vui lòng chọn một tài khoản"

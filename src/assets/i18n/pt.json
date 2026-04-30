@@ -714,7 +714,7 @@
     "messages": {
       "signError": "Falha ao assinar a mensagem. Por favor, tente novamente.",
       "parseError": "Formato JSON inválido. Esperado: { identity, message, signature }",
-      "invalidIdentity": "Formato de identidade inválido. Esperados 60 caracteres maiúsculos A-Z.",
+      "invalidIdentity": "Identidade inválida. Verifique o valor e tente novamente.",
       "invalidSignature": "Formato de assinatura inválido. Esperados 130 caracteres A-P.",
       "checksumMismatch": "Falha na verificação da soma de verificação da assinatura.",
       "accountRequired": "Por favor, selecione uma conta"

@@ -717,7 +717,7 @@
     "messages": {
       "signError": "Nachricht konnte nicht signiert werden. Bitte versuchen Sie es erneut.",
       "parseError": "Ungültiges JSON-Format. Erwartet: { identity, message, signature }",
-      "invalidIdentity": "Ungültiges Identitätsformat. Erwartet 60 Großbuchstaben A-Z.",
+      "invalidIdentity": "Ungültige Identität. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.",
       "invalidSignature": "Ungültiges Signaturformat. Erwartet 130 A-P Zeichen.",
       "checksumMismatch": "Signatur-Prüfsummenverifizierung fehlgeschlagen.",
       "accountRequired": "Bitte wählen Sie ein Konto aus"
