@@ -114,11 +114,6 @@ export class UpdaterService {
       const response: BalanceResponse[] = ids.map(id => ({
         publicId: id,
         currentEstimatedAmount: Number(balances.get(id) ?? 0n),
-        epochBaseAmount: 0,
-        epochChanges: 0,
-        isComputor: false,
-        baseDate: new Date(),
-        transactions: [],
       }));
       this.currentBalance.next(response);
     } catch (e) {
