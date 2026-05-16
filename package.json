@@ -39,6 +39,10 @@
     "@ngneat/transloco": "^5.0.0",
     "@ngneat/transloco-persist-lang": "^5.0.0",
     "@ngneat/transloco-utils": "^5.0.0",
+    "@qubic-lib/qubic-ts-library": "^0.1.5",
+    "@qubic.org/contracts": "^0.2.2",
+    "@qubic.org/crypto": "^0.2.2",
+    "@qubic.org/rpc": "^0.2.2",
     "angularx-qrcode": "^16.0.2",
     "bignumber.js": "^9.1.1",
     "electron-remote": "^1.3.0",
@@ -47,7 +51,6 @@
     "ngx-device-detector": "^6.0.2",
     "ngx-file-drop": "^16.0.0",
     "qrcode": "^1.5.3",
-    "@qubic-lib/qubic-ts-library": "^0.1.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "0.13.0"

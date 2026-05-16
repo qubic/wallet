@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { BalanceResponse, NetworkBalance, QubicAsset } from './api.model';
 import { ApiService } from './api.service';
+import { QubicRpcService } from './qubic-rpc.service';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -47,7 +48,7 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
   public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 
@@ -101,26 +102,29 @@ export class UpdaterService {
   }
 
 
-  /**
-   * should load the current balances for the accounts
-   * @returns 
-   */
-  private getCurrentBalance(force = false) {
-    if (!force && (this.balanceLoading || !this.isActive))
-      return;
+  private async getCurrentBalance(force = false): Promise<void> {
+    if (!force && (this.balanceLoading || !this.isActive)) return;
+
+    const ids = this.walletService.getSeeds().map(m => m.publicId);
+    if (!ids.length) return;
 
     this.balanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
-        if (r) {
-          this.currentBalance.next(r);
-        }
-        this.balanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.balanceLoading = false;
-      });
+    try {
+      const balances = await this.qubicRpc.getBalances(ids);
+      const response: BalanceResponse[] = ids.map(id => ({
+        publicId: id,
+        currentEstimatedAmount: Number(balances.get(id) ?? 0n),
+        epochBaseAmount: 0,
+        epochChanges: 0,
+        isComputor: false,
+        baseDate: new Date(),
+        transactions: [],
+      }));
+      this.currentBalance.next(response);
+    } catch (e) {
+      this.processError(e, false);
+    } finally {
+      this.balanceLoading = false;
     }
   }
 
