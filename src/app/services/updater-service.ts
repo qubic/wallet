@@ -42,7 +42,6 @@ export class UpdaterService {
   private tickInfoLoading = false;
   private balanceLoading = false;
   private latestStatsLoading = false;
-  private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
@@ -58,7 +57,6 @@ export class UpdaterService {
     this.getLastProcessedTick();
     this.getTickInfo();
     this.getCurrentBalance();
-    this.getNetworkBalances();
     this.getAssets();
     this.getLatestStats();
     this.getTransactionsQuery();
@@ -76,7 +74,6 @@ export class UpdaterService {
         console.error('Failed to resolve pending transactions:', e);
       }
       this.getCurrentBalance();
-      this.getNetworkBalances();
       this.getAssets();
       this.getTransactionsQuery();
     }, 60000);
@@ -98,24 +95,29 @@ export class UpdaterService {
 
   public loadCurrentBalance(force = false) {
     this.getCurrentBalance(force);
-    this.getNetworkBalances(undefined, undefined, force);
   }
 
-
-  private async getCurrentBalance(force = false): Promise<void> {
+  private async getCurrentBalance(force = false, publicIds?: string[], callbackFn?: (balances: NetworkBalance[]) => void): Promise<void> {
     if (!force && (this.balanceLoading || !this.isActive)) return;
 
-    const ids = this.walletService.getSeeds().map(m => m.publicId);
+    const fetchAll = !publicIds;
+    const ids = publicIds ?? this.walletService.getSeeds().map(m => m.publicId);
     if (!ids.length) return;
 
     this.balanceLoading = true;
     try {
-      const balances = await this.qubicRpc.getBalances(ids);
-      const response: BalanceResponse[] = ids.map(id => ({
+      const balanceMap = await this.qubicRpc.getBalances(ids);
+      const tick = this.currentTick.getValue();
+      const results: NetworkBalance[] = ids.map(id => ({
         publicId: id,
-        currentEstimatedAmount: Number(balances.get(id) ?? 0n),
+        amount: Number(balanceMap.get(id) ?? 0n),
+        tick,
       }));
-      this.currentBalance.next(response);
+      await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
+      if (fetchAll) {
+        this.currentBalance.next(results.map(e => ({ publicId: e.publicId, currentEstimatedAmount: e.amount })));
+      }
+      if (callbackFn) callbackFn(results);
     } catch (e) {
       this.processError(e, false);
     } finally {
@@ -127,35 +129,8 @@ export class UpdaterService {
     this.getAssets(undefined, allbackFn);
   }
 
-  public forceUpdateNetworkBalance(publicId: string, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined): void {
-    this.getNetworkBalances([publicId], callbackFn);
-  }
-
-  private async getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): Promise<void> {
-    if (!force && (this.networkBalanceLoading || !this.isActive))
-      return;
-
-    if (!publicIds)
-      publicIds = this.walletService.getSeeds().map(m => m.publicId);
-
-    if (!publicIds.length) return;
-
-    this.networkBalanceLoading = true;
-    try {
-      const balanceMap = await this.qubicRpc.getBalances(publicIds);
-      const tick = this.currentTick.getValue();
-      const results: NetworkBalance[] = publicIds.map(id => ({
-        publicId: id,
-        amount: Number(balanceMap.get(id) ?? 0n),
-        tick,
-      }));
-      await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
-      if (callbackFn) callbackFn(results);
-    } catch (e) {
-      this.processError(e, false);
-    } finally {
-      this.networkBalanceLoading = false;
-    }
+  public forceUpdateNetworkBalance(publicId: string, callbackFn?: (balances: NetworkBalance[]) => void): void {
+    this.getCurrentBalance(false, [publicId], callbackFn);
   }
 
   //#region
