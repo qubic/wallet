@@ -236,7 +236,7 @@ export class UpdaterService {
 
     if (this.walletService.getSeeds().length > 0) {
       const observables: Observable<QueryTransactionRecord[]>[] = publicIds.map(publicId =>
-        this.apiQuery.getTransfers(publicId, initialTick, this.currentTick.value)
+        this.apiQuery.getTransfers(publicId, initialTick, this.archiverLatestTick.value)
       );
 
       // Combine all observables and collect results
