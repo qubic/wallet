@@ -131,34 +131,30 @@ export class UpdaterService {
     this.getNetworkBalances([publicId], callbackFn);
   }
 
-  /**
-   * load balances directly from network
-   * @returns 
-   */
-  private getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): void {
+  private async getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): Promise<void> {
     if (!force && (this.networkBalanceLoading || !this.isActive))
       return;
 
     if (!publicIds)
       publicIds = this.walletService.getSeeds().map(m => m.publicId);
 
+    if (!publicIds.length) return;
+
     this.networkBalanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getNetworkBalances(publicIds).subscribe(r => {
-        if (r) {
-          // update wallet
-          r.forEach((entry) => {
-            this.walletService.updateBalance(entry.publicId, entry.amount, entry.tick);
-          });
-          if (callbackFn)
-            callbackFn(r);
-        }
-        this.networkBalanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.networkBalanceLoading = false;
-      });
+    try {
+      const balanceMap = await this.qubicRpc.getBalances(publicIds);
+      const tick = this.currentTick.getValue();
+      const results: NetworkBalance[] = publicIds.map(id => ({
+        publicId: id,
+        amount: Number(balanceMap.get(id) ?? 0n),
+        tick,
+      }));
+      await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
+      if (callbackFn) callbackFn(results);
+    } catch (e) {
+      this.processError(e, false);
+    } finally {
+      this.networkBalanceLoading = false;
     }
   }
 
