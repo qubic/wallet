@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { BalanceResponse, NetworkBalance, QubicAsset } from './api.model';
+import { NetworkBalance, QubicAsset } from './api.model';
 import { ApiService } from './api.service';
 import { QubicRpcService } from './qubic-rpc.service';
 import { WalletService } from './wallet.service';
@@ -21,7 +21,6 @@ export class UpdaterService {
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public numberLastEpoch = 5;
-  public currentBalance: BehaviorSubject<BalanceResponse[]> = new BehaviorSubject<BalanceResponse[]>([]);
   public latestStats: BehaviorSubject<LatestStatsResponse> = new BehaviorSubject<LatestStatsResponse>({
     data: {
       price: 0,
@@ -100,7 +99,6 @@ export class UpdaterService {
   private async getCurrentBalance(force = false, publicIds?: string[], callbackFn?: (balances: NetworkBalance[]) => void): Promise<void> {
     if (!force && (this.balanceLoading || !this.isActive)) return;
 
-    const fetchAll = !publicIds;
     const ids = publicIds ?? this.walletService.getSeeds().map(m => m.publicId);
     if (!ids.length) return;
 
@@ -114,9 +112,6 @@ export class UpdaterService {
         tick,
       }));
       await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
-      if (fetchAll) {
-        this.currentBalance.next(results.map(e => ({ publicId: e.publicId, currentEstimatedAmount: e.amount })));
-      }
       if (callbackFn) callbackFn(results);
     } catch (e) {
       this.processError(e, false);

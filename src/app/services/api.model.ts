@@ -34,11 +34,6 @@ export interface Transaction {
 
 
 
-export interface BalanceResponse {
-  publicId: string;
-  currentEstimatedAmount: number;
-}
-
 export interface NetworkBalance {
   publicId: string;
   amount: number;
