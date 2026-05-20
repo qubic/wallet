@@ -4,6 +4,12 @@ A simple wallet for the QUBIC Network. Find more about QUBIC on https://doc.qubi
 To join the QUBIC Community on discord use this link http://discord.gg/2vDMR8m.
 
 ## Local dev
+Requires **Node 22 LTS** (minimum Node ≥20.19.0). Use `.nvmrc` or install via [nvm](https://github.com/nvm-sh/nvm):
+
+```bash
+nvm use
+```
+
 To dev it locally use this:
 
 ```bash
