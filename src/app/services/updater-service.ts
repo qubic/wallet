@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NetworkBalance, QubicAsset } from './api.model';
 import { ApiService } from './api.service';
 import { QubicRpcService } from './qubic-rpc.service';
+import { QubicRpcError } from '@qubic.org/rpc';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -114,7 +115,11 @@ export class UpdaterService {
       await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
       if (callbackFn) callbackFn(results);
     } catch (e) {
-      console.error('Balance fetch failed:', e);
+      if (e instanceof QubicRpcError) {
+        this.errorStatus.next(e.message);
+      } else {
+        console.error('Balance fetch failed:', e);
+      }
     } finally {
       this.balanceLoading = false;
     }
