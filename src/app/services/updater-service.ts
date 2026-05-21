@@ -114,7 +114,7 @@ export class UpdaterService {
       await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
       if (callbackFn) callbackFn(results);
     } catch (e) {
-      this.processError(e, false);
+      console.error('Balance fetch failed:', e);
     } finally {
       this.balanceLoading = false;
     }
