@@ -138,7 +138,7 @@ export class UpdaterService {
         this.processedTickIntervals.next(intervals);
       }
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse, false);
     });
   }
 
@@ -157,7 +157,7 @@ export class UpdaterService {
       }
       this.tickInfoLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse, false);
       this.tickInfoLoading = false;
     });
   }
@@ -177,7 +177,7 @@ export class UpdaterService {
       }
       this.tickLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse, false);
       this.tickLoading = false;
     });
   }
@@ -276,7 +276,8 @@ export class UpdaterService {
             callbackFn(r);
         }
       }, errorResponse => {
-        this.processError(errorResponse, false);
+        if (errorResponse.status === 401) this.api.reAuthenticate();
+        else this.logHttpError(errorResponse, false);
       });
     }
   }
@@ -299,17 +300,15 @@ export class UpdaterService {
         this.latestStatsLoading = false;
       },
       error: (errorResponse) => {
-        this.processError(errorResponse, false);
+        this.logHttpError(errorResponse, false);
         this.latestStatsLoading = false;
       }
     });
   }
 
 
-  private processError(errObject: any, showToUser: boolean = true) {
-    if (errObject.status == 401) {
-      this.api.reAuthenticate();
-    } else if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
+  private logHttpError(errObject: any, showToUser: boolean = true) {
+    if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
       this.errorStatus.next(errObject.error);
     } else if (errObject.statusText) {
       if (showToUser)
