@@ -96,6 +96,9 @@
                   {{ t("transferRights.errors.contractsEqual") }}
                 </mat-error>
               </mat-form-field>
+              <div *ngIf="selectedSourceContract?.procedureType === 'revoke'" class="info-note">
+                * {{ t("transferRights.form.revokeOnlyHint", { contract: selectedSourceContract?.contractName }) }}
+              </div>
             </div>
           </div>
 
@@ -104,7 +107,7 @@
               <!-- Number of Shares (equivalent to Amount field) -->
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>{{ t("transferRights.form.amount") }}</mat-label>
-                <input matInput type="number" formControlName="numberOfShares" min="1">
+                <input matInput appAmountInput formControlName="numberOfShares" maxlength="19">
                 <button *ngIf="transferRightsForm.controls['numberOfShares'].value" matSuffix mat-icon-button
                   aria-label="Clear" (click)="transferRightsForm.controls['numberOfShares'].setValue(null)"
                   type="button">

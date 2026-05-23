@@ -71,7 +71,8 @@
 }
 
 mat-card {
-  min-width: 385px; 
+  width: 100%;
+  max-width: 420px;
   margin-bottom: 20px;
 }
 
@@ -85,6 +86,13 @@ mat-card {
   }
 }
 
+
+.dashboard-wallet-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
 
 .dashboard-balance-name {
   font-weight: bold;

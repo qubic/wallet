@@ -24,7 +24,7 @@ import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { StaticSmartContract } from '../services/apis/static/qubic-static.model';
 import { ASSET_TRANSFER_FEE } from '../constants/qubic.constants';
-import { canSendTransferRights } from '../utils/smart-contract.utils';
+import { hasManagementRightsProcedure } from '../utils/smart-contract.utils';
 
 // Interfaces for asset grouping
 interface GroupedAsset {
@@ -686,16 +686,18 @@ export class AssetsComponent implements OnInit, OnDestroy {
       if (!contract) return false;
 
       // Source contract must have the procedure and user must own shares
-      return canSendTransferRights(contract) && mc.asset.ownedAmount > 0;
+      return hasManagementRightsProcedure(contract) && mc.asset.ownedAmount > 0;
     });
   }
 
   /**
-   * Navigate to Transfer Rights form with first managing contract pre-selected
+   * Navigate to Transfer Rights form with first eligible managing contract pre-selected
    */
   openTransferRightsForm(group: GroupedAsset): void {
-    // Get the first managing contract
-    const firstContract = group.managingContracts[0];
+    const firstContract = group.managingContracts.find((mc: ManagingContract) => {
+      const contract = this.smartContractsMap.get(mc.contractIndex);
+      return contract ? hasManagementRightsProcedure(contract) && mc.asset.ownedAmount > 0 : false;
+    });
 
     if (firstContract) {
       this.router.navigate(['/assets-area/transfer-rights'], {

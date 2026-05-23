@@ -1,0 +1,104 @@
+<ng-container *transloco="let t">
+  <div class="content_container">
+    <h1>{{ t("signMessageComponent.title") }}</h1>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+      <!-- Sign Tab -->
+      <mat-tab label="{{ t('signMessageComponent.tabs.sign') }}">
+        <form [formGroup]="signForm" novalidate (ngSubmit)="onSign()">
+          <mat-card class="sign-card">
+            <mat-card-content>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>{{ t("signMessageComponent.form.sourceAccount") }}</mat-label>
+                    <mat-select formControlName="sourceId" panelClass="full-width">
+                      <mat-select-trigger>
+                        <span *ngIf="signForm.controls['sourceId'].value && getSelectedSourceSeed()">
+                          {{ getSelectedSourceSeed() | seedDisplay: { compact: true, currencyLabel: t('general.currency') } }}
+                        </span>
+                      </mat-select-trigger>
+                      <mat-option *ngFor="let seed of getSeeds()" [value]="seed.publicId" class="custom-mat-option">
+                        {{ seed | seedFirstLine }}<br />{{ seed | seedSecondLine: t('general.currency') }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="signForm.controls['sourceId'].hasError('required')">
+                      {{ t("signMessageComponent.messages.accountRequired") }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>{{ t("signMessageComponent.form.message") }}</mat-label>
+                    <textarea matInput formControlName="message" rows="3"
+                      [placeholder]="t('signMessageComponent.form.messagePlaceholder')"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row" *ngIf="signOutput">
+                <div class="col output-wrapper">
+                  <button mat-icon-button class="copy-btn" matTooltip="{{ t('general.copy.tooltip') }}"
+                    [cdkCopyToClipboard]="signOutput" type="button">
+                    <mat-icon>content_copy</mat-icon>
+                  </button>
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>{{ t("signMessageComponent.form.output") }}</mat-label>
+                    <textarea matInput [value]="signOutput" readonly rows="6"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="padding">
+              <div *ngIf="!walletService.privateKey">
+                <button mat-raised-button color="primary" type="button" (click)="loadKey()">
+                  {{ t("paymentComponent.buttons.loadPrivateKey") }}
+                </button>
+              </div>
+              <button *ngIf="walletService.privateKey" mat-raised-button color="primary" type="submit"
+                [disabled]="!signForm.valid || isSigning">
+                <span *ngIf="!isSigning">{{ t("signMessageComponent.buttons.sign") }}</span>
+                <mat-progress-spinner mode="indeterminate" [diameter]="20" *ngIf="isSigning"></mat-progress-spinner>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-tab>
+
+      <!-- Verify Tab -->
+      <mat-tab label="{{ t('signMessageComponent.tabs.verify') }}">
+        <form [formGroup]="verifyForm" novalidate (ngSubmit)="onVerify()">
+          <mat-card class="sign-card">
+            <mat-card-content>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>{{ t("signMessageComponent.form.verifyInput") }}</mat-label>
+                    <textarea matInput formControlName="verifyInput" rows="6"
+                      [placeholder]="t('signMessageComponent.form.verifyInputPlaceholder')"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div *ngIf="verifyResult === 'valid'" class="verify-result valid">
+                {{ t("signMessageComponent.result.valid") }}
+              </div>
+              <div *ngIf="verifyResult === 'invalid'" class="verify-result invalid">
+                {{ t("signMessageComponent.result.invalid") }}
+              </div>
+              <div *ngIf="verifyError" class="verify-error">
+                {{ verifyError }}
+              </div>
+            </mat-card-content>
+            <mat-card-actions class="padding">
+              <button mat-raised-button color="primary" type="submit" [disabled]="!verifyForm.valid">
+                {{ t("signMessageComponent.buttons.verify") }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</ng-container>

@@ -11,7 +11,8 @@
       "settings": "Einstellungen",
       "ipo": "IPO",
       "assets": "Assets",
-      "support": "Unterstützung"
+      "support": "Unterstützung",
+      "signMessage": "Nachricht signieren"
     },
     "version": "Version {{version}}",
     "version.url": "qubic.org",
@@ -153,11 +154,13 @@
       "selectAsset": "Asset auswählen",
       "sourceContract": "Quellvertrag",
       "destinationContract": "Zielvertrag",
+      "amount": "Menge",
       "procedureFee": "Verfahrensgebühr",
       "tick": "Tick",
       "tickOverwrite": "Manuelles Tick-Override",
       "maxButton": "Max",
-      "submit": "Rechte übertragen"
+      "submit": "Rechte übertragen",
+      "revokeOnlyHint": "Von {{contract}} verwaltete Assets können nur an QX widerrufen werden"
     },
     "errors": {
       "assetRequired": "Asset-Auswahl ist erforderlich",
@@ -200,7 +203,8 @@
           "required": "Name wird benötigt.",
           "min": "Name muss mindestens 3 Zeichen lang sein.",
           "max": "Name darf höchstens 50 Zeichen lang sein.",
-          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}"
+          "regex": "Name darf nur folgende Zeichen enthalten: {{regex}}",
+          "duplicate": "Dieser Name wird bereits verwendet"
         }
       },
       "seed": {
@@ -259,7 +263,8 @@
         "editSeed": "Konto bearbeiten",
         "deleteSeed": "Konto löschen",
         "refreshBalance": "Kontostand im Netzwerk abrufen",
-        "openExplorer": "In Explorer anzeigen"
+        "openExplorer": "In Explorer anzeigen",
+        "signMessage": "Nachricht signieren"
       }
     },
     "hasPendingTransaction": "Offene Zahlungen",
@@ -690,6 +695,37 @@
       "rewardTable": "Belohnungstabelle",
       "txSuccess": "Transaktion erfolgreich!",
       "txFailed": "Transaktion fehlgeschlagen!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Nachricht signieren / verifizieren",
+    "tabs": {
+      "sign": "Nachricht signieren",
+      "verify": "Nachricht verifizieren"
+    },
+    "form": {
+      "sourceAccount": "Konto zum Signieren",
+      "message": "Nachricht",
+      "messagePlaceholder": "Nachricht zum Signieren eingeben",
+      "output": "Signierte Ausgabe (JSON)",
+      "verifyInput": "Signierte Nachricht (JSON)",
+      "verifyInputPlaceholder": "JSON mit identity, message und signature Feldern einfügen"
+    },
+    "buttons": {
+      "sign": "Nachricht signieren",
+      "verify": "Signatur verifizieren"
+    },
+    "result": {
+      "valid": "Gültige Signatur",
+      "invalid": "Ungültige Signatur"
+    },
+    "messages": {
+      "signError": "Nachricht konnte nicht signiert werden. Bitte versuchen Sie es erneut.",
+      "parseError": "Ungültiges JSON-Format. Erwartet: { identity, message, signature }",
+      "invalidIdentity": "Ungültige Identität. Bitte überprüfen Sie den Wert und versuchen Sie es erneut.",
+      "invalidSignature": "Ungültiges Signaturformat. Erwartet 130 A-P Zeichen.",
+      "checksumMismatch": "Signatur-Prüfsummenverifizierung fehlgeschlagen.",
+      "accountRequired": "Bitte wählen Sie ein Konto aus"
     }
   }
 }

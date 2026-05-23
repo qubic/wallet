@@ -1,0 +1,64 @@
+@import "../../vars.scss";
+
+.full-width {
+  width: 100%;
+}
+
+.sign-card {
+  min-width: 120px;
+  margin: 20px auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+  margin-bottom: 15px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}
+
+.padding button {
+  margin: 10px;
+}
+
+.output-wrapper {
+  position: relative;
+
+  ::ng-deep .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+  }
+}
+
+.verify-result {
+  padding: 12px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  margin: 8px 0;
+
+  &.valid {
+    background-color: rgba($trx-success-color, 0.2);
+    color: $trx-success-color;
+  }
+
+  &.invalid {
+    background-color: rgba($trx-failure-color, 0.2);
+    color: $trx-failure-color;
+  }
+}
+
+.verify-error {
+  color: $trx-failure-color;
+  margin: 8px 0;
+}

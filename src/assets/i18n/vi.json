@@ -11,7 +11,8 @@
       "settings": "Cài đặt",
       "ipo": "IPO",
       "assets": "Tài sản",
-      "support": "Hỗ trợ"
+      "support": "Hỗ trợ",
+      "signMessage": "Ký Tin Nhắn"
     },
     "version": "Phiên bản {{version}}",
     "version.url": "qubic.org",
@@ -153,11 +154,13 @@
       "selectAsset": "Chọn Tài sản",
       "sourceContract": "Hợp đồng Nguồn",
       "destinationContract": "Hợp đồng Đích",
+      "amount": "Số lượng",
       "procedureFee": "Phí Thủ tục",
       "tick": "Tick",
       "tickOverwrite": "Ghi đè Tick Thủ công",
       "maxButton": "Tối đa",
-      "submit": "Chuyển Quyền"
+      "submit": "Chuyển Quyền",
+      "revokeOnlyHint": "Tài sản được quản lý bởi {{contract}} chỉ có thể thu hồi về QX"
     },
     "errors": {
       "assetRequired": "Lựa chọn tài sản là bắt buộc",
@@ -200,7 +203,8 @@
           "required": "Yêu cầu tên",
           "min": "Tên phải có ít nhất 3 ký tự",
           "max": "Tên tối đa 50 ký tự",
-          "regex": "Chỉ được chứa {{regex}}"
+          "regex": "Chỉ được chứa {{regex}}",
+          "duplicate": "Tên này đã được sử dụng"
         }
       },
       "seed": {
@@ -259,7 +263,8 @@
         "editSeed": "Sửa địa chỉ",
         "deleteSeed": "Xóa địa chỉ",
         "refreshBalance": "Làm mới số dư từ mạng",
-        "openExplorer": "Xem trên Explorer"
+        "openExplorer": "Xem trên Explorer",
+        "signMessage": "Ký một tin nhắn"
       }
     },
     "hasPendingTransaction": "Giao dịch đang chờ",
@@ -691,6 +696,37 @@
       "rewardTable": "Bảng phần thưởng",
       "txSuccess": "Giao dịch thành công!",
       "txFailed": "Giao dịch thất bại!"
+    }
+  },
+  "signMessageComponent": {
+    "title": "Ký / Xác Minh Tin Nhắn",
+    "tabs": {
+      "sign": "Ký Tin Nhắn",
+      "verify": "Xác Minh Tin Nhắn"
+    },
+    "form": {
+      "sourceAccount": "Tài khoản để ký",
+      "message": "Tin nhắn",
+      "messagePlaceholder": "Nhập tin nhắn để ký",
+      "output": "Kết quả đã ký (JSON)",
+      "verifyInput": "Tin nhắn đã ký (JSON)",
+      "verifyInputPlaceholder": "Dán JSON với các trường identity, message và signature"
+    },
+    "buttons": {
+      "sign": "Ký Tin Nhắn",
+      "verify": "Xác Minh Chữ Ký"
+    },
+    "result": {
+      "valid": "Chữ Ký Hợp Lệ",
+      "invalid": "Chữ Ký Không Hợp Lệ"
+    },
+    "messages": {
+      "signError": "Không thể ký tin nhắn. Vui lòng thử lại.",
+      "parseError": "Định dạng JSON không hợp lệ. Mong đợi: { identity, message, signature }",
+      "invalidIdentity": "Danh tính không hợp lệ. Vui lòng kiểm tra giá trị và thử lại.",
+      "invalidSignature": "Định dạng chữ ký không hợp lệ. Mong đợi 130 ký tự A-P.",
+      "checksumMismatch": "Xác minh tổng kiểm tra chữ ký thất bại.",
+      "accountRequired": "Vui lòng chọn một tài khoản"
     }
   }
 }
