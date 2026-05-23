@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
-import { CurrentTickResponse, Transaction } from '../services/api.model';
+import { Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
 import { concatMap, lastValueFrom, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -5,12 +5,6 @@ export interface AuthResponse {
   privileges?: Array<string> | null;
 }
 
-export interface CurrentTickResponse {
-  tick: number;
-  dateTime: Date;
-}
-
-
 export interface Transaction {
   id: string;
   sourceId: string;
@@ -51,13 +45,6 @@ export interface NetworkBalance {
   tick: number;
 }
 
-export interface MarketInformation {
-  supply: number;
-  price: number;
-  capitalization: number;
-  currency: string
-}
-
 export interface ContractDto {
   id: string;
   index: number;
@@ -78,11 +65,6 @@ export interface IpoBidOverview {
   bids: IpoBid[];
 }
 
-export interface PeerDto {
-  ipAddress: string;
-  currentTick: number;
-  lastChange: Date;
-}
 export interface QubicAsset {
   publicId: string;
   contractIndex: number;

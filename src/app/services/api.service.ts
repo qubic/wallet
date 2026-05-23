@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, CurrentTickResponse, MarketInformation, NetworkBalance, PeerDto, QubicAsset } from './api.model';
+import { AuthResponse, BalanceResponse, ContractDto, NetworkBalance, QubicAsset } from './api.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -18,8 +17,6 @@ export class ApiService {
   public setIpoContracts(contracts: ContractDto[]): void {
     this._currentIpoContracts.next(contracts);
   }
-  public currentPeerList: BehaviorSubject<PeerDto[]> = new BehaviorSubject<PeerDto[]>([]);
-  public currentProtocol: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private basePath = environment.apiQliUrl;
   private authenticationActive = false;
 
@@ -39,22 +36,12 @@ export class ApiService {
       password: 'guest13@Qubic.li'
     }).subscribe(r => {
       if (r && r.token) {
-        this.onAuthenticated(r.token);
+        this.tokenSerice.nextToken(r.token);
       }
       this.authenticationActive = false;
     }, (e) => {
       this.authenticationActive = false;
     });
-  }
-
-  private onAuthenticated(token: string) {
-    this.setToken(token);
-    this.getProtocol().subscribe();
-    this.getPeerList().subscribe();
-  }
-
-  private setToken(token: string) {
-    this.tokenSerice.nextToken(token);
   }
 
   public login(authRequest: { username: string, password: string }) {
@@ -108,59 +95,6 @@ export class ApiService {
         responseType: 'json'
       }
     );
-  }
-
-  public getCurrentPrice() {
-    let localVarPath = `/Public/MarketInformation`;
-    return this.httpClient.request<MarketInformation>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getCurrentTick() {
-    let localVarPath = `/Public/CurrentTick`;
-    return this.httpClient.request<CurrentTickResponse>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        responseType: 'json'
-      }
-    );
-  }
-
-
-  public getProtocol() {
-    let localVarPath = `/Public/Protocol`;
-    return this.httpClient.request<number>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentProtocol.next(p);
-      return p;
-    }));
-  }
-
-  public getPeerList() {
-    let localVarPath = `/Public/Peers`;
-    return this.httpClient.request<PeerDto[]>('get', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        responseType: 'json'
-      }
-    ).pipe(map((p) => {
-      this.currentPeerList.next(p);
-      return p;
-    }));
   }
 
 }
