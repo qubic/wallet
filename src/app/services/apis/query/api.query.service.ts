@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { QUERY_API_BASE_PATH } from '../../../constants/qubic.constants';
 import {
     GetTransactionByHashRequest,
     GetTransactionsForIdentityRequest,
@@ -16,7 +17,7 @@ import {
     providedIn: 'root'
 })
 export class ApiQueryService {
-    private basePath = environment.apiUrl + '/query/v1';
+    private basePath = environment.apiUrl + QUERY_API_BASE_PATH;
 
     constructor(protected httpClient: HttpClient) {
     }

@@ -28,3 +28,6 @@ export const ASSET_TRANSFER_FEE = QubicDefinitions.QX_TRANSFER_ASSET_FEE;
  * Used to dynamically find this procedure in smart contracts JSON
  */
 export const TRANSFER_SHARE_MANAGEMENT_RIGHTS_PROCEDURE = 'Transfer Share Management Rights';
+
+export const LIVE_API_BASE_PATH = '/live/v1';
+export const QUERY_API_BASE_PATH = '/query/v1';
