@@ -112,7 +112,8 @@ export class UpdaterService {
         amount: Number(balanceMap.get(id) ?? 0n),
         tick,
       }));
-      await Promise.all(results.map(e => this.walletService.updateBalance(e.publicId, e.amount, tick)));
+      results.forEach(e => this.walletService.setBalance(e.publicId, e.amount, tick));
+      await this.walletService.savePublic(false);
       if (callbackFn) callbackFn(results);
     } catch (e) {
       if (e instanceof QubicRpcError) {
@@ -143,7 +144,7 @@ export class UpdaterService {
         this.processedTickIntervals.next(intervals);
       }
     }, errorResponse => {
-      this.logHttpError(errorResponse, false);
+      this.logHttpError(errorResponse);
     });
   }
 
@@ -162,7 +163,7 @@ export class UpdaterService {
       }
       this.tickInfoLoading = false;
     }, errorResponse => {
-      this.logHttpError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickInfoLoading = false;
     });
   }
@@ -182,7 +183,7 @@ export class UpdaterService {
       }
       this.tickLoading = false;
     }, errorResponse => {
-      this.logHttpError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickLoading = false;
     });
   }
@@ -282,7 +283,7 @@ export class UpdaterService {
         }
       }, errorResponse => {
         if (errorResponse.status === 401) this.api.reAuthenticate();
-        else this.logHttpError(errorResponse, false);
+        else this.logHttpError(errorResponse);
       });
     }
   }
@@ -305,19 +306,19 @@ export class UpdaterService {
         this.latestStatsLoading = false;
       },
       error: (errorResponse) => {
-        this.logHttpError(errorResponse, false);
+        this.logHttpError(errorResponse);
         this.latestStatsLoading = false;
       }
     });
   }
 
 
-  private logHttpError(errObject: any, showToUser: boolean = true) {
+  private logHttpError(errObject: any) {
+    console.error('HTTP Error:', errObject);
     if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
       this.errorStatus.next(errObject.error);
-    } else if (errObject.statusText) {
-      if (showToUser)
-        this.errorStatus.next(errObject.error);
+    } else {
+      this.errorStatus.next("An error occurred while communicating with the server.");
     }
   }
 

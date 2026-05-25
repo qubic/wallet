@@ -256,6 +256,19 @@ export class WalletService {
     }
   }
 
+  public setBalance(
+    publicId: string,
+    balance: number,
+    balanceTick: number
+  ) {
+    let seed = this.getSeed(publicId);
+    if (seed && (!seed.balanceTick || seed.balanceTick < balanceTick)) {
+      seed.balance = balance;
+      seed.balanceTick = balanceTick;
+      seed.lastUpdate = new Date();
+    }
+  }
+
 
   arrayBufferToBase64(buffer: ArrayBuffer) {
     let binary = '';
