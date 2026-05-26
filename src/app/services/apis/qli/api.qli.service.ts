@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, ContractDto, QubicAsset } from '../../api.model';
+import { ContractDto, QubicAsset } from '../../api.model';
+import { AuthResponse } from './api.qli.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from '../../auth-interceptor';

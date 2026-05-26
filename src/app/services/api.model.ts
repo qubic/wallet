@@ -1,10 +1,3 @@
-export interface AuthResponse {
-  success?: boolean;
-  token?: string | null;
-  refreshToken?: string | null;
-  privileges?: Array<string> | null;
-}
-
 export interface Transaction {
   id: string;
   sourceId: string;
