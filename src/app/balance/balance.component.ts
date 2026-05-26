@@ -131,7 +131,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     if (element === 'element1') {
       this.isShowAllTransactions = false;
       this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.us.archiverLatestTick.value
+      this.lastProcessedTick = this.us.lastProcessedTick.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
       // Initialize tick range for the current epoch when switching to epochs view

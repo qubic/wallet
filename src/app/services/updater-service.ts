@@ -20,7 +20,7 @@ import { PendingTransactionService } from './pending-transaction.service';
 export class UpdaterService {
 
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
-  public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
+  public lastProcessedTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public numberLastEpoch = 5;
   public latestStats: BehaviorSubject<LatestStatsResponse> = new BehaviorSubject<LatestStatsResponse>({
     data: {
@@ -42,7 +42,7 @@ export class UpdaterService {
   private tickInfoLoading = false;
   private balanceLoading = false;
   private latestStatsLoading = false;
-  private transactionArchiverLoading = false;
+  private transactionsLoading = false;
   private isActive = true;
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
   public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
@@ -69,7 +69,7 @@ export class UpdaterService {
     // every minute
     setInterval(async () => {
       try {
-        await this.pendingTxService.checkAndResolvePendingTransactions(this.archiverLatestTick.getValue());
+        await this.pendingTxService.checkAndResolvePendingTransactions(this.lastProcessedTick.getValue());
       } catch (e) {
         console.error('Failed to resolve pending transactions:', e);
       }
@@ -175,7 +175,7 @@ export class UpdaterService {
 
     this.apiQuery.getLastProcessedTick().subscribe(response => {
       if (response) {
-        this.archiverLatestTick.next(response.tickNumber);
+        this.lastProcessedTick.next(response.tickNumber);
         if (this.transactionsArray.getValue().length <= 0) {
           this.getTransactionsQuery();
         }
@@ -191,7 +191,7 @@ export class UpdaterService {
   private getTransactionsQuery(publicIds: string[] | undefined = undefined): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
     const intervals = this.processedTickIntervals.getValue();
-    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || intervals.length === 0))
+    if ((this.transactionsLoading || this.lastProcessedTick.value === 0 || intervals.length === 0))
       return;
 
     if (!publicIds)
@@ -207,11 +207,11 @@ export class UpdaterService {
       initialTick = targetInterval.firstTick;
     }
 
-    this.transactionArchiverLoading = true;
+    this.transactionsLoading = true;
 
     if (this.walletService.getSeeds().length > 0) {
       const observables: Observable<QueryTransactionRecord[]>[] = publicIds.map(publicId =>
-        this.apiQuery.getTransfers(publicId, initialTick, this.archiverLatestTick.value)
+        this.apiQuery.getTransfers(publicId, initialTick, this.lastProcessedTick.value)
       );
 
       // Combine all observables and collect results
@@ -221,10 +221,10 @@ export class UpdaterService {
 
         // Update BehaviorSubject with the combined results
         this.transactionsArray.next(allTransactions);
-        this.transactionArchiverLoading = false;
+        this.transactionsLoading = false;
       }, errorResponse => {
         console.error('errorResponse:', errorResponse);
-        this.transactionArchiverLoading = false;
+        this.transactionsLoading = false;
       });
     }
   }
