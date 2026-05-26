@@ -49,8 +49,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   public processedTickIntervals: ProcessedTickInterval[] = [];
   public currentSelectedEpoch = 0;
-  public initialProcessedTick: number = 0;
-  public lastProcessedTick: number = 0;
+  public viewStartTick: number = 0;
+  public viewEndTick: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -130,8 +130,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
     const element = this.selectedElement.value;
     if (element === 'element1') {
       this.isShowAllTransactions = false;
-      this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.us.lastProcessedTick.value
+      this.viewStartTick = 0;
+      this.viewEndTick = this.us.lastProcessedTick.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
       // Initialize tick range for the current epoch when switching to epochs view
@@ -165,8 +165,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
     if (epochIntervals.length > 0) {
       // Use the first interval's firstTick and the last interval's lastTick
       // to cover the full range when an epoch has gaps (multiple intervals)
-      this.initialProcessedTick = epochIntervals[0].firstTick;
-      this.lastProcessedTick = epochIntervals[epochIntervals.length - 1].lastTick;
+      this.viewStartTick = epochIntervals[0].firstTick;
+      this.viewEndTick = epochIntervals[epochIntervals.length - 1].lastTick;
       this.currentSelectedEpoch = epoch;
     }
     // Only fetch transactions if explicitly requested (e.g., when navigating between epochs)
@@ -202,7 +202,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiQuery.getTransfers(publicId, this.initialProcessedTick, this.lastProcessedTick)
+    this.apiQuery.getTransfers(publicId, this.viewStartTick, this.viewEndTick)
       .subscribe(async r => {
       if (r) {
         if (Array.isArray(r)) {
