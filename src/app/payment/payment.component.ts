@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from '../services/api.service';
+import { ApiQliService } from '../services/apis/qli/api.qli.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
 import { Transaction } from '../services/api.model';
@@ -74,7 +74,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   constructor(
     private t: TranslocoService,
     private transactionService: TransactionService,
-    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
+    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiQliService,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
     private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService
   ) {

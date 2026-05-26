@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NetworkBalance, QubicAsset } from './api.model';
-import { ApiService } from './api.service';
+import { ApiQliService } from './apis/qli/api.qli.service';
 import { QubicRpcService } from './qubic-rpc.service';
 import { QubicRpcError } from '@qubic.org/rpc';
 import { WalletService } from './wallet.service';
@@ -47,7 +47,7 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
   public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiQliService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 

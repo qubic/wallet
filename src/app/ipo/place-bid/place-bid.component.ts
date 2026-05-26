@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiQliService } from '../../services/apis/qli/api.qli.service';
 import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -49,7 +49,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
-    private transloco: TranslocoService, private api: ApiService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
+    private transloco: TranslocoService, private api: ApiQliService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
     , private fb: FormBuilder
     , private dialog: MatDialog
     , private apiLiveService: ApiLiveService

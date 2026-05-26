@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiQliService } from '../services/apis/qli/api.qli.service';
 import { WalletService } from '../services/wallet.service';
 import { ContractDto, IpoBid, IpoBidOverview } from '../services/api.model';
 import { Router } from '@angular/router';
@@ -33,7 +33,7 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private api: ApiService,
+    private api: ApiQliService,
     private apiLiveService: ApiLiveService,
     private apiAggregationService: ApiAggregationService,
     private walletService: WalletService,

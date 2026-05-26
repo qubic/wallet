@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, ContractDto, QubicAsset } from './api.model';
+import { AuthResponse, ContractDto, QubicAsset } from '../../api.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { AuthInterceptor } from './auth-interceptor';
-import { environment } from '../../environments/environment';
-import { TokenService } from './token.service';
+import { AuthInterceptor } from '../../auth-interceptor';
+import { environment } from '../../../../environments/environment';
+import { TokenService } from '../../token.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiQliService {
 
   private _currentIpoContracts = new BehaviorSubject<ContractDto[]>([]);
   public currentIpoContracts = this._currentIpoContracts.asObservable();
