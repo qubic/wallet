@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthResponse, BalanceResponse, ContractDto, NetworkBalance, QubicAsset } from './api.model';
+import { AuthResponse, ContractDto, QubicAsset } from './api.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { AuthInterceptor } from './auth-interceptor';
@@ -50,34 +50,6 @@ export class ApiService {
       {
         context: new HttpContext(),
         body: authRequest,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getCurrentBalance(publicIds: string[]) {
-    let localVarPath = `/Wallet/CurrentBalance`;
-    return this.httpClient.request<BalanceResponse[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
-        responseType: 'json'
-      }
-    );
-  }
-
-  public getNetworkBalances(publicIds: string[]) {
-    let localVarPath = `/Wallet/NetworkBalances`;
-    return this.httpClient.request<NetworkBalance[]>('post', `${this.basePath}${localVarPath}`,
-      {
-        context: new HttpContext(),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: publicIds,
         responseType: 'json'
       }
     );

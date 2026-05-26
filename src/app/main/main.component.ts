@@ -9,7 +9,7 @@ import { SeedEditDialog } from './edit-seed/seed-edit.component';
 import { RevealSeedDialog } from './reveal-seed/reveal-seed.component';
 import { Router } from '@angular/router';
 import { QrReceiveDialog } from './qr-receive/qr-receive.component';
-import { BalanceResponse, NetworkBalance } from '../services/api.model';
+import { NetworkBalance } from '../services/api.model';
 import { MatSort } from '@angular/material/sort';
 import { UpdaterService } from '../services/updater-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,7 +38,6 @@ export class MainComponent implements AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['alias', 'balance', 'currentEstimatedAmount', 'actions'];
   dataSource!: MatTableDataSource<ISeed>;
-  balances: BalanceResponse[] = [];
   public pendingTransactions: PendingTransaction[] = [];
   isTable: boolean = false;
   isVaultExportDialog: boolean = false;
@@ -104,8 +103,6 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         });
       });
 
-    // Get initial balance value to ensure UI shows data immediately
-    this.balances = updaterService.currentBalance.getValue();
     this.setDataSource();
 
     // Subscribe to wallet config changes (e.g., when a new vault is loaded)
@@ -116,25 +113,10 @@ export class MainComponent implements AfterViewInit, OnDestroy {
         const currentSeedIds = (config.seeds || []).map(s => s.publicId).sort().join(',');
         if (currentSeedIds !== this.lastSeedIds) {
           this.lastSeedIds = currentSeedIds;
-          // Immediately update the UI with new seeds
           this.setDataSource();
-          // Force balance update when seeds change
           if (config.seeds && config.seeds.length > 0) {
             updaterService.loadCurrentBalance(true);
           }
-        }
-      });
-
-    // Subscribe to balance updates (skip first emission to avoid double setDataSource call)
-    updaterService.currentBalance
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(b => {
-        // Prevent unnecessary updates when the same array reference is emitted
-        // (e.g., on initial subscription to BehaviorSubject's current value).
-        // Each API call creates a new array reference, so this check is valid.
-        if (this.balances !== b) {
-          this.balances = b;
-          this.setDataSource();
         }
       });
 
@@ -209,14 +191,7 @@ export class MainComponent implements AfterViewInit, OnDestroy {
   }
 
   setDataSource(): void {
-    this.dataSource = new MatTableDataSource(this.walletService.getSeeds().map(m => {
-      if (!m.balanceTick || m.balanceTick === 0) {
-        m.balance = this.getDeprecatedBalance(m.publicId);
-        (<any>m).currentEstimatedAmount = this.getEpochChanges(m.publicId);
-        m.lastUpdate = this.getDeprecatedLastUpdate(m.publicId);
-      }
-      return m;
-    }));
+    this.dataSource = new MatTableDataSource(this.walletService.getSeeds());
     this.dataSource.sort = this.sort;
   }
 
@@ -228,27 +203,12 @@ export class MainComponent implements AfterViewInit, OnDestroy {
     window.location.reload();
   }
 
-  getDeprecatedBalance(publicId: string): number {
-    var balanceEntry = this.balances.find(f => f.publicId === publicId);
-    return balanceEntry?.currentEstimatedAmount ?? balanceEntry?.epochBaseAmount ?? 0;
-  }
-
-  getDeprecatedLastUpdate(publicId: string): Date | undefined {
-    var balanceEntry = this.balances.find(f => f.publicId === publicId);
-    return balanceEntry ? new Date() : undefined;
-  }
-
   getTotalBalance(): number {
     return Number(this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).reduce((p, c) => p + c.balance, 0) ?? BigInt(0));
   }
 
   getBalance(publicId: string): number {
     return Number(this.walletService.getSeed(publicId)?.balance ?? BigInt(0));
-  }
-
-  getEpochChanges(publicId: string): number {
-    var balanceEntry = this.balances.find(f => f.publicId === publicId);
-    return this.getBalance(publicId) - (balanceEntry?.epochBaseAmount ?? 0); // balanceEntry?.epochChanges ?? 0;
   }
 
   refreshData() {

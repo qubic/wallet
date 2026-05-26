@@ -3,6 +3,12 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@qubic.org/rpc": ["node_modules/@qubic.org/rpc/dist"],
+      "@qubic.org/contracts": ["node_modules/@qubic.org/contracts/dist"],
+      "@qubic.org/crypto": ["node_modules/@qubic.org/crypto/dist"],
+      "@qubic.org/types": ["node_modules/@qubic.org/types/dist"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

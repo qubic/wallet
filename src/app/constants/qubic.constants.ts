@@ -41,3 +41,5 @@ export const REVOKE_RIGHTS_IDENTIFIERS = [
   'RevokeAssetManagementRights',
 ] as const;
 
+export const LIVE_API_BASE_PATH = '/live/v1';
+export const QUERY_API_BASE_PATH = '/query/v1';

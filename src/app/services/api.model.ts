@@ -28,17 +28,6 @@ export interface Transaction {
 
 
 
-export interface BalanceResponse {
-  computorIndex?: number;
-  isComputor: boolean;
-  publicId: string;
-  currentEstimatedAmount: number;
-  epochBaseAmount: number;
-  epochChanges: number;
-  baseDate: Date;
-  transactions: Transaction[]
-}
-
 export interface NetworkBalance {
   publicId: string;
   amount: number;

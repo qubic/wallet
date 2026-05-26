@@ -32,7 +32,7 @@ jobs:
       - name: Install commitlint
         run: |
           yarn add conventional-changelog-conventionalcommits
-          yarn add commitlint@latest
+          yarn add commitlint@20.5.3
 
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'

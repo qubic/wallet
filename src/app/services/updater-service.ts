@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { BalanceResponse, NetworkBalance, QubicAsset } from './api.model';
+import { NetworkBalance, QubicAsset } from './api.model';
 import { ApiService } from './api.service';
+import { QubicRpcService } from './qubic-rpc.service';
+import { QubicRpcError } from '@qubic.org/rpc';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -20,7 +22,6 @@ export class UpdaterService {
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public numberLastEpoch = 5;
-  public currentBalance: BehaviorSubject<BalanceResponse[]> = new BehaviorSubject<BalanceResponse[]>([]);
   public latestStats: BehaviorSubject<LatestStatsResponse> = new BehaviorSubject<LatestStatsResponse>({
     data: {
       price: 0,
@@ -41,13 +42,12 @@ export class UpdaterService {
   private tickInfoLoading = false;
   private balanceLoading = false;
   private latestStatsLoading = false;
-  private networkBalanceLoading = false;
   private transactionArchiverLoading = false;
   private isActive = true;
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
   public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 
@@ -57,7 +57,6 @@ export class UpdaterService {
     this.getLastProcessedTick();
     this.getTickInfo();
     this.getCurrentBalance();
-    this.getNetworkBalances();
     this.getAssets();
     this.getLatestStats();
     this.getTransactionsQuery();
@@ -75,7 +74,6 @@ export class UpdaterService {
         console.error('Failed to resolve pending transactions:', e);
       }
       this.getCurrentBalance();
-      this.getNetworkBalances();
       this.getAssets();
       this.getTransactionsQuery();
     }, 60000);
@@ -97,30 +95,34 @@ export class UpdaterService {
 
   public loadCurrentBalance(force = false) {
     this.getCurrentBalance(force);
-    this.getNetworkBalances(undefined, undefined, force);
   }
 
+  private async getCurrentBalance(force = false, publicIds?: string[], callbackFn?: (balances: NetworkBalance[]) => void): Promise<void> {
+    if (!force && (this.balanceLoading || !this.isActive)) return;
 
-  /**
-   * should load the current balances for the accounts
-   * @returns 
-   */
-  private getCurrentBalance(force = false) {
-    if (!force && (this.balanceLoading || !this.isActive))
-      return;
+    const ids = publicIds ?? this.walletService.getSeeds().map(m => m.publicId);
+    if (!ids.length) return;
 
     this.balanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
-        if (r) {
-          this.currentBalance.next(r);
-        }
-        this.balanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.balanceLoading = false;
-      });
+    try {
+      const balanceMap = await this.qubicRpc.getBalances(ids);
+      const tick = this.currentTick.getValue();
+      const results: NetworkBalance[] = ids.map(id => ({
+        publicId: id,
+        amount: Number(balanceMap.get(id) ?? 0n),
+        tick,
+      }));
+      results.forEach(e => this.walletService.setBalance(e.publicId, e.amount, tick));
+      await this.walletService.savePublic(false);
+      if (callbackFn) callbackFn(results);
+    } catch (e) {
+      if (e instanceof QubicRpcError) {
+        this.errorStatus.next(e.message);
+      } else {
+        console.error('Balance fetch failed:', e);
+      }
+    } finally {
+      this.balanceLoading = false;
     }
   }
 
@@ -128,39 +130,8 @@ export class UpdaterService {
     this.getAssets(undefined, allbackFn);
   }
 
-  public forceUpdateNetworkBalance(publicId: string, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined): void {
-    this.getNetworkBalances([publicId], callbackFn);
-  }
-
-  /**
-   * load balances directly from network
-   * @returns 
-   */
-  private getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): void {
-    if (!force && (this.networkBalanceLoading || !this.isActive))
-      return;
-
-    if (!publicIds)
-      publicIds = this.walletService.getSeeds().map(m => m.publicId);
-
-    this.networkBalanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getNetworkBalances(publicIds).subscribe(r => {
-        if (r) {
-          // update wallet
-          r.forEach((entry) => {
-            this.walletService.updateBalance(entry.publicId, entry.amount, entry.tick);
-          });
-          if (callbackFn)
-            callbackFn(r);
-        }
-        this.networkBalanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.networkBalanceLoading = false;
-      });
-    }
+  public forceUpdateNetworkBalance(publicId: string, callbackFn?: (balances: NetworkBalance[]) => void): void {
+    this.getCurrentBalance(false, [publicId], callbackFn);
   }
 
   //#region
@@ -173,7 +144,7 @@ export class UpdaterService {
         this.processedTickIntervals.next(intervals);
       }
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
     });
   }
 
@@ -192,7 +163,7 @@ export class UpdaterService {
       }
       this.tickInfoLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickInfoLoading = false;
     });
   }
@@ -212,7 +183,7 @@ export class UpdaterService {
       }
       this.tickLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickLoading = false;
     });
   }
@@ -241,7 +212,7 @@ export class UpdaterService {
 
     if (this.walletService.getSeeds().length > 0) {
       const observables: Observable<QueryTransactionRecord[]>[] = publicIds.map(publicId =>
-        this.apiQuery.getTransfers(publicId, initialTick, this.currentTick.value)
+        this.apiQuery.getTransfers(publicId, initialTick, this.archiverLatestTick.value)
       );
 
       // Combine all observables and collect results
@@ -311,7 +282,8 @@ export class UpdaterService {
             callbackFn(r);
         }
       }, errorResponse => {
-        this.processError(errorResponse, false);
+        if (errorResponse.status === 401) this.api.reAuthenticate();
+        else this.logHttpError(errorResponse);
       });
     }
   }
@@ -334,21 +306,19 @@ export class UpdaterService {
         this.latestStatsLoading = false;
       },
       error: (errorResponse) => {
-        this.processError(errorResponse, false);
+        this.logHttpError(errorResponse);
         this.latestStatsLoading = false;
       }
     });
   }
 
 
-  private processError(errObject: any, showToUser: boolean = true) {
-    if (errObject.status == 401) {
-      this.api.reAuthenticate();
-    } else if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
+  private logHttpError(errObject: any) {
+    console.error('HTTP Error:', errObject);
+    if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
       this.errorStatus.next(errObject.error);
-    } else if (errObject.statusText) {
-      if (showToUser)
-        this.errorStatus.next(errObject.error);
+    } else {
+      this.errorStatus.next("An error occurred while communicating with the server.");
     }
   }
 
