@@ -31,7 +31,6 @@ export interface Transaction {
 export interface NetworkBalance {
   publicId: string;
   amount: number;
-  tick: number;
 }
 
 export interface ContractDto {

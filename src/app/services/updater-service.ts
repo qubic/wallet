@@ -106,13 +106,11 @@ export class UpdaterService {
     this.balanceLoading = true;
     try {
       const balanceMap = await this.qubicRpc.getBalances(ids);
-      const tick = this.currentTick.getValue();
       const results: NetworkBalance[] = ids.map(id => ({
         publicId: id,
-        amount: Number(balanceMap.get(id) ?? 0n),
-        tick,
+        amount: Number(balanceMap.get(id) ?? 0n)
       }));
-      results.forEach(e => this.walletService.setBalance(e.publicId, e.amount, tick));
+      results.forEach(e => this.walletService.setBalance(e.publicId, e.amount));
       await this.walletService.savePublic(false);
       if (callbackFn) callbackFn(results);
     } catch (e) {
@@ -120,6 +118,7 @@ export class UpdaterService {
         this.errorStatus.next(e.message);
       } else {
         console.error('Balance fetch failed:', e);
+        this.errorStatus.next('An unexpected error occurred while fetching balances.');
       }
     } finally {
       this.balanceLoading = false;

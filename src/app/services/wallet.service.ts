@@ -244,13 +244,11 @@ export class WalletService {
 
   public async updateBalance(
     publicId: string,
-    balance: number,
-    balanceTick: number
+    balance: number
   ) {
     let seed = this.getSeed(publicId);
-    if (seed && (!seed.balanceTick || seed.balanceTick < balanceTick)) {
+    if (seed) {
       seed.balance = balance;
-      seed.balanceTick = balanceTick;
       seed.lastUpdate = new Date();
       await this.saveConfig(false);
     }
@@ -258,13 +256,11 @@ export class WalletService {
 
   public setBalance(
     publicId: string,
-    balance: number,
-    balanceTick: number
+    balance: number
   ) {
     let seed = this.getSeed(publicId);
-    if (seed && (!seed.balanceTick || seed.balanceTick < balanceTick)) {
+    if (seed) {
       seed.balance = balance;
-      seed.balanceTick = balanceTick;
       seed.lastUpdate = new Date();
     }
   }
@@ -729,7 +725,6 @@ export class WalletService {
         const exportSeed: ISeed = <ISeed>{};
         Object.assign(exportSeed, m);
         // reset states balance
-        exportSeed.balanceTick = 0;
         exportSeed.lastUpdate = undefined;
         exportSeed.isExported = true;
         return exportSeed;
