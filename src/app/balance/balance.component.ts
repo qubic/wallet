@@ -51,7 +51,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public currentSelectedEpoch = 0;
   public viewStartTick: number = 0;
   public viewEndTick: number = 0;
-  public transactionsLoading: boolean = false;
+  public isFetchingTransactions: boolean = false;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -203,7 +203,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.transactionsLoading = true;
+    this.isFetchingTransactions = true;
     this.apiQuery.getTransfers(publicId, this.viewStartTick, this.viewEndTick)
       .subscribe(async r => {
         try {
@@ -225,10 +225,10 @@ export class BalanceComponent implements OnInit, OnDestroy {
             this.sortTransactions();
           }
         } finally {
-          this.transactionsLoading = false;
+          this.isFetchingTransactions = false;
         }
       }, () => {
-        this.transactionsLoading = false;
+        this.isFetchingTransactions = false;
       });
   }
 
