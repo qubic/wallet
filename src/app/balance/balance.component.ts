@@ -52,6 +52,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public viewStartTick: number = 0;
   public viewEndTick: number = 0;
   public isFetchingTransactions: boolean = false;
+  private fetchSeq = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -201,11 +202,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const seq = ++this.fetchSeq;
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
     this.isFetchingTransactions = true;
     this.apiQuery.getTransfers(publicId, this.viewStartTick, this.viewEndTick)
       .subscribe(async r => {
+        if (seq !== this.fetchSeq) return; // stale response — a newer fetch superseded this one
         try {
           if (r) {
             if (Array.isArray(r)) {
@@ -225,9 +228,14 @@ export class BalanceComponent implements OnInit, OnDestroy {
             this.sortTransactions();
           }
         } finally {
-          this.isFetchingTransactions = false;
+          // Only clear the flag if we're still the current fetch; otherwise a
+          // newer fetch is in flight and owns the loading state.
+          if (seq === this.fetchSeq) {
+            this.isFetchingTransactions = false;
+          }
         }
       }, () => {
+        if (seq !== this.fetchSeq) return;
         this.isFetchingTransactions = false;
       });
   }
