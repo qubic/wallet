@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Bitte exportiere deine Einstellungen, sie enthalten die verschlüsselten Seeds, die du benötigst, um dein Wallet wiederherzustellen.",
-    "saveYourKey": "Bitte sichere deine Tresor-Datei.",
-    "qubicLiSync": "Synchronisiere deine Einstellungen mit qubic.li",
-    "qubicOffline": "QUBIC-Netzwerk nicht verbunden",
-    "qubicOnline": "Verbunden mit dem QUBIC-Netzwerk"
+    "saveYourKey": "Bitte sichere deine Tresor-Datei."
   },
   "revealSeedComponent": {
     "title": "Kontoinformationen",
@@ -433,13 +430,8 @@
   },
   "settings": {
     "general": {
-      "title": "Web-Brücke",
       "tickAddition.placeholder": "Anzahl der Ticks, die zum aktuellen Tick hinzugefügt werden, um eine neue Transaktion zu senden",
-      "webBridge.placeholder": "Web-Brücke aktivieren (Direkte Verbindung zum QUBIC-Netzwerk)",
-      "button.save": "Einstellungen speichern",
-      "beta": {
-        "placeholder": "Beta-Funktionen aktivieren"
-      }
+      "button.save": "Einstellungen speichern"
     },
     "import": {
       "title": "Einstellungen importieren",

@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Veuillez exporter/télécharger vos paramètres. Vos paramètres contiennent les Seed cryptées nécessaires pour restaurer le Wallet.",
-    "saveYourKey": "Veuillez stocker votre fichier Wallet dans un endroit sûr.",
-    "qubicLiSync": "Synchronisez vos paramètres avec qubic.li",
-    "qubicOffline": "Réseau QUBIC non connecté",
-    "qubicOnline": "Connecté au réseau QUBIC"
+    "saveYourKey": "Veuillez stocker votre fichier Wallet dans un endroit sûr."
   },
   "revealSeedComponent": {
     "title": "Informations sur l'adresse",
@@ -434,11 +431,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Nombre de Ticks ajoutés au tick actuel pour envoyer une nouvelle transaction",
-      "webBridge.placeholder": "Activer le Web Bridge (Connexion directe au réseau QUBIC)",
-      "button.save": "Sauvegarder les paramètres",
-      "beta": {
-        "placeholder": "Activer les fonctionnalités bêta"
-      }
+      "button.save": "Sauvegarder les paramètres"
     },
     "import": {
       "title": "Importer les paramètres",

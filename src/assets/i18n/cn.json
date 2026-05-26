@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "请导出/下载您的设置，您的设置包含还原金库所需的加密种子。",
-    "saveYourKey": "请将您的金库文件存储在安全的地方。",
-    "qubicLiSync": "使用 qubic.li 同步您的设置",
-    "qubicOffline": "QUBIC 网络未连接",
-    "qubicOnline": "已连接到 QUBIC 网络"
+    "saveYourKey": "请将您的金库文件存储在安全的地方。"
   },
   "revealSeedComponent": {
     "title": "地址信息",
@@ -434,13 +431,8 @@
   },
   "settings": {
     "general": {
-      "title": "Web Bridge",
       "tickAddition.placeholder": "添加到当前报价以发送新交易的报价数量",
-      "webBridge.placeholder": "启用 Web Bridge（直接连接到 QUBIC 网络）",
-      "button.save": "保存设置",
-      "beta": {
-        "placeholder": "启用测试版功能"
-      }
+      "button.save": "保存设置"
     },
     "import": {
       "title": "导入设置",

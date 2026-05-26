@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Vui lòng Xuất/Tải xuống Cài đặt của bạn. Cài đặt chứa các Seed đã mã hóa mà bạn cần để khôi phục Vault.",
-    "saveYourKey": "Hãy lưu trữ tệp Vault của bạn ở nơi an toàn.",
-    "qubicLiSync": "Đồng bộ cài đặt của bạn với qubic.li",
-    "qubicOffline": "Mạng QUBIC chưa kết nối",
-    "qubicOnline": "Đã kết nối với mạng QUBIC"
+    "saveYourKey": "Hãy lưu trữ tệp Vault của bạn ở nơi an toàn."
   },
   "revealSeedComponent": {
     "title": "Thông tin địa chỉ",
@@ -434,13 +431,8 @@
   },
   "settings": {
     "general": {
-      "title": "Web Bridge",
       "tickAddition.placeholder": "Số Tick cộng thêm vào tick hiện tại khi gửi giao dịch mới",
-      "webBridge.placeholder": "Bật Web Bridge (Kết nối trực tiếp tới mạng QUBIC)",
-      "button.save": "Lưu cài đặt",
-      "beta": {
-        "placeholder": "Bật tính năng Beta"
-      }
+      "button.save": "Lưu cài đặt"
     },
     "import": {
       "title": "Nhập cài đặt",

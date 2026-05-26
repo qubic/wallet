@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Wallet.",
-    "saveYourKey": "Bewaar uw kluisbestand op een veilige plaats.",
-    "qubicLiSync": "Synchroniseer uw instellingen met qubic.li",
-    "qubicOffline": "QUBIC network not connected",
-    "qubicOnline": "Connected to the QUBIC network"
+    "saveYourKey": "Bewaar uw kluisbestand op een veilige plaats."
   },
   "revealSeedComponent": {
     "title": "Account Informatie",
@@ -434,11 +431,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
-      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
-      "button.save": "Save Settings",
-      "beta": {
-        "placeholder": "Enable Beta Features"
-      }
+      "button.save": "Save Settings"
     },
     "import": {
       "title": "Import Settings",

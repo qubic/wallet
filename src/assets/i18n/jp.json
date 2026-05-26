@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "設定をエクスポート／ダウンロードしてください。設定には、ヴォールトを復元するために必要な暗号化されたシードが含まれています。",
-    "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。",
-    "qubicLiSync": "設定をqubic.liと同期する",
-    "qubicOffline": "QUBICネットワークに接続されていません",
-    "qubicOnline": "QUBICネットワークに接続済み"
+    "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。"
   },
   "revealSeedComponent": {
     "title": "アドレス情報",
@@ -434,13 +431,8 @@
   },
   "settings": {
     "general": {
-      "title": "Webブリッジ",
       "tickAddition.placeholder": "新しい取引を送信するために現在のティックに追加するティックの数",
-      "webBridge.placeholder": "Webブリッジを有効にする（QUBICネットワークへの直接接続）",
-      "button.save": "設定を保存",
-      "beta": {
-        "placeholder": "ベータ機能を有効にする"
-      }
+      "button.save": "設定を保存"
     },
     "import": {
       "title": "設定をインポート",

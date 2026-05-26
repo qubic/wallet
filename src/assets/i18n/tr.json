@@ -74,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Lütfen Ayarlarınızı Dışa Aktarın/İndirin. Ayarlarınız cüzdanınızı geri yüklemek için ihtiyaç duyduğunuz şifrelenmiş kurtarma ifadesi içerir.",
-    "saveYourKey": "Lütfen bu dosyayı güvenli bir yerde saklayın.",
-    "qubicLiSync": "Ayarlarınızı qubic.li ile senkronize edin",
-    "qubicOffline": "QUBIC ağı bağlı değil",
-    "qubicOnline": "QUBIC ağına bağlı"
+    "saveYourKey": "Lütfen bu dosyayı güvenli bir yerde saklayın."
   },
   "revealSeedComponent": {
     "title": "Adres Bilgisi",
@@ -434,13 +431,8 @@
   },
   "settings": {
     "general": {
-      "title": "Web Köprüsü",
       "tickAddition.placeholder": "Yeni bir işlem için mevcut Tick'e eklenen Tick sayısı",
-      "webBridge.placeholder": "Web Köprüsünü Etkinleştirin (QUBIC Ağına Doğrudan Bağlantı)",
-      "button.save": "Ayarları Kaydet",
-      "beta": {
-        "placeholder": "Beta Özelliklerini Etkinleştir"
-      }
+      "button.save": "Ayarları Kaydet"
     },
     "import": {
       "title": "Ayarları İçe Aktar",
