@@ -1,9 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ApiService } from './services/api.service';
-import { ApiQueryService } from './services/apis/query/api.query.service';
-import { ApiLiveService } from './services/apis/live/api.live.service';
-import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 import { ThemeService } from './services/theme.service';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -27,8 +23,6 @@ export class AppComponent {
     public themeService: ThemeService,
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
-    api: ApiService,
-    apiQuery: ApiQueryService,
     private deviceService: DeviceDetectorService,
     private matIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer
