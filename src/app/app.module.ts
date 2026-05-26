@@ -38,17 +38,12 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
-import { ApiService } from './services/api.service';
-import { ApiQueryService } from './services/apis/query/api.query.service';
-import { ApiLiveService} from './services/apis/live/api.live.service';
-import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrReceiveDialog } from './main/qr-receive/qr-receive.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { LanguageChooserComponent } from './core/language-chooser/language-chooser.component';
-import { UpdaterService } from './services/updater-service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
@@ -66,8 +61,6 @@ import { VisibilityService } from './services/visibility.service';
 import { AssetsDialog } from './main/assets/assets.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { AssetsComponent } from './assets/assets.component';
-import { TransactionService } from './services/transaction.service';
-import { EnvironmentService } from './services/env.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { WelcomeComponent } from './public/welcome/welcome.component';
 import { CreateVaultComponent } from './public/create-vault/create-vault.component';
@@ -198,16 +191,9 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
         deps: []
       },
       AuthInterceptor,
-      ApiService,
-      ApiQueryService,
-      ApiLiveService,
-      ApiStatsService,
-      UpdaterService,
       DecimalPipe,
-      EnvironmentService,
       { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
       httpInterceptorProviders,
-      TransactionService
   ],
   bootstrap: [AppComponent],
 })
