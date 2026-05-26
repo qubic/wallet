@@ -4,7 +4,6 @@ import { ApiService } from './services/api.service';
 import { ApiQueryService } from './services/apis/query/api.query.service';
 import { ApiLiveService } from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
-import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
 import { ThemeService } from './services/theme.service';
 import { MatIconRegistry } from '@angular/material/icon';
