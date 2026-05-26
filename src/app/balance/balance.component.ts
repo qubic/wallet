@@ -52,7 +52,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public viewStartTick: number = 0;
   public viewEndTick: number = 0;
   public isFetchingTransactions: boolean = false;
-  private fetchSeq = 0;
+  private fetchSeq: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -217,7 +217,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
               this.transactionsArchiver.push(r);
             }
 
-            if (this.transactionsRecord.length <= 0 && this.transactionsArchiver.length > 0) {
+            if (this.transactionsArchiver.length > 0) {
               this.transactionsRecord.push(...this.transactionsArchiver);
             }
 
@@ -235,6 +235,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
           }
         }
       }, () => {
+        // stale response — a newer fetch superseded this one
         if (seq !== this.fetchSeq) return;
         this.isFetchingTransactions = false;
       });
