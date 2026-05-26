@@ -40,7 +40,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { ApiService } from './services/api.service';
 import { ApiQueryService } from './services/apis/query/api.query.service';
-import { ApiArchiveService } from './services/apis/archive/api.archive.service';
 import { ApiLiveService} from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
@@ -202,7 +201,6 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
       AuthInterceptor,
       ApiService,
       ApiQueryService,
-      ApiArchiveService,
       ApiLiveService,
       ApiStatsService,
       ApiTxStatusService,

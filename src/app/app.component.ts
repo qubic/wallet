@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ApiService } from './services/api.service';
 import { ApiQueryService } from './services/apis/query/api.query.service';
-import { ApiArchiveService } from './services/apis/archive/api.archive.service';
 import { ApiLiveService } from './services/apis/live/api.live.service';
 import { ApiStatsService } from './services/apis/stats/api.stats.service';
 import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
