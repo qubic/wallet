@@ -242,18 +242,6 @@ export class WalletService {
     }
   }
 
-  public async updateBalance(
-    publicId: string,
-    balance: number
-  ) {
-    let seed = this.getSeed(publicId);
-    if (seed) {
-      seed.balance = balance;
-      seed.lastUpdate = new Date();
-      await this.saveConfig(false);
-    }
-  }
-
   public setBalance(
     publicId: string,
     balance: number
