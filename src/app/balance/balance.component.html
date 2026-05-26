@@ -225,7 +225,7 @@
             </mat-form-field>
         </span>
         <div>
-            <div *ngIf="transactionsRecord.length <= 0">
+            <div *ngIf="!transactionsLoading && transactionsRecord.length <= 0">
                 {{ t("balanceComponent.transactions.noTransactions") }}
             </div>
             <mat-accordion *ngFor="let transaction of transactionsRecord">

@@ -51,6 +51,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public currentSelectedEpoch = 0;
   public viewStartTick: number = 0;
   public viewEndTick: number = 0;
+  public transactionsLoading: boolean = false;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -202,26 +203,33 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
+    this.transactionsLoading = true;
     this.apiQuery.getTransfers(publicId, this.viewStartTick, this.viewEndTick)
       .subscribe(async r => {
-      if (r) {
-        if (Array.isArray(r)) {
-          this.transactionsArchiver.push(...r);
-        } else {
-          this.transactionsArchiver.push(r);
+        try {
+          if (r) {
+            if (Array.isArray(r)) {
+              this.transactionsArchiver.push(...r);
+            } else {
+              this.transactionsArchiver.push(r);
+            }
+
+            if (this.transactionsRecord.length <= 0 && this.transactionsArchiver.length > 0) {
+              this.transactionsRecord.push(...this.transactionsArchiver);
+            }
+
+            await Promise.all(this.transactionsRecord.map(async transaction => {
+              await this.checkAndParseAssetTransfer(transaction);
+            }));
+
+            this.sortTransactions();
+          }
+        } finally {
+          this.transactionsLoading = false;
         }
-
-        if (this.transactionsRecord.length <= 0 && this.transactionsArchiver.length > 0) {
-          this.transactionsRecord.push(...this.transactionsArchiver);
-        }
-
-        await Promise.all(this.transactionsRecord.map(async transaction => {
-          await this.checkAndParseAssetTransfer(transaction);
-        }));
-
-        this.sortTransactions();
-      }
-    });
+      }, () => {
+        this.transactionsLoading = false;
+      });
   }
 
   /**
