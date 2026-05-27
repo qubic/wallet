@@ -7,8 +7,7 @@ import { PendingTransactionService } from './pending-transaction.service';
 import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { lastValueFrom } from 'rxjs';
-
-const IPO_INPUT_TYPE = 1;
+import { IPO_INPUT_TYPE } from '../constants/qubic.constants';
 
 /**
  * Transaction Service to send transaction to the qubic network
