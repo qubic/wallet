@@ -3,6 +3,7 @@ import { HttpClient, HttpContext } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { QUERY_API_BASE_PATH } from '../../../constants/qubic.constants';
+import { base64ToHex } from '../../../utils/hex.utils';
 import {
     GetTransactionByHashRequest,
     GetTransactionsForIdentityRequest,
@@ -146,8 +147,8 @@ export class ApiQueryService {
                     tickNumber: tx.tickNumber,
                     inputType: tx.inputType,
                     inputSize: tx.inputSize,
-                    inputHex: this.base64ToHex(tx.inputData),
-                    signatureHex: this.base64ToHex(tx.signature),
+                    inputHex: base64ToHex(tx.inputData),
+                    signatureHex: base64ToHex(tx.signature),
                     txId: tx.hash,
                 },
                 timestamp: tx.timestamp,
@@ -156,17 +157,5 @@ export class ApiQueryService {
         }
 
         return Array.from(grouped.values());
-    }
-
-    private base64ToHex(base64: string): string {
-        if (!base64) return '';
-        try {
-            const binary = atob(base64);
-            return Array.from(binary, (char) =>
-                char.charCodeAt(0).toString(16).padStart(2, '0')
-            ).join('');
-        } catch {
-            return '';
-        }
     }
 }

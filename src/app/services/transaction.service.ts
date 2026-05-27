@@ -8,6 +8,7 @@ import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/Q
 import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { lastValueFrom } from 'rxjs';
 import { IPO_INPUT_TYPE } from '../constants/qubic.constants';
+import { bytesToHex } from '../utils/hex.utils';
 
 /**
  * Transaction Service to send transaction to the qubic network
@@ -138,17 +139,13 @@ export class TransactionService {
         const view = new DataView(input.buffer);
         view.setBigInt64(0, BigInt(price), true);
         view.setInt16(8, quantity, true);
-        return this.bytesToHex(input);
-    }
-
-    private bytesToHex(bytes: Uint8Array): string {
-        return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        return bytesToHex(input);
     }
 
     private storePendingTransaction(qtx: QubicTransaction): void {
         const payload = qtx.getPayload();
         const inputHex = payload
-            ? this.bytesToHex(payload.getPackageData())
+            ? bytesToHex(payload.getPackageData())
             : undefined;
         const tx = {
             txId: qtx.getId(),
