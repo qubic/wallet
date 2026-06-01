@@ -10,7 +10,7 @@ import { map, of } from 'rxjs';
 })
 
 export class ApiAggregationService {
-    private basePath = environment.aggregationApiUrl + "/aggregation/v1";
+    private basePath = environment.apiUrl + "/aggregation/v1";
 
     constructor(protected httpClient: HttpClient) {
     }
