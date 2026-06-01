@@ -4,13 +4,14 @@ import { CurrentIpoBidsContract } from './api.aggregation.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, of } from 'rxjs';
+import { AGGREGATION_API_BASE_PATH } from '../../../constants/qubic.constants';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class ApiAggregationService {
-    private basePath = environment.apiUrl + "/aggregation/v1";
+    private basePath = environment.apiUrl + AGGREGATION_API_BASE_PATH;
 
     constructor(protected httpClient: HttpClient) {
     }

@@ -43,6 +43,7 @@ export const REVOKE_RIGHTS_IDENTIFIERS = [
 
 export const LIVE_API_BASE_PATH = '/live/v1';
 export const QUERY_API_BASE_PATH = '/query/v1';
+export const AGGREGATION_API_BASE_PATH = '/aggregation/v1';
 
 /**
  * Input type identifier for an IPO bid transaction.

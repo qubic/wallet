@@ -1,4 +1,3 @@
-// /aggregation/v1/getCurrentIpoBids
 export interface IpoBidInfo {
   price: string;
   quantity: number;
