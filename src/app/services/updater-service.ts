@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { QubicTransaction } from '@qubic-lib/qubic-ts-library/dist/qubic-types/QubicTransaction';
-import { BalanceResponse, NetworkBalance, QubicAsset, Transaction } from './api.model';
-import { TransactionsArchiver, StatusArchiver } from './api.archiver.model';
-import { ApiService } from './api.service';
-import { ApiArchiverService } from './api.archiver.service';
+import { NetworkBalance, QubicAsset } from './api.model';
+import { ApiQliService } from './apis/qli/api.qli.service';
+import { QubicRpcService } from './qubic-rpc.service';
+import { QubicRpcError } from '@qubic.org/rpc';
 import { WalletService } from './wallet.service';
 import { VisibilityService } from './visibility.service';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiStatsService } from './apis/stats/api.stats.service';
 import { LatestStatsResponse } from './apis/stats/api.stats.model';
 import { ApiLiveService } from './apis/live/api.live.service';
+import { ApiQueryService } from './apis/query/api.query.service';
+import { ProcessedTickInterval, QueryTransactionRecord } from './apis/query/api.query.model';
+import { PendingTransactionService } from './pending-transaction.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +20,8 @@ import { ApiLiveService } from './apis/live/api.live.service';
 export class UpdaterService {
 
   public currentTick: BehaviorSubject<number> = new BehaviorSubject(0);
-  public archiverLatestTick: BehaviorSubject<number> = new BehaviorSubject(0);
+  public lastProcessedTick: BehaviorSubject<number> = new BehaviorSubject(0);
   public numberLastEpoch = 5;
-  public currentBalance: BehaviorSubject<BalanceResponse[]> = new BehaviorSubject<BalanceResponse[]>([]);
   public latestStats: BehaviorSubject<LatestStatsResponse> = new BehaviorSubject<LatestStatsResponse>({
     data: {
       price: 0,
@@ -36,44 +37,45 @@ export class UpdaterService {
       burnedQus: ''
     }
   });
-  public internalTransactions: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]); // used to store internal tx
   public errorStatus: BehaviorSubject<string> = new BehaviorSubject<string>("");
   private tickLoading = false;
   private tickInfoLoading = false;
   private balanceLoading = false;
   private latestStatsLoading = false;
-  private networkBalanceLoading = false;
-  private transactionArchiverLoading = false;
+  private transactionsLoading = false;
   private isActive = true;
-  public transactionsArray: BehaviorSubject<TransactionsArchiver[]> = new BehaviorSubject<TransactionsArchiver[]>([]); // TransactionsArchiver[] = [];
-  private status!: StatusArchiver;
+  public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
+  public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
 
-  constructor(private visibilityService: VisibilityService, private api: ApiService, private apiArchiver: ApiArchiverService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService) {
+  constructor(private visibilityService: VisibilityService, private api: ApiQliService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 
   private init(): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    this.getStatusArchiver();
-    this.getCurrentTickArchiver();
+    this.getProcessedTickIntervals();
+    this.getLastProcessedTick();
     this.getTickInfo();
     this.getCurrentBalance();
-    this.getNetworkBalances();
     this.getAssets();
     this.getLatestStats();
-    this.getTransactionsArchiver();
+    this.getTransactionsQuery();
     // every 30 seconds
     setInterval(() => {
-      this.getStatusArchiver();
-      this.getCurrentTickArchiver();
+      this.getProcessedTickIntervals();
+      this.getLastProcessedTick();
       this.getTickInfo();
     }, 30000);
     // every minute
-    setInterval(() => {
+    setInterval(async () => {
+      try {
+        await this.pendingTxService.checkAndResolvePendingTransactions(this.lastProcessedTick.getValue());
+      } catch (e) {
+        console.error('Failed to resolve pending transactions:', e);
+      }
       this.getCurrentBalance();
-      this.getNetworkBalances();
       this.getAssets();
-      this.getTransactionsArchiver();
+      this.getTransactionsQuery();
     }, 60000);
     // every hour
     setInterval(() => {
@@ -93,88 +95,55 @@ export class UpdaterService {
 
   public loadCurrentBalance(force = false) {
     this.getCurrentBalance(force);
-    this.getNetworkBalances(undefined, undefined, force);
   }
 
+  private async getCurrentBalance(force = false, publicIds?: string[], callbackFn?: (balances: NetworkBalance[]) => void): Promise<void> {
+    if (!force && (this.balanceLoading || !this.isActive)) return;
 
-  /**
-   * should load the current balances for the accounts
-   * @returns 
-   */
-  private getCurrentBalance(force = false) {
-    if (!force && (this.balanceLoading || !this.isActive))
-      return;
+    const ids = publicIds ?? this.walletService.getSeeds().map(m => m.publicId);
+    if (!ids.length) return;
 
     this.balanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getCurrentBalance(this.walletService.getSeeds().map(m => m.publicId)).subscribe(r => {
-        if (r) {
-          this.currentBalance.next(r);
-          this.addTransactions(r.flatMap((b) => b.transactions).filter(this.onlyUniqueTx).sort((a, b) => { return b.targetTick - a.targetTick }))
-        }
-        this.balanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.balanceLoading = false;
-      });
+    try {
+      const balanceMap = await this.qubicRpc.getBalances(ids);
+      const results: NetworkBalance[] = ids.map(id => ({
+        publicId: id,
+        amount: Number(balanceMap.get(id) ?? 0n)
+      }));
+      results.forEach(e => this.walletService.setBalance(e.publicId, e.amount));
+      await this.walletService.savePublic(false);
+      if (callbackFn) callbackFn(results);
+    } catch (e) {
+      if (e instanceof QubicRpcError) {
+        this.errorStatus.next(e.message);
+      } else {
+        console.error('Balance fetch failed:', e);
+        this.errorStatus.next('An unexpected error occurred while fetching balances.');
+      }
+    } finally {
+      this.balanceLoading = false;
     }
-  }
-
-  private onlyUniqueTx(value: Transaction, index: any, array: Transaction[]) {
-    return array.findIndex((f: Transaction) => f.id === value.id) == index;
   }
 
   public forceLoadAssets(allbackFn: ((assets: QubicAsset[]) => void) | undefined = undefined) {
     this.getAssets(undefined, allbackFn);
   }
 
-  public forceUpdateNetworkBalance(publicId: string, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined): void {
-    this.getNetworkBalances([publicId], callbackFn);
+  public forceUpdateNetworkBalance(publicId: string, callbackFn?: (balances: NetworkBalance[]) => void): void {
+    this.getCurrentBalance(false, [publicId], callbackFn);
   }
 
-  /**
-   * load balances directly from network
-   * @returns 
-   */
-  private getNetworkBalances(publicIds: string[] | undefined = undefined, callbackFn: ((balances: NetworkBalance[]) => void) | undefined = undefined, force = false): void {
-    if (!force && (this.networkBalanceLoading || !this.isActive))
-      return;
+  //#region
 
-    if (!publicIds)
-      publicIds = this.walletService.getSeeds().map(m => m.publicId);
+  //**  Query Api */
 
-    this.networkBalanceLoading = true;
-    if (this.walletService.getSeeds().length > 0) {
-      // todo: Use Websocket!
-      this.api.getNetworkBalances(publicIds).subscribe(r => {
-        if (r) {
-          // update wallet
-          r.forEach((entry) => {
-            this.walletService.updateBalance(entry.publicId, entry.amount, entry.tick);
-          });
-          if (callbackFn)
-            callbackFn(r);
-        }
-        this.networkBalanceLoading = false;
-      }, errorResponse => {
-        this.processError(errorResponse, false);
-        this.networkBalanceLoading = false;
-      });
-    }
-  }
-
-  //#region 
-
-  //**  new Archiver Api */
-
-  private getStatusArchiver() {
-    this.apiArchiver.getStatus().subscribe(s => {
-      if (s) {
-        this.status = s;
+  private getProcessedTickIntervals() {
+    this.apiQuery.getProcessedTickIntervals().subscribe(intervals => {
+      if (intervals) {
+        this.processedTickIntervals.next(intervals);
       }
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
     });
   }
 
@@ -193,62 +162,56 @@ export class UpdaterService {
       }
       this.tickInfoLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickInfoLoading = false;
     });
   }
 
-  private getCurrentTickArchiver() {
+  private getLastProcessedTick() {
     if (this.tickLoading)
       return;
 
     this.tickLoading = true;
 
-    this.apiArchiver.getLatestTick().subscribe(latestTick => {
-      if (latestTick) {
-        this.archiverLatestTick.next(latestTick);
+    this.apiQuery.getLastProcessedTick().subscribe(response => {
+      if (response) {
+        this.lastProcessedTick.next(response.tickNumber);
         if (this.transactionsArray.getValue().length <= 0) {
-          this.getTransactionsArchiver();
+          this.getTransactionsQuery();
         }
       }
       this.tickLoading = false;
     }, errorResponse => {
-      this.processError(errorResponse, false);
+      this.logHttpError(errorResponse);
       this.tickLoading = false;
     });
   }
 
 
-  private getTransactionsArchiver(publicIds: string[] | undefined = undefined): void {
+  private getTransactionsQuery(publicIds: string[] | undefined = undefined): void {
     this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
-    if ((this.transactionArchiverLoading || this.archiverLatestTick.value === 0 || !this.status))
+    const intervals = this.processedTickIntervals.getValue();
+    if ((this.transactionsLoading || this.lastProcessedTick.value === 0 || intervals.length === 0))
       return;
 
     if (!publicIds)
       publicIds = this.walletService.getSeeds().filter((s) => !s.isOnlyWatch).map(m => m.publicId);
 
-    let epoch = this.status.lastProcessedTick.epoch;
-    let initialTick = 0;
+    // Find the initial tick based on the configured number of past epochs
+    const lastInterval = intervals[intervals.length - 1];
+    const targetEpoch = lastInterval.epoch - this.numberLastEpoch;
+    let initialTick = lastInterval.firstTick;
 
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
+    const targetInterval = intervals.find(i => i.epoch === targetEpoch);
+    if (targetInterval) {
+      initialTick = targetInterval.firstTick;
+    }
 
-    epoch = epoch - this.numberLastEpoch;
-    this.status.processedTickIntervalsPerEpoch
-      .filter(e => e.epoch === epoch)
-      .forEach(e => {
-        initialTick = e.intervals[0].initialProcessedTick;
-      });
-
-    this.transactionArchiverLoading = true;
-
+    this.transactionsLoading = true;
 
     if (this.walletService.getSeeds().length > 0) {
-      const observables: Observable<TransactionsArchiver[]>[] = publicIds.map(publicId =>
-        this.apiArchiver.getTransactions(publicId, initialTick, this.currentTick.value)
+      const observables: Observable<QueryTransactionRecord[]>[] = publicIds.map(publicId =>
+        this.apiQuery.getTransfers(publicId, initialTick, this.lastProcessedTick.value)
       );
 
       // Combine all observables and collect results
@@ -258,10 +221,10 @@ export class UpdaterService {
 
         // Update BehaviorSubject with the combined results
         this.transactionsArray.next(allTransactions);
-        this.transactionArchiverLoading = false;
+        this.transactionsLoading = false;
       }, errorResponse => {
         console.error('errorResponse:', errorResponse);
-        this.transactionArchiverLoading = false;
+        this.transactionsLoading = false;
       });
     }
   }
@@ -318,7 +281,8 @@ export class UpdaterService {
             callbackFn(r);
         }
       }, errorResponse => {
-        this.processError(errorResponse, false);
+        if (errorResponse.status === 401) this.api.reAuthenticate();
+        else this.logHttpError(errorResponse);
       });
     }
   }
@@ -341,63 +305,24 @@ export class UpdaterService {
         this.latestStatsLoading = false;
       },
       error: (errorResponse) => {
-        this.processError(errorResponse, false);
+        this.logHttpError(errorResponse);
         this.latestStatsLoading = false;
       }
     });
   }
 
 
-  private processError(errObject: any, showToUser: boolean = true) {
-    if (errObject.status == 401) {
-      this.api.reAuthenticate();
-    } else if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
+  private logHttpError(errObject: any) {
+    console.error('HTTP Error:', errObject);
+    if (errObject.error && typeof errObject.error === 'string' && errObject.error.indexOf("Amount of Accounts must be between") >= 0) {
       this.errorStatus.next(errObject.error);
-    } else if (errObject.statusText) {
-      if (showToUser)
-        this.errorStatus.next(errObject.error);
+    } else {
+      this.errorStatus.next("An error occurred while communicating with the server.");
     }
   }
 
   public forceUpdateCurrentTick() {
-    this.getCurrentTickArchiver();
+    this.getLastProcessedTick();
   }
 
-  public addQubicTransaction(tx: QubicTransaction): void {
-    const newTx: Transaction = {
-      amount: Number(tx.amount.getNumber()),
-      status: "Broadcasted",
-      sourceId: tx.sourcePublicKey.getIdentityAsSring() ?? "",
-      destId: tx.destinationPublicKey.getIdentityAsSring() ?? "",
-      broadcasted: new Date(),
-      id: tx.getId(),
-      targetTick: tx.tick,
-      created: new Date(),
-      isPending: true,
-      moneyFlow: false,
-      type: tx.inputType
-    };
-    this.addTransaction(newTx);
-  }
-
-  public addTransaction(tx: Transaction): void {
-    const list = this.internalTransactions.getValue();
-    if (!list.find(f => f.id.slice(0, 56) === tx.id.slice(0, 56))) {
-      list.unshift(tx);
-      this.internalTransactions.next(list);
-    }
-  }
-
-  public addTransactions(txs: Transaction[]): void {
-    var list = this.internalTransactions.getValue();
-    txs.forEach(tx => {
-      const existingTx = list.find(f => f.id.slice(0, 56) === tx.id.slice(0, 56));
-      if (!existingTx) {
-        list.push(tx);
-      } else {
-        Object.assign(existingTx, tx);
-      }
-    });
-    this.internalTransactions.next(list.sort((a, b) => { return b.targetTick - a.targetTick }));
-  }
 }

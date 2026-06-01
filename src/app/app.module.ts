@@ -38,19 +38,12 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth-interceptor';
-import { ApiService } from './services/api.service';
-import { ApiArchiverService } from './services/api.archiver.service';
-import { ApiArchiveService } from './services/apis/archive/api.archive.service';
-import { ApiLiveService} from './services/apis/live/api.live.service';
-import { ApiStatsService } from './services/apis/stats/api.stats.service';
-import { ApiTxStatusService } from './services/apis/txstatus/api.txstatus.service';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrReceiveDialog } from './main/qr-receive/qr-receive.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { LanguageChooserComponent } from './core/language-chooser/language-chooser.component';
-import { UpdaterService } from './services/updater-service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AccountComponent } from './settings/account/account.component';
 import { ExportComponent } from './settings/export/export.component';
@@ -62,15 +55,12 @@ import { PlaceBidComponent } from './ipo/place-bid/place-bid.component';
 import { TransferStatusComponent } from './core/transfer-status/transfer-status.component';
 import { SettingsGeneralComponent } from './settings/general/general.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { QubicService } from './services/qubic.service';
 import { DecimalPipe } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
 import { AssetsDialog } from './main/assets/assets.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { AssetsComponent } from './assets/assets.component';
-import { TransactionService } from './services/transaction.service';
-import { EnvironmentService } from './services/env.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { WelcomeComponent } from './public/welcome/welcome.component';
 import { CreateVaultComponent } from './public/create-vault/create-vault.component';
@@ -201,19 +191,9 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
         deps: []
       },
       AuthInterceptor,
-      ApiService,
-      ApiArchiverService,
-      ApiArchiveService,
-      ApiLiveService,
-      ApiStatsService,
-      ApiTxStatusService,
-      UpdaterService,
-      QubicService,
       DecimalPipe,
-      EnvironmentService,
       { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
       httpInterceptorProviders,
-      TransactionService
   ],
   bootstrap: [AppComponent],
 })

@@ -19,6 +19,7 @@
     "copy.tooltip": "Копировать",
     "error": "Ошибка",
     "close": "X",
+    "delete": "Удалить",
     "currency": "QUBIC",
     "currentTick": "Тик: {{tick}}",
     "loading": "Загрузка...",
@@ -73,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Для возврата настроек загрузите файл с настройками. В ваших настройках содержится зашифрованный сид, который нужен для восстановления кошелька.",
-    "saveYourKey": "Пожалуйста, сохраните ваш файл Vault в надежном месте",
-    "qubicLiSync": "Синхронизируйте свои настройки с qubic.li",
-    "qubicOffline": "Qubic Network недоступна",
-    "qubicOnline": "Соединение с Qubic Network"
+    "saveYourKey": "Пожалуйста, сохраните ваш файл Vault в надежном месте"
   },
   "revealSeedComponent": {
     "title": "Информация о счете",
@@ -434,11 +432,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Количество тиков которые нужно добавить к текущему для перевода",
-      "webBridge.placeholder": "Включить Web Bridge (Прямое соединение с QUBIC Network)",
-      "button.save": "Сохранить настройки",
-      "beta": {
-        "placeholder": "Включить Бета функции"
-      }
+      "button.save": "Сохранить настройки"
     },
     "import": {
       "title": "Импортировать настройки",
@@ -483,6 +477,10 @@
     "title": "Qubic IPO",
     "description": "Qubic IPO это аукцион по продаже акций и смарт-контрактов.",
     "noIpos": "Нет активных IPO",
+    "loadError": "Не удалось загрузить данные IPO. Пожалуйста, попробуйте снова.",
+    "bidLoadError": "Не удалось загрузить данные ставок для этого контракта.",
+    "bidsLoadError": "Не удалось загрузить ваши ставки. Пожалуйста, обновите страницу.",
+    "buttons.retryBids": "Повторить",
     "yourBids": "Ваша ставка",
     "yourShares": "Ваши акции",
     "sharesFor": "Акции на момент",

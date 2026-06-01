@@ -147,3 +147,20 @@ export interface ActiveIposResponse {
   ipos: ActiveIpo[];
 }
 
+
+// /live/v1/ipos/{contractIndex}/bids
+export interface IpoBidEntry {
+  identity: string;
+  amount: string;
+}
+
+export interface IpoBidsData {
+  contractIndex: number;
+  tickNumber: number;
+  bids: { [positionIndex: string]: IpoBidEntry };
+}
+
+export interface IpoBidsResponse {
+  bidData: IpoBidsData;
+}
+

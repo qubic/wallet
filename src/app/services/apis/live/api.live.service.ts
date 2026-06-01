@@ -8,12 +8,14 @@ import {
     BalanceResponse,
     BlockHeightResponse,
     BroadcastTransactionResponse,
+    IpoBidsResponse,
     QuerySmartContractRequest,
     QuerySmartContractResponse,
     TickInfoResponse,
 } from './api.live.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { LIVE_API_BASE_PATH } from '../../../constants/qubic.constants';
 import { lastValueFrom, map, Observable, of } from 'rxjs';
 import { WalletService } from '../../wallet.service';
 import Crypto, { PUBLIC_KEY_LENGTH, DIGEST_LENGTH, SIGNATURE_LENGTH } from '@qubic-lib/qubic-ts-library/dist/crypto'
@@ -32,8 +34,7 @@ const qHelper = new QubicHelper();
 // https://qubic.github.io/integration/Partners/qubic-rpc-doc.html?urls.primaryName=Qubic%20RPC%20Live%20Tree
 
 export class ApiLiveService {
-    private basePath = environment.apiUrl + "/live/v1";
-
+    private basePath = environment.apiUrl + LIVE_API_BASE_PATH;
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
 
@@ -139,7 +140,7 @@ export class ApiLiveService {
     }
 
 
-    public submitBroadcastTransaction(encodedTransaction: string) {
+    public broadcastTransaction(encodedTransaction: string) {
         let localVarPath = `/broadcast-transaction`;
         return this.httpClient.request<BroadcastTransactionResponse>('post', `${this.basePath}${localVarPath}`,
             {
@@ -153,7 +154,7 @@ export class ApiLiveService {
         ).pipe(
             map((response: BroadcastTransactionResponse) => {
                 if (response) {
-                    //console.log('Response from submitBroadcastTransaction:', response);
+                    //console.log('Response from broadcastTransaction:', response);
                     return response;
                 } else {
                     throw new Error('Invalid response format');
@@ -221,6 +222,25 @@ export class ApiLiveService {
         );
     }
 
+
+    public getIpoBids(contractIndex: number) {
+        let localVarPath = `/ipos/${contractIndex}/bids`;
+        return this.httpClient.request<IpoBidsResponse>('get', `${this.basePath}${localVarPath}`,
+            {
+                context: new HttpContext(),
+                responseType: 'json'
+            }
+        ).pipe(
+            map((response: IpoBidsResponse) => {
+                if (response) {
+                    return response;
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            })
+        );
+    }
+
     public async submitQearnTransaction(seed: string, contractIndex:number, inputType: number, inputSize: number, amount: number, payload: any, tick: number) {
         try {
           const idPackage = await qHelper.createIdPackage(seed);
@@ -250,7 +270,7 @@ export class ApiLiveService {
               tx.setPayload(dynamicPayload);
             }
             const res = await tx.build(seed);
-            const txResult = await lastValueFrom(this.submitBroadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
+            const txResult = await lastValueFrom(this.broadcastTransaction(this.walletService.arrayBufferToBase64(new Uint8Array(res).buffer)));
             return {
                 txResult,
           };

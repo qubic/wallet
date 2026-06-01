@@ -3,7 +3,7 @@ import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { QubicStaticService } from './apis/static/qubic-static.service';
 import { WalletService } from './wallet.service';
-import { ApiService } from './api.service';
+import { ApiQliService } from './apis/qli/api.qli.service';
 import { AddressNameResult } from './apis/static/qubic-static.model';
 import { ISeed } from '../model/seed';
 import { EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
@@ -26,7 +26,7 @@ export class AddressNameService {
   constructor(
     private staticService: QubicStaticService,
     private walletService: WalletService,
-    private apiService: ApiService
+    private apiService: ApiQliService
   ) {}
 
   /**

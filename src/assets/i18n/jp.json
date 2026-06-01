@@ -19,6 +19,7 @@
     "copy.tooltip": "コピー",
     "error": "エラー",
     "close": "X",
+    "delete": "削除",
     "currency": "QUBIC",
     "currentTick": "ティック: {{tick}}",
     "loading": "読み込み中...",
@@ -73,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "設定をエクスポート／ダウンロードしてください。設定には、ヴォールトを復元するために必要な暗号化されたシードが含まれています。",
-    "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。",
-    "qubicLiSync": "設定をqubic.liと同期する",
-    "qubicOffline": "QUBICネットワークに接続されていません",
-    "qubicOnline": "QUBICネットワークに接続済み"
+    "saveYourKey": "ヴォールトファイルを安全な場所に保管してください。"
   },
   "revealSeedComponent": {
     "title": "アドレス情報",
@@ -433,13 +431,8 @@
   },
   "settings": {
     "general": {
-      "title": "Webブリッジ",
       "tickAddition.placeholder": "新しい取引を送信するために現在のティックに追加するティックの数",
-      "webBridge.placeholder": "Webブリッジを有効にする（QUBICネットワークへの直接接続）",
-      "button.save": "設定を保存",
-      "beta": {
-        "placeholder": "ベータ機能を有効にする"
-      }
+      "button.save": "設定を保存"
     },
     "import": {
       "title": "設定をインポート",
@@ -484,6 +477,10 @@
     "title": "Qubic IPO",
     "description": "Qubic IPOはスマートコントラクトの株式のオークションです。",
     "noIpos": "現在アクティブなIPOはありません",
+    "loadError": "IPOデータの読み込みに失敗しました。もう一度お試しください。",
+    "bidLoadError": "このコントラクトの入札データの読み込みに失敗しました。",
+    "bidsLoadError": "入札データの読み込みに失敗しました。更新してください。",
+    "buttons.retryBids": "再試行",
     "yourBids": "あなたの入札",
     "yourShares": "あなたの株式",
     "sharesFor": "株式の対象",
