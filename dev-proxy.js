@@ -41,6 +41,5 @@ function createProxy(targetURL, port) {
     });
 }
 
-// Port 7003 was previously used for api.qubic.li (QLI). Removed when
-// the wallet finished migrating to rpc.qubic.org.
+// Proxy for rpc.qubic.org (target of environment.apiUrl)
 createProxy("https://rpc.qubic.org", 7004);
