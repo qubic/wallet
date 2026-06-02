@@ -22,7 +22,7 @@ export class ApiAggregationService {
     constructor(protected httpClient: HttpClient) {
     }
 
-    public getCurrentIpoBids(identities: string[]) {
+    public getCurrentIpoBids(identities: string[]): Observable<CurrentIpoBidsContract[]> {
         if (identities.length === 0) {
             return of([] as CurrentIpoBidsContract[]);
         }
