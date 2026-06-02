@@ -24,3 +24,21 @@ export interface CurrentIpoBidsContract {
   contractAddress: string;
   transactions: IpoBidTransaction[];
 }
+
+export interface IdentityAssetRecord {
+  assetIssuer: string;
+  assetName: string;
+  managingContractIndex: number;
+  numberOfShares: string;
+  tickNumber: number;
+}
+
+export interface IdentityAssetEntry {
+  identity: string;
+  ownerships: IdentityAssetRecord[];
+  possessions: IdentityAssetRecord[];
+}
+
+export interface IdentitiesAssetsResponse {
+  identityAssets: IdentityAssetEntry[];
+}
