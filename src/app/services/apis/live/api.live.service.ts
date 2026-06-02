@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 
 import {
     ActiveIposResponse,
-    AssetsIssuedResponse,
-    AssetsOwnedResponse,
-    AssetsPossessedResponse,
     BalanceResponse,
     BlockHeightResponse,
     BroadcastTransactionResponse,
@@ -37,67 +34,6 @@ export class ApiLiveService {
     private basePath = environment.apiUrl + LIVE_API_BASE_PATH;
     constructor(protected httpClient: HttpClient, private walletService: WalletService) {
     }
-
-
-    public getAssetsIssued(identity: string) {
-        let localVarPath = `/assets/${identity}/issued`;
-        return this.httpClient.request<AssetsIssuedResponse>('get', `${this.basePath}${localVarPath}`,
-            {
-                context: new HttpContext(),
-                responseType: 'json'
-            }
-        ).pipe(
-            map((response: AssetsIssuedResponse) => {
-                if (response) {
-                    //console.log('Response from getAssetsIssued:', response);
-                    return response;
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            })
-        );
-    }
-
-
-    public getAssetsOwned(identity: string) {
-        let localVarPath = `/assets/${identity}/owned`;
-        return this.httpClient.request<AssetsOwnedResponse>('get', `${this.basePath}${localVarPath}`,
-            {
-                context: new HttpContext(),
-                responseType: 'json'
-            }
-        ).pipe(
-            map((response: AssetsOwnedResponse) => {
-                if (response) {
-                    //console.log('Response from getAssetsOwned:', response);
-                    return response;
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            })
-        );
-    }
-
-
-    public getAssetsPossessed(identity: string) {
-        let localVarPath = `/assets/${identity}/possessed`;
-        return this.httpClient.request<AssetsPossessedResponse>('get', `${this.basePath}${localVarPath}`,
-            {
-                context: new HttpContext(),
-                responseType: 'json'
-            }
-        ).pipe(
-            map((response: AssetsPossessedResponse) => {
-                if (response) {
-                    //console.log('Response from getAssetsPossessed:', response);
-                    return response;
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            })
-        );
-    }
-
 
 
     public getBalance(id: string) {
