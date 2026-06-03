@@ -10,7 +10,9 @@ import {
   AddressLabel,
   GetAddressLabelsResponse,
   Token,
-  GetTokensResponse
+  GetTokensResponse,
+  TransactionInputType,
+  GetProtocolResponse
 } from './qubic-static.model';
 import { environment } from '../../../../environments/environment';
 
@@ -38,18 +40,21 @@ export class QubicStaticService {
   public exchanges$: BehaviorSubject<Exchange[] | null> = new BehaviorSubject<Exchange[] | null>(null);
   public addressLabels$: BehaviorSubject<AddressLabel[] | null> = new BehaviorSubject<AddressLabel[] | null>(null);
   public tokens$: BehaviorSubject<Token[] | null> = new BehaviorSubject<Token[] | null>(null);
+  public transactionInputTypes$: BehaviorSubject<TransactionInputType[] | null> = new BehaviorSubject<TransactionInputType[] | null>(null);
 
   // Cache timestamps
   private smartContractsLastFetch: number = 0;
   private exchangesLastFetch: number = 0;
   private addressLabelsLastFetch: number = 0;
   private tokensLastFetch: number = 0;
+  private transactionInputTypesLastFetch: number = 0;
 
   // Observable cache for deduplication
   private smartContractsCache$?: Observable<StaticSmartContract[]>;
   private exchangesCache$?: Observable<Exchange[]>;
   private addressLabelsCache$?: Observable<AddressLabel[]>;
   private tokensCache$?: Observable<Token[]>;
+  private transactionInputTypesCache$?: Observable<TransactionInputType[]>;
 
   constructor(private http: HttpClient) {
     // Initialize data fetching
@@ -64,6 +69,7 @@ export class QubicStaticService {
     this.getExchanges().subscribe();
     this.getAddressLabels().subscribe();
     this.getTokens().subscribe();
+    this.getTransactionInputTypes().subscribe();
   }
 
   /**
@@ -186,6 +192,35 @@ export class QubicStaticService {
   }
 
   /**
+   * Get protocol transaction input types with caching
+   */
+  public getTransactionInputTypes(): Observable<TransactionInputType[]> {
+    const now = Date.now();
+
+    if (this.transactionInputTypesCache$ && (now - this.transactionInputTypesLastFetch) < this.CACHE_DURATION_MS) {
+      return this.transactionInputTypesCache$;
+    }
+
+    this.transactionInputTypesCache$ = this.http
+      .get<GetProtocolResponse>(`${this.BASE_URL}/protocol.json`)
+      .pipe(
+        retry({ count: 3, delay: 1000 }),
+        map(response => response.transaction_input_types),
+        tap(data => {
+          this.transactionInputTypes$.next(data);
+          this.transactionInputTypesLastFetch = now;
+        }),
+        catchError(error => {
+          console.error('Error fetching transaction input types:', error);
+          return of(this.transactionInputTypes$.value || []);
+        }),
+        shareReplay(1)
+      );
+
+    return this.transactionInputTypesCache$;
+  }
+
+  /**
    * Force refresh all data by clearing cache
    */
   public refreshAllData(): void {
@@ -193,11 +228,13 @@ export class QubicStaticService {
     this.exchangesLastFetch = 0;
     this.addressLabelsLastFetch = 0;
     this.tokensLastFetch = 0;
+    this.transactionInputTypesLastFetch = 0;
 
     this.smartContractsCache$ = undefined;
     this.exchangesCache$ = undefined;
     this.addressLabelsCache$ = undefined;
     this.tokensCache$ = undefined;
+    this.transactionInputTypesCache$ = undefined;
 
     this.fetchAllData();
   }
@@ -219,5 +256,9 @@ export class QubicStaticService {
 
   public get cachedTokens(): Token[] | null {
     return this.tokens$.value;
+  }
+
+  public get cachedTransactionInputTypes(): TransactionInputType[] | null {
+    return this.transactionInputTypes$.value;
   }
 }

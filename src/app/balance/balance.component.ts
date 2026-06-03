@@ -13,12 +13,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
-import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
+import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { isSendManyTransaction, isSimpleTransfer } from '../helpers/transaction-status.helper';
 import { PendingTransactionService } from '../services/pending-transaction.service';
+import { getTransactionTypeDisplayLong } from '../utils/transaction-type.utils';
 
 @Component({
   selector: 'app-balance',
@@ -48,6 +50,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   selectedElement = new FormControl('element1');
 
   public processedTickIntervals: ProcessedTickInterval[] = [];
+  private sortedTickRanges: { epoch: number; minFirstTick: number; maxLastTick: number }[] = [];
   public currentSelectedEpoch = 0;
   public viewStartTick: number = 0;
   public viewEndTick: number = 0;
@@ -65,7 +68,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar,
     public us: UpdaterService,
     private addressNameService: AddressNameService,
-    private pendingTxService: PendingTransactionService
+    private pendingTxService: PendingTransactionService,
+    private qubicStatic: QubicStaticService
   ) {
     this.seedFilterFormControl.setValue(null);
   }
@@ -117,6 +121,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
       .subscribe(intervals => {
         if (intervals && intervals.length > 0) {
           this.processedTickIntervals = intervals;
+          this.rebuildSortedTickRanges();
           this.currentSelectedEpoch = intervals[intervals.length - 1].epoch;
           // Just initialize the tick range, don't fetch transactions yet
           // Transactions will be fetched when user switches to "By Epochs" tab
@@ -630,27 +635,49 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  formatInputType(inputType: number, destination: string): string {
-    // Check if it's a smart contract transaction (inputType > 0 and not protocol message)
-    const isSmartContract = inputType > 0 && destination !== EMPTY_QUBIC_ADDRESS;
-
-    // Base type
-    const baseType = inputType.toString();
-    const category = isSmartContract ? 'SC' : 'Standard';
-
-    // Try to get smart contract details and procedure name
-    if (isSmartContract) {
-      const smartContract = this.addressNameService.getSmartContractByAddressSync(destination);
-      if (smartContract && smartContract.procedures) {
-        const procedure = smartContract.procedures.find((p: any) => p.id === inputType);
-        if (procedure) {
-          return `${baseType} ${category} (${procedure.name})`;
-        }
-      }
+  private rebuildSortedTickRanges(): void {
+    const ranges = new Map<number, { epoch: number; minFirstTick: number; maxLastTick: number }>();
+    for (const interval of this.processedTickIntervals) {
+      const existing = ranges.get(interval.epoch);
+      ranges.set(interval.epoch, existing
+        ? {
+            epoch: interval.epoch,
+            minFirstTick: Math.min(existing.minFirstTick, interval.firstTick),
+            maxLastTick: Math.max(existing.maxLastTick, interval.lastTick),
+          }
+        : { epoch: interval.epoch, minFirstTick: interval.firstTick, maxLastTick: interval.lastTick }
+      );
     }
+    this.sortedTickRanges = Array.from(ranges.values()).sort((a, b) => a.epoch - b.epoch);
+  }
 
-    // Return without procedure name
-    return `${baseType} ${category}`;
+  private getEpochForTick(tickNumber: number): number | undefined {
+    const sorted = this.sortedTickRanges;
+
+    const match = sorted.find(
+      (r) => tickNumber >= r.minFirstTick && tickNumber <= r.maxLastTick
+    );
+    if (match) return match.epoch;
+
+    const gap = sorted.find(
+      (r, i) => i < sorted.length - 1 && tickNumber > r.maxLastTick && tickNumber < sorted[i + 1].minFirstTick
+    );
+    if (gap) return gap.epoch;
+
+    const last = sorted[sorted.length - 1];
+    if (last && tickNumber > last.maxLastTick) return last.epoch;
+
+    return undefined;
+  }
+
+  formatInputType(inputType: number, destination: string, tickNumber: number): string {
+    return getTransactionTypeDisplayLong(
+      destination,
+      inputType,
+      this.qubicStatic.cachedSmartContracts,
+      this.qubicStatic.cachedTransactionInputTypes,
+      this.getEpochForTick(tickNumber)
+    );
   }
 
   ngOnDestroy(): void {

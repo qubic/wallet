@@ -164,7 +164,7 @@
                                         </div>
                                         <div class="col-value disable-area">
                                             <span class="value">
-                                                {{ formatInputType(transaction.inputType,transaction.destId) }}</span>
+                                                {{ formatInputType(transaction.inputType, transaction.destId, transaction.tickNumber) }}</span>
                                         </div>
                                     </div>
                                     <!-- Add Fee row after Type row for asset transfers -->
@@ -363,7 +363,8 @@
                                     <div class="col-value disable-area">
                                         <span class="value">
                                             {{ formatInputType(transaction.transactions[0].transaction.inputType,
-                                            transaction.transactions[0].transaction.destId) }}
+                                            transaction.transactions[0].transaction.destId,
+                                            transaction.transactions[0].transaction.tickNumber) }}
                                         </span>
                                     </div>
                                 </div>
