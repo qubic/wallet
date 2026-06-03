@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiQliService } from '../services/apis/qli/api.qli.service';
+import { IpoContractsService } from '../services/ipo-contracts.service';
 import { WalletService } from '../services/wallet.service';
 import { ContractDto, IpoBid, IpoBidOverview } from '../services/api.model';
 import { Router } from '@angular/router';
@@ -33,7 +33,7 @@ export class IpoComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private api: ApiQliService,
+    private ipoContractsService: IpoContractsService,
     private apiLiveService: ApiLiveService,
     private apiAggregationService: ApiAggregationService,
     private walletService: WalletService,
@@ -99,7 +99,7 @@ export class IpoComponent implements OnInit, OnDestroy {
         this.ipoBids = result.bids;
 
         // Update BehaviorSubject for PlaceBidComponent
-        this.api.setIpoContracts(this.ipoContracts);
+        this.ipoContractsService.set(this.ipoContracts);
 
         this.loaded = true;
         this.refreshing = false;
@@ -189,7 +189,7 @@ export class IpoComponent implements OnInit, OnDestroy {
 
         this.failedBidContracts.delete(contractIndex);
         this.retryingContracts.delete(contractIndex);
-        this.api.setIpoContracts(this.ipoContracts);
+        this.ipoContractsService.set(this.ipoContracts);
       },
       error: () => {
         this.retryingContracts.delete(contractIndex);

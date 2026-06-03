@@ -36,8 +36,7 @@ import { OkDialog } from './core/ok-dialog/ok-dialog.component';
 import { RevealSeedDialog } from './main/reveal-seed/reveal-seed.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './services/auth-interceptor';
+import { HttpClientModule } from '@angular/common/http';
 import { SettingsComponent } from './settings/settings.component';
 import { BalanceComponent } from './balance/balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -56,7 +55,6 @@ import { TransferStatusComponent } from './core/transfer-status/transfer-status.
 import { SettingsGeneralComponent } from './settings/general/general.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DecimalPipe } from '@angular/common';
-import { TokenService } from './services/token.service';
 import { VisibilityService } from './services/visibility.service';
 import { AssetsDialog } from './main/assets/assets.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -86,9 +84,6 @@ import { TransferRightsComponent } from './assets/transfer-rights/transfer-right
 import { SettingsSupportComponent } from './settings/support/support.component';
 import { SignMessageComponent } from './sign-message/sign-message.component';
 
-
-/** Http interceptor providers in outside-in order */
-export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }];
 
 @NgModule({
   declarations: [
@@ -184,16 +179,13 @@ export const httpInterceptorProviders = [{ provide: HTTP_INTERCEPTORS, useClass:
 
   providers: [
       VisibilityService,
-      TokenService,
       {
         provide: WalletService,
         useFactory: () => new WalletService(),
         deps: []
       },
-      AuthInterceptor,
       DecimalPipe,
       { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
-      httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })

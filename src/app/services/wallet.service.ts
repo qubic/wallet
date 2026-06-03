@@ -77,6 +77,9 @@ export class WalletService {
   };
 
   constructor(private persistence = true) {
+    // Legacy: leftover from removed TokenService (QLI guest auth)
+    localStorage.removeItem('token');
+
     // create empty configuration
     this.runningConfiguration = {
       seeds: [],

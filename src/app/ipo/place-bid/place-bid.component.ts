@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiQliService } from '../../services/apis/qli/api.qli.service';
+import { IpoContractsService } from '../../services/ipo-contracts.service';
 import { WalletService } from '../../services/wallet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -49,7 +49,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
-    private transloco: TranslocoService, private api: ApiQliService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
+    private transloco: TranslocoService, private ipoContracts: IpoContractsService, public walletService: WalletService, private _snackBar: MatSnackBar, private us: UpdaterService
     , private fb: FormBuilder
     , private dialog: MatDialog
     , private apiLiveService: ApiLiveService
@@ -58,7 +58,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(state => {
       if (state && state['contractId']) {
         this.contractIndex = state['contractId'];
-        this.api.currentIpoContracts.pipe(takeUntil(this.destroy$)).subscribe(s => {
+        this.ipoContracts.contracts$.pipe(takeUntil(this.destroy$)).subscribe(s => {
           this.ipoContract = s.find(f => f.index == this.contractIndex);
         });
       }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NetworkBalance, QubicAsset } from './api.model';
-import { ApiQliService } from './apis/qli/api.qli.service';
 import { QubicRpcService } from './qubic-rpc.service';
 import { QubicRpcError } from '@qubic.org/rpc';
 import { WalletService } from './wallet.service';
@@ -11,6 +10,7 @@ import { ApiStatsService } from './apis/stats/api.stats.service';
 import { LatestStatsResponse } from './apis/stats/api.stats.model';
 import { ApiLiveService } from './apis/live/api.live.service';
 import { ApiQueryService } from './apis/query/api.query.service';
+import { ApiAggregationService } from './apis/aggregation/api.aggregation.service';
 import { ProcessedTickInterval, QueryTransactionRecord } from './apis/query/api.query.model';
 import { PendingTransactionService } from './pending-transaction.service';
 
@@ -47,7 +47,7 @@ export class UpdaterService {
   public transactionsArray: BehaviorSubject<QueryTransactionRecord[]> = new BehaviorSubject<QueryTransactionRecord[]>([]);
   public processedTickIntervals: BehaviorSubject<ProcessedTickInterval[]> = new BehaviorSubject<ProcessedTickInterval[]>([]);
 
-  constructor(private visibilityService: VisibilityService, private api: ApiQliService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private pendingTxService: PendingTransactionService) {
+  constructor(private visibilityService: VisibilityService, private qubicRpc: QubicRpcService, private walletService: WalletService, private apiStats: ApiStatsService, private apiLive: ApiLiveService, private apiQuery: ApiQueryService, private apiAggregation: ApiAggregationService, private pendingTxService: PendingTransactionService) {
     this.init();
   }
 
@@ -254,7 +254,7 @@ export class UpdaterService {
 
     if (publicIds.length > 0) {
       // todo: Use Websocket!
-      this.api.getOwnedAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
+      this.apiAggregation.getIdentitiesAssets(publicIds).subscribe(async (r: QubicAsset[]) => {
         if (r) {
           // update wallet - batch updates without saving
           // Group assets by publicId, including empty arrays for publicIds with no assets
@@ -281,8 +281,7 @@ export class UpdaterService {
             callbackFn(r);
         }
       }, errorResponse => {
-        if (errorResponse.status === 401) this.api.reAuthenticate();
-        else this.logHttpError(errorResponse);
+        this.logHttpError(errorResponse);
       });
     }
   }
