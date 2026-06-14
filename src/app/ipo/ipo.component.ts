@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IpoContractsService } from '../services/ipo-contracts.service';
 import { WalletService } from '../services/wallet.service';
-import { ContractDto, IpoBid, IpoBidOverview } from '../services/api.model';
+import { ContractDto, IpoBid, IpoBidOverview, PendingIpoBid } from '../services/api.model';
 import { Router } from '@angular/router';
 import { catchError, forkJoin, of, Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -12,6 +12,11 @@ import { IpoBidsResponse } from '../services/apis/live/api.live.model';
 import { CurrentIpoBidsContract } from '../services/apis/aggregation/api.aggregation.model';
 import { ApiAggregationService } from '../services/apis/aggregation/api.aggregation.service';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
+import { PendingTransactionService } from '../services/pending-transaction.service';
+import { IPO_INPUT_TYPE } from '../constants/qubic.constants';
+import { decodeIpoInputHex } from '../utils/ipo-input.utils';
+import { mergeIpoBids } from '../utils/ipo-bid-merge.utils';
+import { getStatusConfig, TransactionStatusConfig } from '../helpers/transaction-status.helper';
 
 @Component({
   selector: 'app-ipo',
@@ -28,7 +33,14 @@ export class IpoComponent implements OnInit, OnDestroy {
   public failedBidContracts = new Set<number>();
   public retryingContracts = new Set<number>();
   public ipoBids: CurrentIpoBidsContract[] = [];
+  public pendingIpoBids: Map<number, PendingIpoBid[]> = new Map();
   public ipoBidsLoadError: boolean = false;
+  private trackedIpoTxIds = new Set<string>();
+  // Bids resolved on-chain but not yet returned by the aggregation API — kept
+  // rendered as 'pending' so they don't flicker out. Per-entry retry budget;
+  // pruned once confirmed or once the IPO leaves the active list.
+  private resolvedAwaitingConfirmation = new Map<string, { bid: PendingIpoBid; attempts: number }>();
+  private confirmRetryTimer: ReturnType<typeof setTimeout> | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -37,9 +49,14 @@ export class IpoComponent implements OnInit, OnDestroy {
     private apiLiveService: ApiLiveService,
     private apiAggregationService: ApiAggregationService,
     private walletService: WalletService,
-    private addressNameService: AddressNameService
+    private addressNameService: AddressNameService,
+    private pendingTxService: PendingTransactionService
   ) { }
   ngOnDestroy(): void {
+    if (this.confirmRetryTimer) {
+      clearTimeout(this.confirmRetryTimer);
+      this.confirmRetryTimer = null;
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -51,6 +68,57 @@ export class IpoComponent implements OnInit, OnDestroy {
     }
 
     this.init();
+
+    this.pendingTxService.pendingTransactions$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(pending => {
+        const map = new Map<number, PendingIpoBid[]>();
+        const currentIpoTxIds = new Set<string>();
+        for (const tx of pending) {
+          if (tx.inputType !== IPO_INPUT_TYPE) continue;
+          if (!tx.inputHex) continue;
+          const contractIndex = Number(tx.destId);
+          if (!Number.isFinite(contractIndex)) continue;
+          currentIpoTxIds.add(tx.txId);
+          const decoded = decodeIpoInputHex(tx.inputHex);
+          if (!decoded) {
+            console.warn('Skipping pending IPO bid with undecodable input:', tx.txId);
+            continue;
+          }
+          const bid: PendingIpoBid = {
+            status: tx.isPending ? 'pending' : 'failed',
+            txId: tx.txId,
+            contractIndex,
+            source: tx.sourceId,
+            bid: decoded,
+            tickNumber: tx.tickNumber,
+            timestamp: String(tx.created.getTime()),
+          };
+          const list = map.get(contractIndex) ?? [];
+          list.push(bid);
+          map.set(contractIndex, list);
+        }
+        // A tracked IPO tx gone from pending storage was confirmed on-chain
+        // (resolver deletes successes; failures stay isPending=false). Keep it
+        // visible and re-fetch — there is no background poll for IPO bids.
+        let resolved = false;
+        for (const id of this.trackedIpoTxIds) {
+          if (currentIpoTxIds.has(id)) continue;
+          resolved = true;
+          if (this.resolvedAwaitingConfirmation.has(id)) continue;
+          for (const list of this.pendingIpoBids.values()) {
+            const bid = list.find(b => b.txId === id);
+            if (bid && bid.status === 'pending') {
+              this.resolvedAwaitingConfirmation.set(id, { bid, attempts: 0 });
+            }
+          }
+        }
+        this.pendingIpoBids = map;
+        this.trackedIpoTxIds = currentIpoTxIds;
+        if (resolved && !this.refreshing) {
+          this.init();
+        }
+      });
   }
 
   init() {
@@ -96,7 +164,20 @@ export class IpoComponent implements OnInit, OnDestroy {
           const bidResponse = result.bidResponses[i];
           return this.mapToContractDto(ipo.contractIndex, ipo.assetName, bidResponse);
         });
-        this.ipoBids = result.bids;
+        // Union-merge, not replace: the aggregation API intermittently omits
+        // previously-returned transactions (see mergeIpoBids).
+        this.ipoBids = mergeIpoBids(this.ipoBids, result.bids);
+
+        // Drop awaiting entries now confirmed, or whose IPO left the active list
+        // (their hash can never return, so they'd linger and burn retries).
+        const activeIndexes = new Set(result.activeIpos.map(ipo => ipo.contractIndex));
+        const confirmedHashes = new Set(this.ipoBids.flatMap(c => c.transactions.map(t => t.hash)));
+        for (const [txId, entry] of this.resolvedAwaitingConfirmation) {
+          if (confirmedHashes.has(txId) || !activeIndexes.has(entry.bid.contractIndex)) {
+            this.resolvedAwaitingConfirmation.delete(txId);
+          }
+        }
+        this.scheduleConfirmRetryIfNeeded();
 
         // Update BehaviorSubject for PlaceBidComponent
         this.ipoContractsService.set(this.ipoContracts);
@@ -110,6 +191,28 @@ export class IpoComponent implements OnInit, OnDestroy {
         this.refreshing = false;
       }
     });
+  }
+
+  /**
+   * Background-retry the fetch while a resolved bid is missing from the
+   * aggregation response. Per-bid budget (3) so one stuck entry can't starve
+   * later ones; the bid stays rendered as 'pending' until observed.
+   */
+  private scheduleConfirmRetryIfNeeded(): void {
+    if (this.confirmRetryTimer || this.resolvedAwaitingConfirmation.size === 0) {
+      return;
+    }
+    const entries = [...this.resolvedAwaitingConfirmation.values()];
+    if (!entries.some(e => e.attempts < 3)) {
+      return;
+    }
+    entries.forEach(e => e.attempts++);
+    this.confirmRetryTimer = setTimeout(() => {
+      this.confirmRetryTimer = null;
+      if (!this.refreshing) {
+        this.init();
+      }
+    }, 5000);
   }
 
   private mapToContractDto(contractIndex: number, assetName: string, bidResponse: IpoBidsResponse): ContractDto {
@@ -153,9 +256,35 @@ export class IpoComponent implements OnInit, OnDestroy {
     return this.walletService.getSeeds();
   }
 
-  getContractBids(contractId: number) {
-    const contract = this.ipoBids.find(c => c.contractIndex === contractId);
-    return contract?.transactions || [];
+  // any[] = PendingIpoBid | IpoBidTransaction; strict template checking rejects
+  // the raw union over the pending/confirmed field differences.
+  getContractBids(contractId: number): any[] {
+    const confirmed = this.ipoBids.find(c => c.contractIndex === contractId)?.transactions ?? [];
+    const confirmedHashes = new Set(confirmed.map(t => t.hash));
+    const pending = (this.pendingIpoBids.get(contractId) ?? []).filter(b => !confirmedHashes.has(b.txId));
+    const pendingTxIds = new Set(pending.map(b => b.txId));
+    const awaiting = [...this.resolvedAwaitingConfirmation.values()]
+      .map(e => e.bid)
+      .filter(b => b.contractIndex === contractId && !confirmedHashes.has(b.txId) && !pendingTxIds.has(b.txId));
+    return [...pending, ...awaiting, ...confirmed];
+  }
+
+  /**
+   * Maps a bid row (pending/failed PendingIpoBid, or a status-less confirmed
+   * IpoBidTransaction) to the shared status config, matching the balance page.
+   */
+  getBidStatusConfig(transaction: { status?: 'pending' | 'failed' }): TransactionStatusConfig {
+    if (transaction.status === 'pending') {
+      return getStatusConfig('trx-pending');
+    }
+    if (transaction.status === 'failed') {
+      return getStatusConfig('trx-not-executed');
+    }
+    return getStatusConfig('trx-executed');
+  }
+
+  dismissFailedBid(txId: string): void {
+    this.pendingTxService.removeFailedTransaction(txId);
   }
 
   hasBidError(contractIndex: number): boolean {

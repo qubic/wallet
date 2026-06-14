@@ -46,6 +46,21 @@ export interface IpoBidOverview {
   bids: IpoBid[];
 }
 
+/**
+ * Locally-synthesized IPO bid view-model (not a wire response), built from
+ * PendingTransactionService entries. Mirrors IpoBidTransaction's template keys
+ * so both render with one *ngFor; `timestamp` is local submit time (epoch ms).
+ */
+export interface PendingIpoBid {
+  status: 'pending' | 'failed';
+  txId: string;
+  contractIndex: number;
+  source: string;
+  bid: { price: number; quantity: number };
+  tickNumber: number;
+  timestamp?: string;
+}
+
 export interface QubicAsset {
   publicId: string;
   contractIndex: number;

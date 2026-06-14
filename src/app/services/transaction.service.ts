@@ -9,6 +9,7 @@ import { QubicHelper } from '@qubic-lib/qubic-ts-library/dist/qubicHelper';
 import { lastValueFrom } from 'rxjs';
 import { IPO_INPUT_TYPE } from '../constants/qubic.constants';
 import { bytesToHex } from '../utils/hex.utils';
+import { encodeIpoInputHex } from '../utils/ipo-input.utils';
 
 /**
  * Transaction Service to send transaction to the qubic network
@@ -107,7 +108,7 @@ export class TransactionService {
                     amount: 0,
                     tickNumber: targetTick,
                     inputType: IPO_INPUT_TYPE,
-                    inputHex: this.encodeIpoInputHex(price, quantity),
+                    inputHex: encodeIpoInputHex(price, quantity),
                     isPending: true,
                     created: new Date(),
                 });
@@ -125,21 +126,6 @@ export class TransactionService {
                 message: this.t.translate('paymentComponent.messages.failedToSend')
             };
         }
-    }
-
-    /**
-     * Builds the 16-byte IPO bid input payload (price + quantity + zero padding)
-     * and returns it as a lowercase hex string. Layout matches QubicHelper.createIpo:
-     *   bytes 0-7   price    (int64, little-endian)
-     *   bytes 8-9   quantity (int16, little-endian)
-     *   bytes 10-15 zero padding
-     */
-    private encodeIpoInputHex(price: number, quantity: number): string {
-        const input = new Uint8Array(16);
-        const view = new DataView(input.buffer);
-        view.setBigInt64(0, BigInt(price), true);
-        view.setInt16(8, quantity, true);
-        return bytesToHex(input);
     }
 
     private storePendingTransaction(qtx: QubicTransaction): void {
