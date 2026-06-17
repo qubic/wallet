@@ -1,3 +1,10 @@
+## [4.26.2](https://github.com/qubic/wallet/compare/v4.26.1...v4.26.2) (2026-06-17)
+
+
+### Bug Fixes
+
+* source QEarn current epoch from live tick-info instead of archiver last-processed tick ([70de123](https://github.com/qubic/wallet/commit/70de123ad9f4b111de5cad72080684f210f526b7))
+
 ## [4.26.1](https://github.com/qubic/wallet/compare/v4.26.0...v4.26.1) (2026-04-30)
 
 
