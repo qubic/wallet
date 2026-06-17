@@ -107,7 +107,7 @@ export class PlaceBidComponent implements OnInit, OnDestroy {
   }
 
   getSeeds() {
-    return this.walletService.getSeeds();
+    return this.walletService.getSeeds().filter(s => !s.isOnlyWatch);
   }
 
   getSelectedSourceSeed() {
