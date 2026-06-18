@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ApiQueryService } from '../services/apis/query/api.query.service';
+import { ApiLiveService } from '../services/apis/live/api.live.service';
 import { WalletService } from '../services/wallet.service';
 import { QearnService } from '../services/qearn.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';
@@ -19,19 +19,19 @@ export class QearnComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
-  constructor(public qearnService: QearnService, private walletService: WalletService, private apiQuery: ApiQueryService, private us: UpdaterService) {}
+  constructor(public qearnService: QearnService, private walletService: WalletService, private apiLiveService: ApiLiveService, private us: UpdaterService) {}
 
   async ngOnInit() {
     // Update the current balance
     this.us.loadCurrentBalance();
 
     // Fetching Lock Info and Stake Data
-    this.apiQuery
-      .getLastProcessedTick()
+    this.apiLiveService
+      .getTickInfo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(async (res) => {
         try {
-          this.epoch = res.epoch;
+          this.epoch = res.tickInfo.epoch;
           this.qearnService.epochInfo$.pipe(takeUntil(this.unsubscribe$)).subscribe((epochInfos) => {
             const epochInfo = epochInfos[this.epoch];
             this.currentLockedAmount = epochInfo?.currentLockedAmount || 0;
