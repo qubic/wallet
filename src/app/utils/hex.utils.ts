@@ -22,3 +22,22 @@ export function base64ToHex(base64: string): string {
     return '';
   }
 }
+
+/**
+ * Decodes a hex string (case-insensitive, no 0x prefix) into bytes.
+ * Throws if the input has odd length or contains non-hex characters.
+ */
+export function hexToBytes(hex: string): Uint8Array {
+  if (hex.length === 0) return new Uint8Array(0);
+  if (hex.length % 2 !== 0) {
+    throw new Error(`hexToBytes: odd-length input (${hex.length})`);
+  }
+  if (!/^[0-9a-fA-F]+$/.test(hex)) {
+    throw new Error(`hexToBytes: invalid hex character in input`);
+  }
+  const out = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < out.length; i++) {
+    out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  }
+  return out;
+}
