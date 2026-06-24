@@ -19,6 +19,7 @@
     "copy.tooltip": "Copiar",
     "error": "Error",
     "close": "X",
+    "delete": "Eliminar",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "cargando...",
@@ -73,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Por favor, exporta/descarga tus configuraciones. Tus configuraciones contienen las Seed cifradas necesarias para restaurar el wallet.",
-    "saveYourKey": "Por favor, guarda tu archivo wallet en un lugar seguro.",
-    "qubicLiSync": "Sincroniza tus configuraciones con qubic.li",
-    "qubicOffline": "No estás conectado a la red de QUBIC",
-    "qubicOnline": "Conectado a la red de QUBIC"
+    "saveYourKey": "Por favor, guarda tu archivo wallet en un lugar seguro."
   },
   "revealSeedComponent": {
     "title": "Información de la dirección",
@@ -433,11 +431,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Número de Ticks añadidos al tick actual para enviar una nueva transacción",
-      "webBridge.placeholder": "Activar el Web Bridge (Conexión directa a la red QUBIC)",
-      "button.save": "Guardar configuraciones",
-      "beta": {
-        "placeholder": "Activar las funcionalidades Beta"
-      }
+      "button.save": "Guardar configuraciones"
     },
     "import": {
       "title": "Importar configuraciones",
@@ -478,6 +472,10 @@
     "title": "Qubic IPO",
     "description": "El IPO Qubic es una subasta para partes de contratos inteligentes.",
     "noIpos": "Actualmente no hay IPOs activas",
+    "loadError": "No se pudieron cargar los datos de la IPO. Por favor, inténtelo de nuevo.",
+    "bidLoadError": "No se pudieron cargar los datos de ofertas para este contrato.",
+    "bidsLoadError": "No se pudieron cargar sus ofertas. Por favor, intente actualizar.",
+    "buttons.retryBids": "Reintentar",
     "yourBids": "Tus Ofertas",
     "yourShares": "Tus Acciones",
     "sharesFor": "Acciones para",

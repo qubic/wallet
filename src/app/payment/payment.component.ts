@@ -4,10 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { UnLockComponent } from '../lock/unlock/unlock.component';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from '../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UpdaterService } from '../services/updater-service';
-import { CurrentTickResponse, Transaction } from '../services/api.model';
+import { Transaction } from '../services/api.model';
 import { TranslocoService } from '@ngneat/transloco';
 import { concatMap, lastValueFrom, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -74,7 +73,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   constructor(
     private t: TranslocoService,
     private transactionService: TransactionService,
-    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef, private api: ApiService,
+    private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
     private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService
   ) {

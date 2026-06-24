@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { QubicAsset, AssetTransfer } from "../services/api.model";
-import { ApiService } from "../services/api.service";
 import { FormControl, FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
 import { WalletService } from '../services/wallet.service';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload';
@@ -110,7 +109,6 @@ export class AssetsComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private apiService: ApiService,
     public walletService: WalletService,
     public transactionService: TransactionService,
     private updaterService: UpdaterService,

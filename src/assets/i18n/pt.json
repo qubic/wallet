@@ -19,6 +19,7 @@
     "copy.tooltip": "Copiar",
     "error": "Erro",
     "close": "X",
+    "delete": "Excluir",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "Carregando...",
@@ -73,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Por favor, exporte/faça o download de suas configurações. Suas configurações contêm as Seeds criptografadas necessárias para restaurar a Wallet.",
-    "saveYourKey": "Por favor, armazene seu arquivo Wallet em um local seguro.",
-    "qubicLiSync": "Sincronize suas configurações com qubic.li",
-    "qubicOffline": "Rede QUBIC desconectada",
-    "qubicOnline": "Conectado à rede QUBIC"
+    "saveYourKey": "Por favor, armazene seu arquivo Wallet em um local seguro."
   },
   "revealSeedComponent": {
     "title": "Informações de Endereço",
@@ -432,11 +430,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Número de Ticks adicionados ao Tick atual para enviar uma nova transação",
-      "webBridge.placeholder": "Ativar a Web Bridge (Conexão direta à rede QUBIC)",
-      "button.save": "Salvar configurações",
-      "beta": {
-        "placeholder": "Enable Beta Features"
-      }
+      "button.save": "Salvar configurações"
     },
     "import": {
       "title": "Importar configurações",
@@ -477,6 +471,10 @@
     "title": "Qubic IPO",
     "description": "O Qubic IPO é um leilão para ações de contratos inteligentes.",
     "noIpos": "Atualmente, nenhum IPO ativo",
+    "loadError": "Falha ao carregar dados do IPO. Por favor, tente novamente.",
+    "bidLoadError": "Falha ao carregar dados de lances para este contrato.",
+    "bidsLoadError": "Falha ao carregar seus lances. Por favor, tente atualizar.",
+    "buttons.retryBids": "Tentar novamente",
     "yourBids": "Seus Lances",
     "yourShares": "Suas Ações",
     "sharesFor": "Ações para",

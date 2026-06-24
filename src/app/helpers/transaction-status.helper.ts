@@ -84,27 +84,18 @@ function determineConfirmedOutcome(
 }
 
 /**
- * Computes the transaction status for qli transactions (non-archived).
- * Only non-Success transactions are shown from qli, so this only returns
- * trx-pending or trx-not-executed.
+ * Computes the transaction status for pending transactions.
  *
- * @param status - The raw status string from the API
- * @param targetTick - The tick the transaction targets
- * @param lastArchivedTick - The last tick processed by the archiver
+ * @param isPending - Whether the transaction is still pending
  * @returns The computed status (trx-pending or trx-not-executed)
  */
 export function computeTransactionStatus(
-  status: string,
-  targetTick?: number,
-  lastArchivedTick?: number
+  isPending: boolean,
 ): ComputedTransactionStatus {
-  // Not executed if: tick has passed OR status is Failed
-  const tickHasPassed = targetTick !== undefined && lastArchivedTick !== undefined && lastArchivedTick > targetTick;
-  if (tickHasPassed || status === 'Failed') {
+  if (!isPending) {
     return 'trx-not-executed';
   }
 
-  // Otherwise pending
   return 'trx-pending';
 }
 
