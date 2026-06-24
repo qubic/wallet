@@ -458,10 +458,6 @@
       "github": {
         "label": "GitHub (Meld een probleem)",
         "description": "Bugs melden of functies aanvragen"
-      },
-      "feedback": {
-        "label": "Qubic Feedback (Functieverzoeken)",
-        "description": "Nieuwe functies en verbeteringen voorstellen"
       }
     }
   },
