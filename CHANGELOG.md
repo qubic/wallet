@@ -1,3 +1,10 @@
+## [4.26.3](https://github.com/qubic/wallet/compare/v4.26.2...v4.26.3) (2026-06-24)
+
+
+### Bug Fixes
+
+* remove dead Qubic Feedback support link ([51727a5](https://github.com/qubic/wallet/commit/51727a5aa7c2d5eccbced7c25ce2ad6c02fb081b))
+
 ## [4.26.2](https://github.com/qubic/wallet/compare/v4.26.1...v4.26.2) (2026-06-17)
 
 
