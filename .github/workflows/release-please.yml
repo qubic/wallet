@@ -1,0 +1,128 @@
+name: 🔖 Release Please
+
+# Versioning is PR-based (release-please), not a direct push:
+#   - main:    release-please opens a stable "chore(release): X.Y.Z" PR that a
+#              HUMAN reviews + merges. main is protected (require-PR + CODEOWNERS
+#              review, enforce_admins) and NO bypass is needed — the bot only
+#              opens a PR, never writes to main.
+#   - staging: release-please opens an "rc" prerelease PR that is AUTO-MERGED,
+#              so merging into staging still produces an rc release, hands-free.
+#
+# This replaces semantic-release, which used @semantic-release/git to push the
+# release commit straight to main. That is incompatible with main's ruleset
+# unless the token is made a bypass actor — exactly what we do not want.
+#
+# Uses a GitHub App token (not the default GITHUB_TOKEN) so that CI (lint,
+# commitlint) actually runs on the release PR. The token is scoped to
+# contents+pull-requests only and the App is NOT a ruleset bypass actor.
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+# Secure default: no permissions unless a job opts in below.
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release branch, tag and GitHub Release
+      pull-requests: write # open/update the release PR
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - name: 🔑 Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
+        with:
+          # Scope the minted token to exactly what release-please needs so it
+          # does not inherit the App's full installation permissions.
+          app-id: ${{ secrets.RELEASE_APP_ID }} # zizmor: ignore[secrets-outside-env] required to run release-please; job only opens PRs, no deploy env
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env] required to run release-please; job only opens PRs, no deploy env
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: 🔖 Run release-please
+        id: release
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          target-branch: ${{ github.ref_name }}
+          # main -> stable config/manifest; staging -> rc config/manifest.
+          # Separate file names per channel so promotions never overwrite each
+          # other's release state.
+          config-file: ${{ github.ref_name == 'staging' && 'release-please-config.staging.json' || 'release-please-config.json' }}
+          manifest-file: ${{ github.ref_name == 'staging' && '.release-please-manifest.staging.json' || '.release-please-manifest.json' }}
+
+      # Only on staging: merge the rc release PR automatically, so an rc is
+      # produced on every merge into staging with no manual step. This depends on
+      # repository configuration permitting the release App to merge that PR;
+      # main deliberately does not, which is why the stable release PR is always
+      # merged by a person.
+      #
+      # The merge is a push to staging, which re-runs this workflow and creates
+      # the rc tag + release. Interpolations go through env (not the run body) to
+      # avoid template injection.
+      - name: 🤖 Auto-merge staging rc release PR
+        if: github.ref_name == 'staging' && steps.release.outputs.prs_created == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PRS_JSON: ${{ steps.release.outputs.prs }}
+          TARGET_REPO: ${{ github.repository }}
+        run: |
+          pr_number=$(echo "$PRS_JSON" | jq -r '.[0].number')
+          echo "Auto-merging staging rc release PR #${pr_number}"
+          gh pr merge "$pr_number" --repo "$TARGET_REPO" --merge
+
+  # Production deploy. Runs ONLY when a stable release was actually cut on main
+  # (release_created == true). The promotion merge into main only opens the
+  # release PR (release_created=false) and therefore does NOT deploy — so a
+  # prerelease (rc) version can never reach production. Prod is deployed solely
+  # when the stable release PR is merged. The `production` environment gates it
+  # with a required, non-self reviewer, so publishing waits for an approval.
+  deploy-prod:
+    name: Deploy to production
+    needs: release-please
+    if: github.ref_name == 'main' && needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: production
+    steps:
+      - name: 🛎️ Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false # this job only builds + deploys, never pushes
+
+      - name: 🔧 Set up Node.js 20.x
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # `yarn build` runs the `prebuild` hook (scripts/update-version.js), which
+      # syncs package.json's version into the environment files, and builds with
+      # environment.prod.ts via angular.json fileReplacements.
+      - name: 🏗️ Build app
+        run: yarn build
+
+      - name: 📤 Deploy to production
+        uses: SamKirkland/FTP-Deploy-Action@cfcb39fa3cdf2ff98ac1a7fbfa539d20526d474d # 4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME_PROD }}
+          password: ${{ secrets.FTP_PASSWORD_PROD }}
+          local-dir: dist/qubic-wallet/
+          protocol: ftps
