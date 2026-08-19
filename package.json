@@ -18,7 +18,6 @@
     "make": "electron-forge make",
     "app:dir": "electron-builder --dir",
     "app:dist": "electron-builder",
-    "release": "semantic-release",
     "version:sync": "node scripts/update-version.js"
   },
   "private": true,

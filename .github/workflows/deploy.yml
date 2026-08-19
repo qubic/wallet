@@ -1,32 +1,42 @@
-name: 🚀 Release and Deploy
+name: 🚀 Deploy
 
 on:
+  # Only `push` — a merged PR already produces a push to the target branch, so
+  # merges still deploy exactly once. Closing a PR *without* merging changes no
+  # ref, so it produces no push and (correctly) does not deploy. The previous
+  # `push` + `pull_request: closed` pair fired twice for a single merge.
+  #
+  # `main` is intentionally NOT here: production is deployed by
+  # release-please.yml only when a stable release is cut, so an intermediate
+  # (e.g. rc) version can never be shipped to prod. This workflow deploys the
+  # non-production environments only.
   push:
     branches:
       - dev
       - staging
-      - main
-  pull_request:
-    types:
-      - closed
-    branches:
-      - dev
-      - staging
-      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Do not cancel an in-progress deploy; let it finish to avoid partial uploads.
+  cancel-in-progress: false
+
+# Secure default: no permissions unless a job opts in below.
+permissions: {}
 
 jobs:
-  release-and-deploy:
-    # Only run on push events OR when PR is actually merged (not just closed)
-    if: github.event_name == 'push' || github.event.pull_request.merged == true
+  build:
+    name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # just checkout + build; no pushes here
     steps:
       - name: 🛎️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          fetch-depth: 0 # Fetch full commit history
+          persist-credentials: false
 
       - name: 🔧 Set up Node.js 20.x
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '20.x'
           cache: 'yarn'
@@ -34,28 +44,48 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: 🔖 Run Semantic Release
-        run: yarn run release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
-
+      # `yarn build` runs the `prebuild` hook (scripts/update-version.js), which
+      # syncs package.json's version into the environment files.
       - name: 🏗️ Build app
         run: yarn build
 
+      - name: 📦 Upload build artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dist
+          path: dist/qubic-wallet/
+          retention-days: 1
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    # Each branch deploys through its own (ungated) environment, which gives per-
+    # branch deployment history and a place to scope secrets later. dev/staging
+    # define no environment secrets today, so the FTP_*_DEV / FTP_*_STAGING repo
+    # secrets below still resolve normally; an environment secret of the same
+    # name would take precedence if one were added.
+    # Production is deliberately absent here — see the trigger comment above.
+    environment:
+      name: ${{ github.ref_name }}
+    steps:
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: dist
+          path: dist/qubic-wallet/
+
       - name: 📤 Deploy to the corresponding environment
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        uses: SamKirkland/FTP-Deploy-Action@cfcb39fa3cdf2ff98ac1a7fbfa539d20526d474d # 4.3.3
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: |
             ${{
-              github.ref == 'refs/heads/main' && secrets.FTP_USERNAME_PROD ||
               github.ref == 'refs/heads/staging' && secrets.FTP_USERNAME_STAGING ||
               secrets.FTP_USERNAME_DEV
             }}
           password: |
             ${{
-              github.ref == 'refs/heads/main' && secrets.FTP_PASSWORD_PROD ||
               github.ref == 'refs/heads/staging' && secrets.FTP_PASSWORD_STAGING ||
               secrets.FTP_PASSWORD_DEV
             }}
