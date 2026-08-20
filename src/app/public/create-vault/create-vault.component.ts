@@ -22,6 +22,7 @@ import { IDecodedSeed } from 'src/app/model/seed';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { generateSeed } from 'src/app/utils/seed.utils';
 
 @Component({
   selector: 'qli-create-vault',
@@ -150,13 +151,7 @@ export class CreateVaultComponent extends QubicDialogWrapper implements OnDestro
   }
 
   private seedGen(): string {
-    const letters = 'abcdefghijklmnopqrstuvwxyz';
-    const letterSize = letters.length;
-    let seed = '';
-    for (let i = 0; i < 55; i++) {
-      seed += letters[Math.floor(Math.random() * letterSize)];
-    }
-    return seed;
+    return generateSeed();
   }
 
   public createVault() {
