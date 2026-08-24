@@ -41,6 +41,5 @@ function createProxy(targetURL, port) {
     });
 }
 
-// Create two proxy instances with different target URLs and ports
-createProxy("https://api.qubic.li", 7003);
+// Proxy for rpc.qubic.org (target of environment.apiUrl)
 createProxy("https://rpc.qubic.org", 7004);

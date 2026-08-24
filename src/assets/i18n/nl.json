@@ -19,6 +19,7 @@
     "copy.tooltip": "Copy",
     "error": "Error",
     "close": "X",
+    "delete": "Verwijderen",
     "currency": "QUBIC",
     "currentTick": "Tick: {{tick}}",
     "loading": "loading...",
@@ -73,10 +74,7 @@
   },
   "notifyComponent": {
     "saveYourSettings": "Please Export/Download your Settings. Your Settings Contains the Encrypted Seeds which you need to restore the Wallet.",
-    "saveYourKey": "Bewaar uw kluisbestand op een veilige plaats.",
-    "qubicLiSync": "Synchroniseer uw instellingen met qubic.li",
-    "qubicOffline": "QUBIC network not connected",
-    "qubicOnline": "Connected to the QUBIC network"
+    "saveYourKey": "Bewaar uw kluisbestand op een veilige plaats."
   },
   "revealSeedComponent": {
     "title": "Account Informatie",
@@ -433,11 +431,7 @@
   "settings": {
     "general": {
       "tickAddition.placeholder": "Number of Ticks added to the current tick to send a new transaction",
-      "webBridge.placeholder": "Enable the Web Bridge (Direct Connection to the QUBIC Network)",
-      "button.save": "Save Settings",
-      "beta": {
-        "placeholder": "Enable Beta Features"
-      }
+      "button.save": "Save Settings"
     },
     "import": {
       "title": "Import Settings",
@@ -478,6 +472,10 @@
     "title": "Qubic IPO",
     "description": "The Qubic IPO is an auction for shares of smart contracts.",
     "noIpos": "Currently no IPO's active",
+    "loadError": "Kan IPO-gegevens niet laden. Probeer het opnieuw.",
+    "bidLoadError": "Kan biedingsgegevens voor dit contract niet laden.",
+    "bidsLoadError": "Kan uw biedingen niet laden. Probeer het opnieuw.",
+    "buttons.retryBids": "Opnieuw proberen",
     "yourBids": "Your Bids",
     "yourShares": "Your Shares",
     "sharesFor": "Shares for",

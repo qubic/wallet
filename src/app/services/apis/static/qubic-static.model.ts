@@ -20,6 +20,7 @@ export interface StaticSmartContract {
   procedures: SmartContractProcedure[];
   website?: string;
   allowTransferShares?: boolean;
+  sharesAuctionEpoch?: number;
 }
 
 export interface GetSmartContractsResponse {
@@ -51,6 +52,15 @@ export interface Token {
 
 export interface GetTokensResponse {
   tokens: Token[];
+}
+
+export interface TransactionInputType {
+  id: number;
+  label: string;
+}
+
+export interface GetProtocolResponse {
+  transaction_input_types: TransactionInputType[];
 }
 
 /**

@@ -6,7 +6,6 @@ export interface ISeed {
     // publicKey: Uint8Array; // currently not used
     encryptedSeed: string;
     balance: number;
-    balanceTick: number;
     lastUpdate?: Date;
     assets?: QubicAsset[];
     isExported?: boolean;

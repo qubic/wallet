@@ -4,11 +4,8 @@ export interface IConfig {
     name?: string; // wallet name
     seeds: ISeed[];
     publicKey?: JsonWebKey;
-    webBridges: string[];
-    useBridge: boolean;
     tickAddition: number;
     numberLastEpoch: number;
-    enableBeta: boolean;
 }
 
 /**

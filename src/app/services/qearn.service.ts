@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../services/api.service';
 import { filter, lastValueFrom, Subject, take, BehaviorSubject } from 'rxjs';
 import { WalletService } from './wallet.service';
 import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKey';

@@ -8,7 +8,6 @@ import { TimeService } from '../../services/time.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { lastValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialog } from 'src/app/core/confirm-dialog/confirm-dialog.component';
@@ -48,7 +47,6 @@ export class StakingComponent implements OnInit, OnDestroy {
     private us: UpdaterService,
     public qearnService: QearnService,
     private _snackBar: MatSnackBar,
-    private apiArchiver: ApiArchiverService,
     public qearnComponent: QearnComponent,
     private cdf: ChangeDetectorRef,
     private apiLiveService: ApiLiveService

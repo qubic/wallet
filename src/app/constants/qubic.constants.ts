@@ -41,3 +41,12 @@ export const REVOKE_RIGHTS_IDENTIFIERS = [
   'RevokeAssetManagementRights',
 ] as const;
 
+export const LIVE_API_BASE_PATH = '/live/v1';
+export const QUERY_API_BASE_PATH = '/query/v1';
+export const AGGREGATION_API_BASE_PATH = '/aggregation/v1';
+
+/**
+ * Input type identifier for an IPO bid transaction.
+ * The Qubic protocol assigns inputType=1 to IPO bid inputs.
+ */
+export const IPO_INPUT_TYPE = 1;
