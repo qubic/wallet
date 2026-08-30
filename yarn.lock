@@ -2909,6 +2909,11 @@
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-16.2.12.tgz#478db8cca94a69f1708c38ad80b62d824c73f543"
   integrity sha512-f9R9Qsk8v+ffDxryl6PQ7Wnf2JCNd4dDXOH+d/AuF06VFiwcwGDRDZpmqkAXbFxQfcWTbT1FFvfoJ+SFcJgXLA==
 
+"@noble/ciphers@^1.0.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@noble/ciphers/-/ciphers-1.3.0.tgz#f64b8ff886c240e644e5573c097f86e5b43676dc"
+  integrity sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw==
+
 "@noble/hashes@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-2.2.0.tgz#22da1d16a469954fce877055d559900a6c73b63b"
@@ -3365,6 +3370,15 @@
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@qubic.org/types/-/types-0.2.4.tgz#1aac5706f109ebae3a7813fa3c2f92ea397f6e9e"
   integrity sha512-k8KfQh3JkoSSLyIOFa/LxMbiUvnl3uKoUlKZ+RI+/VX+rdcMOwE1hOs03AWsZBmVG1BEd+VgctED9PJvDc04JQ==
+
+"@qubic.org/vault@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@qubic.org/vault/-/vault-1.2.1.tgz#44e59ecde159f858223c4f0d6d781a1f4a63963e"
+  integrity sha512-fwgdvoIx1XKhq5rtwnSCU4zqk9aqdksC1GEPdYf+KURfW1dH5irG/s+rmxXYbUt/KLaUC/r734ROROz0M4zUhA==
+  dependencies:
+    "@noble/ciphers" "^1.0.0"
+    "@noble/hashes" "^2.2.0"
+    hash-wasm "^4.12.0"
 
 "@schematics/angular@16.2.12":
   version "16.2.12"
@@ -7114,6 +7128,11 @@ has-unicode@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==
+
+hash-wasm@^4.12.0:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/hash-wasm/-/hash-wasm-4.12.0.tgz#f9f1a9f9121e027a9acbf6db5d59452ace1ef9bb"
+  integrity sha512-+/2B2rYLb48I/evdOIhP+K/DD2ca2fgBjp6O+GBEnCDk2e4rpeXIK8GvIyRPjTezgmWn9gmKwkQjjx6BtqDHVQ==
 
 hashids@^1.1.1:
   version "1.2.2"
