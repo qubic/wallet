@@ -45,6 +45,7 @@
     "@qubic.org/contracts": "0.2.6",
     "@qubic.org/crypto": "0.2.6",
     "@qubic.org/rpc": "0.2.6",
+    "@qubic.org/vault": "1.2.1",
     "angularx-qrcode": "^16.0.2",
     "bignumber.js": "^9.1.1",
     "electron-remote": "^1.3.0",
