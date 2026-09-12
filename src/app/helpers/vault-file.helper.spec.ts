@@ -1,4 +1,5 @@
 import {
+  createV3VaultFile,
   detectVaultFileVersion,
   unlockV3VaultFile,
   VAULT_FILE_VERSION_LEGACY,
@@ -159,5 +160,59 @@ describe('unlockV3VaultFile', () => {
     await expectAsync(
       unlockV3VaultFile(base64ToArrayBuffer(V3_TRAP_GARBAGE_B64), V3_PASSWORD)
     ).toBeRejectedWith('INVALID VAULT FILE');
+  });
+});
+
+describe('createV3VaultFile', () => {
+  const viewToArrayBuffer = (bytes: Uint8Array): ArrayBuffer =>
+    bytes.buffer.slice(
+      bytes.byteOffset,
+      bytes.byteOffset + bytes.byteLength
+    ) as ArrayBuffer;
+
+  it('should write a v3 file that unlocks back to the same accounts', async () => {
+    const accounts = [
+      { alias: 'Main', publicId: 'A'.repeat(60), seed: 'a'.repeat(55), isOnlyWatch: false },
+      { alias: 'Watch', publicId: 'B'.repeat(60), seed: '', isOnlyWatch: true },
+    ];
+    const bytes = await createV3VaultFile('export-pw', accounts, '4.26.3');
+    const buffer = viewToArrayBuffer(bytes);
+    expect(detectVaultFileVersion(buffer)).toBe(VAULT_FILE_VERSION_V3);
+    expect(await unlockV3VaultFile(buffer, 'export-pw')).toEqual(accounts);
+  });
+
+  it('should never write a seed for a watch-only account even if one is supplied', async () => {
+    const bytes = await createV3VaultFile(
+      'pw',
+      [
+        { alias: 'Sneaky', publicId: 'C'.repeat(60), seed: 'c'.repeat(55), isOnlyWatch: true },
+        { alias: 'Normal', publicId: 'D'.repeat(60), seed: 'd'.repeat(55), isOnlyWatch: false },
+      ],
+      '4.26.3'
+    );
+    const back = await unlockV3VaultFile(viewToArrayBuffer(bytes), 'pw');
+    expect(back.find((s) => s.isOnlyWatch)!.seed).toBe('');
+    expect(back.find((s) => !s.isOnlyWatch)!.seed).toBe('d'.repeat(55));
+  });
+
+  it('should refuse to write a spendable account without a valid seed', async () => {
+    await expectAsync(
+      createV3VaultFile(
+        'pw',
+        [{ alias: 'Broken', publicId: 'E'.repeat(60), seed: '', isOnlyWatch: false }],
+        '4.26.3'
+      )
+    ).toBeRejected();
+  });
+
+  it('should produce a file the wrong password cannot open', async () => {
+    const bytes = await createV3VaultFile(
+      'right-pw',
+      [{ alias: 'Main', publicId: 'F'.repeat(60), seed: 'f'.repeat(55), isOnlyWatch: false }],
+      '4.26.3'
+    );
+    await expectAsync(
+      unlockV3VaultFile(viewToArrayBuffer(bytes), 'wrong-pw')
+    ).toBeRejected();
   });
 });

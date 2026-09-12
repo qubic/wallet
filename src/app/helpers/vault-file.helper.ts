@@ -10,10 +10,10 @@ const V3_MIN_LENGTH = 61;
 const SEED_PATTERN = /^[a-z]{55}$/;
 
 /**
- * One account recovered from a vault file.
+ * One account inside a vault file, whether read from or written to it.
  * `seed` is an empty string for watch-only accounts.
  */
-export interface IRecoveredVaultSeed {
+export interface IVaultSeed {
   alias: string;
   publicId: string;
   seed: string;
@@ -62,14 +62,14 @@ export function detectVaultFileVersion(binaryFile: ArrayBuffer): number | null {
  * their seeds, and this guard is what keeps such a vault from being imported as a
  * set of unusable accounts. An empty list counts as missing for the same reason.
  */
-function isMissingSeedMaterial(seeds: IRecoveredVaultSeed[]): boolean {
+function isMissingSeedMaterial(seeds: IVaultSeed[]): boolean {
   return (
     seeds.length === 0 ||
     seeds.some((s) => !s.isOnlyWatch && s.seed.length === 0)
   );
 }
 
-function mapPayloadSeeds(payloadSeeds: IV3PayloadSeed[]): IRecoveredVaultSeed[] {
+function mapPayloadSeeds(payloadSeeds: IV3PayloadSeed[]): IVaultSeed[] {
   const textDecoder = new TextDecoder();
   return (payloadSeeds ?? []).map((entry) => {
     const isOnlyWatch = entry.isOnlyWatch === true;
@@ -97,7 +97,7 @@ function mapPayloadSeeds(payloadSeeds: IV3PayloadSeed[]): IRecoveredVaultSeed[] 
 export async function unlockV3VaultFile(
   binaryFile: ArrayBuffer,
   password: string
-): Promise<IRecoveredVaultSeed[]> {
+): Promise<IVaultSeed[]> {
   if (detectVaultFileVersion(binaryFile) !== VAULT_FILE_VERSION_V3) {
     return Promise.reject('INVALID VAULT FILE');
   }
@@ -108,4 +108,47 @@ export async function unlockV3VaultFile(
     return Promise.reject('INVALID VAULT FILE');
   }
   return seeds;
+}
+
+/**
+ * Writes a v3 (Argon2id) vault file containing the given accounts.
+ * The watch-only flag is authoritative: such an account is written without seed material
+ * even if a seed was supplied. A spendable account must carry a valid seed, otherwise the
+ * export is refused rather than producing a backup that cannot restore that account.
+ */
+export async function createV3VaultFile(
+  password: string,
+  seeds: IVaultSeed[],
+  appVersion: string
+): Promise<Uint8Array> {
+  for (const seed of seeds) {
+    if (!seed.isOnlyWatch && !SEED_PATTERN.test(seed.seed)) {
+      return Promise.reject(
+        'Account ' + seed.publicId + ' has no valid seed to export'
+      );
+    }
+  }
+  const textEncoder = new TextEncoder();
+  const now = new Date().toISOString();
+  const manager = new VaultManager();
+  return manager.create(
+    {
+      seeds: seeds.map((seed) => ({
+        publicId: seed.publicId,
+        alias: seed.alias,
+        taintStatus: 0,
+        isOnlyWatch: seed.isOnlyWatch,
+        ...(seed.isOnlyWatch
+          ? {}
+          : { encryptedSeed: textEncoder.encode(seed.seed) }),
+      })),
+      metadata: {
+        createdAt: now,
+        updatedAt: now,
+        appVersion,
+        schemaVersion: 3,
+      },
+    } as any,
+    password
+  );
 }

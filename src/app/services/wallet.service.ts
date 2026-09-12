@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { bytes32ToString } from '@qubic-lib/qubic-ts-library/dist//converter/converter';
 import {
+  createV3VaultFile,
   detectVaultFileVersion,
+  IVaultSeed,
   unlockV3VaultFile,
   VAULT_FILE_VERSION_V3,
 } from '../helpers/vault-file.helper';
+import { environment } from '../../environments/environment';
 import { IConfig, IEncryptedVaultFile, IVaultFile } from '../model/config';
 import { IDecodedSeed, ISeed } from '../model/seed';
 import { ITx } from '../model/tx';
@@ -595,10 +598,6 @@ export class WalletService {
     return new TextEncoder().encode(str);
   }
 
-  private bytesToBase64(arr: Uint8Array): string {
-    return btoa(Array.from(arr, (b) => String.fromCharCode(b)).join(''));
-  }
-
   private base64ToBytes(base64: string): Uint8Array {
     return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
   }
@@ -620,27 +619,6 @@ export class WalletService {
       false,
       ['encrypt', 'decrypt']
     );
-  }
-
-  private async encryptVault(
-    vaultFile: IVaultFile,
-    password: string
-  ): Promise<IEncryptedVaultFile> {
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const key = await this.getVaultFileKey(password, salt);
-
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const contentBytes = this.stringToBytes(JSON.stringify(vaultFile));
-
-    const cipher = new Uint8Array(
-      await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, contentBytes)
-    );
-
-    return {
-      salt: this.bytesToBase64(salt),
-      iv: this.bytesToBase64(iv),
-      cipher: this.bytesToBase64(cipher),
-    };
   }
 
   private async decryptVault(
@@ -669,27 +647,31 @@ export class WalletService {
     return detectVaultFileVersion(binaryFile) !== null;
   }
 
+  /**
+   * Exports the wallet as a v3 (Argon2id) vault file.
+   *
+   * Unlike the legacy v1 file, a v3 vault carries the seeds themselves rather than the RSA
+   * keypair, so every spendable account is decrypted with the session key first. The
+   * watch-only flag is authoritative: those accounts are written without seed material even
+   * when an encrypted seed is still stored for them (`updateSeedIsOnlyWatch` never clears it).
+   */
   public async exportVault(password: string): Promise<boolean> {
     if (!this.privateKey || !this.runningConfiguration.publicKey)
       return Promise.reject('Private- or PublicKey not loaded');
 
-    const jsonKey = await this.createJsonKey(password);
-    if (jsonKey === null) {
-      return Promise.reject('JSONKEY IS NULL');
+    const seeds: IVaultSeed[] = [];
+    for (const seed of this.runningConfiguration.seeds) {
+      const isOnlyWatch = seed.isOnlyWatch === true;
+      seeds.push({
+        alias: seed.alias,
+        publicId: seed.publicId,
+        seed: isOnlyWatch ? '' : await this.revealSeed(seed.publicId),
+        isOnlyWatch,
+      });
     }
 
-    const vaultFile: IVaultFile = {
-      privateKey: this.arrayBufferToBase64(jsonKey),
-      publicKey: this.runningConfiguration.publicKey!,
-      configuration: this.prepareConfigExport(),
-    };
-
-    const encryptedVaultFile = await this.encryptVault(vaultFile, password);
-
-    const fileData = new TextEncoder().encode(
-      JSON.stringify(encryptedVaultFile)
-    );
-    const blob = new Blob([fileData], { type: 'application/octet-stream' });
+    const vault = await createV3VaultFile(password, seeds, environment.version);
+    const blob = new Blob([vault], { type: 'application/octet-stream' });
     const name = this.runningConfiguration.name ?? 'qubic-wallet';
     this.downloadBlob(name + '.qubic-vault', blob);
     this.shouldExportKey = false;
