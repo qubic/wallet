@@ -336,6 +336,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "Hedef adres bir akıllı sözleşmedir",
+      "text": "Bu adres \"{{contractName}}\" akıllı sözleşmesine aittir. Basit bir transfer sözleşmeyi çağırmaz; tutar kalıcı olarak sözleşmenin bakiyesinin bir parçası olur ve geri alınamaz. Sözleşmeyle etkileşim kurmak için iptal edin ve sözleşmenin DApp'ini kullanın.",
+      "buttons": {
+        "continue": "Devam Et"
+      }
+    },
     "title": "Qubic Birimleri Gönder (qus)",
     "messages": {
       "pleaseUnlock": "Lütfen önce Cüzdanınızın kilidini açın",

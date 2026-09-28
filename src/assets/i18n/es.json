@@ -335,6 +335,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "La dirección de destino es un contrato inteligente",
+      "text": "Corresponde al contrato inteligente \"{{contractName}}\". Una transferencia simple no llama al contrato; el importe pasa a formar parte de su saldo de forma permanente y no se puede recuperar. Para interactuar con el contrato, cancela y usa su DApp.",
+      "buttons": {
+        "continue": "Continuar"
+      }
+    },
     "title": "Enviar unidades Qubic (QUBIC)",
     "messages": {
       "pleaseUnlock": "Por favor, desbloquea tu Wallet primero",
