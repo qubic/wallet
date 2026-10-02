@@ -336,6 +336,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "Die Zieladresse ist ein Smart Contract",
+      "text": "Sie gehört zum Smart Contract \"{{contractName}}\". Eine einfache Überweisung ruft den Contract nicht auf; der Betrag wird dauerhaft Teil seines Guthabens und kann nicht zurückgeholt werden. Um mit dem Contract zu interagieren, brich ab und nutze seine DApp.",
+      "buttons": {
+        "continue": "Weiter"
+      }
+    },
     "title": "Sende Qubic",
     "messages": {
       "pleaseUnlock": "Bitte entsperren Sie zuerst Ihre Wallet",

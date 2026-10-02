@@ -336,6 +336,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "送金先アドレスはスマートコントラクトです",
+      "text": "このアドレスはスマートコントラクト「{{contractName}}」のものです。通常の送金ではコントラクトは呼び出されず、金額は永久にコントラクトの残高の一部となり、取り戻すことはできません。コントラクトを利用するには、キャンセルして専用のDAppをご利用ください。",
+      "buttons": {
+        "continue": "続行"
+      }
+    },
     "title": "Qubicユニット（QUBIC）を送信",
     "messages": {
       "pleaseUnlock": "最初にウォレットのロックを解除してください",
