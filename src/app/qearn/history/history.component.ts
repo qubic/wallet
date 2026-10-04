@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IStakeStatus, QearnService } from '../../services/qearn.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom, takeUntil, Subject } from 'rxjs';
-import { ApiArchiverService } from 'src/app/services/api.archiver.service';
 import { UpdaterService } from 'src/app/services/updater-service';
 import { QearnComponent } from '../qearn.component';
 import { UnlockInputDialogComponent } from '../components/unlock-input-dialog/unlock-input-dialog.component';
@@ -36,7 +35,6 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     public qearnService: QearnService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
-    private apiArchiver: ApiArchiverService,
     private us: UpdaterService,
     private fb: FormBuilder,
     private qearnComponent: QearnComponent,

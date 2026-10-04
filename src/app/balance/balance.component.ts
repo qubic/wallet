@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { ApiArchiverService } from '../services/api.archiver.service';
 import { WalletService } from '../services/wallet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@ngneat/transloco';
-import { fixTransactionDates, Transaction } from '../services/api.model';
-import { TransactionsArchiver, TransactionRecord, StatusArchiver, TransactionDetails } from '../services/api.archiver.model';
+import { AssetTransfer, SendManyTransfer } from '../services/api.model';
+import { PendingTransaction } from '../services/pending-transaction.service';
+import { ProcessedTickInterval, QueryTransactionRecord, QueryTransactionDetails } from '../services/apis/query/api.query.model';
+import { ApiQueryService } from '../services/apis/query/api.query.service';
 import { FormControl } from '@angular/forms';
 import { UpdaterService } from '../services/updater-service';
 import { Router } from '@angular/router';
@@ -12,12 +13,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QubicTransferAssetPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferAssetPayload'
 import { QubicTransferSendManyPayload } from '@qubic-lib/qubic-ts-library/dist/qubic-types/transacion-payloads/QubicTransferSendManyPayload'
-import { AssetTransfer, SendManyTransfer } from '../services/api.model';
-import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName, EMPTY_QUBIC_ADDRESS } from '../utils/address.utils';
+import { shortenAddress, getDisplayName, getShortDisplayName, getCompactDisplayName } from '../utils/address.utils';
 import { QubicDefinitions } from '@qubic-lib/qubic-ts-library/dist/QubicDefinitions';
 import { AddressNameService } from '../services/address-name.service';
+import { QubicStaticService } from '../services/apis/static/qubic-static.service';
 import { ExplorerUrlHelper } from '../services/explorer-url.helper';
 import { isSendManyTransaction, isSimpleTransfer } from '../helpers/transaction-status.helper';
+import { PendingTransactionService } from '../services/pending-transaction.service';
+import { getTransactionTypeDisplayLong } from '../utils/transaction-type.utils';
 
 @Component({
   selector: 'app-balance',
@@ -35,20 +38,24 @@ export class BalanceComponent implements OnInit, OnDestroy {
   public seedFilterFormControl: FormControl = new FormControl('');
   public currentTick = 0;
   public numberLastEpoch = 0;
-  public transactions: Transaction[] = [];
+  public pendingTransactions: PendingTransaction[] = [];
+  public filteredPendingTransactions: PendingTransaction[] = [];
   public isShowAllTransactions = false;
   public isOrderByDesc: boolean = true;
 
-  public transactionsArchiverSubscribe: TransactionsArchiver[] = [];
-  public transactionsArchiver: TransactionsArchiver[] = [];
-  public transactionsRecord: TransactionRecord[] = [];
+  public transactionsArchiverSubscribe: QueryTransactionRecord[] = [];
+  public transactionsArchiver: QueryTransactionRecord[] = [];
+  public transactionsRecord: QueryTransactionRecord[] = [];
   readonly panelOpenState = signal(false);
   selectedElement = new FormControl('element1');
 
-  public status!: StatusArchiver;
+  public processedTickIntervals: ProcessedTickInterval[] = [];
+  private sortedTickRanges: { epoch: number; minFirstTick: number; maxLastTick: number }[] = [];
   public currentSelectedEpoch = 0;
-  public initialProcessedTick: number = 0;
-  public lastProcessedTick: number = 0;
+  public viewStartTick: number = 0;
+  public viewEndTick: number = 0;
+  public isFetchingTransactions: boolean = false;
+  private fetchSeq: number = 0;
   public assetTransferData: { [key: string]: AssetTransfer } = {};
   public sendManyTransferData: { [key: string]: SendManyTransfer[] } = {};
   public sendManyExpanded: { [key: string]: boolean } = {};
@@ -56,17 +63,19 @@ export class BalanceComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private transloco: TranslocoService,
-    private apiArchiver: ApiArchiverService,
+    private apiQuery: ApiQueryService,
     private walletService: WalletService,
     private _snackBar: MatSnackBar,
     public us: UpdaterService,
-    private addressNameService: AddressNameService
+    private addressNameService: AddressNameService,
+    private pendingTxService: PendingTransactionService,
+    private qubicStatic: QubicStaticService
   ) {
     this.seedFilterFormControl.setValue(null);
   }
 
   ngOnInit(): void {
-    this.getStatusArchiver();
+    this.getProcessedTickIntervals();
     if (!this.walletService.isWalletReady) {
       this.router.navigate(['/public']); // Redirect to public page if not authenticated
     }
@@ -86,30 +95,18 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.numberLastEpoch = this.walletService.getSettings().numberLastEpoch;
 
-      this.us.internalTransactions
+      this.pendingTxService.pendingTransactions$
         .pipe(takeUntil(this.destroy$))
-        .subscribe(async txs => {
-          this.transactions = fixTransactionDates(txs);
+        .subscribe(txs => {
+          this.pendingTransactions = txs;
           this.correctTheTransactionListByPublicId();
-
-          // Parse asset transfers for qli transactions
-          for (const tx of this.transactions) {
-            if (tx.inputHex && this.isQxAssetTransfer(tx.destId, tx.type)) {
-              try {
-                const assetData = await this.getAssetsTransfers(tx.inputHex);
-                if (assetData) {
-                  this.assetTransferData[tx.id] = assetData;
-                }
-              } catch (error) {
-                console.error('Error parsing qli asset transfer:', error);
-              }
-            }
-          }
+          this.updateFilteredPendingTransactions();
+          this.parsePendingAssetTransfers();
         });
 
       this.us.transactionsArray
         .pipe(takeUntil(this.destroy$))
-        .subscribe((transactions: TransactionsArchiver[]) => {
+        .subscribe((transactions: QueryTransactionRecord[]) => {
           if (transactions && transactions.length > 0) {
             this.transactionsArchiverSubscribe = transactions;
             this.updateTransactionsRecord();
@@ -119,13 +116,13 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
 
-  //**  new Archiver Api */
-  private getStatusArchiver() {
-    this.apiArchiver.getStatus()
-      .subscribe(s => {
-        if (s) {
-          this.status = s;
-          this.currentSelectedEpoch = s.processedTickIntervalsPerEpoch[s.processedTickIntervalsPerEpoch.length - 1].epoch;
+  private getProcessedTickIntervals() {
+    this.apiQuery.getProcessedTickIntervals()
+      .subscribe(intervals => {
+        if (intervals && intervals.length > 0) {
+          this.processedTickIntervals = intervals;
+          this.rebuildSortedTickRanges();
+          this.currentSelectedEpoch = intervals[intervals.length - 1].epoch;
           // Just initialize the tick range, don't fetch transactions yet
           // Transactions will be fetched when user switches to "By Epochs" tab
           this.GetTransactionsByTick(this.currentSelectedEpoch, false);
@@ -140,8 +137,8 @@ export class BalanceComponent implements OnInit, OnDestroy {
     const element = this.selectedElement.value;
     if (element === 'element1') {
       this.isShowAllTransactions = false;
-      this.initialProcessedTick = 0;
-      this.lastProcessedTick = this.us.archiverLatestTick.value
+      this.viewStartTick = 0;
+      this.viewEndTick = this.us.lastProcessedTick.value
     } else if (element === 'element2') {
       this.isShowAllTransactions = true;
       // Initialize tick range for the current epoch when switching to epochs view
@@ -154,13 +151,12 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
 
   get firstEpoch(): number | undefined {
-    return this.status?.processedTickIntervalsPerEpoch?.[0]?.epoch;
+    return this.processedTickIntervals?.[0]?.epoch;
   }
 
   get lastEpoch(): number | undefined {
-    const intervals = this.status?.processedTickIntervalsPerEpoch;
-    if (!intervals || intervals.length === 0) return undefined;
-    return intervals[intervals.length - 1]?.epoch;
+    if (!this.processedTickIntervals || this.processedTickIntervals.length === 0) return undefined;
+    return this.processedTickIntervals[this.processedTickIntervals.length - 1]?.epoch;
   }
 
   get canNavigateToPreviousEpoch(): boolean {
@@ -172,16 +168,14 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   GetTransactionsByTick(epoch: number, fetchTransactions: boolean = true): void {
-    this.status.processedTickIntervalsPerEpoch
-      .filter(t => t.epoch === epoch)
-      .forEach(e => {
-        // Only set tick range if intervals exist and have data
-        if (e.intervals && e.intervals.length > 0 && e.intervals[0]) {
-          this.initialProcessedTick = e.intervals[0].initialProcessedTick;
-          this.lastProcessedTick = e.intervals[0].lastProcessedTick;
-          this.currentSelectedEpoch = e.epoch;
-        }
-      });
+    const epochIntervals = this.processedTickIntervals.filter(t => t.epoch === epoch);
+    if (epochIntervals.length > 0) {
+      // Use the first interval's firstTick and the last interval's lastTick
+      // to cover the full range when an epoch has gaps (multiple intervals)
+      this.viewStartTick = epochIntervals[0].firstTick;
+      this.viewEndTick = epochIntervals[epochIntervals.length - 1].lastTick;
+      this.currentSelectedEpoch = epoch;
+    }
     // Only fetch transactions if explicitly requested (e.g., when navigating between epochs)
     if (fetchTransactions) {
       this.getAllTransactionByPublicId(this.seedFilterFormControl.value);
@@ -213,28 +207,43 @@ export class BalanceComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const seq = ++this.fetchSeq;
     this.transactionsRecord = [];
     this.transactionsArchiver = [];
-    this.apiArchiver.getTransactions(publicId, this.initialProcessedTick, this.lastProcessedTick)
+    this.isFetchingTransactions = true;
+    this.apiQuery.getTransfers(publicId, this.viewStartTick, this.viewEndTick)
       .subscribe(async r => {
-      if (r) {
-        if (Array.isArray(r)) {
-          this.transactionsArchiver.push(...r);
-        } else {
-          this.transactionsArchiver.push(r);
+        if (seq !== this.fetchSeq) return; // stale response — a newer fetch superseded this one
+        try {
+          if (r) {
+            if (Array.isArray(r)) {
+              this.transactionsArchiver.push(...r);
+            } else {
+              this.transactionsArchiver.push(r);
+            }
+
+            if (this.transactionsArchiver.length > 0) {
+              this.transactionsRecord.push(...this.transactionsArchiver);
+            }
+
+            await Promise.all(this.transactionsRecord.map(async transaction => {
+              await this.checkAndParseAssetTransfer(transaction);
+            }));
+
+            this.sortTransactions();
+          }
+        } finally {
+          // Only clear the flag if we're still the current fetch; otherwise a
+          // newer fetch is in flight and owns the loading state.
+          if (seq === this.fetchSeq) {
+            this.isFetchingTransactions = false;
+          }
         }
-
-        if (this.transactionsRecord.length <= 0) {
-          this.transactionsRecord.push(...this.transactionsArchiver[0].transactions);
-        }
-
-        await Promise.all(this.transactionsRecord.map(async transaction => {
-          await this.checkAndParseAssetTransfer(transaction);
-        }));
-
-        this.sortTransactions();
-      }
-    });
+      }, () => {
+        // stale response — a newer fetch superseded this one
+        if (seq !== this.fetchSeq) return;
+        this.isFetchingTransactions = false;
+      });
   }
 
   /**
@@ -276,7 +285,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async checkAndParseAssetTransfer(transaction: TransactionRecord): Promise<void> {
+  async checkAndParseAssetTransfer(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -300,6 +309,22 @@ export class BalanceComponent implements OnInit, OnDestroy {
     return this.assetTransferData[txId] || null;
   }
 
+  private async parsePendingAssetTransfers(): Promise<void> {
+    for (const tx of this.pendingTransactions) {
+      if (!tx.inputHex || this.assetTransferData[tx.txId]) continue;
+      if (this.isQxAssetTransfer(tx.destId, tx.inputType)) {
+        try {
+          const assetData = await this.getAssetsTransfers(tx.inputHex);
+          if (assetData) {
+            this.assetTransferData[tx.txId] = assetData;
+          }
+        } catch (error) {
+          console.error('Error parsing pending asset transfer:', error);
+        }
+      }
+    }
+  }
+
   /**
    * Parse SendMany payload to extract all transfers
    */
@@ -315,7 +340,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }));
   }
 
-  async checkAndParseSendManyTransfer(transaction: TransactionRecord): Promise<void> {
+  async checkAndParseSendManyTransfer(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -339,7 +364,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     return this.sendManyTransferData[txId] || null;
   }
 
-  async toggleSendManyExpanded(transaction: TransactionRecord): Promise<void> {
+  async toggleSendManyExpanded(transaction: QueryTransactionRecord): Promise<void> {
     const firstTx = transaction.transactions?.[0];
     if (!firstTx?.transaction) {
       return;
@@ -361,12 +386,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   private updateTransactionsRecord(): void {
     if (!this.isShowAllTransactions) {
-      this.transactionsRecord = [];
-      this.transactionsArchiverSubscribe.forEach(archiver => {
-        if (archiver.transactions && archiver.transactions.length > 0) {
-          this.transactionsRecord.push(...archiver.transactions);
-        }
-      });
+      this.transactionsRecord = [...this.transactionsArchiverSubscribe];
 
       // Filter to keep only unique transactions based on txId
       const uniqueTransactions = this.transactionsRecord.filter((transactionRecord, index, self) =>
@@ -377,6 +397,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
       this.transactionsRecord = uniqueTransactions;
       this.sortTransactions();
+      this.updateFilteredPendingTransactions();
     }
   }
 
@@ -390,7 +411,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
 
   correctTheTransactionListByPublicId(): void {
     const validSeeds = this.getSeeds().map(seed => seed.publicId);
-    this.transactions = this.transactions.filter(transaction => {
+    this.pendingTransactions = this.pendingTransactions.filter(transaction => {
       return validSeeds.includes(transaction.sourceId) || validSeeds.includes(transaction.destId);
     });
   }
@@ -401,26 +422,23 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
 
-  getTransactions(publicId: string | null = null): Transaction[] {
-    return this.transactions.filter(transaction => {
-      // check publicId and status
+  getTransactions(publicId: string | null = null): PendingTransaction[] {
+    return this.pendingTransactions.filter(transaction => {
       const matchesPublicId = publicId == null || transaction.sourceId === publicId || transaction.destId === publicId;
-      const isNotSuccess = transaction.status !== 'Success';
 
-      if (!matchesPublicId || !isNotSuccess) return false;
-
-      // get the tick and txId to compare
-      const txId = transaction.id;
-      const tick = transaction.targetTick;
+      if (!matchesPublicId) return false;
 
       // check if the transaction is already returned by the archiver so it can be excluded
       const shouldBeExcluded = this.transactionsRecord.some(ref =>
-        ref.tickNumber === tick &&
-        ref.transactions.some(t => t.transaction.txId === txId)
+        ref.transactions.some(t => t.transaction.txId === transaction.txId)
       );
 
       return !shouldBeExcluded; // Exclude if matched
     });
+  }
+
+  private updateFilteredPendingTransactions(): void {
+    this.filteredPendingTransactions = this.getTransactions();
   }
 
 
@@ -551,23 +569,26 @@ export class BalanceComponent implements OnInit, OnDestroy {
     window.URL.revokeObjectURL(url);
   }
 
-  repeat(transaction: Transaction) {
+  dismissFailedTransaction(event: Event, txId: string): void {
+    event.stopPropagation();
+    this.pendingTxService.removeFailedTransaction(txId);
+  }
+
+  repeat(transaction: PendingTransaction) {
     // Safety check: only allow repeatable transactions
-    if (!this.isRepeatableTransaction(transaction.destId, transaction.type, transaction.amount)) {
-      console.error('Attempted to repeat non-repeatable transaction. Type:', transaction.type, 'DestId:', transaction.destId);
+    if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, transaction.amount)) {
+      console.error('Attempted to repeat non-repeatable transaction. InputType:', transaction.inputType, 'DestId:', transaction.destId);
       return;
     }
 
     // Check if it's a QX asset transfer (inputType 2 to QX smart contract)
-    if (this.isQxAssetTransfer(transaction.destId, transaction.type)) {
-      // Route to assets component for QX asset transfers
+    if (this.isQxAssetTransfer(transaction.destId, transaction.inputType)) {
       this.router.navigate(['assets-area'], {
         state: {
           template: transaction
         }
       });
     } else {
-      // Route to payment component for standard Qubic transfers
       this.router.navigate(['payment'], {
         state: {
           template: transaction
@@ -576,7 +597,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  async repeatTransactionArchiver(transaction: TransactionDetails) {
+  async repeatTransactionArchiver(transaction: QueryTransactionDetails) {
     // Safety check: only allow repeatable transactions
     const amount = parseInt(transaction.amount, 10);
     if (!this.isRepeatableTransaction(transaction.destId, transaction.inputType, amount)) {
@@ -614,27 +635,49 @@ export class BalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  formatInputType(inputType: number, destination: string): string {
-    // Check if it's a smart contract transaction (inputType > 0 and not protocol message)
-    const isSmartContract = inputType > 0 && destination !== EMPTY_QUBIC_ADDRESS;
-
-    // Base type
-    const baseType = inputType.toString();
-    const category = isSmartContract ? 'SC' : 'Standard';
-
-    // Try to get smart contract details and procedure name
-    if (isSmartContract) {
-      const smartContract = this.addressNameService.getSmartContractByAddressSync(destination);
-      if (smartContract && smartContract.procedures) {
-        const procedure = smartContract.procedures.find((p: any) => p.id === inputType);
-        if (procedure) {
-          return `${baseType} ${category} (${procedure.name})`;
-        }
-      }
+  private rebuildSortedTickRanges(): void {
+    const ranges = new Map<number, { epoch: number; minFirstTick: number; maxLastTick: number }>();
+    for (const interval of this.processedTickIntervals) {
+      const existing = ranges.get(interval.epoch);
+      ranges.set(interval.epoch, existing
+        ? {
+            epoch: interval.epoch,
+            minFirstTick: Math.min(existing.minFirstTick, interval.firstTick),
+            maxLastTick: Math.max(existing.maxLastTick, interval.lastTick),
+          }
+        : { epoch: interval.epoch, minFirstTick: interval.firstTick, maxLastTick: interval.lastTick }
+      );
     }
+    this.sortedTickRanges = Array.from(ranges.values()).sort((a, b) => a.epoch - b.epoch);
+  }
 
-    // Return without procedure name
-    return `${baseType} ${category}`;
+  private getEpochForTick(tickNumber: number): number | undefined {
+    const sorted = this.sortedTickRanges;
+
+    const match = sorted.find(
+      (r) => tickNumber >= r.minFirstTick && tickNumber <= r.maxLastTick
+    );
+    if (match) return match.epoch;
+
+    const gap = sorted.find(
+      (r, i) => i < sorted.length - 1 && tickNumber > r.maxLastTick && tickNumber < sorted[i + 1].minFirstTick
+    );
+    if (gap) return gap.epoch;
+
+    const last = sorted[sorted.length - 1];
+    if (last && tickNumber > last.maxLastTick) return last.epoch;
+
+    return undefined;
+  }
+
+  formatInputType(inputType: number, destination: string, tickNumber: number): string {
+    return getTransactionTypeDisplayLong(
+      destination,
+      inputType,
+      this.qubicStatic.cachedSmartContracts,
+      this.qubicStatic.cachedTransactionInputTypes,
+      this.getEpochForTick(tickNumber)
+    );
   }
 
   ngOnDestroy(): void {

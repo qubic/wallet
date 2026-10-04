@@ -59,22 +59,8 @@
               </div>
             </div>
             <br>
-            <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
-              epochChanges: true,
-              isPositiv: getEpochChanges(address.publicId) > 0,
-              isNegativ: getEpochChanges(address.publicId) < 0,
-              cardEpochChanges: true
-              }">
-              <span class="disable-area epochChanges">
-                {{ getEpochChanges(address.publicId) | number : "1.0-0" }}
-                <mat-icon class="up">arrow_upward</mat-icon>
-                <mat-icon class="down">arrow_downward</mat-icon>
-                <mat-icon class="straight">arrow_forward</mat-icon>
-              </span>
-            </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
-              <span *ngIf="!address.lastUpdate">?</span>
+              {{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span>
             </div>
             <div class="dashboard-amount-name disable-area">
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
@@ -102,22 +88,8 @@
               </div>
             </div>
             <br>
-            <div *ngIf="getEpochChanges(address.publicId) != 0" [class]="{
-              epochChanges: true,
-              isPositiv: getEpochChanges(address.publicId) > 0,
-              isNegativ: getEpochChanges(address.publicId) < 0,
-              cardEpochChanges: true
-              }">
-              <span class="disable-area">
-                {{ getEpochChanges(address.publicId) | number : "1.0-0" }}
-                <mat-icon class="up">arrow_upward</mat-icon>
-                <mat-icon class="down">arrow_downward</mat-icon>
-                <mat-icon class="straight">arrow_forward</mat-icon>
-              </span>
-            </div>
             <div class="dashboard-balance-name disable-area">
-              <span *ngIf="address.lastUpdate">{{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span></span>
-              <span *ngIf="!address.lastUpdate">?</span>
+              {{getBalance(address.publicId) | number :"1.0-0"}} <span class="currency-label">{{ t("general.currency") }}</span>
             </div>
             <div class="dashboard-amount-name disable-area">
               ${{latestStats.data.price * getBalance(address.publicId) | number : "1.0-2"}}
@@ -161,22 +133,9 @@
                 t('seedOverviewComponent.hasPendingTransaction')
               }}">hourglass_empty</mat-icon>
             <span *ngIf="!element.lastUpdate">?</span>
-            <span class="epochChanges " *ngIf="element.lastUpdate">{{
+            <span *ngIf="element.lastUpdate">{{
               getBalance(element.publicId) | number : "1.0-0"
               }}</span>
-          </div>
-          <div *ngIf="getEpochChanges(element.publicId) != 0" [class]="{
-            alignRight: true,
-            epochChanges: true,
-            isPositiv: getEpochChanges(element.publicId) > 0,
-            isNegativ: getEpochChanges(element.publicId) < 0
-          }">
-            <span *ngIf="!element.lastUpdate">?</span>
-            <span class="epochChanges disable-area" *ngIf="element.lastUpdate">
-              <mat-icon class="up">arrow_upward</mat-icon>
-              <mat-icon class="down">arrow_downward</mat-icon>
-              {{ getEpochChanges(element.publicId) | number : "1.0-0" }}
-            </span>
           </div>
         </td>
       </ng-container>
