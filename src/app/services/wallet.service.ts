@@ -265,6 +265,32 @@ export class WalletService {
     }
   }
 
+  /**
+   * Verifies that the currently loaded private key matches the public key the
+   * stored seeds were encrypted with, without ever exposing a seed in plaintext.
+   *
+   * Watch-only wallets have no private seed to check, so they are considered
+   * valid. Used on unlock instead of revealing (decrypting) a seed just to run
+   * this sanity check.
+   */
+  public async hasValidKeyPair(): Promise<boolean> {
+    const firstNonWatchSeed = this.getSeeds().find((s) => !s.isOnlyWatch);
+    if (!firstNonWatchSeed) {
+      return true; // only watch-only addresses: nothing to validate against
+    }
+    try {
+      const decrypted = await this.decrypt(
+        this.privateKey!,
+        this.base64ToArrayBuffer(firstNonWatchSeed.encryptedSeed)
+      );
+      // A successful, non-empty decrypt proves the key pair matches. The
+      // plaintext is intentionally never returned or stored.
+      return new TextDecoder().decode(decrypted).length > 0;
+    } catch {
+      return false;
+    }
+  }
+
   public async updateSeedAlias(publicId: string, alias: string) {
     let seed = this.getSeed(publicId);
     if (seed) {

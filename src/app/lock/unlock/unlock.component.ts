@@ -200,25 +200,12 @@ export class UnLockComponent extends QubicDialogWrapper implements OnDestroy {
       await unlockPromise.then(async r => {
         if (r) {
 
-          // test if the private and public key match
+          // Verify the private key matches the public key without revealing any
+          // seed. Watch-only wallets have nothing to validate and pass through.
           const seeds = this.walletService.getSeeds();
-          let decryptedSeed = '';
-          try {
-            decryptedSeed = await this.walletService.revealSeed(
-              seeds.sort((a, b) => (a.isOnlyWatch ? 1 : 0) - (b.isOnlyWatch ? 1 : 0))[0].publicId
-            );
-          } catch (e) {
-            console.error(e);
-          }
+          const keyPairValid = await this.walletService.hasValidKeyPair();
 
-          //check only-watch-address
-          if (decryptedSeed == '') {
-            if (seeds.filter(seed => !seed.isOnlyWatch).length == 0) {
-              decryptedSeed = "only-watch"
-            }
-          }
-
-          if (seeds && seeds.length > 0 && decryptedSeed == '') {
+          if (seeds.length > 0 && !keyPairValid) {
             this._snackBar.open(
               'Unlock Failed: Private- and PublicKey mismatch',
               'close',
