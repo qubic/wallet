@@ -16,6 +16,7 @@ import { PublicKey } from '@qubic-lib/qubic-ts-library/dist/qubic-types/PublicKe
 import { QUBIC_ADDRESS_LENGTH } from 'src/app/constants/qubic.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { generateSeed } from 'src/app/utils/seed.utils';
 
 
 @Component({
@@ -227,13 +228,7 @@ export class SeedEditDialog extends QubicDialogWrapper implements OnDestroy {
   }
 
   seedGen(): string {
-    const letters = "abcdefghijklmnopqrstuvwxyz";
-    const letterSize = letters.length;
-    let seed = "";
-    for (let i = 0; i < 55; i++) {
-      seed += letters[Math.floor(Math.random() * letterSize)];
-    }
-    return seed;
+    return generateSeed();
   }
 
   copyPublicId() {
