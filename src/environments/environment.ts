@@ -1,5 +1,5 @@
 export const environment = {
-    version: '4.26.3', // x-release-please-version
+    version: '4.26.4-rc', // x-release-please-version
     production: false,
     apiUrl: 'http://localhost:7004',
     staticApiUrl: 'https://static.qubic.org',
