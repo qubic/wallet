@@ -336,6 +336,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "Địa chỉ nhận là một hợp đồng thông minh",
+      "text": "Địa chỉ này thuộc về hợp đồng thông minh \"{{contractName}}\". Một giao dịch chuyển thông thường không gọi hợp đồng; số tiền sẽ vĩnh viễn trở thành một phần số dư của hợp đồng và không thể lấy lại. Để tương tác với hợp đồng, hãy hủy và sử dụng DApp của hợp đồng đó.",
+      "buttons": {
+        "continue": "Tiếp tục"
+      }
+    },
     "title": "Gửi Qubic Units (QUBIC)",
     "messages": {
       "pleaseUnlock": "Vui lòng mở khóa Wallet trước",

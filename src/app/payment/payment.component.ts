@@ -17,6 +17,8 @@ import { DecimalPipe } from '@angular/common';
 import { ApiLiveService } from 'src/app/services/apis/live/api.live.service';
 import { shortenAddress } from '../utils/address.utils';
 import { QUBIC_ADDRESS_LENGTH } from '../constants/qubic.constants';
+import { AddressNameService } from '../services/address-name.service';
+import { ConfirmDialog } from '../core/confirm-dialog/confirm-dialog.component';
 
 /**
  * Validator to check if the address is all uppercase
@@ -75,7 +77,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     private transactionService: TransactionService,
     private router: Router, private us: UpdaterService, private fb: FormBuilder, private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
     private _snackBar: MatSnackBar, public walletService: WalletService, private dialog: MatDialog,
-    private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService
+    private decimalPipe: DecimalPipe, private apiLiveService: ApiLiveService, private addressNameService: AddressNameService
   ) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (state && state['template']) {
@@ -193,6 +195,21 @@ export class PaymentComponent implements OnInit, OnDestroy {
         this.transferForm.controls.destinationId.setErrors({ invalidAddress: true });
         this.isBroadcasting = false;
         return;
+      }
+
+      const addressName = this.addressNameService.getAddressName(destinationId);
+      if (addressName?.type === 'smart-contract') {
+        const confirmed = await lastValueFrom(this.dialog.open(ConfirmDialog, {
+          restoreFocus: false,
+          data: {
+            title: this.t.translate('paymentComponent.smartContractWarning.title'),
+            message: this.t.translate('paymentComponent.smartContractWarning.text', { contractName: addressName.name }),
+            confirm: this.t.translate('paymentComponent.smartContractWarning.buttons.continue')
+          }
+        }).afterClosed());
+        if (!confirmed) {
+          return;
+        }
       }
 
       this.isBroadcasting = true;

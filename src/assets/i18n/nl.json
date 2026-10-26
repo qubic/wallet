@@ -335,6 +335,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "Het bestemmingsadres is een smart contract",
+      "text": "Het hoort bij het smart contract \"{{contractName}}\". Een gewone overdracht roept het contract niet aan; het bedrag wordt permanent onderdeel van het saldo van het contract en kan niet worden teruggehaald. Om met het contract te werken, annuleer en gebruik de bijbehorende DApp.",
+      "buttons": {
+        "continue": "Doorgaan"
+      }
+    },
     "title": "Verstuur Qubic Units (QUBIC).",
     "messages": {
       "pleaseUnlock": "Please unlock your Wallet first",

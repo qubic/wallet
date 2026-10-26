@@ -338,6 +338,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "The destination address is a smart contract",
+      "text": "It corresponds to the \"{{contractName}}\" smart contract. A plain transfer does not call the contract; the amount becomes part of its balance permanently and cannot be recovered. To interact with the contract, cancel and use its dApp.",
+      "buttons": {
+        "continue": "Continue"
+      }
+    },
     "title": "Send Qubic Units (QUBIC)",
     "messages": {
       "pleaseUnlock": "Please unlock your Wallet first",

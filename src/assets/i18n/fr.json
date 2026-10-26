@@ -335,6 +335,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "L'adresse de destination est un contrat intelligent",
+      "text": "Elle correspond au contrat intelligent \"{{contractName}}\". Un simple transfert n'appelle pas le contrat ; le montant est définitivement ajouté à son solde et ne peut pas être récupéré. Pour interagir avec le contrat, annulez et utilisez sa DApp.",
+      "buttons": {
+        "continue": "Continuer"
+      }
+    },
     "title": "Envoyer des unités Qubic (QUBIC)",
     "messages": {
       "pleaseUnlock": "Veuillez d'abord déverrouiller votre Wallet",

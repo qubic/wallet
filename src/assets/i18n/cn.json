@@ -336,6 +336,13 @@
     }
   },
   "paymentComponent": {
+    "smartContractWarning": {
+      "title": "目标地址是一个智能合约",
+      "text": "该地址属于智能合约 \"{{contractName}}\"。普通转账不会调用合约；金额将永久成为合约余额的一部分，且无法取回。若要与合约交互，请取消并使用其 DApp。",
+      "buttons": {
+        "continue": "继续"
+      }
+    },
     "title": "发送 (QUBIC)",
     "messages": {
       "pleaseUnlock": "请先解锁您的钱包",
