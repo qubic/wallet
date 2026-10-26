@@ -265,6 +265,40 @@ export class WalletService {
     }
   }
 
+  /**
+   * Verifies that the currently loaded private key matches the public key the
+   * stored seeds were encrypted with. The first non-watch-only seed is
+   * decrypted to raw bytes inside this method only; it is never decoded to a
+   * string, returned or stored, and the buffer is zeroed right after the check.
+   *
+   * Watch-only wallets have no private seed to check, so they are considered
+   * valid. Used on unlock instead of revealing (decrypting) a seed just to run
+   * this sanity check.
+   */
+  public async hasValidKeyPair(): Promise<boolean> {
+    const firstNonWatchSeed = this.getSeeds().find((s) => !s.isOnlyWatch);
+    if (!firstNonWatchSeed) {
+      return true; // only watch-only addresses: nothing to validate against
+    }
+    try {
+      const decrypted = await this.decrypt(
+        this.privateKey!,
+        this.base64ToArrayBuffer(firstNonWatchSeed.encryptedSeed)
+      );
+      // A successful, non-empty decrypt proves the key pair matches. Check the
+      // raw bytes instead of decoding them: a JS string can't be wiped, so the
+      // seed would stay in memory until GC. Zero the buffer once checked.
+      const bytes = new Uint8Array(decrypted);
+      const valid = bytes.byteLength > 0;
+      bytes.fill(0);
+      return valid;
+    } catch (e) {
+      // Log only the error name: it carries no key or seed material.
+      console.error('hasValidKeyPair: decrypt failed', (e as Error)?.name);
+      return false;
+    }
+  }
+
   public async updateSeedAlias(publicId: string, alias: string) {
     let seed = this.getSeed(publicId);
     if (seed) {
