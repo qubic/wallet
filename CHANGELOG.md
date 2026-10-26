@@ -5,6 +5,14 @@
 
 * remove dead Qubic Feedback support link ([51727a5](https://github.com/qubic/wallet/commit/51727a5aa7c2d5eccbced7c25ce2ad6c02fb081b))
 
+## [4.26.4](https://github.com/qubic/wallet/compare/v4.26.3...v4.26.4) (2026-10-18)
+
+
+### Bug Fixes
+
+* updated seedgen ([e2d4aa0](https://github.com/qubic/wallet/commit/e2d4aa08a189b397315919395250392161e38531))
+* use cryptographically secure seed generation ([09dd288](https://github.com/qubic/wallet/commit/09dd288c338c7ccfade043e840c53b80e795a916))
+
 ## [4.26.2](https://github.com/qubic/wallet/compare/v4.26.1...v4.26.2) (2026-06-17)
 
 
